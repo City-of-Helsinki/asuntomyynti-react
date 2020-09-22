@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
+import Search from "./modules/search/Search";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+     <Search />
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById('search')
 );
 
 // If you want your app to work offline and load faster, you can change
