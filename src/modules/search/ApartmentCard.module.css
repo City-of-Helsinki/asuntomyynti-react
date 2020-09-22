@@ -1,3 +1,56 @@
+b {
+  font-weight: bold;
+  font-size: 24px;
+}
+
 .container {
-  text-align: center;
+  height: 400px;
+  width: 387px;
+  margin: 0 auto;
+}
+
+.content {
+  padding: 18px 16px 16px 16px;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid black;
+  padding-bottom: 12px;
+}
+
+.size {
+  color: rgb(26, 26, 26);
+  font-size: 16px;
+  font-family: HelsinkiGrotesk-Bold;
+  line-height: 29px;
+}
+
+.price {
+  color: rgb(26, 26, 26);
+  font-family: HelsinkiGrotesk-Bold;
+  line-height: 29px;
+}
+
+.details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 13px 0;
+}
+
+.apartmentDetails {
+  color: rgb(29, 29, 29);
+  font-size: 14px;
+  font-family: HelsinkiGrotesk-Regular;
+  font-weight: normal;
+  line-height: 24.5px;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
