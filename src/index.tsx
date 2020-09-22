@@ -2,11 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
-import Search from "./modules/search/Search";
+import SearchContainer from "./modules/search/SearchContainer";
 
 ReactDOM.render(
   <React.StrictMode>
-     <Search />
+     <SearchContainer />
   </React.StrictMode>,
   document.getElementById('search')
 );
