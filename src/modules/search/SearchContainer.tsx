@@ -1,7 +1,7 @@
 import React from 'react';
-import css from './SearchContainer.module.css';
-import ProjectCard from "./ProjectCard";
-import SearchResults from "./SearchResults";
+import css from './SearchContainer.module.scss';
+import ProjectCard from './ProjectCard';
+import SearchResults from './SearchResults';
 
 const SearchContainer = () => {
   return (
@@ -13,6 +13,6 @@ const SearchContainer = () => {
       <SearchResults />
     </div>
   );
-}
+};
 
 export default SearchContainer;
