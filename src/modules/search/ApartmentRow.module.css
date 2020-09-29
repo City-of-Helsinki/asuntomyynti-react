@@ -1,0 +1,20 @@
+.container {
+  background: white;
+  padding: 30px 0;
+  display: flex;
+  text-align: left;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.cell {
+  display: flex;
+  color: #1a1a1a;
+  font-size: 18px;
+  font-family: HelsinkiGrotesk-Regular;
+  font-weight: normal;
+  line-height: 27px;
+}
+
+.cell strong {
+  margin-right: 25px;
+}

@@ -79,6 +79,8 @@
   font-weight: 500;
   line-height: 24px;
   text-align: center;
+  display: flex;
+  align-items: center;
 }
 
 .apartmentListButton:hover {
@@ -86,9 +88,15 @@
 }
 
 .apartmentList {
-  padding: 32px 0;
+  padding: 16px 30px 30px 30px;
+}
+
+.apartmentListHeaders {
   display: flex;
-  flex-wrap: wrap;
-  margin: -20px;
-  max-width: 1309px;
+  text-align: left;
+  border-bottom: 1px solid #cccccc;
+}
+
+.headerCell {
+  padding-bottom: 16px;
 }

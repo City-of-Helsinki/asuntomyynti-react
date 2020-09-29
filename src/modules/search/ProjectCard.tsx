@@ -1,6 +1,7 @@
 import React from 'react';
 import css from './ProjectCard.module.css';
-
+import ApartmentRow from "./ApartmentRow";
+import {IconArrowDown} from "hds-react";
 
 
 const ProjectCard = () => {
@@ -24,11 +25,25 @@ const ProjectCard = () => {
           </div>
           <div className={css.controls}>
             <button className={css.detailsButton}>Tutustu kohteeseen</button>
-            <button className={css.apartmentListButton}>78 huoneistoa haettavana</button>
+            <button className={css.apartmentListButton}>
+              78 huoneistoa haettavana <IconArrowDown role="presentation" style={{marginLeft: 10}} />
+            </button>
           </div>
         </div>
       </div>
       <div className={css.apartmentList}>
+        <div className={css.apartmentListTable}>
+          <div className={css.apartmentListHeaders}>
+            <div className={css.headerCell} style={{flex: 2}}>Huoneisto</div>
+            <div className={css.headerCell} style={{flex: 1}}>Kerros</div>
+            <div className={css.headerCell} style={{flex: 1}}>Pinta-ala</div>
+            <div className={css.headerCell} style={{flex: 1}}>Velaton hinta</div>
+            <div className={css.headerCell} style={{flex: 1}}>Hakijatilanne</div>
+            <div className={css.headerCell} style={{flex: 3}}></div>
+          </div>
+          <ApartmentRow />
+        </div>
+        <div className={css.pagination}></div>
       </div>
     </div>
   );
