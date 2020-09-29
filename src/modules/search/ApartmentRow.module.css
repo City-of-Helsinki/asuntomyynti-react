@@ -3,7 +3,11 @@
   padding: 30px 0;
   display: flex;
   text-align: left;
-  border-bottom: 1px solid #1a1a1a;
+  border-bottom: 1px solid #cccccc;
+}
+
+.container:last-of-type {
+  border-bottom: none;
 }
 
 .cell {
@@ -15,6 +19,46 @@
   line-height: 27px;
 }
 
+.cell:last-of-type {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .cell strong {
   margin-right: 25px;
+}
+
+.createApplicationButton {
+  all: unset;
+  padding: 0 15px;
+  height: 36px;
+  border: 2px solid #0000bf;
+  color: #0000bf;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: center;
+  margin-left: 40px;
+}
+
+.createApplicationButton:hover {
+  cursor: pointer;
+}
+
+.getToKnowButton {
+  all: unset;
+  color: #0000bf;
+  padding: 0 25px;
+  height: 36px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
+
+.getToKnowButton:hover {
+  cursor: pointer;
+  background-color: #f2f2fc;
 }

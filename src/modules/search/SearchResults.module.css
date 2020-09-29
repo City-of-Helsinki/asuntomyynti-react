@@ -1,0 +1,32 @@
+.container {
+  text-align: center;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 72px;
+}
+
+.titleContainer {
+  padding: 62px 48px 32px;
+  text-align: left;
+}
+
+.titleContainer h1 {
+  color: rgb(26, 26, 26);
+  font-size: 36px;
+  font-family: HelsinkiGrotesk-Bold;
+  font-weight: bold;
+  line-height: 43px;
+}
+
+.resultsCount {
+  color: rgb(26, 26, 26);
+  font-size: 16px;
+  font-family: HelsinkiGrotesk-Regular;
+  font-weight: normal;
+  line-height: 24px;
+}
+
+.resultWrapper {
+  padding: 48px;
+  background: #f2f2f2;
+}
