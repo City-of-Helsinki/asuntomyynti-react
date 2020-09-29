@@ -1,0 +1,94 @@
+.container {
+  background: white;
+  padding: 32px 54px;
+  display: flex;
+  flex-direction: column;
+  max-width: 1200px;
+  height: 233px;
+}
+
+.content {
+  display: flex;
+}
+
+.info {
+  display: flex;
+  flex: 2;
+  padding: 30px 30px 30px 20px;
+}
+
+.imageContainer {
+  flex: 1;
+}
+
+.imageContainer img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.details {
+  flex: 2;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.details h2 {
+  margin: 0;
+}
+
+.titles {
+
+}
+
+.label {
+  padding: 3px 8px;
+  color: #1d1d1d;
+  font-size: 14px;
+  font-family: HelsinkiGrotesk-Regular;
+  font-weight: normal;
+  line-height: 26px;
+  background-color: #f5da4e;
+}
+
+.controls {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.detailsButton {
+  all: unset;
+  width: 188px;
+  height: 36px;
+  border: 2px solid #0000bf;
+  color: #0000bf;
+}
+
+.detailsButton:hover {
+  cursor: pointer;
+}
+
+.apartmentListButton {
+  color: #0000bf;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: center;
+}
+
+.apartmentListButton:hover {
+  cursor: pointer;
+}
+
+.apartmentList {
+  padding: 32px 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin: -20px;
+  max-width: 1309px;
+}

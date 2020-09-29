@@ -1,6 +1,7 @@
 import React from 'react';
 import css from './SearchContainer.module.css';
 import ApartmentCard from "./ApartmentCard";
+import ProjectCard from "./ProjectCard";
 
 const SearchContainer = () => {
   return (
@@ -9,7 +10,7 @@ const SearchContainer = () => {
       <div>Notification here?</div>
       <div>Search results or map here</div>
       <div>Free apartments or map here</div>
-      <ApartmentCard />
+      <ProjectCard />
     </div>
   );
 }

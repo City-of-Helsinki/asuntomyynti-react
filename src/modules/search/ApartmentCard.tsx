@@ -13,7 +13,7 @@ const ApartmentCard = () => {
             vh.
             <b> 329 875 €</b>
           </div>
-          <div className={css.size}><b>85&#13217;</b></div>
+          <div className={css.size}><b>84 &#13217;</b></div>
         </div>
         <div className={css.details}>
           <div className={css.apartmentDetails}>

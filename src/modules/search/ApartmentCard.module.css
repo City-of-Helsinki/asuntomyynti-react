@@ -4,9 +4,9 @@ b {
 }
 
 .container {
-  width: 387px;
-  margin: 0 auto;
+  max-width: 387px;
   background-color: white;
+  margin: 20px;
 }
 
 .content {
