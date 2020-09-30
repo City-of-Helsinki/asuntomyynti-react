@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import mockSearchConfig from './mocks/search-config.json';
 
 export type SearchItem = {
