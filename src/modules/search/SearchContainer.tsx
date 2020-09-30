@@ -5,7 +5,7 @@ import SearchResults from './SearchResults';
 import axios from 'axios';
 
 const SearchContainer = () => {
-  const [searchResults, setSearchResults] = useState();
+  const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
 
@@ -29,7 +29,7 @@ const SearchContainer = () => {
       <div>Notification here?</div>
       <div>Search results or map here</div>
       <div>Free apartments or map here</div>
-      <SearchResults />
+      <SearchResults searchResults={searchResults} />
     </div>
   );
 };
