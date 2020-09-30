@@ -1,0 +1,46 @@
+.container {
+  background: rgb(242, 242, 242);
+  padding: 40px;
+  width: 100%;
+}
+
+.form {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  margin: 10px -10px;
+}
+
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+  }
+  .column {
+    padding: 5px 0;
+  }
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin: 0 10px;
+  position: relative;
+  min-height: 52px;
+}
+
+.divider {
+  border-bottom: 1px solid #cccccc;
+  margin: 20px 0;
+  height: 0;
+}
+
+.header {
+  font-weight: 500;
+  height: 24px;
+  margin-bottom: 4px;
+}
