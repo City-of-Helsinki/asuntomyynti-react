@@ -23,13 +23,13 @@ const SearchForm = () => {
         <div className={styles.divider} />
         <div className={styles.row}>
           <div className={styles.column}>
-            <CheckList name={'housing_type'} />
+            <CheckList name="housing_type" />
           </div>
           <div className={styles.column}>
-            <CheckList name={'apartment_properties'} />
+            <CheckList name="apartment_properties" />
           </div>
           <div className={styles.column}>
-            <CheckList name={'state_of_sale'} />
+            <CheckList name="state_of_sale" />
           </div>
         </div>
         <div className={styles.divider} />
