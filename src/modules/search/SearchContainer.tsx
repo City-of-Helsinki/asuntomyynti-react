@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import css from './SearchContainer.module.scss';
-import ProjectCard from './ProjectCard';
 import SearchResults from './SearchResults';
 import axios from 'axios';
 
