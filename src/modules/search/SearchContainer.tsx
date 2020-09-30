@@ -1,17 +1,20 @@
 import React from 'react';
-import css from './SearchContainer.module.scss';
-import ProjectCard from './ProjectCard';
 import SearchResults from './SearchResults';
+import css from './SearchContainer.module.scss';
+import SearchForm from '../../components/SearchForm';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 const SearchContainer = () => {
   return (
-    <div className={css.App}>
-      <div>Search parameters here</div>
-      <div>Notification here?</div>
-      <div>Search results or map here</div>
-      <div>Free apartments or map here</div>
-      <SearchResults />
-    </div>
+    <Router>
+      <div className={css.App}>
+        <SearchForm />
+        <div>Notification here?</div>
+        <div>Search results or map here</div>
+        <div>Free apartments or map here</div>
+        <SearchResults />
+      </div>
+    </Router>
   );
 };
 
