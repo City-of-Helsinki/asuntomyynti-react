@@ -1,6 +1,6 @@
 import React from 'react';
-import css from './SearchResults.module.css';
-import ProjectCard from "./ProjectCard";
+import css from './SearchResults.module.scss';
+import ProjectCard from './ProjectCard';
 
 const SearchResults = () => {
   return (
@@ -16,6 +16,6 @@ const SearchResults = () => {
       </div>
     </div>
   );
-}
+};
 
 export default SearchResults;

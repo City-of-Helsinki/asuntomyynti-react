@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './index.scss';
 import * as serviceWorker from './serviceWorker';
-import SearchContainer from "./modules/search/SearchContainer";
+import SearchContainer from './modules/search/SearchContainer';
 
 ReactDOM.render(
   <React.StrictMode>
-     <SearchContainer />
+    <SearchContainer />
   </React.StrictMode>,
   document.getElementById('search')
 );
