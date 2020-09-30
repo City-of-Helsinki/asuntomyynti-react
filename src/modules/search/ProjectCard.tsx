@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import css from './ProjectCard.module.scss';
 import ApartmentRow from './ApartmentRow';
 import { IconArrowDown, IconArrowUp, IconCogwheel, IconClock } from 'hds-react';
+import { Project } from '../../types/common';
 
-const ProjectCard = () => {
+const ProjectCard = ({ project }: { project: Project }) => {
   const [listOpen, setListOpen] = useState(false);
 
   const toggleList = () => {

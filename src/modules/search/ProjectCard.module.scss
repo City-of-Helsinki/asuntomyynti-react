@@ -4,6 +4,10 @@
   margin-bottom: 32px;
 }
 
+.container:last-of-type {
+  margin-bottom: 0;
+}
+
 .content {
   display: flex;
   height: 100%;
