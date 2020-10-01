@@ -10,7 +10,7 @@ const useLang = () => {
   useEffect(() => {
 
     i18n.changeLanguage(lang || 'fi');
-  }, []);
+  }, [lang, i18n]);
 };
 
 export default useLang;
