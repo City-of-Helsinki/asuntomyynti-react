@@ -26,7 +26,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
     <div className={css.container}>
       <div className={css.content}>
         <div className={css.imageContainer}>
-          <img src={main_image_url || 'http://placekitten.com/600/400'} />
+          <img src={main_image_url || 'http://placekitten.com/600/400'} alt={"The project" /*TODO: Localize this*/} />
         </div>
         <div className={css.info}>
           <div className={css.details}>
