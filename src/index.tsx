@@ -1,13 +1,16 @@
 import './i18n';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import './index.scss';
 import * as serviceWorker from './serviceWorker';
 import SearchContainer from './modules/search/SearchContainer';
 
 ReactDOM.render(
   <React.StrictMode>
-    <SearchContainer />
+    <Router>
+      <SearchContainer />
+    </Router>
   </React.StrictMode>,
   document.getElementById('search')
 );

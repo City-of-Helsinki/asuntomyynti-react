@@ -15,7 +15,6 @@ const SearchResults = ({ searchResults }: Props) => {
     <div className={css.container}>
       <div className={css.titleContainer}>
         <h1>Vapaat asunnot</h1>
-        <h2>{t('SEARCH:Welcome to React')}</h2>
         <div className={css.resultsCount}>Yhteensä {searchResults.length} huoneistoa</div>
       </div>
       <div className={css.resultWrapper}>
