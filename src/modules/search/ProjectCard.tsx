@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { format } from 'date-fns';
 import css from './ProjectCard.module.scss';
 import ApartmentRow from './ApartmentRow';
 import { IconArrowDown, IconArrowUp, IconCogwheel, IconClock } from 'hds-react';
@@ -11,27 +12,37 @@ const ProjectCard = ({ project }: { project: Project }) => {
     setListOpen(!listOpen);
   };
 
+  const {
+    apartment_address,
+    district,
+    estimated_completion,
+    estimated_completion_date,
+    housing_company,
+    main_image_url,
+    publication_end_time,
+  } = project;
+
   return (
     <div className={css.container}>
       <div className={css.content}>
         <div className={css.imageContainer}>
-          <img src={'http://placekitten.com/600/400'} />
+          <img src={main_image_url || 'http://placekitten.com/600/400'} />
         </div>
         <div className={css.info}>
           <div className={css.details}>
             <div className={css.titles}>
-              <h2 style={{ marginBottom: 5 }}>Hylkeenkivi</h2>
-              <div style={{ marginBottom: 5 }}>Herttoniemi, Hitsaajankatu 3 </div>
+              <h2 style={{ marginBottom: 5 }}>{housing_company}</h2>
+              <div style={{ marginBottom: 5 }}><b>{district},</b> {apartment_address}</div>
               <span className={css.label}>Hitas</span>
             </div>
             <div className={css.deadlines}>
               <div className={css.completionTime}>
                 <IconCogwheel style={{ marginRight: 10 }} role="presentation" />
-                Valmistuu 06–08/2020
+                {estimated_completion} {format(new Date(estimated_completion_date), 'MM/yyyy')}
               </div>
               <div className={css.applicationTime}>
                 <IconClock style={{ marginRight: 10 }} role="presentation" />
-                Haku avoinna 30.5.2020 klo 12.00 asti
+                Haku avoinna {format(new Date(publication_end_time), "dd.MM.yyyy 'klo' hh.mm")} asti
               </div>
             </div>
           </div>
