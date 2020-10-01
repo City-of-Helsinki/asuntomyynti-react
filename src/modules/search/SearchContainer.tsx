@@ -4,6 +4,7 @@ import axios from 'axios';
 import css from './SearchContainer.module.scss';
 import SearchResults from './SearchResults';
 import SearchForm from '../../components/SearchForm';
+import Notification from '../../components/Notification/Notification';
 
 const SearchContainer = () => {
   const [searchResults, setSearchResults] = useState([]);
@@ -20,15 +21,15 @@ const SearchContainer = () => {
     fetchProjects();
   }, []);
 
-  console.warn(searchResults);
-
   return (
     <Router>
       <div className={css.App}>
         <SearchForm />
-        <div>Notification here?</div>
-        <div>Search results or map here</div>
-        <div>Free apartments or map here</div>
+        <Notification
+          message={
+            'Duis ante tortor, dignissim vitae finibus at, pellentesque eget risus. Etiam nec mi ut lorem feugiat blandit nec a quam. Praesent luctus felis sit amet arcu imperdiet suscipit. Cras consectetur eros non lectus volutpat, sit amet ultricies nisi pellentesque. Mauris nec augue nec neque faucibus eleifend quis eu lacus.'
+          }
+        />
         <SearchResults searchResults={searchResults} />
       </div>
     </Router>

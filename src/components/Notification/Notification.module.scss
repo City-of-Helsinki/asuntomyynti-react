@@ -1,0 +1,18 @@
+.container {
+  background-color: #ffe977;
+  width: 100%;
+}
+
+.wrapper {
+  max-width: 1440px;
+  display: flex;
+  justify-content: space-between;
+  padding: 24px 120px;
+  margin: 0 auto;
+}
+
+.content {
+  margin-right: 120px;
+  display: flex;
+  align-items: center;
+}
