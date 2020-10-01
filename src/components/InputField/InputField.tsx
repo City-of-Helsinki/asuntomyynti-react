@@ -1,24 +1,25 @@
-import React, { useState } from 'react';
-import { SearchItem } from '../../hooks/useConfig';
+import React from 'react';
+import { FilterItem } from '../../hooks/useFilter';
 import Label from '../Label';
+import styles from './InputField.module.scss';
 
-type Props = React.HTMLProps<HTMLInputElement> & SearchItem;
+type Props = {
+  onChange: (value: string) => void;
+  value?: string;
+} & FilterItem;
 
-const InputField = ({ label, onChange, ...rest }: Props) => {
-  const [value, setValue] = useState('');
-
+const InputField = ({ label, onChange, value, ...rest }: Props) => {
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
     // Call the original onChange method
     if (onChange) {
-      onChange(event);
+      onChange(event.target.value);
     }
   };
 
   return (
-    <Label>
-      {label}
-      <input value={value} onChange={handleOnChange} {...rest} />
+    <Label className={styles.container}>
+      <span className={styles.label}>{label}</span>
+      <input className={styles.input} onChange={handleOnChange} value={value} {...rest} />
     </Label>
   );
 };

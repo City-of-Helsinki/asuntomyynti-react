@@ -1,19 +1,18 @@
 {
   "param1": {
+    "type": "multiselect",
     "icon": "location",
-    "items": [
-      "Alppiranta", "Arabianranta", "Aurinkolahti", "Etelä-Haaga", "Fallpakka", "Haaga"
-    ],
+    "items": ["Alppiranta", "Arabianranta", "Aurinkolahti", "Etelä-Haaga", "Fallpakka", "Haaga"],
     "label": "Alue"
   },
   "param2": {
+    "type": "multiselect",
     "icon": "home",
-    "items": [
-      "1 h", "2 h", "3 h", "4 h", "5+ h"
-    ],
+    "items": ["1 h", "2 h", "3 h", "4 h", "5+ h"],
     "label": "Huoneita"
   },
   "param3": {
+    "type": "range",
     "items": [
       {
         "label": "Vähintään",
@@ -27,6 +26,7 @@
     "label": "Pinta-ala, m2"
   },
   "param4": {
+    "type": "input",
     "items": [
       {
         "label": "Hinta korkeintaan",
@@ -37,19 +37,18 @@
     "label": "Hinta"
   },
   "housing_type": {
-    "items": [
-      "Kerrostalo", "Rivitalo/ pientalo"
-    ],
+    "type": "multiselect",
+    "items": ["Kerrostalo", "Rivitalo/ pientalo"],
     "label": "Talotyyppi"
   },
   "apartment_properties": {
+    "type": "multiselect",
     "items": ["Piha", "Sauna", "Parveke", "Terassi"],
     "label": "Talotyyppi"
   },
   "state_of_sale": {
-    "items": [
-      "Nyt haettavana", "Vapaat asunnot", "Tulossa haettavaksi"
-    ],
+    "type": "multiselect",
+    "items": ["Nyt haettavana", "Vapaat asunnot", "Tulossa haettavaksi"],
     "label": "Myynnin tila"
   }
 }
