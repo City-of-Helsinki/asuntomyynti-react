@@ -1,13 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import axios from 'axios';
 import css from './SearchContainer.module.scss';
 import SearchResults from './SearchResults';
-import axios from 'axios';
+import SearchForm from '../../components/SearchForm';
 
 const SearchContainer = () => {
   const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
-
     const fetchProjects = async () => {
       try {
         const data = await axios.get('http://dev.asuntomyynti-elastic.druidfi.wod.by/_search');
@@ -17,19 +18,20 @@ const SearchContainer = () => {
       }
     };
     fetchProjects();
-
   }, []);
 
   console.warn(searchResults);
 
   return (
-    <div className={css.App}>
-      <div>Search parameters here</div>
-      <div>Notification here?</div>
-      <div>Search results or map here</div>
-      <div>Free apartments or map here</div>
-      <SearchResults searchResults={searchResults} />
-    </div>
+    <Router>
+      <div className={css.App}>
+        <SearchForm />
+        <div>Notification here?</div>
+        <div>Search results or map here</div>
+        <div>Free apartments or map here</div>
+        <SearchResults searchResults={searchResults} />
+      </div>
+    </Router>
   );
 };
 

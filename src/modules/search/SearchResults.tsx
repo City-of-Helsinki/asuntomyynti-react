@@ -1,14 +1,13 @@
 import React from 'react';
 import css from './SearchResults.module.scss';
 import ProjectCard from './ProjectCard';
-import {Project} from "../../types/common";
+import { Project } from '../../types/common';
 
 type Props = {
- searchResults: Project[]
-}
+  searchResults: Project[];
+};
 
 const SearchResults = ({ searchResults }: Props) => {
-
   return (
     <div className={css.container}>
       <div className={css.titleContainer}>
@@ -16,7 +15,9 @@ const SearchResults = ({ searchResults }: Props) => {
         <div className={css.resultsCount}>Yhteensä 179 huoneistoa</div>
       </div>
       <div className={css.resultWrapper}>
-        {searchResults.map(x => <ProjectCard project={x} />)}
+        {searchResults.map((x) => (
+          <ProjectCard project={x} />
+        ))}
       </div>
     </div>
   );

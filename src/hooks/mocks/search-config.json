@@ -1,0 +1,55 @@
+{
+  "param1": {
+    "icon": "location",
+    "items": [
+      "Alppiranta", "Arabianranta", "Aurinkolahti", "Etelä-Haaga", "Fallpakka", "Haaga"
+    ],
+    "label": "Alue"
+  },
+  "param2": {
+    "icon": "home",
+    "items": [
+      "1 h", "2 h", "3 h", "4 h", "5+ h"
+    ],
+    "label": "Huoneita"
+  },
+  "param3": {
+    "items": [
+      {
+        "label": "Vähintään",
+        "placeholder": "m2"
+      },
+      {
+        "label": "Enintään",
+        "placeholder": "m2"
+      }
+    ],
+    "label": "Pinta-ala, m2"
+  },
+  "param4": {
+    "items": [
+      {
+        "label": "Hinta korkeintaan",
+        "placeholder": "€",
+        "info": "tuhatta euroa"
+      }
+    ],
+    "label": "Hinta"
+  },
+  "housing_type": {
+    "items": [
+      "Kerrostalo", "Rivitalo/ pientalo"
+    ],
+    "label": "Talotyyppi"
+  },
+  "apartment_properties": {
+    "items": ["Piha", "Sauna", "Parveke", "Terassi"],
+    "label": "Talotyyppi"
+  },
+  "state_of_sale": {
+    "items": [
+      "Nyt haettavana", "Vapaat asunnot", "Tulossa haettavaksi"
+    ],
+    "label": "Myynnin tila"
+  }
+}
