@@ -10,8 +10,8 @@ type Props = {
 
 const InputField = ({ label, onChange, value, ...rest }: Props) => {
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // Call the original onChange method
     if (onChange) {
+      // Call only with value
       onChange(event.target.value);
     }
   };
