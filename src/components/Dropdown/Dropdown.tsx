@@ -38,24 +38,28 @@ const Dropdown = ({ name }: Props) => {
 
   // Update label depending on the selection
   const handleFilter = ({ label, type }: FilterConfig) => {
-    if (type === FilterType.MultiSelect) {
-      const selected = parseSelected(searchParams, name);
+    switch (type) {
+      case FilterType.MultiSelect:
+        const selected = parseSelected(searchParams, name);
+        setLabel((selected[0] || label) + (selected.length > 1 ? `+${selected.length - 1}` : ''));
+        break;
 
-      setLabel((selected[0] || label) + (selected.length > 1 ? `+${selected.length - 1}` : ''));
-    } else if (type === FilterType.Range) {
-      const [min, max] = parseSelected(searchParams, name);
+      case FilterType.Range:
+        const [min, max] = parseSelected(searchParams, name);
 
-      if (min && max) {
-        setLabel(`${min}-${max}`);
-      } else if (min && !max) {
-        setLabel(`${min} <`);
-      } else if (!min && max) {
-        setLabel(`< ${max}`);
-      } else {
-        setLabel(label);
-      }
-    } else {
-      setLabel(searchParams.get(name) || label);
+        if (min && max) {
+          setLabel(`${min}-${max}`);
+        } else if (min && !max) {
+          setLabel(`${min} <`);
+        } else if (!min && max) {
+          setLabel(`< ${max}`);
+        } else {
+          setLabel(label);
+        }
+        break;
+
+      default:
+        setLabel(searchParams.get(name) || label);
     }
   };
 
