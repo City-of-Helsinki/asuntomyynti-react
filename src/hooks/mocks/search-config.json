@@ -1,11 +1,13 @@
 {
   "param1": {
+    "icon": "location",
     "items": [
       "Alppiranta", "Arabianranta", "Aurinkolahti", "Etelä-Haaga", "Fallpakka", "Haaga"
     ],
     "label": "Alue"
   },
   "param2": {
+    "icon": "home",
     "items": [
       "1 h", "2 h", "3 h", "4 h", "5+ h"
     ],

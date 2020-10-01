@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './Dropdown.module.scss';
 import QueryList from '../QueryList/QueryList';
-import Label from '../Label/Label';
+import Label from '../Label';
 import useQuery from '../../hooks/useQuery';
 import { useHistory } from 'react-router-dom';
 import useConfig from '../../hooks/useConfig';
-import useIcon from '../../hooks/useIcon';
+import IconByName from '../IconByName';
 
 type Props = {
   name: string;
@@ -13,7 +13,6 @@ type Props = {
 
 const Dropdown = ({ name }: Props) => {
   const [active, setActive] = useState(false);
-  const Icon = useIcon(name);
   const { items, label } = useConfig(name);
   const ref = useRef<HTMLDivElement>(null);
   const history = useHistory();
@@ -54,7 +53,7 @@ const Dropdown = ({ name }: Props) => {
   return (
     <div className={className} ref={ref}>
       <Label onClick={() => setActive(!active)}>
-        <div className={styles.icon}>{Icon && <Icon role="presentation" />}</div>
+        <IconByName name={name} className={styles.icon} />
         <div className={styles.title}>{dynamicLabel}</div>
         <div className={styles.arrow} />
       </Label>

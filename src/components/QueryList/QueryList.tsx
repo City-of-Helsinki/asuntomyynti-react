@@ -36,7 +36,7 @@ const QueryList = ({ name, items }: Props) => {
       {items.map((item) => {
         if (typeof item === 'string') {
           return (
-            <Label>
+            <Label key={item}>
               <Checkbox
                 onChange={() => history.push(getQueryParams(name, item))}
                 checked={searchParams.getAll(name).includes(item)}

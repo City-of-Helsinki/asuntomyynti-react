@@ -12,6 +12,7 @@ export type SearchItem = {
 export type SearchConfig = {
   items: (string | SearchItem)[];
   label: string;
+  icon?: string;
 };
 
 const defaultConfig = {
@@ -23,7 +24,9 @@ const defaultConfig = {
 
 const fetchMockConfig = (name: string): Promise<SearchConfig> =>
   new Promise((resolve) => {
+    console.log('fetching config mocks...');
     setTimeout(() => {
+      console.log('done');
       resolve({
         ...defaultConfig,
         ...(mockSearchConfig as { [key: string]: SearchConfig })[name], // HAXOR for the mock
@@ -35,8 +38,9 @@ const useConfig = (name: string) => {
   const [config, setConfig] = useState<SearchConfig>(defaultConfig);
 
   useEffect(() => {
+    // TODO: Consider using react-query for caching the request
     fetchMockConfig(name).then((config) => setConfig(config));
-  });
+  }, [name]);
 
   return config;
 };
