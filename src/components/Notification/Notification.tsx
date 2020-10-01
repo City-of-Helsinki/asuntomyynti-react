@@ -1,6 +1,6 @@
 import css from './Notification.module.scss';
 import React from 'react';
-import { IconEnvelope } from 'hds-react';
+import { IconEnvelope, IconCross } from 'hds-react';
 
 const Notification = ({message}: {message: string}) => {
   return (
@@ -10,7 +10,7 @@ const Notification = ({message}: {message: string}) => {
           <IconEnvelope style={{marginRight: 26}} size={"xl"} role="presentation" />
           <div>{message}</div>
         </div>
-        <div>X</div>
+        <IconCross className={css.closeIcon} size={"s"} role="presentation" />
       </div>
     </div>
   );

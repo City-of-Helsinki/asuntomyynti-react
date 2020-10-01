@@ -9,10 +9,22 @@
   justify-content: space-between;
   padding: 24px 120px;
   margin: 0 auto;
+  align-items: flex-start;
+  position: relative;
 }
 
 .content {
   margin-right: 120px;
   display: flex;
   align-items: center;
+}
+
+.closeIcon {
+  position: absolute;
+  top: 24px;
+  right: 120px;
+}
+
+.closeIcon:hover {
+  cursor: pointer;
 }
