@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './SearchForm.module.scss';
 import Dropdown from '../Dropdown';
-import CheckList from '../CheckList';
 import { Button } from 'hds-react';
+import QueryFilter from '../QueryFilter';
 
 const SearchForm = () => {
   return (
@@ -17,19 +17,22 @@ const SearchForm = () => {
             <Dropdown name="param2" />
           </div>
           <div className={styles.column}>
+            <Dropdown name="param3" />
+          </div>
+          <div className={styles.column}>
             <Button>Submit</Button>
           </div>
         </div>
         <div className={styles.divider} />
         <div className={styles.row}>
           <div className={styles.column}>
-            <CheckList name="housing_type" />
+            <QueryFilter name="housing_type" />
           </div>
           <div className={styles.column}>
-            <CheckList name="apartment_properties" />
+            <QueryFilter name="apartment_properties" />
           </div>
           <div className={styles.column}>
-            <CheckList name="state_of_sale" />
+            <QueryFilter name="state_of_sale" />
           </div>
         </div>
         <div className={styles.divider} />

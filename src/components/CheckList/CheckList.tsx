@@ -1,18 +1,37 @@
-import styles from '../SearchForm/SearchForm.module.scss';
-import QueryList from '../QueryList';
 import React from 'react';
-import useConfig from '../../hooks/useConfig';
+import Label from '../Label';
+import Checkbox from '../Checkbox';
+import styles from './CheckList.module.scss';
 
 type Props = {
   name: string;
+  onChange: (values: string[]) => void;
+  items: string[];
+  selected: string[];
+  label?: string;
 };
 
-const CheckList = ({ name }: Props) => {
-  const { items, label } = useConfig(name);
+const CheckList = ({ items, selected, onChange, label }: Props) => {
+  const handleChange = (item: string) => () => {
+    if (selected.includes(item)) {
+      const filteredSelection = selected.filter((x) => x !== item);
+      onChange(filteredSelection);
+    } else {
+      onChange([...selected, item]);
+    }
+  };
+
   return (
-    <div>
-      <div className={styles.header}>{label}</div>
-      <QueryList name={name} items={items} />
+    <div className={styles.container}>
+      {label && <div className={styles.header}>{label}</div>}
+      {items.map((item, index) => {
+        return (
+          <Label key={`${item}-${index}`}>
+            <Checkbox value={item} onChange={handleChange(item)} checked={selected.includes(item)} />
+            <div>{item}</div>
+          </Label>
+        );
+      })}
     </div>
   );
 };

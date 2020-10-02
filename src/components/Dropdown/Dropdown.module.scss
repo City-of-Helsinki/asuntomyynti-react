@@ -14,7 +14,7 @@
 
 .container label {
   padding: 10px;
-  height: 50px;
+  min-height: 50px;
 }
 
 .container label:hover {
@@ -81,6 +81,7 @@
 }
 
 .clearButton {
+  all: unset;
   box-shadow: none;
   border-radius: 0;
   border: none;

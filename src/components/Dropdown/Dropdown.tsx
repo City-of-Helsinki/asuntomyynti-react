@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styles from './Dropdown.module.scss';
-import QueryList from '../QueryList/QueryList';
 import Label from '../Label';
 import useQuery from '../../hooks/useQuery';
 import { useHistory } from 'react-router-dom';
-import useConfig from '../../hooks/useConfig';
 import IconByName from '../IconByName';
+import QueryFilter from '../QueryFilter';
+import { parseSelected } from '../../helpers';
+import { FilterConfig, FilterType } from '../../hooks/useFilter';
+import useOutsideClick from '../../hooks/useOutsideClick';
 
 type Props = {
   name: string;
@@ -13,52 +15,67 @@ type Props = {
 
 const Dropdown = ({ name }: Props) => {
   const [active, setActive] = useState(false);
-  const { items, label } = useConfig(name);
+  const [label, setLabel] = useState(name);
+
   const ref = useRef<HTMLDivElement>(null);
   const history = useHistory();
 
   const searchParams = useQuery();
   const hasSelections = !!searchParams.get(name);
 
-  useEffect(() => {
-    const handleClick = (event: MouseEvent) => {
-      // Is the click outside this component
-      if (ref.current && !ref.current.contains(event.target as Node)) {
-        // Close the dropdown
-        setActive(false);
-      }
-    };
-
-    document.addEventListener('click', handleClick);
-
-    return () => {
-      document.removeEventListener('click', handleClick);
-    };
+  useOutsideClick(ref, () => {
+    setActive(false);
   });
 
   const handleClearSelection = () => {
     searchParams.delete(name);
     history.push(`?${searchParams.toString()}`);
-    setActive(false);
+    setTimeout(() => {
+      // Let the user see selection disappear before closing the dropdown
+      setActive(false);
+    }, 50);
+  };
+
+  // Update label depending on the selection
+  const handleFilter = ({ label, type }: FilterConfig) => {
+    switch (type) {
+      case FilterType.MultiSelect:
+        const selected = parseSelected(searchParams, name);
+        setLabel((selected[0] || label) + (selected.length > 1 ? `+${selected.length - 1}` : ''));
+        break;
+
+      case FilterType.Range:
+        const [min, max] = parseSelected(searchParams, name);
+
+        if (min && max) {
+          setLabel(`${min}-${max}`);
+        } else if (min && !max) {
+          setLabel(`${min} <`);
+        } else if (!min && max) {
+          setLabel(`< ${max}`);
+        } else {
+          setLabel(label);
+        }
+        break;
+
+      default:
+        setLabel(searchParams.get(name) || label);
+    }
   };
 
   const className = `${styles.container} ${active ? styles.active : ''} ${
     !active && hasSelections ? styles.underline : ''
   }`;
 
-  const dynamicLabel =
-    (searchParams.get(name) || label) +
-    (searchParams.getAll(name).length > 1 ? `+${searchParams.getAll(name).length}` : '');
-
   return (
     <div className={className} ref={ref}>
       <Label onClick={() => setActive(!active)}>
         <IconByName name={name} className={styles.icon} />
-        <div className={styles.title}>{dynamicLabel}</div>
+        <div className={styles.title}>{label}</div>
         <div className={styles.arrow} />
       </Label>
       <div className={styles.content}>
-        <QueryList name={name} items={items} />
+        <QueryFilter name={name} onFilter={handleFilter} isWrapped />
       </div>
       <div className={styles.footer}>
         <button onClick={handleClearSelection} disabled={!hasSelections} className={styles.clearButton}>
