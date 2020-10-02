@@ -24,13 +24,13 @@ b {
 .size {
   color: rgb(26, 26, 26);
   font-size: 16px;
-  font-family: HelsinkiGrotesk-Bold;
+  font-family: var(--font-default);
   line-height: 29px;
 }
 
 .price {
   color: rgb(26, 26, 26);
-  font-family: HelsinkiGrotesk-Bold;
+  font-family: var(--font-default);
   line-height: 29px;
 }
 
@@ -45,7 +45,7 @@ b {
 .applicants {
   color: rgb(29, 29, 29);
   font-size: 14px;
-  font-family: HelsinkiGrotesk-Regular;
+  font-family: var(--font-default);
   font-weight: normal;
   text-align: right;
   line-height: 26px;
@@ -54,7 +54,7 @@ b {
 .apartmentDetails {
   color: rgb(29, 29, 29);
   font-size: 14px;
-  font-family: HelsinkiGrotesk-Regular;
+  font-family: var(--font-default);
   font-weight: normal;
   line-height: 24.5px;
 }
@@ -72,7 +72,7 @@ b {
   border-radius: 0px;
   color: rgb(0, 0, 191);
   font-size: 16px;
-  font-family: HelsinkiGrotesk-Medium;
+  font-family: var(--font-default);
   font-weight: 500;
   text-align: center;
   line-height: 24px;
@@ -90,7 +90,7 @@ b {
   border-radius: 0px;
   color: rgb(255, 255, 255);
   font-size: 16px;
-  font-family: HelsinkiGrotesk-Medium;
+  font-family: var(--font-default);
   font-weight: 500;
   text-align: center;
   line-height: 24px;

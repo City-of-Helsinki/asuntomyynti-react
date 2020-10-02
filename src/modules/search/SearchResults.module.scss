@@ -13,7 +13,7 @@
 .titleContainer h1 {
   color: rgb(26, 26, 26);
   font-size: 36px;
-  font-family: HelsinkiGrotesk-Bold;
+  font-family: var(--font-default);
   font-weight: bold;
   line-height: 43px;
 }
@@ -21,7 +21,7 @@
 .resultsCount {
   color: rgb(26, 26, 26);
   font-size: 16px;
-  font-family: HelsinkiGrotesk-Regular;
+  font-family: var(--font-default);
   font-weight: normal;
   line-height: 24px;
 }
