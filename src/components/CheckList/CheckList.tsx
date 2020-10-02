@@ -14,8 +14,8 @@ type Props = {
 const CheckList = ({ items, selected, onChange, label }: Props) => {
   const handleChange = (item: string) => () => {
     if (selected.includes(item)) {
-      selected.splice(selected.indexOf(item), 1);
-      onChange([...selected]);
+      const filteredSelection = selected.filter((x) => x !== item);
+      onChange(filteredSelection);
     } else {
       onChange([...selected, item]);
     }
