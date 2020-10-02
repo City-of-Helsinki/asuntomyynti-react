@@ -3,7 +3,7 @@
   padding: 30px 0;
   display: flex;
   text-align: left;
-  border-bottom: 1px solid #cccccc;
+  border-bottom: 1px solid var(--color-black-20);
 }
 
 .container:last-of-type {
@@ -12,7 +12,7 @@
 
 .cell {
   display: flex;
-  color: #1a1a1a;
+  color: var(--color-black-90);
   font-size: 18px;
   font-family: HelsinkiGrotesk-Regular;
   font-weight: normal;
@@ -32,8 +32,8 @@
   all: unset;
   padding: 0 15px;
   height: 36px;
-  border: 2px solid #0000bf;
-  color: #0000bf;
+  border: 2px solid var(--color-bus);
+  color: var(--color-bus);
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
@@ -47,7 +47,7 @@
 
 .getToKnowButton {
   all: unset;
-  color: #0000bf;
+  color: var(--color-bus);
   padding: 0 25px;
   height: 36px;
   font-size: 16px;
@@ -60,5 +60,5 @@
 
 .getToKnowButton:hover {
   cursor: pointer;
-  background-color: #f2f2fc;
+  background-color: var(--color-bus-light-5);
 }

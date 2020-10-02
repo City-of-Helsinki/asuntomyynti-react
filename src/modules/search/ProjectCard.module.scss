@@ -63,7 +63,7 @@
   font-family: HelsinkiGrotesk-Regular;
   font-weight: normal;
   line-height: 26px;
-  background-color: #f5da4e;
+  background-color: var(--color-engel-dark-50);
 }
 
 .controls {
@@ -78,8 +78,8 @@
   all: unset;
   width: 188px;
   height: 36px;
-  border: 2px solid #0000bf;
-  color: #0000bf;
+  border: 2px solid var(--color-bus);
+  color: var(--color-bus);
 }
 
 .detailsButton:hover {
@@ -88,7 +88,7 @@
 
 .apartmentListButton {
   all: unset;
-  color: #0000bf;
+  color: var(--color-bus);
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
@@ -109,7 +109,7 @@
 .apartmentListHeaders {
   display: flex;
   text-align: left;
-  border-bottom: 1px solid #cccccc;
+  border-bottom: 1px solid var(--color-black-20);
 }
 
 .headerCell {

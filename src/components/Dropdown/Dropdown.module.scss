@@ -18,14 +18,14 @@
 }
 
 .container label:hover {
-  background: #e5e5e5;
+  background: var(--color-black-10);
 }
 
 .content {
   display: none;
   flex-direction: column;
-  border-top: solid 1px #cccccc;
-  border-bottom: solid 1px #cccccc;
+  border-top: solid 1px var(--color-black-20);
+  border-bottom: solid 1px var(--color-black-20);
   max-height: 225px;
   overflow-y: scroll;
   height: 100%;
@@ -48,7 +48,7 @@
 }
 
 .underline {
-  border-bottom: solid 3px #0000bf;
+  border-bottom: solid 3px var(--color-bus);
 }
 
 .title {
