@@ -12,14 +12,40 @@ const SearchContainer = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const data = await axios.get('http://dev.asuntomyynti-elastic.druidfi.wod.by/_search');
-        setSearchResults(data?.data?.hits?.hits.map((x: any) => x._source) || []);
+        const data = await axios.post('http://dev.asuntomyynti-elastic.druidfi.wod.by/_search', {
+          collapse: {
+            field: 'project_id',
+            "inner_hits": {
+              "size": 666,
+              name: "project_id"
+            },
+          },
+        });
+        setSearchResults(data?.data?.hits?.hits.map(mapSearchResults) || []);
       } catch (e) {
         // TODO
       }
     };
     fetchProjects();
   }, []);
+
+  const mapSearchResults = (result: any) => {
+    const hits = result.inner_hits.project_id.hits.hits;
+    const firstHit = hits[0]._source;
+
+    const project: any = {};
+
+    // Maps the Project entity
+    Object.keys(firstHit).forEach((x: string) => {
+      if (x.includes('project_')) {
+        const key = x.split('project_')[1];
+        project[key] = firstHit[x];
+      }
+    });
+
+    project.apartments = hits.map((x: any) => x._source);
+    return project;
+  }
 
   return (
     <div>

@@ -13,7 +13,8 @@ const ProjectCard = ({ project }: { project: Project }) => {
   };
 
   const {
-    apartment_address,
+    apartments,
+    street_address,
     district,
     estimated_completion,
     estimated_completion_date,
@@ -26,14 +27,14 @@ const ProjectCard = ({ project }: { project: Project }) => {
     <div className={css.container}>
       <div className={css.content}>
         <div className={css.imageContainer}>
-          <img src={main_image_url || 'http://placekitten.com/600/400'} alt={'The project' /*TODO: Localize this*/} />
+          <img src={main_image_url} alt={"The project" /*TODO: Localize this*/} />
         </div>
         <div className={css.info}>
           <div className={css.details}>
             <div className={css.titles}>
               <h2 style={{ marginBottom: 5 }}>{housing_company}</h2>
               <div style={{ marginBottom: 5 }}>
-                <b>{district},</b> {apartment_address}
+                <b>{district},</b> {street_address}
               </div>
               <span className={css.label}>Hitas</span>
             </div>
@@ -51,7 +52,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
           <div className={css.controls}>
             <button className={css.detailsButton}>Tutustu kohteeseen</button>
             <button className={css.apartmentListButton} onClick={toggleList}>
-              78 huoneistoa haettavana{' '}
+              {apartments.length} huoneistoa haettavana{' '}
               {listOpen ? (
                 <IconArrowDown role="presentation" style={{ marginLeft: 10 }} />
               ) : (
@@ -82,7 +83,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
               </div>
               <div className={css.headerCell} style={{ flex: 3 }}></div>
             </div>
-            <ApartmentRow />
+            {apartments.map(x => <ApartmentRow key={x.uuid} apartment={x} />)}
           </div>
           <div className={css.pagination}></div>
         </div>

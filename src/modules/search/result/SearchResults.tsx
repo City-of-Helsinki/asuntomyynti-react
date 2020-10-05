@@ -19,7 +19,7 @@ const SearchResults = ({ searchResults }: Props) => {
       </div>
       <div className={css.resultWrapper}>
         {searchResults.map((x) => (
-          <ProjectCard project={x} />
+          <ProjectCard key={x.id} project={x} />
         ))}
       </div>
     </div>

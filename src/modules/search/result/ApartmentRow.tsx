@@ -1,28 +1,40 @@
 import React from 'react';
 import css from './ApartmentRow.module.scss';
+import {Apartment} from "../../../types/common";
 
-const ApartmentRow = () => {
+const ApartmentRow = ({apartment}: {apartment: Apartment}) => {
+  const {
+    apartment_number,
+    apartment_structure,
+    application_url,
+    floor,
+    living_area,
+    sales_price
+  } = apartment;
+
   return (
     <div className={css.container}>
       <div className={css.cell} style={{ flex: 2 }}>
-        <strong>A75</strong>
-        <div>4h, kt, s </div>
+        <strong>{apartment_number}</strong>
+        <div>{apartment_structure}</div>
       </div>
       <div className={css.cell} style={{ flex: 1 }}>
-        7 / 7
+        {floor}
       </div>
       <div className={css.cell} style={{ flex: 1 }}>
-        85,0 m²
+        {living_area} m²
       </div>
       <div className={css.cell} style={{ flex: 1 }}>
-        378 128 €
+        {sales_price / 100} €
       </div>
       <div className={css.cell} style={{ flex: 1 }}>
         Ei hakijoita
       </div>
       <div className={css.cell} style={{ flex: 3 }}>
         <button className={css.getToKnowButton}>Tutustu</button>
-        <button className={css.createApplicationButton}>Luo hakemus</button>
+        <a href={application_url || ""}>
+          <button className={css.createApplicationButton}>Luo hakemus</button>
+        </a>
       </div>
     </div>
   );
