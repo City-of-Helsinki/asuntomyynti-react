@@ -31,7 +31,7 @@
       {
         "label": "Hinta korkeintaan",
         "placeholder": "€",
-        "info": "tuhatta euroa"
+        "helperText": "tuhatta euroa"
       }
     ],
     "label": "Hinta"
