@@ -20,6 +20,9 @@ const SearchForm = () => {
             <Dropdown name="param3" />
           </div>
           <div className={styles.column}>
+            <Dropdown name="param4" />
+          </div>
+          <div className={styles.column}>
             <Button>Submit</Button>
           </div>
         </div>

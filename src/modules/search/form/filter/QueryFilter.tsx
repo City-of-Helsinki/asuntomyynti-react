@@ -6,6 +6,7 @@ import RangeInput from './RangeInput';
 import CheckList from './CheckList';
 import { TextInput } from 'hds-react';
 import { parseQueryParam } from '../../../../utils/helpers';
+import styles from './QueryFilter.module.scss';
 
 type Props = {
   name: string;
@@ -69,7 +70,14 @@ const QueryFilter = ({ name, onFilter, isWrapped = false }: Props) => {
         updateQueryParam(event.target.value || '');
       };
       return (
-        <TextInput id={`${name}-${label}`} label={label} value={searchParams.get(name) || ''} onChange={handleChange} />
+        <TextInput
+          id={`${name}-${label}`}
+          label={label}
+          value={searchParams.get(name) || ''}
+          onChange={handleChange}
+          className={`${isWrapped ? styles.padding : ''}`}
+          {...items[0]}
+        />
       );
 
     default:
