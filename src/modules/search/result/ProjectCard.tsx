@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import css from './ProjectCard.module.scss';
 import ApartmentRow from './ApartmentRow';
 import { IconArrowDown, IconArrowUp, IconCogwheel, IconClock } from 'hds-react';
-import { Project } from '../../types/common';
+import { Project } from '../../../types/common';
 
 const ProjectCard = ({ project }: { project: Project }) => {
   const [listOpen, setListOpen] = useState(false);
@@ -26,13 +26,15 @@ const ProjectCard = ({ project }: { project: Project }) => {
     <div className={css.container}>
       <div className={css.content}>
         <div className={css.imageContainer}>
-          <img src={main_image_url || 'http://placekitten.com/600/400'} alt={"The project" /*TODO: Localize this*/} />
+          <img src={main_image_url || 'http://placekitten.com/600/400'} alt={'The project' /*TODO: Localize this*/} />
         </div>
         <div className={css.info}>
           <div className={css.details}>
             <div className={css.titles}>
               <h2 style={{ marginBottom: 5 }}>{housing_company}</h2>
-              <div style={{ marginBottom: 5 }}><b>{district},</b> {apartment_address}</div>
+              <div style={{ marginBottom: 5 }}>
+                <b>{district},</b> {apartment_address}
+              </div>
               <span className={css.label}>Hitas</span>
             </div>
             <div className={css.deadlines}>

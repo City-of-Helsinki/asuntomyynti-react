@@ -12,15 +12,6 @@
   z-index: 1000;
 }
 
-.container label {
-  padding: 10px;
-  min-height: 50px;
-}
-
-.container label:hover {
-  background: var(--color-black-10);
-}
-
 .content {
   display: none;
   flex-direction: column;
@@ -96,4 +87,21 @@
 
 .clearButton:disabled {
   color: rgb(153, 152, 152);
+}
+
+.label {
+  white-space: nowrap;
+  display: flex;
+  flex-direction: row;
+  color: rgb(26, 26, 26);
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  align-items: center;
+  min-height: 52px;
+  user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  padding: 10px;
 }

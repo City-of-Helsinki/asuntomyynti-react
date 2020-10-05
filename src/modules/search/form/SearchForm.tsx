@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './SearchForm.module.scss';
-import Dropdown from '../Dropdown';
 import { Button } from 'hds-react';
-import QueryFilter from '../QueryFilter';
+import QueryFilter from './filter/QueryFilter';
+import Dropdown from './filter/Dropdown';
 
 const SearchForm = () => {
   return (

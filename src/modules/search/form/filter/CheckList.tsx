@@ -1,7 +1,6 @@
 import React from 'react';
-import Label from '../Label';
-import Checkbox from '../Checkbox';
 import styles from './CheckList.module.scss';
+import { Checkbox } from 'hds-react';
 
 type Props = {
   name: string;
@@ -9,9 +8,10 @@ type Props = {
   items: string[];
   selected: string[];
   label?: string;
+  isWrapped?: boolean;
 };
 
-const CheckList = ({ items, selected, onChange, label }: Props) => {
+const CheckList = ({ items, selected, onChange, label, isWrapped }: Props) => {
   const handleChange = (item: string) => () => {
     if (selected.includes(item)) {
       const filteredSelection = selected.filter((x) => x !== item);
@@ -22,14 +22,18 @@ const CheckList = ({ items, selected, onChange, label }: Props) => {
   };
 
   return (
-    <div className={styles.container}>
-      {label && <div className={styles.header}>{label}</div>}
+    <div className={isWrapped ? styles.isWrapped : ''}>
+      {!isWrapped && label && <div className={styles.header}>{label}</div>}
       {items.map((item, index) => {
         return (
-          <Label key={`${item}-${index}`}>
-            <Checkbox value={item} onChange={handleChange(item)} checked={selected.includes(item)} />
-            <div>{item}</div>
-          </Label>
+          <div key={`${item}-${index}`} className={styles.item}>
+            <Checkbox
+              id={`${label}-${item}-${index}`}
+              onChange={handleChange(item)}
+              label={item}
+              checked={selected.includes(item)}
+            />
+          </div>
         );
       })}
     </div>

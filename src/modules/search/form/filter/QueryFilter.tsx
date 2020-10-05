@@ -1,11 +1,11 @@
 import { useHistory } from 'react-router-dom';
 import React, { useCallback, useEffect } from 'react';
-import useQuery from '../../hooks/useQuery';
-import useFilter, { FilterItem, FilterType, FilterConfig } from '../../hooks/useFilter';
-import RangeField from '../RangeField';
-import CheckList from '../CheckList';
-import InputField from '../InputField';
-import { parseSelected } from '../../helpers';
+import useFilter, { FilterItem, FilterType, FilterConfig } from './useFilter';
+import useQuery from '../../../../hooks/useQuery';
+import RangeInput from './RangeInput';
+import CheckList from './CheckList';
+import { TextInput } from 'hds-react';
+import { parseQueryParam } from '../../../../utils/helpers';
 
 type Props = {
   name: string;
@@ -44,10 +44,11 @@ const QueryFilter = ({ name, onFilter, isWrapped = false }: Props) => {
 
   switch (type) {
     case FilterType.MultiSelect:
-      const selected = parseSelected(searchParams, name);
+      const selected = parseQueryParam(searchParams, name);
       return (
         <CheckList
-          label={isWrapped ? undefined : label} // Omit label when wrapped
+          label={label}
+          isWrapped={isWrapped}
           items={items as string[]}
           selected={selected}
           name={name}
@@ -56,15 +57,20 @@ const QueryFilter = ({ name, onFilter, isWrapped = false }: Props) => {
       );
 
     case FilterType.Range:
-      // Casting the types here to please the TypeScript gods
       const [from, to] = items;
-      const values = parseSelected(searchParams, name);
+      const [min = '', max = ''] = parseQueryParam(searchParams, name);
+      // Casting the types here to please the TypeScript gods
       return (
-        <RangeField onChange={updateQueryParams} values={values} from={from as FilterItem} to={to as FilterItem} />
+        <RangeInput onChange={updateQueryParams} values={[min, max]} from={from as FilterItem} to={to as FilterItem} />
       );
 
     case FilterType.Input:
-      return <InputField label={label} value={searchParams.get(name) || ''} onChange={updateQueryParam} />;
+      const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        updateQueryParam(event.target.value || '');
+      };
+      return (
+        <TextInput id={`${name}-${label}`} label={label} value={searchParams.get(name) || ''} onChange={handleChange} />
+      );
 
     default:
       return null;

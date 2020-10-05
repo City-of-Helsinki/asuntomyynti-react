@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconHome, IconLocation, IconProps } from 'hds-react';
-import useFilter from '../../hooks/useFilter';
+import useFilter from './useFilter';
 
 type Props = {
   name: string;
