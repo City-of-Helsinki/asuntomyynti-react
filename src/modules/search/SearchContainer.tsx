@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import css from './SearchContainer.module.scss';
-import SearchResults from './SearchResults';
-import SearchForm from '../../components/SearchForm';
-import Notification from '../../components/Notification/Notification';
-import useLang from "../../hooks/useLang";
+import SearchResults from './result/SearchResults';
+import SearchForm from './form/SearchForm';
+import Notification from '../../common/notification/Notification';
+import useLang from '../../hooks/useLang';
 
 const SearchContainer = () => {
   const [searchResults, setSearchResults] = useState([]);
@@ -23,7 +22,7 @@ const SearchContainer = () => {
   }, []);
 
   return (
-    <div className={css.App}>
+    <div>
       <SearchForm />
       <Notification
         message={

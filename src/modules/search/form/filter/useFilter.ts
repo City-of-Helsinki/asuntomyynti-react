@@ -17,7 +17,7 @@ export enum FilterType {
 
 export type FilterConfig = {
   items: (string | FilterItem)[];
-  type: FilterType;
+  type?: FilterType;
   label: string;
   icon?: string;
 };
@@ -25,7 +25,6 @@ export type FilterConfig = {
 const defaultConfig: FilterConfig = {
   items: [],
   label: '',
-  type: FilterType.Input,
 };
 
 const fetchMockConfig = (name: string): Promise<FilterConfig> =>

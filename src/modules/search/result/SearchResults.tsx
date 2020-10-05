@@ -1,15 +1,15 @@
 import React from 'react';
 import css from './SearchResults.module.scss';
 import ProjectCard from './ProjectCard';
-import { Project } from '../../types/common';
-import {useTranslation} from "react-i18next";
+import { Project } from '../../../types/common';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   searchResults: Project[];
 };
 
 const SearchResults = ({ searchResults }: Props) => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <div className={css.container}>

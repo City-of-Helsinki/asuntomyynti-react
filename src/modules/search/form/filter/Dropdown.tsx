@@ -1,13 +1,12 @@
 import React, { useRef, useState } from 'react';
 import styles from './Dropdown.module.scss';
-import Label from '../Label';
-import useQuery from '../../hooks/useQuery';
 import { useHistory } from 'react-router-dom';
-import IconByName from '../IconByName';
-import QueryFilter from '../QueryFilter';
-import { parseSelected } from '../../helpers';
-import { FilterConfig, FilterType } from '../../hooks/useFilter';
-import useOutsideClick from '../../hooks/useOutsideClick';
+import IconByName from './IconByName';
+import { FilterConfig, FilterType } from './useFilter';
+import useOutsideClick from '../../../../hooks/useOutsideClick';
+import useQuery from '../../../../hooks/useQuery';
+import { parseQueryParam } from '../../../../utils/helpers';
+import QueryFilter from './QueryFilter';
 
 type Props = {
   name: string;
@@ -40,12 +39,12 @@ const Dropdown = ({ name }: Props) => {
   const handleFilter = ({ label, type }: FilterConfig) => {
     switch (type) {
       case FilterType.MultiSelect:
-        const selected = parseSelected(searchParams, name);
+        const selected = parseQueryParam(searchParams, name);
         setLabel((selected[0] || label) + (selected.length > 1 ? `+${selected.length - 1}` : ''));
         break;
 
       case FilterType.Range:
-        const [min, max] = parseSelected(searchParams, name);
+        const [min, max] = parseQueryParam(searchParams, name);
 
         if (min && max) {
           setLabel(`${min}-${max}`);
@@ -69,11 +68,11 @@ const Dropdown = ({ name }: Props) => {
 
   return (
     <div className={className} ref={ref}>
-      <Label onClick={() => setActive(!active)}>
+      <label className={styles.label} onClick={() => setActive(!active)}>
         <IconByName name={name} className={styles.icon} />
         <div className={styles.title}>{label}</div>
         <div className={styles.arrow} />
-      </Label>
+      </label>
       <div className={styles.content}>
         <QueryFilter name={name} onFilter={handleFilter} isWrapped />
       </div>
