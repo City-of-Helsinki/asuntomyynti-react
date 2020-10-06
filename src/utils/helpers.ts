@@ -9,7 +9,7 @@ export const getValueFromParams = (searchParams: URLSearchParams, name: string, 
   return defaultValue;
 };
 
-export const searchParamsToQuery = (filterConfig: FilterConfig, searchParams: URLSearchParams) => {
+export const buildQuery = (filterConfig: FilterConfig, searchParams: URLSearchParams) => {
   const filters = Object.keys(filterConfig).reduce((filters: QueryParams[], key) => {
     const hasValues = !!searchParams.get(key);
     const values = getValueFromParams(searchParams, key);

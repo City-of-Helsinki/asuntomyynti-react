@@ -5,7 +5,7 @@ import SearchForm from './form/SearchForm';
 import Notification from '../../common/notification/Notification';
 import useLang from '../../hooks/useLang';
 import useQuery from '../../hooks/useQuery';
-import { searchParamsToQuery } from '../../utils/helpers';
+import { buildQuery } from '../../utils/helpers';
 import useFilters from './form/filter/useFilters';
 
 const SearchContainer = () => {
@@ -66,7 +66,7 @@ const SearchContainer = () => {
 
   // Generate query based on the search params
   const updateQuery = () => {
-    const query = searchParamsToQuery(filterConfig, searchParams);
+    const query = buildQuery(filterConfig, searchParams);
     setQuery(query);
   };
 
