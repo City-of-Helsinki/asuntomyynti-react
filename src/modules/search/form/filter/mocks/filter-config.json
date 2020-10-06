@@ -1,39 +1,25 @@
 {
   "project_district": {
-    "type": "multiselect",
-    "icon": "location",
     "items": ["Alppiranta", "Arabianranta", "Aurinkolahti", "Etelä-Haaga", "Fallpakka", "Haaga"],
-    "label": "Alue",
-    "query_type": "set_of_strings"
+    "label": "Alue"
   },
   "room_count": {
-    "type": "multiselect",
-    "icon": "home",
     "items": ["1 h", "2 h", "3 h", "4 h", "5+ h"],
-    "label": "Huoneita",
-    "query_type": "set_of_numbers"
+    "label": "Huoneita"
   },
   "living_area": {
-    "query_type": "range",
-    "type": "range",
     "items": ["Vähintään", "Enintään"],
     "label": "Pinta-ala, m2"
   },
   "sales_price": {
-    "query_type": "range",
-    "type": "range",
     "items": ["Hinta korkeintaan"],
     "label": "Hinta"
   },
   "project_building_type": {
-    "query_type": "set_of_strings",
-    "type": "multiselect",
     "items": ["Kerrostalo", "Rivitalo", "Pientalo"],
     "label": "Talotyyppi"
   },
   "properties": {
-    "query_type": "set_of_strings",
-    "type": "multiselect",
     "items": [
       "project_has_elevator",
       "project_has_sauna",
@@ -45,8 +31,6 @@
     "label": "Lisävalinnat"
   },
   "state_of_sale": {
-    "query_type": "set_of_strings",
-    "type": "multiselect",
     "items": ["Nyt haettavana", "Vapaat asunnot", "Tulossa haettavaksi"],
     "label": "Myynnin tila"
   }
