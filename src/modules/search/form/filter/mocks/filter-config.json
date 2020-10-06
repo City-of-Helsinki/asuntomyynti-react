@@ -13,44 +13,36 @@
     "label": "Huoneita",
     "query_type": "set_of_numbers"
   },
-  "size_range": {
+  "living_area": {
     "query_type": "range",
     "type": "range",
-    "items": [
-      {
-        "label": "Vähintään",
-        "placeholder": "m2"
-      },
-      {
-        "label": "Enintään",
-        "placeholder": "m2"
-      }
-    ],
+    "items": ["Vähintään", "Enintään"],
     "label": "Pinta-ala, m2"
   },
-  "price": {
-    "query_type": "less_than",
-    "type": "input",
-    "items": [
-      {
-        "label": "Hinta korkeintaan",
-        "placeholder": "€",
-        "helperText": "tuhatta euroa"
-      }
-    ],
+  "sales_price": {
+    "query_type": "range",
+    "type": "range",
+    "items": ["Hinta korkeintaan"],
     "label": "Hinta"
   },
-  "housing_type": {
+  "project_building_type": {
     "query_type": "set_of_strings",
     "type": "multiselect",
-    "items": ["Kerrostalo", "Rivitalo/ pientalo"],
+    "items": ["Kerrostalo", "Rivital", "Pientalo"],
     "label": "Talotyyppi"
   },
-  "apartment_properties": {
+  "properties": {
     "query_type": "set_of_strings",
     "type": "multiselect",
-    "items": ["Piha", "Sauna", "Parveke", "Terassi"],
-    "label": "Talotyyppi"
+    "items": [
+      "project_has_elevator",
+      "project_has_sauna",
+      "has_terrace",
+      "has_balcony",
+      "has_yard",
+      "has_apartment_sauna"
+    ],
+    "label": "Lisävalinnat"
   },
   "state_of_sale": {
     "query_type": "set_of_strings",

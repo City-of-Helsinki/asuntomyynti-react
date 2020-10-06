@@ -234,7 +234,7 @@ export type QueryParams = {
     [key: string]: (number | string)[];
   };
   term?: {
-    [key: string]: number | string;
+    [key: string]: number | string | boolean;
   };
   range?: {
     [key: string]: {
@@ -251,29 +251,34 @@ export type FilterItem = {
   max?: number;
   min?: number;
   info?: string;
+  helperText?: string;
 };
 
 export enum FilterType {
-  MultiSelect = 'multiselect',
-  Input = 'input',
-  Range = 'range',
+  MultiSelect,
+  Input,
+  Range,
 }
 
-export enum QueryType {
-  SetOfNumbers = 'set_of_numbers',
-  SetOfStrings = 'set_of_strings',
-  Range = 'range',
-  LessThan = 'less_than',
-}
-
-export type FilterRule = {
-  items: (string | FilterItem)[];
-  type?: FilterType;
-  label: string;
+export type FilterMap = {
+  type: FilterType;
   icon?: string;
-  query_type: QueryType;
+  items?: (FilterItem | string)[];
+  label?: string;
+  getQuery: (values: string[]) => QueryParams[];
 };
 
 export type FilterConfig = {
   [key: string]: FilterRule;
 };
+
+export type RawFilterRule = {
+  label: string;
+  items: string[];
+};
+
+export type RawFilterConfig = {
+  [key: string]: RawFilterRule;
+};
+
+export type FilterRule = RawFilterRule & FilterMap;
