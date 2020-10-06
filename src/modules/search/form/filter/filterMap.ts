@@ -88,14 +88,6 @@ const filterMap: { [key: string]: FilterMap } = {
   },
   properties: {
     type: FilterType.MultiSelect,
-    items: [
-      'project_has_elevator',
-      'project_has_sauna',
-      'has_terrace',
-      'has_balcony',
-      'has_yard',
-      'has_apartment_sauna',
-    ],
     getQuery: (values: string[]) => values.map((value) => ({ term: { [value]: true } })),
   },
   state_of_sale: {
