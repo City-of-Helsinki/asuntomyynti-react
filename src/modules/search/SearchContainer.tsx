@@ -15,9 +15,9 @@ const SearchContainer = () => {
         const data = await axios.post('http://dev.asuntomyynti-elastic.druidfi.wod.by/_search', {
           collapse: {
             field: 'project_id',
-            "inner_hits": {
-              "size": 666,
-              name: "project_id"
+            inner_hits: {
+              size: 666,
+              name: 'project_id',
             },
           },
         });
@@ -45,7 +45,7 @@ const SearchContainer = () => {
 
     project.apartments = hits.map((x: any) => x._source);
     return project;
-  }
+  };
 
   return (
     <div>

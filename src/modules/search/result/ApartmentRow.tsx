@@ -1,16 +1,12 @@
 import React from 'react';
 import css from './ApartmentRow.module.scss';
-import {Apartment} from "../../../types/common";
+import { Apartment } from '../../../types/common';
+import { useTranslation } from 'react-i18next';
 
-const ApartmentRow = ({apartment}: {apartment: Apartment}) => {
-  const {
-    apartment_number,
-    apartment_structure,
-    application_url,
-    floor,
-    living_area,
-    sales_price
-  } = apartment;
+const ApartmentRow = ({ apartment }: { apartment: Apartment }) => {
+  const { t } = useTranslation();
+
+  const { apartment_number, apartment_structure, application_url, floor, living_area, sales_price } = apartment;
 
   return (
     <div className={css.container}>
@@ -31,9 +27,9 @@ const ApartmentRow = ({apartment}: {apartment: Apartment}) => {
         Ei hakijoita
       </div>
       <div className={css.cell} style={{ flex: 3 }}>
-        <button className={css.getToKnowButton}>Tutustu</button>
-        <a href={application_url || ""}>
-          <button className={css.createApplicationButton}>Luo hakemus</button>
+        <button className={css.getToKnowButton}>{t('SEARCH:info')}</button>
+        <a href={application_url || ''}>
+          <button className={css.createApplicationButton}>{t('SEARCH:apply')}</button>
         </a>
       </div>
     </div>

@@ -4,8 +4,10 @@ import css from './ProjectCard.module.scss';
 import ApartmentRow from './ApartmentRow';
 import { IconArrowDown, IconArrowUp, IconCogwheel, IconClock } from 'hds-react';
 import { Project } from '../../../types/common';
+import {useTranslation} from "react-i18next";
 
 const ProjectCard = ({ project }: { project: Project }) => {
+  const { t } = useTranslation();
   const [listOpen, setListOpen] = useState(false);
 
   const toggleList = () => {
@@ -27,7 +29,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
     <div className={css.container}>
       <div className={css.content}>
         <div className={css.imageContainer}>
-          <img src={main_image_url} alt={"The project" /*TODO: Localize this*/} />
+          <img src={main_image_url} alt={housing_company + ' ' + t('SEARCH:project')} />
         </div>
         <div className={css.info}>
           <div className={css.details}>
@@ -45,14 +47,14 @@ const ProjectCard = ({ project }: { project: Project }) => {
               </div>
               <div className={css.applicationTime}>
                 <IconClock style={{ marginRight: 10 }} role="presentation" />
-                Haku avoinna {format(new Date(publication_end_time), "dd.MM.yyyy 'klo' hh.mm")} asti
+                {t('SEARCH:application-open')} {format(new Date(publication_end_time), "dd.MM.yyyy 'klo' hh.mm")} {t('SEARCH:until')}
               </div>
             </div>
           </div>
           <div className={css.controls}>
-            <button className={css.detailsButton}>Tutustu kohteeseen</button>
+            <button className={css.detailsButton}>{t('SEARCH:learn-more')}</button>
             <button className={css.apartmentListButton} onClick={toggleList}>
-              {apartments.length} huoneistoa haettavana{' '}
+              {apartments.length} {t('SEARCH:apartments-available')}{' '}
               {listOpen ? (
                 <IconArrowDown role="presentation" style={{ marginLeft: 10 }} />
               ) : (
@@ -67,19 +69,19 @@ const ProjectCard = ({ project }: { project: Project }) => {
           <div className={css.apartmentListTable}>
             <div className={css.apartmentListHeaders}>
               <div className={css.headerCell} style={{ flex: 2 }}>
-                Huoneisto
+                {t('SEARCH:apartment')}
               </div>
               <div className={css.headerCell} style={{ flex: 1 }}>
-                Kerros
+                {t('SEARCH:floor')}
               </div>
               <div className={css.headerCell} style={{ flex: 1 }}>
-                Pinta-ala
+                {t('SEARCH:area')}
               </div>
               <div className={css.headerCell} style={{ flex: 1 }}>
-                Velaton hinta
+                {t('SEARCH:free-of-debt-price')}
               </div>
               <div className={css.headerCell} style={{ flex: 1 }}>
-                Hakijatilanne
+                {t('SEARCH:applications')}
               </div>
               <div className={css.headerCell} style={{ flex: 3 }}></div>
             </div>

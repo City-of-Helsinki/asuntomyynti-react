@@ -1,11 +1,40 @@
 {
   "en": {
     "SEARCH": {
-      "Welcome to React": "Welcome to React and react-i18next"
+      "apartment": "Apartment",
+      "apartments": "apartments",
+      "apartments-available": "Apartments available",
+      "application-open": "Application open",
+      "applications": "Applications",
+      "apply": "Apply",
+      "area": "Area",
+      "floor": "Floor",
+      "free-apartments": "Free apartments",
+      "free-of-debt-price": "Free of debt price",
+      "info": "Info",
+      "learn-more": "Learn more",
+      "project": "project",
+      "total": "Total",
+      "until": "until"
     }
-  },"fi": {
-  "SEARCH": {
-    "Welcome to React": "Terveppä terve"
+  },
+  "fi": {
+    "SEARCH": {
+      "apartment": "Huoneisto",
+      "apartments": "asuntoa",
+      "apartments-available": "Huoneistoa vapaana",
+      "application-open": "Haku avoinna",
+      "applications": "Hakijatilanne",
+      "apply": "Luo hakemus",
+      "area": "Pinta-ala",
+      "floor": "Kerros",
+      "free-apartments": "Vapaat asunnot",
+      "free-of-debt-price": "Velaton hinta",
+      "info": "Tutustu",
+      "learn-more": "Tutustu kohteeseen",
+      "project": "kohde",
+      "total": "Yhteensä",
+      "until": "asti"
+    }
   }
-}
 }

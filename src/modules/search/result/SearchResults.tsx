@@ -14,8 +14,8 @@ const SearchResults = ({ searchResults }: Props) => {
   return (
     <div className={css.container}>
       <div className={css.titleContainer}>
-        <h1>Vapaat asunnot</h1>
-        <div className={css.resultsCount}>Yhteensä {searchResults.length} huoneistoa</div>
+        <h1>{t('SEARCH:free-apartments')}</h1>
+        <div className={css.resultsCount}>{t('SEARCH:total')} {searchResults.length} {t('SEARCH:apartments')}</div>
       </div>
       <div className={css.resultWrapper}>
         {searchResults.map((x) => (
