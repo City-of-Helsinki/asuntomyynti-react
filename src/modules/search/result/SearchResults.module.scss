@@ -30,3 +30,19 @@
   padding: 48px;
   background: #f2f2f2;
 }
+
+@media (max-width: 992px) {
+  .container {
+    padding: 0;
+  }
+}
+
+@media (max-width: 768px) {
+
+}
+
+@media (max-width: 576px) {
+  .resultWrapper {
+    padding: 32px 0;
+  }
+}

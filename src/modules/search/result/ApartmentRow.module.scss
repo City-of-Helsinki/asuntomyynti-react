@@ -16,49 +16,42 @@
   font-size: 18px;
   font-family: var(--font-default);
   font-weight: normal;
-  line-height: 27px;
-}
-
-.cell:last-of-type {
-  display: flex;
-  justify-content: flex-end;
+  line-height: 36px;
+  white-space: nowrap;
 }
 
 .cell strong {
   margin-right: 25px;
 }
 
-.createApplicationButton {
-  all: unset;
-  padding: 0 15px;
-  height: 36px;
-  border: 2px solid var(--color-bus);
-  color: var(--color-bus);
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 24px;
-  text-align: center;
-  margin-left: 40px;
+.buttons {
+  display: flex;
+  justify-content: flex-end;
 }
 
-.createApplicationButton:hover {
-  cursor: pointer;
+.createApplicationButton {
+  height: 36px;
+  white-space: nowrap;
 }
 
 .getToKnowButton {
-  all: unset;
-  color: var(--color-bus);
-  padding: 0 25px;
   height: 36px;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 24px;
-  text-align: center;
-  display: flex;
-  align-items: center;
 }
 
-.getToKnowButton:hover {
-  cursor: pointer;
-  background-color: var(--color-bus-light-5);
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .content {
+    margin-bottom: 30px;
+  }
+
+  .buttons {
+    justify-content: space-between;
+  }
+
+  .cell strong {
+    margin-right: 10px;
+  }
 }

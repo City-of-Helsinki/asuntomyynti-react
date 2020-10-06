@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { format } from 'date-fns';
 import css from './ProjectCard.module.scss';
 import ApartmentRow from './ApartmentRow';
-import { IconArrowDown, IconArrowUp, IconCogwheel, IconClock } from 'hds-react';
+import { IconArrowDown, IconArrowUp, IconCogwheel, IconClock, Button } from 'hds-react';
 import { Project } from '../../../types/common';
-import {useTranslation} from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
 const ProjectCard = ({ project }: { project: Project }) => {
   const { t } = useTranslation();
@@ -47,12 +47,13 @@ const ProjectCard = ({ project }: { project: Project }) => {
               </div>
               <div className={css.applicationTime}>
                 <IconClock style={{ marginRight: 10 }} role="presentation" />
-                {t('SEARCH:application-open')} {format(new Date(publication_end_time), "dd.MM.yyyy 'klo' hh.mm")} {t('SEARCH:until')}
+                {t('SEARCH:application-open')} {format(new Date(publication_end_time), "dd.MM.yyyy 'klo' hh.mm")}{' '}
+                {t('SEARCH:until')}
               </div>
             </div>
           </div>
           <div className={css.controls}>
-            <button className={css.detailsButton}>{t('SEARCH:learn-more')}</button>
+            <Button className={css.detailsButton} variant="secondary">{t('SEARCH:learn-more')}</Button>
             <button className={css.apartmentListButton} onClick={toggleList}>
               {apartments.length} {t('SEARCH:apartments-available')}{' '}
               {listOpen ? (
@@ -68,24 +69,28 @@ const ProjectCard = ({ project }: { project: Project }) => {
         <div className={css.apartmentList}>
           <div className={css.apartmentListTable}>
             <div className={css.apartmentListHeaders}>
-              <div className={css.headerCell} style={{ flex: 2 }}>
-                {t('SEARCH:apartment')}
+              <div style={{ flex: 5, display: 'flex' }}>
+                <div className={css.headerCell} style={{ flex: 2 }}>
+                  {t('SEARCH:apartment')}
+                </div>
+                <div className={css.headerCell} style={{ flex: 1 }}>
+                  {t('SEARCH:floor')}
+                </div>
+                <div className={css.headerCell} style={{ flex: 1 }}>
+                  {t('SEARCH:area')}
+                </div>
+                <div className={css.headerCell} style={{ flex: 1 }}>
+                  {t('SEARCH:free-of-debt-price')}
+                </div>
               </div>
-              <div className={css.headerCell} style={{ flex: 1 }}>
-                {t('SEARCH:floor')}
-              </div>
-              <div className={css.headerCell} style={{ flex: 1 }}>
-                {t('SEARCH:area')}
-              </div>
-              <div className={css.headerCell} style={{ flex: 1 }}>
-                {t('SEARCH:free-of-debt-price')}
-              </div>
-              <div className={css.headerCell} style={{ flex: 1 }}>
+              {/*<div className={css.headerCell} style={{ flex: 1 }}>
                 {t('SEARCH:applications')}
-              </div>
-              <div className={css.headerCell} style={{ flex: 3 }}></div>
+              </div>*/}
+              <div className={css.headerFiller} style={{ flex: "3 3 0" }} />
             </div>
-            {apartments.map(x => <ApartmentRow key={x.uuid} apartment={x} />)}
+            {apartments.map((x) => (
+              <ApartmentRow key={x.uuid} apartment={x} />
+            ))}
           </div>
           <div className={css.pagination}></div>
         </div>

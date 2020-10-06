@@ -75,15 +75,8 @@
 }
 
 .detailsButton {
-  all: unset;
-  width: 188px;
   height: 36px;
-  border: 2px solid var(--color-bus);
-  color: var(--color-bus);
-}
-
-.detailsButton:hover {
-  cursor: pointer;
+  white-space: nowrap;
 }
 
 .apartmentListButton {
@@ -114,4 +107,39 @@
 
 .headerCell {
   padding-bottom: 16px;
+  white-space: nowrap;
+}
+
+@media (max-width: 992px) {
+  .content {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .headerFiller {
+    display: none;
+  }
+}
+
+@media (max-width: 510px) {
+  .info {
+    flex-direction: column;
+  }
+
+  .controls {
+    flex-direction: row;
+    margin-top: 30px;
+    align-items: center;
+  }
+}
+
+@media (max-width: 460px) {
+  .controls {
+    flex-direction: column;
+  }
+
+  .apartmentListButton {
+    margin-top: 30px;
+  }
 }
