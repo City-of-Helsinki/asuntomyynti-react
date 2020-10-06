@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 const ProjectCard = ({ project }: { project: Project }) => {
   const { t } = useTranslation();
   const [listOpen, setListOpen] = useState(false);
+  const [page, setPage] = useState(1);
 
   const toggleList = () => {
     setListOpen(!listOpen);
@@ -24,6 +25,27 @@ const ProjectCard = ({ project }: { project: Project }) => {
     main_image_url,
     publication_end_time,
   } = project;
+
+  const showPagination = apartments.length > 10;
+
+  const renderPaginationButtons = () => {
+    const noOfPages = Math.ceil(apartments.length / 10);
+    const buttons = [];
+
+    for (let i = 1; i <= noOfPages; i++) {
+      buttons.push(<button className={css.paginationButton} onClick={() => handlePageClick(i)} style={i === page ? {border: '2px solid #1a1a1a'} : {}} value={i}>{i}</button>)
+    }
+
+    return buttons;
+  }
+
+  const handlePageClick = (index: number) => {
+    if (index !== page) {
+      setPage(index);
+    }
+  }
+
+  const displayedApartments = apartments.slice(page * 10 - 10, page * 10);
 
   return (
     <div className={css.container}>
@@ -88,11 +110,15 @@ const ProjectCard = ({ project }: { project: Project }) => {
               </div>*/}
               <div className={css.headerFiller} style={{ flex: "3 3 0" }} />
             </div>
-            {apartments.map((x) => (
+            {displayedApartments.map((x) => (
               <ApartmentRow key={x.uuid} apartment={x} />
             ))}
           </div>
-          <div className={css.pagination}></div>
+          {showPagination && <div className={css.pagination}>
+              <div style={{display: 'flex'}}>
+                {renderPaginationButtons()}
+              </div>
+          </div>}
         </div>
       )}
     </div>
