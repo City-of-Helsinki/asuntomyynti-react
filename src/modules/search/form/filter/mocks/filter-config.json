@@ -28,7 +28,7 @@
   "project_building_type": {
     "query_type": "set_of_strings",
     "type": "multiselect",
-    "items": ["Kerrostalo", "Rivital", "Pientalo"],
+    "items": ["Kerrostalo", "Rivitalo", "Pientalo"],
     "label": "Talotyyppi"
   },
   "properties": {
