@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextInput } from 'hds-react';
-import { FilterItem } from './useFilter';
 import styles from './RangeInput.module.scss';
+import { FilterItem } from '../../../../types/common';
 
 type Props = {
   from: FilterItem;
