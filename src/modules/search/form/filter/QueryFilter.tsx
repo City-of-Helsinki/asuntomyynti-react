@@ -74,7 +74,7 @@ const QueryFilter = ({ name, onFilter, isWrapped = false }: Props) => {
           label={label}
           value={searchParams.get(name) || ''}
           onChange={handleChange}
-          className={`${isWrapped ? { padding: '14' } : ''}`}
+          className={`${isWrapped ? { padding: '14px' } : ''}`}
           {...items[0]}
         />
       );
