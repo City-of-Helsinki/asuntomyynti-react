@@ -29,10 +29,14 @@ const ApartmentRow = ({ apartment }: { apartment: Apartment }) => {
       {/*<div className={css.cell} style={{ flex: 1 }}>
         Ei hakijoita
       </div>*/}
-      <div className={css.buttons} style={{ flex: "3 3 0" }}>
-        <Button className={css.getToKnowButton} variant="supplementary">{t('SEARCH:info')}</Button>
+      <div className={css.buttons} style={{ flex: '3 3 0' }}>
+        <Button className={css.getToKnowButton} variant="supplementary">
+          {t('SEARCH:info')}
+        </Button>
         <a href={application_url || ''}>
-          <Button className={css.createApplicationButton} variant="secondary">{t('SEARCH:apply')}</Button>
+          <Button className={css.createApplicationButton} variant="secondary">
+            {t('SEARCH:apply')}
+          </Button>
         </a>
       </div>
     </div>

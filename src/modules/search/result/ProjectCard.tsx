@@ -33,7 +33,16 @@ const ProjectCard = ({ project }: { project: Project }) => {
     const buttons = [];
 
     for (let i = 1; i <= noOfPages; i++) {
-      buttons.push(<button className={css.paginationButton} onClick={() => handlePageClick(i)} style={i === page ? {border: '2px solid #1a1a1a'} : {}} value={i}>{i}</button>)
+      buttons.push(
+        <button
+          className={css.paginationButton}
+          onClick={() => handlePageClick(i)}
+          style={i === page ? { border: '2px solid #1a1a1a' } : {}}
+          value={i}
+        >
+          {i}
+        </button>
+      );
     }
 
     return buttons;

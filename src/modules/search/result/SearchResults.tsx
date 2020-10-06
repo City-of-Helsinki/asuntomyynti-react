@@ -15,7 +15,9 @@ const SearchResults = ({ searchResults }: Props) => {
     <div className={css.container}>
       <div className={css.titleContainer}>
         <h1>{t('SEARCH:free-apartments')}</h1>
-        <div className={css.resultsCount}>{t('SEARCH:total')} {searchResults.length} {t('SEARCH:apartments')}</div>
+        <div className={css.resultsCount}>
+          {t('SEARCH:total')} {searchResults.length} {t('SEARCH:apartments')}
+        </div>
       </div>
       <div className={css.resultWrapper}>
         {searchResults.map((x) => (
