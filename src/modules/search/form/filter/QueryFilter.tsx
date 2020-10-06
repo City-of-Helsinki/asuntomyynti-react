@@ -69,7 +69,14 @@ const QueryFilter = ({ name, onFilter, isWrapped = false }: Props) => {
         updateQueryParam(event.target.value || '');
       };
       return (
-        <TextInput id={`${name}-${label}`} label={label} value={searchParams.get(name) || ''} onChange={handleChange} />
+        <TextInput
+          id={`${name}-${label}`}
+          label={label}
+          value={searchParams.get(name) || ''}
+          onChange={handleChange}
+          className={`${isWrapped ? { padding: '14px' } : ''}`}
+          {...items[0]}
+        />
       );
 
     default:

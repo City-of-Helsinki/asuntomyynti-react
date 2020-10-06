@@ -11,13 +11,16 @@ const SearchForm = () => {
         <h1>Etsi Hitas-omistusasuntoja</h1>
         <div className={styles.row}>
           <div className={styles.column}>
-            <Dropdown name="param1" />
+            <Dropdown name="location" />
           </div>
           <div className={styles.column}>
-            <Dropdown name="param2" />
+            <Dropdown name="rooms" />
           </div>
           <div className={styles.column}>
-            <Dropdown name="param3" />
+            <Dropdown name="size_range" />
+          </div>
+          <div className={styles.column}>
+            <Dropdown name="price" />
           </div>
           <div className={styles.column}>
             <Button>Submit</Button>

@@ -1,17 +1,17 @@
 {
-  "param1": {
+  "location": {
     "type": "multiselect",
     "icon": "location",
     "items": ["Alppiranta", "Arabianranta", "Aurinkolahti", "Etelä-Haaga", "Fallpakka", "Haaga"],
     "label": "Alue"
   },
-  "param2": {
+  "rooms": {
     "type": "multiselect",
     "icon": "home",
     "items": ["1 h", "2 h", "3 h", "4 h", "5+ h"],
     "label": "Huoneita"
   },
-  "param3": {
+  "size_range": {
     "type": "range",
     "items": [
       {
@@ -25,13 +25,13 @@
     ],
     "label": "Pinta-ala, m2"
   },
-  "param4": {
+  "price": {
     "type": "input",
     "items": [
       {
         "label": "Hinta korkeintaan",
         "placeholder": "€",
-        "info": "tuhatta euroa"
+        "helperText": "tuhatta euroa"
       }
     ],
     "label": "Hinta"
