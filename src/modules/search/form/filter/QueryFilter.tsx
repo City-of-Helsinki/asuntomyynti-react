@@ -1,30 +1,28 @@
 import { useHistory } from 'react-router-dom';
 import React, { useCallback, useEffect } from 'react';
-import useFilter, { FilterItem, FilterType, FilterConfig } from './useFilter';
 import useQuery from '../../../../hooks/useQuery';
 import RangeInput from './RangeInput';
 import CheckList from './CheckList';
 import { TextInput } from 'hds-react';
-import { parseQueryParam } from '../../../../utils/helpers';
+import { getValueFromParams } from '../../../../utils/helpers';
+import { FilterItem, FilterRule, FilterType } from '../../../../types/common';
 
 type Props = {
   name: string;
-  onFilter?: (props: FilterConfig) => void;
+  onFilter?: (props: FilterRule) => void;
   isWrapped?: boolean;
-};
+} & FilterRule;
 
 /**
  * Render filter depending on the configuration and query params
  */
-const QueryFilter = ({ name, onFilter, isWrapped = false }: Props) => {
-  // Fetch configuration based on the name
-  const { items, type, label } = useFilter(name);
+const QueryFilter = ({ name, onFilter, isWrapped = false, items, type, label, ...rest }: Props) => {
   // Get the current params
   const searchParams = useQuery();
   const history = useHistory();
 
   const filterCallback = useCallback(() => {
-    onFilter && onFilter({ label, type, items });
+    onFilter && onFilter({ label, type, items, ...rest });
   }, [items, label, onFilter, type]);
 
   // Update parent on mount
@@ -44,7 +42,7 @@ const QueryFilter = ({ name, onFilter, isWrapped = false }: Props) => {
 
   switch (type) {
     case FilterType.MultiSelect:
-      const selected = parseQueryParam(searchParams, name);
+      const selected = getValueFromParams(searchParams, name, []);
       return (
         <CheckList
           label={label}
@@ -58,7 +56,7 @@ const QueryFilter = ({ name, onFilter, isWrapped = false }: Props) => {
 
     case FilterType.Range:
       const [from, to] = items;
-      const [min = '', max = ''] = parseQueryParam(searchParams, name);
+      const [min = '', max = ''] = getValueFromParams(searchParams, name, []);
       // Casting the types here to please the TypeScript gods
       return (
         <RangeInput onChange={updateQueryParams} values={[min, max]} from={from as FilterItem} to={to as FilterItem} />
@@ -74,7 +72,7 @@ const QueryFilter = ({ name, onFilter, isWrapped = false }: Props) => {
           label={label}
           value={searchParams.get(name) || ''}
           onChange={handleChange}
-          className={`${isWrapped ? { padding: '14px' } : ''}`}
+          style={isWrapped ? { padding: '14px' } : {}}
           {...items[0]}
         />
       );

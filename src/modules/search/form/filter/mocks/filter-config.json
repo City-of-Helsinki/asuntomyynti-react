@@ -1,53 +1,36 @@
 {
-  "location": {
-    "type": "multiselect",
-    "icon": "location",
+  "project_district": {
     "items": ["Alppiranta", "Arabianranta", "Aurinkolahti", "Etelä-Haaga", "Fallpakka", "Haaga"],
     "label": "Alue"
   },
-  "rooms": {
-    "type": "multiselect",
-    "icon": "home",
+  "room_count": {
     "items": ["1 h", "2 h", "3 h", "4 h", "5+ h"],
     "label": "Huoneita"
   },
-  "size_range": {
-    "type": "range",
-    "items": [
-      {
-        "label": "Vähintään",
-        "placeholder": "m2"
-      },
-      {
-        "label": "Enintään",
-        "placeholder": "m2"
-      }
-    ],
+  "living_area": {
+    "items": ["Vähintään", "Enintään"],
     "label": "Pinta-ala, m2"
   },
-  "price": {
-    "type": "input",
-    "items": [
-      {
-        "label": "Hinta korkeintaan",
-        "placeholder": "€",
-        "helperText": "tuhatta euroa"
-      }
-    ],
+  "sales_price": {
+    "items": ["Hinta korkeintaan"],
     "label": "Hinta"
   },
-  "housing_type": {
-    "type": "multiselect",
-    "items": ["Kerrostalo", "Rivitalo/ pientalo"],
+  "project_building_type": {
+    "items": ["Kerrostalo", "Rivitalo", "Pientalo"],
     "label": "Talotyyppi"
   },
-  "apartment_properties": {
-    "type": "multiselect",
-    "items": ["Piha", "Sauna", "Parveke", "Terassi"],
-    "label": "Talotyyppi"
+  "properties": {
+    "items": [
+      "project_has_elevator",
+      "project_has_sauna",
+      "has_terrace",
+      "has_balcony",
+      "has_yard",
+      "has_apartment_sauna"
+    ],
+    "label": "Lisävalinnat"
   },
   "state_of_sale": {
-    "type": "multiselect",
     "items": ["Nyt haettavana", "Vapaat asunnot", "Tulossa haettavaksi"],
     "label": "Myynnin tila"
   }

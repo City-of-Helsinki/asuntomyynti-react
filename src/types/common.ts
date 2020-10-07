@@ -85,7 +85,7 @@ export type Apartment = {
   view_description: string;
   water_fee: number;
   water_fee_explanation: string;
-}
+};
 
 export type Project = {
   apartments: Apartment[];
@@ -228,3 +228,57 @@ export type SearchResult = {
   water_fee: number;
   water_fee_explanation: string;
 };
+
+export type QueryParams = {
+  terms?: {
+    [key: string]: (number | string)[];
+  };
+  term?: {
+    [key: string]: number | string | boolean;
+  };
+  range?: {
+    [key: string]: {
+      gte?: number;
+      lte?: number;
+      boost?: number;
+    };
+  };
+};
+
+export type FilterItem = {
+  label: string;
+  placeholder?: string;
+  max?: number;
+  min?: number;
+  info?: string;
+  helperText?: string;
+};
+
+export enum FilterType {
+  MultiSelect,
+  Input,
+  Range,
+}
+
+export type FilterMap = {
+  type: FilterType;
+  icon?: string;
+  items?: (FilterItem | string)[];
+  label?: string;
+  getQuery: (values: string[]) => QueryParams[];
+};
+
+export type FilterConfig = {
+  [key: string]: FilterRule;
+};
+
+export type RawFilterRule = {
+  label: string;
+  items: string[];
+};
+
+export type RawFilterConfig = {
+  [key: string]: RawFilterRule;
+};
+
+export type FilterRule = RawFilterRule & FilterMap;

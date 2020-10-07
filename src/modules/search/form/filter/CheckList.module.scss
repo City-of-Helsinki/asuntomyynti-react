@@ -10,6 +10,9 @@
 .item {
   padding: 7px 0;
   cursor: pointer;
+  label {
+    width: 100%;
+  }
 }
 
 .isWrapped {

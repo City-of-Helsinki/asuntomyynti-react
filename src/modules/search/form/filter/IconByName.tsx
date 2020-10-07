@@ -1,15 +1,12 @@
 import React from 'react';
 import { IconHome, IconLocation, IconProps } from 'hds-react';
-import useFilter from './useFilter';
 
 type Props = {
   name: string;
 } & IconProps;
 
 const IconByName = ({ name, ...rest }: Props) => {
-  const { icon } = useFilter(name);
-
-  switch (icon) {
+  switch (name) {
     case 'location':
       return <IconLocation {...rest} />;
     case 'home':
