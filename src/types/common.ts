@@ -120,6 +120,7 @@ export type Project = {
   material_choice_dl: string;
   new_development_status: string;
   new_housing: boolean;
+  ownership_type: string;
   possession_transfer_date: string;
   postal_code: string;
   premarketing_end_time: string;
@@ -199,6 +200,7 @@ export type SearchResult = {
   project_material_choice_dl: string;
   project_new_development_status: string;
   project_new_housing: boolean;
+  project_ownership_type: string;
   project_possession_transfer_date: string;
   project_postal_code: string;
   project_premarketing_end_time: string;
