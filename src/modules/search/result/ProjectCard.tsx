@@ -24,6 +24,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
     housing_company,
     main_image_url,
     publication_end_time,
+    ownership_type,
   } = project;
 
   const showPagination = apartments.length > 10;
@@ -46,13 +47,13 @@ const ProjectCard = ({ project }: { project: Project }) => {
     }
 
     return buttons;
-  }
+  };
 
   const handlePageClick = (index: number) => {
     if (index !== page) {
       setPage(index);
     }
-  }
+  };
 
   const displayedApartments = apartments.slice(page * 10 - 10, page * 10);
 
@@ -69,7 +70,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
               <div style={{ marginBottom: 5 }}>
                 <b>{district},</b> {street_address}
               </div>
-              <span className={css.label}>Hitas</span>
+              <span className={css.label}>{ownership_type}</span>
             </div>
             <div className={css.deadlines}>
               <div className={css.completionTime}>
@@ -84,7 +85,9 @@ const ProjectCard = ({ project }: { project: Project }) => {
             </div>
           </div>
           <div className={css.controls}>
-            <Button className={css.detailsButton} variant="secondary">{t('SEARCH:learn-more')}</Button>
+            <Button className={css.detailsButton} variant="secondary">
+              {t('SEARCH:learn-more')}
+            </Button>
             <button className={css.apartmentListButton} onClick={toggleList}>
               {apartments.length} {t('SEARCH:apartments-available')}{' '}
               {listOpen ? (
@@ -117,17 +120,17 @@ const ProjectCard = ({ project }: { project: Project }) => {
               {/*<div className={css.headerCell} style={{ flex: 1 }}>
                 {t('SEARCH:applications')}
               </div>*/}
-              <div className={css.headerFiller} style={{ flex: "3 3 0" }} />
+              <div className={css.headerFiller} style={{ flex: '3 3 0' }} />
             </div>
             {displayedApartments.map((x) => (
               <ApartmentRow key={x.uuid} apartment={x} />
             ))}
           </div>
-          {showPagination && <div className={css.pagination}>
-              <div style={{display: 'flex'}}>
-                {renderPaginationButtons()}
-              </div>
-          </div>}
+          {showPagination && (
+            <div className={css.pagination}>
+              <div style={{ display: 'flex' }}>{renderPaginationButtons()}</div>
+            </div>
+          )}
         </div>
       )}
     </div>
