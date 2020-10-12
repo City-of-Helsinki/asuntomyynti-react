@@ -284,3 +284,5 @@ export type RawFilterConfig = {
 };
 
 export type FilterRule = RawFilterRule & FilterMap;
+
+export type ParamList = { name: string; value: string }[];

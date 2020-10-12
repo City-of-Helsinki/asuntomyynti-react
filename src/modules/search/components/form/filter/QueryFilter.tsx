@@ -18,7 +18,7 @@ type Props = {
 const QueryFilter = ({ name, onFilter, isWrapped = false, items, type, label, ...rest }: Props) => {
   // Get the current params
   const searchParams = useQuery();
-  const { setValue, getValue } = useSearchParams();
+  const { setParam, getParam } = useSearchParams();
 
   const filterCallback = useCallback(() => {
     onFilter && onFilter({ label, type, items, ...rest });
@@ -40,13 +40,13 @@ const QueryFilter = ({ name, onFilter, isWrapped = false, items, type, label, ..
 
     case FilterType.Input:
       const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(name, event.target.value || '');
+        setParam(name, event.target.value || '');
       };
       return (
         <TextInput
           id={`${name}-${label}`}
           label={label}
-          value={getValue(name) || ''}
+          value={getParam(name) || ''}
           onChange={handleChange}
           style={isWrapped ? { padding: '14px' } : {}}
           {...items[0]}

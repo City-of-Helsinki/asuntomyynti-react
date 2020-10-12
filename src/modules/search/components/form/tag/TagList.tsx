@@ -4,11 +4,11 @@ import styles from './TagList.module.scss';
 import useSearchParams from '../../../../../hooks/useSearchParams';
 
 const TagList = () => {
-  const { getAllValues, removeValue } = useSearchParams();
+  const { getAllParams, removeFromParam } = useSearchParams();
 
-  const params = getAllValues();
+  const params = getAllParams();
 
-  const handleClick = (name: string, value: string) => () => removeValue(name, value);
+  const handleClick = (name: string, value: string) => () => removeFromParam(name, value);
 
   return (
     <div className={styles.container}>

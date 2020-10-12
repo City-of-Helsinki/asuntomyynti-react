@@ -16,15 +16,15 @@ const Dropdown = ({ name, icon, ...rest }: Props) => {
 
   const ref = useRef<HTMLDivElement>(null);
 
-  const { clearValues, getValues, getValue } = useSearchParams();
-  const hasSelections = !!getValues(name);
+  const { clearParam, getParams, getParam } = useSearchParams();
+  const hasSelections = !!getParams(name);
 
   useOutsideClick(ref, () => {
     setActive(false);
   });
 
   const handleClearSelection = () => {
-    clearValues(name);
+    clearParam(name);
     setTimeout(() => {
       // Let the user see selection disappear before closing the dropdown
       setActive(false);
@@ -35,12 +35,12 @@ const Dropdown = ({ name, icon, ...rest }: Props) => {
   const handleFilter = ({ label, type }: FilterRule) => {
     switch (type) {
       case FilterType.MultiSelect:
-        const selected = getValues(name);
+        const selected = getParams(name);
         setLabel((selected[0] || label) + (selected.length > 1 ? `+${selected.length - 1}` : ''));
         break;
 
       case FilterType.Range:
-        const [min, max] = getValues(name);
+        const [min, max] = getParams(name);
 
         if (min && max) {
           setLabel(`${min}-${max}`);
@@ -54,7 +54,7 @@ const Dropdown = ({ name, icon, ...rest }: Props) => {
         break;
 
       default:
-        setLabel(getValue(name) || label);
+        setLabel(getParam(name) || label);
     }
   };
 

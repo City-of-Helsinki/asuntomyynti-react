@@ -11,15 +11,15 @@ type Props = {
 };
 
 const CheckList = ({ name, items, label, isWrapped }: Props) => {
-  const { addValue, removeValue, getValues } = useSearchParams();
+  const { addToParam, removeFromParam, getParams } = useSearchParams();
 
-  const selected = getValues(name);
+  const selected = getParams(name);
 
   const handleChange = (item: string) => () => {
     if (selected.includes(item)) {
-      removeValue(name, item);
+      removeFromParam(name, item);
     } else {
-      addValue(name, item);
+      addToParam(name, item);
     }
   };
 

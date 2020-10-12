@@ -11,15 +11,15 @@ type Props = {
 };
 
 const RangeInput = ({ name, from, to }: Props) => {
-  const { getValues, setValues } = useSearchParams();
+  const { getParams, setParams } = useSearchParams();
 
-  const [min = '', max = ''] = getValues(name);
+  const [min = '', max = ''] = getParams(name);
   const values = [min, max];
 
   const handleChange = (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value || '';
     const newRange = values.map((item: string, i: number) => (i === index ? newValue : item));
-    setValues(name, newRange);
+    setParams(name, newRange);
   };
 
   return (

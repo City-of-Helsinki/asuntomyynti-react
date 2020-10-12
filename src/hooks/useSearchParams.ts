@@ -1,61 +1,68 @@
 import useQuery from './useQuery';
 import { getParamsByName } from '../utils/getParamsByName';
 import { useHistory } from 'react-router-dom';
+import { ParamList } from '../types/common';
 
 const useSearchParams = () => {
   const query = useQuery();
   const history = useHistory();
 
-  const getAllValues = () => {
-    return Array.from(query.entries()).reduce((all: { [name: string]: string }[], [name, values]) => {
+  const getAllParams = (): ParamList => {
+    return Array.from(query.entries()).reduce((all: ParamList, [name, values]) => {
       const items = values
         .split(',')
-        .filter((value) => value !== '') // Don't render empty values
+        .filter((value) => value !== '') // Filter empty values
         .map((value) => ({ name, value }));
 
       return [...all, ...items];
     }, []);
   };
 
-  const getValues = (name: string) => {
+  const getParams = (name: string): string[] => {
     return getParamsByName(query, name, []);
   };
 
-  const getValue = (name: string) => {
-    return query.get(name);
+  const getParam = (name: string): string => {
+    return query.get(name) || '';
   };
 
-  const setValue = (name: string, value: string) => {
-    if (value === '') {
-      query.delete(name);
-    } else {
-      query.set(name, value);
-    }
+  const setParam = (name: string, value: string) => {
+    query.set(name, value);
     history.push(`?${query.toString()}`);
   };
 
-  const setValues = (name: string, values: string[]) => {
-    setValue(name, values.join(','));
+  // Set array as value
+  const setParams = (name: string, values: string[]) => {
+    setParam(name, values.join(','));
   };
 
-  const addValue = (name: string, value: string) => {
+  // Add item to a list
+  const addToParam = (name: string, value: string) => {
     const values = getParamsByName(query, name, []);
     values.push(value);
-    setValue(name, values.join(','));
+    setParam(name, values.join(','));
   };
 
-  const removeValue = (name: string, value: string) => {
+  // Remove item from a list
+  const removeFromParam = (name: string, value: string) => {
     const values = getParamsByName(query, name, []);
     const filteredValues = values.filter((x: string) => x !== value);
-    setValue(name, filteredValues.join(','));
+
+    if (filteredValues.length === 0) {
+      query.delete(name);
+      history.push(`?${query.toString()}`);
+      return;
+    }
+
+    setParam(name, filteredValues.join(','));
   };
 
-  const clearValues = (name: string) => {
+  const clearParam = (name: string) => {
     query.delete(name);
     history.push(`?${query.toString()}`);
   };
 
-  return { getAllValues, getValues, getValue, addValue, setValue, setValues, removeValue, clearValues };
+  return { getAllParams, getParams, getParam, addToParam, setParam, setParams, removeFromParam, clearParam };
 };
 
 export default useSearchParams;
