@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import SearchResults from './result/SearchResults';
-import SearchForm from './form/SearchForm';
+import SearchResults from './components/result/SearchResults';
+import SearchForm from './components/form/SearchForm';
 import Notification from '../../common/notification/Notification';
 import useLang from '../../hooks/useLang';
 import useQuery from '../../hooks/useQuery';
 import { buildQuery } from '../../utils/helpers';
-import useFilters from './form/filter/useFilters';
+import useFilters from './components/form/filter/useFilters';
+import mapSearchResults from "./utils/mapSearchResults";
 
 const SearchContainer = () => {
   const [searchResults, setSearchResults] = useState([]);
@@ -18,24 +19,6 @@ const SearchContainer = () => {
   const filterConfig = useFilters();
 
   useLang();
-
-  const mapSearchResults = (result: any) => {
-    const hits = result.inner_hits.project_id.hits.hits;
-    const firstHit = hits[0]._source;
-
-    const project: any = {};
-
-    // Maps the Project entity
-    Object.keys(firstHit).forEach((x: string) => {
-      if (x.includes('project_')) {
-        const key = x.split('project_')[1];
-        project[key] = firstHit[x];
-      }
-    });
-
-    project.apartments = hits.map((x: any) => x._source);
-    return project;
-  };
 
   // Fetch when queryParams update
   useEffect(() => {

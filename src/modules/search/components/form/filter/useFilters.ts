@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { FilterConfig } from '../../../../types/common';
-import { fetchFilterConfig } from '../../../../utils/helpers';
+import { FilterConfig } from '../../../../../types/common';
+import { fetchFilterConfig } from '../../../../../utils/helpers';
 import filterMap from './filterMap';
 
 const enhanceConfig = (config: { [key: string]: {} }) => {

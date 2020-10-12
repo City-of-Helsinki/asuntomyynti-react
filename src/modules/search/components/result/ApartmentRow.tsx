@@ -1,6 +1,6 @@
 import React from 'react';
 import css from './ApartmentRow.module.scss';
-import { Apartment } from '../../../types/common';
+import { Apartment } from '../../../../types/common';
 import { useTranslation } from 'react-i18next';
 import { Button } from 'hds-react';
 

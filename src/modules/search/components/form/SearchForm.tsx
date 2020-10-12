@@ -3,7 +3,7 @@ import styles from './SearchForm.module.scss';
 import { Button } from 'hds-react';
 import QueryFilter from './filter/QueryFilter';
 import Dropdown from './filter/Dropdown';
-import { FilterConfig } from '../../../types/common';
+import { FilterConfig } from '../../../../types/common';
 
 type Props = {
   onSubmit: () => void;
