@@ -6,7 +6,7 @@ import Notification from '../../common/notification/Notification';
 import useLang from '../../hooks/useLang';
 import useQuery from '../../hooks/useQuery';
 import { buildQuery } from '../../utils/helpers';
-import useFilters from './components/form/filter/useFilters';
+import useFilters from './hooks/useFilters';
 import mapSearchResults from "./utils/mapSearchResults";
 
 const SearchContainer = () => {
