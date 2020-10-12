@@ -1,23 +1,25 @@
 import React from 'react';
 import styles from './CheckList.module.scss';
 import { Checkbox } from 'hds-react';
+import useSearchParams from '../../../../hooks/useSearchParams';
 
 type Props = {
   name: string;
-  onChange: (values: string[]) => void;
   items: string[];
-  selected: string[];
   label?: string;
   isWrapped?: boolean;
 };
 
-const CheckList = ({ items, selected, onChange, label, isWrapped }: Props) => {
+const CheckList = ({ name, items, label, isWrapped }: Props) => {
+  const { addValue, removeValue, getValues } = useSearchParams();
+
+  const selected = getValues(name);
+
   const handleChange = (item: string) => () => {
     if (selected.includes(item)) {
-      const filteredSelection = selected.filter((x) => x !== item);
-      onChange(filteredSelection);
+      removeValue(name, item);
     } else {
-      onChange([...selected, item]);
+      addValue(name, item);
     }
   };
 

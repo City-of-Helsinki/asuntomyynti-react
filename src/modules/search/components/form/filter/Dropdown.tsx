@@ -1,12 +1,10 @@
 import React, { useRef, useState } from 'react';
 import styles from './Dropdown.module.scss';
-import { useHistory } from 'react-router-dom';
 import IconByName from './IconByName';
 import useOutsideClick from '../../../../../hooks/useOutsideClick';
-import useQuery from '../../../../../hooks/useQuery';
-import { getValueFromParams } from '../../../../../utils/helpers';
 import QueryFilter from './QueryFilter';
 import { FilterRule, FilterType } from '../../../../../types/common';
+import useSearchParams from '../../../../../hooks/useSearchParams';
 
 type Props = {
   name: string;
@@ -17,18 +15,16 @@ const Dropdown = ({ name, icon, ...rest }: Props) => {
   const [label, setLabel] = useState(name);
 
   const ref = useRef<HTMLDivElement>(null);
-  const history = useHistory();
 
-  const searchParams = useQuery();
-  const hasSelections = !!searchParams.get(name);
+  const { clearValues, getValues, getValue } = useSearchParams();
+  const hasSelections = !!getValues(name);
 
   useOutsideClick(ref, () => {
     setActive(false);
   });
 
   const handleClearSelection = () => {
-    searchParams.delete(name);
-    history.push(`?${searchParams.toString()}`);
+    clearValues(name);
     setTimeout(() => {
       // Let the user see selection disappear before closing the dropdown
       setActive(false);
@@ -39,17 +35,17 @@ const Dropdown = ({ name, icon, ...rest }: Props) => {
   const handleFilter = ({ label, type }: FilterRule) => {
     switch (type) {
       case FilterType.MultiSelect:
-        const selected = getValueFromParams(searchParams, name, []);
+        const selected = getValues(name);
         setLabel((selected[0] || label) + (selected.length > 1 ? `+${selected.length - 1}` : ''));
         break;
 
       case FilterType.Range:
-        const [min, max] = getValueFromParams(searchParams, name, []);
+        const [min, max] = getValues(name);
 
         if (min && max) {
           setLabel(`${min}-${max}`);
         } else if (min && !max) {
-          setLabel(`${min} <`);
+          setLabel(`> ${min}`);
         } else if (!min && max) {
           setLabel(`< ${max}`);
         } else {
@@ -58,7 +54,7 @@ const Dropdown = ({ name, icon, ...rest }: Props) => {
         break;
 
       default:
-        setLabel(searchParams.get(name) || label);
+        setLabel(getValue(name) || label);
     }
   };
 
@@ -71,7 +67,6 @@ const Dropdown = ({ name, icon, ...rest }: Props) => {
       <label className={styles.label} onClick={() => setActive(!active)}>
         {icon && <IconByName name={icon} className={styles.icon} />}
         <div className={styles.title}>{label}</div>
-        <div className={styles.arrow} />
       </label>
       <div className={styles.content}>
         <QueryFilter name={name} onFilter={handleFilter} isWrapped {...rest} />
