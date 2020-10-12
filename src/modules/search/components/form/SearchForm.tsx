@@ -4,6 +4,7 @@ import { Button } from 'hds-react';
 import QueryFilter from './filter/QueryFilter';
 import Dropdown from './filter/Dropdown';
 import { FilterConfig } from '../../../../types/common';
+import TagList from './tag/TagList';
 
 type Props = {
   onSubmit: () => void;
@@ -55,6 +56,7 @@ const SearchForm = ({ config, onSubmit }: Props) => {
         </div>
         <div className={styles.divider} />
       </div>
+      <TagList />
     </div>
   );
 };
