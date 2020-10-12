@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+}
+
+.tag {
+  all: unset;
+  align-items: center;
+  display: flex;
+  background-color: var(--color-black);
+  padding: 5px 10px 5px 5px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.label {
+  color: var(--color-white);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.icon {
+  color: var(--color-white);
+}
