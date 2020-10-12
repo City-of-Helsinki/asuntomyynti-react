@@ -1,7 +1,7 @@
 import React from 'react';
 import { IconCross } from 'hds-react';
 import styles from './TagList.module.scss';
-import useSearchParams from '../../../../hooks/useSearchParams';
+import useSearchParams from '../../../../../hooks/useSearchParams';
 
 const TagList = () => {
   const { getAllValues, removeValue } = useSearchParams();
