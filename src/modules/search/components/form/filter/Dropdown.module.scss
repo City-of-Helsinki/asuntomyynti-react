@@ -50,17 +50,19 @@
   padding-right: 24px;
 }
 
-.arrow {
+.label::after {
+  content: '';
+  display: block;
   border-right: solid 2px #000000;
   border-bottom: solid 2px #000000;
   transform: rotate(45deg);
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   position: absolute;
   right: 14px;
 }
 
-.active .arrow {
+.active .label::after {
   transform: rotate(-135deg);
 }
 
@@ -82,7 +84,7 @@
   font-weight: 500;
   color: rgb(26, 26, 26);
   width: 100%;
-  cursor: pointer
+  cursor: pointer;
 }
 
 .clearButton:disabled {
