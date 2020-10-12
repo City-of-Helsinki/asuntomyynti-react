@@ -1,6 +1,6 @@
 // TODO: look into react-query for caching and such
 import { RawFilterConfig } from '../types/common';
-import mockSearchConfig from '../modules/search/form/filter/mocks/filter-config.json';
+import mockSearchConfig from '../modules/search/mocks/filter-config.json';
 
 export const fetchFilterConfig = (): Promise<RawFilterConfig> =>
   new Promise((resolve) => {

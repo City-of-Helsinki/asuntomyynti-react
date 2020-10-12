@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { FilterConfig } from '../../../types/common';
-import { fetchFilterConfig } from '../../../utils/helpers';
 import filterMap from '../utils/filterMap';
+import { fetchFilterConfig } from '../../../utils/fetchFilterConfig';
 
 const enhanceConfig = (config: { [key: string]: {} }) => {
   return Object.keys(filterMap).reduce((accumulator, key) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './CheckList.module.scss';
 import { Checkbox } from 'hds-react';
-import useSearchParams from '../../../../hooks/useSearchParams';
+import useSearchParams from '../../../../../hooks/useSearchParams';
 
 type Props = {
   name: string;
