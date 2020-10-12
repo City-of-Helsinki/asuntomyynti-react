@@ -1,4 +1,4 @@
-import { buildQuery } from '../utils/query';
+import { buildQuery } from '../utils/buildQuery';
 import useQuery from './useQuery';
 import { FilterConfig } from '../types/common';
 import { useEffect, useState } from 'react';

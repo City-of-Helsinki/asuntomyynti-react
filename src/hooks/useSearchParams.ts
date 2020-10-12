@@ -1,5 +1,5 @@
 import useQuery from './useQuery';
-import { getValueByNameFromParams } from '../utils/search';
+import { getParamsByName } from '../utils/getParamsByName';
 import { useHistory } from 'react-router-dom';
 
 const useSearchParams = () => {
@@ -18,7 +18,7 @@ const useSearchParams = () => {
   };
 
   const getValues = (name: string) => {
-    return getValueByNameFromParams(query, name, []);
+    return getParamsByName(query, name, []);
   };
 
   const getValue = (name: string) => {
@@ -39,13 +39,13 @@ const useSearchParams = () => {
   };
 
   const addValue = (name: string, value: string) => {
-    const values = getValueByNameFromParams(query, name, []);
+    const values = getParamsByName(query, name, []);
     values.push(value);
     setValue(name, values.join(','));
   };
 
   const removeValue = (name: string, value: string) => {
-    const values = getValueByNameFromParams(query, name, []);
+    const values = getParamsByName(query, name, []);
     const filteredValues = values.filter((x: string) => x !== value);
     setValue(name, filteredValues.join(','));
   };
