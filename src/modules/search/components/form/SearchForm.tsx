@@ -54,9 +54,9 @@ const SearchForm = ({ config, onSubmit }: Props) => {
             <QueryFilter name="state_of_sale" {...state_of_sale} />
           </div>
         </div>
+        <TagList />
         <div className={styles.divider} />
       </div>
-      <TagList />
     </div>
   );
 };
