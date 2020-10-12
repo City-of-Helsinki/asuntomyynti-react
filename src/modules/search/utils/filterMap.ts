@@ -1,4 +1,4 @@
-import { FilterMap, FilterType, QueryParams } from '../../../../types/common';
+import { FilterMap, FilterType, QueryParams } from '../../../types/common';
 
 const fiveOrMoreItem = '5+ h';
 

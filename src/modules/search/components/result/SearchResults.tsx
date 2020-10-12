@@ -1,7 +1,7 @@
 import React from 'react';
 import css from './SearchResults.module.scss';
 import ProjectCard from './ProjectCard';
-import { Project } from '../../../types/common';
+import { Project } from '../../../../types/common';
 import { useTranslation } from 'react-i18next';
 
 type Props = {

@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import css from './ProjectCard.module.scss';
 import ApartmentRow from './ApartmentRow';
 import { IconArrowDown, IconArrowUp, IconCogwheel, IconClock, Button } from 'hds-react';
-import { Project } from '../../../types/common';
+import { Project } from '../../../../types/common';
 import { useTranslation } from 'react-i18next';
 
 const ProjectCard = ({ project }: { project: Project }) => {

@@ -1,11 +1,11 @@
 import { useHistory } from 'react-router-dom';
 import React, { useCallback, useEffect } from 'react';
-import useQuery from '../../../../hooks/useQuery';
+import useQuery from '../../../../../hooks/useQuery';
 import RangeInput from './RangeInput';
 import CheckList from './CheckList';
 import { TextInput } from 'hds-react';
-import { getValueFromParams } from '../../../../utils/helpers';
-import { FilterItem, FilterRule, FilterType } from '../../../../types/common';
+import { getValueFromParams } from '../../../../../utils/helpers';
+import { FilterItem, FilterRule, FilterType } from '../../../../../types/common';
 
 type Props = {
   name: string;

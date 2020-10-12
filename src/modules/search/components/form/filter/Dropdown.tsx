@@ -2,11 +2,11 @@ import React, { useRef, useState } from 'react';
 import styles from './Dropdown.module.scss';
 import { useHistory } from 'react-router-dom';
 import IconByName from './IconByName';
-import useOutsideClick from '../../../../hooks/useOutsideClick';
-import useQuery from '../../../../hooks/useQuery';
-import { getValueFromParams } from '../../../../utils/helpers';
+import useOutsideClick from '../../../../../hooks/useOutsideClick';
+import useQuery from '../../../../../hooks/useQuery';
+import { getValueFromParams } from '../../../../../utils/helpers';
 import QueryFilter from './QueryFilter';
-import { FilterRule, FilterType } from '../../../../types/common';
+import { FilterRule, FilterType } from '../../../../../types/common';
 
 type Props = {
   name: string;
