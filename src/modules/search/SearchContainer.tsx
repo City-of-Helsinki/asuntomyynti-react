@@ -1,57 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 import SearchResults from './components/result/SearchResults';
 import SearchForm from './components/form/SearchForm';
 import Notification from '../../common/notification/Notification';
 import useLang from '../../hooks/useLang';
-import useQuery from '../../hooks/useQuery';
-import { buildQuery } from '../../utils/helpers';
 import useFilters from './hooks/useFilters';
-import mapSearchResults from "./utils/mapSearchResults";
+import useElasticsearchQuery from '../../hooks/useElasticsearchQuery';
+import useSearchResults from '../../hooks/useSearchResults';
 
 const SearchContainer = () => {
-  const [searchResults, setSearchResults] = useState([]);
-  // Query, as in elasticsearch query params
-  const [query, setQuery] = useState({});
-  // URL search params
-  const searchParams = useQuery();
+  useLang();
+
   // TODO: Consider saving config to context for easier access
   const filterConfig = useFilters();
 
-  useLang();
-
-  // Fetch when queryParams update
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const data = await axios.post('http://dev.asuntomyynti-elastic.druidfi.wod.by/_search', {
-          ...query,
-          collapse: {
-            field: 'project_id',
-            inner_hits: {
-              size: 666,
-              name: 'project_id',
-            },
-          },
-        });
-        setSearchResults(data?.data?.hits?.hits.map(mapSearchResults) || []);
-      } catch (e) {
-        // TODO
-      }
-    };
-    fetchProjects();
-  }, [query]);
-
-  // Update params on mount
-  useEffect(() => {
-    updateQuery();
-  }, []);
-
-  // Generate query based on the search params
-  const updateQuery = () => {
-    const query = buildQuery(filterConfig, searchParams);
-    setQuery(query);
-  };
+  // Query, as in elasticsearch query params
+  const { query, updateQuery } = useElasticsearchQuery(filterConfig);
+  const searchResults = useSearchResults(query);
 
   return (
     <div>
