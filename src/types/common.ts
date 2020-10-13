@@ -262,27 +262,36 @@ export enum FilterType {
   Range,
 }
 
-export type FilterMap = {
-  type: FilterType;
+export type PartialConfig = {
+  type?: FilterType;
   icon?: string;
   items?: (FilterItem | string)[];
   label?: string;
-  getQuery: (values: string[]) => QueryParams[];
+  getQuery?: (values: string[]) => QueryParams[];
+  getLabel?: (values: string[]) => string;
+  getTagLabel?: (value: string) => { name: string; value: string }[];
+  serialize?: (values: string) => string;
+  unserialize?: (value: string) => string[];
 };
 
 export type FilterConfig = {
-  [key: string]: FilterRule;
-};
-
-export type RawFilterRule = {
+  type: FilterType;
+  icon?: string;
+  items: (FilterItem | string)[];
   label: string;
-  items: string[];
+  getQuery: (values: string[]) => QueryParams[];
+  getLabel: (values: string[]) => string;
+  getTagLabel: (value: string) => { name: string; value: string }[];
+  serialize?: (values: string) => string;
+  unserialize?: (value: string) => string[];
 };
 
-export type RawFilterConfig = {
-  [key: string]: RawFilterRule;
+export type FilterConfigs = {
+  [key: string]: FilterConfig;
 };
 
-export type FilterRule = RawFilterRule & FilterMap;
+export type BaseFilterConfigs = {
+  [key: string]: PartialConfig;
+};
 
 export type ParamList = { name: string; value: string }[];

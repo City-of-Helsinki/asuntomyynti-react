@@ -3,14 +3,14 @@ import useQuery from '../../../../../hooks/useQuery';
 import RangeInput from './RangeInput';
 import CheckList from './CheckList';
 import { TextInput } from 'hds-react';
-import { FilterItem, FilterRule, FilterType } from '../../../../../types/common';
+import { FilterItem, FilterConfig, FilterType } from '../../../../../types/common';
 import useFilters from '../../../../../hooks/useFilters';
 
 type Props = {
   name: string;
-  onFilter?: (props: FilterRule) => void;
+  onFilter?: (props: FilterConfig) => void;
   isWrapped?: boolean;
-} & FilterRule;
+} & FilterConfig;
 
 /**
  * Render filter depending on the configuration and query params

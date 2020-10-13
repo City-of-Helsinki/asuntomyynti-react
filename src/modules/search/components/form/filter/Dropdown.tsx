@@ -3,12 +3,12 @@ import styles from './Dropdown.module.scss';
 import IconByName from './IconByName';
 import useOutsideClick from '../../../../../hooks/useOutsideClick';
 import QueryFilter from './QueryFilter';
-import { FilterRule, FilterType } from '../../../../../types/common';
+import { FilterConfig } from '../../../../../types/common';
 import useFilters from '../../../../../hooks/useFilters';
 
 type Props = {
   name: string;
-} & FilterRule;
+} & FilterConfig;
 
 const Dropdown = ({ name, icon, ...rest }: Props) => {
   const [active, setActive] = useState(false);
@@ -32,30 +32,9 @@ const Dropdown = ({ name, icon, ...rest }: Props) => {
   };
 
   // Update label depending on the selection
-  const handleFilter = ({ label, type }: FilterRule) => {
-    switch (type) {
-      case FilterType.MultiSelect:
-        const selected = getFilters(name);
-        setLabel((selected[0] || label) + (selected.length > 1 ? `+${selected.length - 1}` : ''));
-        break;
-
-      case FilterType.Range:
-        const [min, max] = getFilters(name);
-
-        if (min && max) {
-          setLabel(`${min}-${max}`);
-        } else if (min && !max) {
-          setLabel(`> ${min}`);
-        } else if (!min && max) {
-          setLabel(`< ${max}`);
-        } else {
-          setLabel(label);
-        }
-        break;
-
-      default:
-        setLabel(getFilter(name) || label);
-    }
+  const handleFilter = ({ label, getLabel }: FilterConfig) => {
+    const values = getFilters(name);
+    setLabel(values.length > 0 ? getLabel(values) : label);
   };
 
   const className = `${styles.container} ${active ? styles.active : ''} ${

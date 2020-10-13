@@ -2,13 +2,25 @@ import React from 'react';
 import { IconCross } from 'hds-react';
 import styles from './TagList.module.scss';
 import useFilters from '../../../../../hooks/useFilters';
+import { FilterConfigs, FilterType, ParamList } from '../../../../../types/common';
 
-const TagList = () => {
-  const { getAllFilters, removeFilter } = useFilters();
+type Props = {
+  config: FilterConfigs;
+};
 
-  const params = getAllFilters();
+const TagList = ({ config }: Props) => {
+  const { clearFilter, removeFilter, getAllFilters } = useFilters();
 
-  const handleClick = (name: string, value: string) => () => removeFilter(name, value);
+  const params = getAllFilters().reduce((all: ParamList, [name, value]) => {
+    const { getTagLabel } = config[name] || {};
+    if (getTagLabel) {
+      return [...all, ...getTagLabel(value)];
+    }
+    return all;
+  }, []);
+
+  const handleClick = (name: string, value: string) => () =>
+    config[name].type === FilterType.Range ? clearFilter(name) : removeFilter(name, value);
 
   return (
     <div className={styles.container}>

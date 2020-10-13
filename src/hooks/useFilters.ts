@@ -1,21 +1,13 @@
 import useQuery from './useQuery';
 import { getParamsByName } from '../utils/getParamsByName';
 import { useHistory } from 'react-router-dom';
-import { ParamList } from '../types/common';
 
 const useFilters = () => {
   const query = useQuery();
   const history = useHistory();
 
-  const getAllFilters = (): ParamList => {
-    return Array.from(query.entries()).reduce((all: ParamList, [name, values]) => {
-      const items = values
-        .split(',')
-        .filter((value) => value !== '') // Filter empty values
-        .map((value) => ({ name, value }));
-
-      return [...all, ...items];
-    }, []);
+  const getAllFilters = () => {
+    return Array.from(query.entries());
   };
 
   const getFilters = (name: string): string[] => {

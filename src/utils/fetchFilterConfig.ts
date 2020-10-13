@@ -1,10 +1,10 @@
 // TODO: look into react-query for caching and such
-import { RawFilterConfig } from '../types/common';
+import { BaseFilterConfigs } from '../types/common';
 import mockSearchConfig from '../modules/search/mocks/filter-config.json';
 
-export const fetchFilterConfig = (): Promise<RawFilterConfig> =>
+export const fetchFilterConfig = (): Promise<BaseFilterConfigs> =>
   new Promise((resolve) => {
     setTimeout(() => {
-      resolve(mockSearchConfig as RawFilterConfig);
+      resolve(mockSearchConfig as BaseFilterConfigs);
     }, 1000);
   });

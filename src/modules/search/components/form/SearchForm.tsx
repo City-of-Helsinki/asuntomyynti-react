@@ -3,12 +3,12 @@ import styles from './SearchForm.module.scss';
 import { Button } from 'hds-react';
 import QueryFilter from './filter/QueryFilter';
 import Dropdown from './filter/Dropdown';
-import { FilterConfig } from '../../../../types/common';
+import { FilterConfigs } from '../../../../types/common';
 import TagList from './tag/TagList';
 
 type Props = {
   onSubmit: () => void;
-  config: FilterConfig;
+  config: FilterConfigs;
 };
 
 const SearchForm = ({ config, onSubmit }: Props) => {
@@ -54,7 +54,7 @@ const SearchForm = ({ config, onSubmit }: Props) => {
             <QueryFilter name="state_of_sale" {...state_of_sale} />
           </div>
         </div>
-        <TagList />
+        <TagList config={config} />
         <div className={styles.divider} />
       </div>
     </div>

@@ -1,8 +1,8 @@
-import { FilterConfig, QueryParams } from '../types/common';
+import { FilterConfigs, QueryParams } from '../types/common';
 import { useEffect, useState } from 'react';
 import useFilters from './useFilters';
 
-const useElasticsearchQuery = (config: FilterConfig) => {
+const useElasticsearchQuery = (config: FilterConfigs) => {
   const [query, setQuery] = useState();
   const { getFilters } = useFilters();
 
