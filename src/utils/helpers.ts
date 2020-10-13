@@ -1,5 +1,5 @@
 import { FilterConfig, QueryParams, RawFilterConfig } from '../types/common';
-import mockSearchConfig from '../modules/search/components/form/filter/mocks/filter-config.json';
+import mockSearchConfig from '../modules/search/mocks/filter-config.json';
 
 export const getValueFromParams = (searchParams: URLSearchParams, name: string, defaultValue?: any) => {
   const currentValue = searchParams.get(name);
