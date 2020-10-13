@@ -1,11 +1,11 @@
 import { QueryParams } from '../types/common';
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import { mapSearchResults } from '../utils/mapSearchResults';
+import mapSearchResults from '../modules/search/utils/mapSearchResults';
 
-const useSearchResults = (query: QueryParams) => {
-  const fetchProjects = () =>
-    axios.post('http://dev.asuntomyynti-elastic.druidfi.wod.by/_search', {
+const useSearchResults = (query: { query: QueryParams }) => {
+  const fetchProjects = async () => {
+    const { data } = await axios.post('http://dev.asuntomyynti-elastic.druidfi.wod.by/_search', {
       ...query,
       collapse: {
         field: 'project_id',
@@ -15,11 +15,11 @@ const useSearchResults = (query: QueryParams) => {
         },
       },
     });
+    return data?.hits?.hits.map(mapSearchResults) || [];
+  };
 
   // Fetch when queryParams update
-  // {isLoading, isError, error} is available on the useQuery
-  const { data } = useQuery('searchResults', fetchProjects);
-  return data?.data?.hits?.hits.map(mapSearchResults) || [];
+  return useQuery(['searchResults', query], fetchProjects, { initialStale: true, initialData: [] });
 };
 
 export default useSearchResults;
