@@ -1,14 +1,38 @@
-import { buildQuery } from '../utils/buildQuery';
-import useQuery from './useQuery';
-import { FilterConfig } from '../types/common';
+import { FilterConfig, QueryParams } from '../types/common';
 import { useEffect, useState } from 'react';
+import useFilters from './useFilters';
 
 const useElasticsearchQuery = (config: FilterConfig) => {
   const [query, setQuery] = useState();
-  const searchParams = useQuery();
+  const { getFilters } = useFilters();
+
+  const buildQuery = () => {
+    const filters = Object.keys(config).reduce((filters: QueryParams[], name) => {
+      const values = getFilters(name);
+      const { getQuery } = config[name];
+
+      if (values.length === 0) {
+        return filters;
+      }
+
+      return [...filters, ...getQuery(values)];
+    }, []);
+
+    if (filters.length === 0) {
+      return {};
+    }
+
+    return {
+      query: {
+        bool: {
+          must: filters,
+        },
+      },
+    };
+  };
 
   const updateQuery = () => {
-    const localQuery = buildQuery(config, searchParams);
+    const localQuery = buildQuery();
     setQuery(localQuery);
   };
 
