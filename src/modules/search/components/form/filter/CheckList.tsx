@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './CheckList.module.scss';
 import { Checkbox } from 'hds-react';
-import useSearchParams from '../../../../../hooks/useSearchParams';
+import useFilters from '../../../../../hooks/useFilters';
 
 type Props = {
   name: string;
@@ -11,15 +11,15 @@ type Props = {
 };
 
 const CheckList = ({ name, items, label, isWrapped }: Props) => {
-  const { addToParam, removeFromParam, getParams } = useSearchParams();
+  const { addFilter, removeFilter, getFilters } = useFilters();
 
-  const selected = getParams(name);
+  const selected = getFilters(name);
 
   const handleChange = (item: string) => () => {
     if (selected.includes(item)) {
-      removeFromParam(name, item);
+      removeFilter(name, item);
     } else {
-      addToParam(name, item);
+      addFilter(name, item);
     }
   };
 

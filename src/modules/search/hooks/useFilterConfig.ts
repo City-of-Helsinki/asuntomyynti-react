@@ -15,7 +15,7 @@ const enhanceConfig = (config: { [key: string]: {} }) => {
   }, {});
 };
 
-const useFilters = () => {
+const useFilterConfig = () => {
   const [config, setConfig] = useState<FilterConfig>({});
 
   useEffect(() => {
@@ -29,4 +29,4 @@ const useFilters = () => {
   return config;
 };
 
-export default useFilters;
+export default useFilterConfig;

@@ -4,7 +4,7 @@ import RangeInput from './RangeInput';
 import CheckList from './CheckList';
 import { TextInput } from 'hds-react';
 import { FilterItem, FilterRule, FilterType } from '../../../../../types/common';
-import useSearchParams from '../../../../../hooks/useSearchParams';
+import useFilters from '../../../../../hooks/useFilters';
 
 type Props = {
   name: string;
@@ -18,7 +18,7 @@ type Props = {
 const QueryFilter = ({ name, onFilter, isWrapped = false, items, type, label, ...rest }: Props) => {
   // Get the current params
   const searchParams = useQuery();
-  const { setParam, getParam } = useSearchParams();
+  const { setFilter, getFilter } = useFilters();
 
   const filterCallback = useCallback(() => {
     onFilter && onFilter({ label, type, items, ...rest });
@@ -40,13 +40,13 @@ const QueryFilter = ({ name, onFilter, isWrapped = false, items, type, label, ..
 
     case FilterType.Input:
       const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setParam(name, event.target.value || '');
+        setFilter(name, event.target.value || '');
       };
       return (
         <TextInput
           id={`${name}-${label}`}
           label={label}
-          value={getParam(name) || ''}
+          value={getFilter(name) || ''}
           onChange={handleChange}
           style={isWrapped ? { padding: '14px' } : {}}
           {...items[0]}

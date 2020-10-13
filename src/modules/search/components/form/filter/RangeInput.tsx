@@ -2,7 +2,7 @@ import React from 'react';
 import { TextInput } from 'hds-react';
 import styles from './RangeInput.module.scss';
 import { FilterItem } from '../../../../../types/common';
-import useSearchParams from '../../../../../hooks/useSearchParams';
+import useFilters from '../../../../../hooks/useFilters';
 
 type Props = {
   name: string;
@@ -11,15 +11,15 @@ type Props = {
 };
 
 const RangeInput = ({ name, from, to }: Props) => {
-  const { getParams, setParams } = useSearchParams();
+  const { getFilters, setFilters } = useFilters();
 
-  const [min = '', max = ''] = getParams(name);
+  const [min = '', max = ''] = getFilters(name);
   const values = [min, max];
 
   const handleChange = (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value || '';
     const newRange = values.map((item: string, i: number) => (i === index ? newValue : item));
-    setParams(name, newRange);
+    setFilters(name, newRange);
   };
 
   return (

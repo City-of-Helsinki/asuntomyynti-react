@@ -4,7 +4,7 @@ import IconByName from './IconByName';
 import useOutsideClick from '../../../../../hooks/useOutsideClick';
 import QueryFilter from './QueryFilter';
 import { FilterRule, FilterType } from '../../../../../types/common';
-import useSearchParams from '../../../../../hooks/useSearchParams';
+import useFilters from '../../../../../hooks/useFilters';
 
 type Props = {
   name: string;
@@ -16,15 +16,15 @@ const Dropdown = ({ name, icon, ...rest }: Props) => {
 
   const ref = useRef<HTMLDivElement>(null);
 
-  const { clearParam, getParams, getParam } = useSearchParams();
-  const hasSelections = !!getParams(name);
+  const { clearFilter, getFilters, getFilter } = useFilters();
+  const hasSelections = !!getFilter(name);
 
   useOutsideClick(ref, () => {
     setActive(false);
   });
 
   const handleClearSelection = () => {
-    clearParam(name);
+    clearFilter(name);
     setTimeout(() => {
       // Let the user see selection disappear before closing the dropdown
       setActive(false);
@@ -35,12 +35,12 @@ const Dropdown = ({ name, icon, ...rest }: Props) => {
   const handleFilter = ({ label, type }: FilterRule) => {
     switch (type) {
       case FilterType.MultiSelect:
-        const selected = getParams(name);
+        const selected = getFilters(name);
         setLabel((selected[0] || label) + (selected.length > 1 ? `+${selected.length - 1}` : ''));
         break;
 
       case FilterType.Range:
-        const [min, max] = getParams(name);
+        const [min, max] = getFilters(name);
 
         if (min && max) {
           setLabel(`${min}-${max}`);
@@ -54,7 +54,7 @@ const Dropdown = ({ name, icon, ...rest }: Props) => {
         break;
 
       default:
-        setLabel(getParam(name) || label);
+        setLabel(getFilter(name) || label);
     }
   };
 

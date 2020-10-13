@@ -1,14 +1,14 @@
 import React from 'react';
 import { IconCross } from 'hds-react';
 import styles from './TagList.module.scss';
-import useSearchParams from '../../../../../hooks/useSearchParams';
+import useFilters from '../../../../../hooks/useFilters';
 
 const TagList = () => {
-  const { getAllParams, removeFromParam } = useSearchParams();
+  const { getAllFilters, removeFilter } = useFilters();
 
-  const params = getAllParams();
+  const params = getAllFilters();
 
-  const handleClick = (name: string, value: string) => () => removeFromParam(name, value);
+  const handleClick = (name: string, value: string) => () => removeFilter(name, value);
 
   return (
     <div className={styles.container}>
