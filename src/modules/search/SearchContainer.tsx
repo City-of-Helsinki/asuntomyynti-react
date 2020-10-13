@@ -16,7 +16,7 @@ const SearchContainer = () => {
   // Query, as in elasticsearch query params
   const { query, updateQuery } = useElasticsearchQuery(filterConfig);
 
-  const { data } = useSearchResults(query);
+  const { data: searchResults } = useSearchResults(query);
 
   return (
     <div>
@@ -26,7 +26,7 @@ const SearchContainer = () => {
           'Duis ante tortor, dignissim vitae finibus at, pellentesque eget risus. Etiam nec mi ut lorem feugiat blandit nec a quam. Praesent luctus felis sit amet arcu imperdiet suscipit. Cras consectetur eros non lectus volutpat, sit amet ultricies nisi pellentesque. Mauris nec augue nec neque faucibus eleifend quis eu lacus.'
         }
       />
-      <SearchResults searchResults={data} />
+      <SearchResults searchResults={searchResults} />
     </div>
   );
 };
