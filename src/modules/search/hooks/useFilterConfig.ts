@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
-import { FilterConfig } from '../../../types/common';
-import { fetchFilterConfig } from '../../../utils/helpers';
+import { BaseFilterConfigs, FilterConfigs } from '../../../types/common';
 import filterMap from '../utils/filterMap';
+import { fetchFilterConfig } from '../../../utils/fetchFilterConfig';
+import { defaultConfig } from '../utils/defaultConfig';
 
-const enhanceConfig = (config: { [key: string]: {} }) => {
+const enhanceConfig = (config: BaseFilterConfigs): FilterConfigs => {
   return Object.keys(filterMap).reduce((accumulator, key) => {
     return {
       ...accumulator,
       [key]: {
+        ...defaultConfig(key),
         ...config[key],
         ...filterMap[key],
       },
@@ -15,8 +17,8 @@ const enhanceConfig = (config: { [key: string]: {} }) => {
   }, {});
 };
 
-const useFilters = () => {
-  const [config, setConfig] = useState<FilterConfig>({});
+const useFilterConfig = () => {
+  const [config, setConfig] = useState<FilterConfigs>(enhanceConfig({}));
 
   useEffect(() => {
     const updateFilterConfig = async () => {
@@ -29,4 +31,4 @@ const useFilters = () => {
   return config;
 };
 
-export default useFilters;
+export default useFilterConfig;

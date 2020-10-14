@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tag {
+  all: unset;
+  align-items: center;
+  display: flex;
+  background-color: var(--color-black);
+  padding-right: 6px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  height: 24px;
+}
+
+.label {
+  color: var(--color-white);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.icon {
+  color: var(--color-white);
+}

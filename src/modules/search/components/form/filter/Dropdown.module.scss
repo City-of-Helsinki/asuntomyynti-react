@@ -5,11 +5,12 @@
   display: flex;
   flex-direction: column;
   position: absolute;
+  width: 100%;
+  z-index: 1000;
+
   @media (max-width: 768px) {
     position: relative;
   }
-  width: 100%;
-  z-index: 1000;
 }
 
 .content {
@@ -50,18 +51,20 @@
   padding-right: 24px;
 }
 
-.arrow {
+.label::after {
+  content: '';
+  display: block;
   border-right: solid 2px #000000;
   border-bottom: solid 2px #000000;
   transform: rotate(45deg);
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   position: absolute;
   right: 14px;
-}
 
-.active .arrow {
-  transform: rotate(-135deg);
+  .active & {
+    transform: rotate(-135deg);
+  }
 }
 
 .icon {
@@ -82,7 +85,7 @@
   font-weight: 500;
   color: rgb(26, 26, 26);
   width: 100%;
-  cursor: pointer
+  cursor: pointer;
 }
 
 .clearButton:disabled {
