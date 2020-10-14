@@ -1,6 +1,6 @@
 import { PartialConfig, FilterType, QueryParams } from '../../../types/common';
 import { formatRange } from './formatRange';
-import { groupNumbers, listGroupedNumbers } from '../../../utils/groupNumbers';
+import { groupConsecutiveNumbers, listGroupedNumbers } from '../../../utils/groupConsecutiveNumbers';
 
 const fiveOrMoreRooms = '5+ h';
 
@@ -40,7 +40,7 @@ const filterMap: { [key: string]: PartialConfig } = {
       return filters;
     },
     getLabel: (values) => {
-      const groupedNumbers = groupNumbers(values.map((x) => parseInt(x)));
+      const groupedNumbers = groupConsecutiveNumbers(values.map((x) => parseInt(x)));
       return listGroupedNumbers(groupedNumbers, (first, last) => (last === 5 ? `h, 5+` : `h`));
     },
   },

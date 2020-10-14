@@ -1,9 +1,9 @@
-import { groupNumbers, listGroupedNumbers } from './groupNumbers';
+import { groupConsecutiveNumbers, listGroupedNumbers } from './groupConsecutiveNumbers';
 
-describe('groupNumbers', function () {
+describe('groupConsecutiveNumbers', function () {
   it('should group numbers', () => {
     const subject = [1, 3, 5, 2, 6, 8];
-    expect(groupNumbers(subject)).toEqual([[1, 2, 3], [5, 6], [8]]);
+    expect(groupConsecutiveNumbers(subject)).toEqual([[1, 2, 3], [5, 6], [8]]);
   });
 });
 

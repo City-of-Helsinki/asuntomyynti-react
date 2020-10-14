@@ -1,14 +1,13 @@
-export const groupNumbers = (numbers: number[]): number[][] =>
+export const groupConsecutiveNumbers = (numbers: number[]): number[][] =>
   numbers.sort().reduce((groups: number[][], number) => {
-    const lastSubArray: number[] = groups[groups.length - 1] || [];
-
-    if (lastSubArray.length === 0 || lastSubArray[lastSubArray.length - 1] !== number - 1) {
-      groups.push([]);
+    // Take the last set
+    const lastSet: number[] = groups.pop() || [];
+    // If set is empty or last number is consecutive add to set
+    if (lastSet.length === 0 || lastSet[lastSet.length - 1] === number - 1) {
+      return [...groups, [...lastSet, number]];
     }
-
-    groups[groups.length - 1].push(number);
-
-    return groups;
+    // Put it back with new set
+    return [...groups, lastSet, [number]];
   }, []);
 
 export const listGroupedNumbers = (
