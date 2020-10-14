@@ -36,6 +36,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
     for (let i = 1; i <= noOfPages; i++) {
       buttons.push(
         <button
+          key={i}
           className={css.paginationButton}
           onClick={() => handlePageClick(i)}
           style={i === page ? { border: '2px solid #1a1a1a' } : {}}

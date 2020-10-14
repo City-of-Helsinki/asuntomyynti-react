@@ -140,6 +140,18 @@
   .headerFiller {
     display: none;
   }
+
+  .apartmentList {
+    padding: 0;
+  }
+
+  .apartmentListHeaders {
+    display: none;
+  }
+
+  .content {
+    border-bottom: 1px solid #cccccc;
+  }
 }
 
 @media (max-width: 510px) {
