@@ -2,7 +2,7 @@ import { PartialConfig, FilterType, QueryParams } from '../../../types/common';
 import { formatRange } from './formatRange';
 import { groupNumbers, listGroupedNumbers } from '../../../utils/groupNumbers';
 
-const fiveOrMoreItem = '5+ h';
+const fiveOrMoreRooms = '5+ h';
 
 const filterMap: { [key: string]: PartialConfig } = {
   project_district: {
@@ -28,8 +28,7 @@ const filterMap: { [key: string]: PartialConfig } = {
           },
         },
       ];
-      const includesFiveOrMore = values.indexOf(fiveOrMoreItem) !== -1;
-      if (includesFiveOrMore) {
+      if (values.includes(fiveOrMoreRooms)) {
         filters.push({
           range: {
             room_count: {
