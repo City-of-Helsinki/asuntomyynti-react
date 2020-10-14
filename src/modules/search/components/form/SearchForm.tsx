@@ -46,8 +46,10 @@ const SearchForm = ({ config, onSubmit }: Props) => {
             <Button onClick={() => onSubmit()}>Submit</Button>
           </div>
         </div>
-        <div className={styles.divider} />
         <Collapsible expand={showMoreOptions}>
+          <div className={styles.row}>
+            <div className={styles.divider} />
+          </div>
           <div className={styles.row}>
             <div className={styles.column}>
               <QueryFilter name="project_building_type" {...project_building_type} />
@@ -59,17 +61,25 @@ const SearchForm = ({ config, onSubmit }: Props) => {
               <QueryFilter name="state_of_sale" {...state_of_sale} />
             </div>
           </div>
-          <TagList config={config} />
-        <div className={styles.divider} />
         </Collapsible>
-        <button
-          className={styles.showMoreButton}
-          onClick={() => {
-            setShowMoreOptions(!showMoreOptions);
-          }}
-        >
-          <span>{setShowMoreOptions ? 'Näytä vähemmän valintoja' : 'Näytä enemmän valintoja'}</span>
-        </button>
+        <div className={styles.row}>
+          <TagList config={config} />
+        </div>
+        <div className={styles.row}>
+          <div className={styles.divider} />
+        </div>
+        <div className={styles.row}>
+          <div className={styles.column}>
+            <button
+              className={styles.showMoreButton}
+              onClick={() => {
+                setShowMoreOptions(!showMoreOptions);
+              }}
+            >
+              <span>{setShowMoreOptions ? 'Näytä vähemmän valintoja' : 'Näytä enemmän valintoja'}</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
