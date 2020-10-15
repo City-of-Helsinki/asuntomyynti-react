@@ -20,8 +20,12 @@
   white-space: nowrap;
 }
 
-.cell strong {
-  margin-right: 25px;
+.apartmentCell {
+  @extend .cell;
+
+  strong {
+    margin-right: 25px;
+  }
 }
 
 .buttons {
@@ -41,17 +45,44 @@
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
+    padding: 30px 24px;
   }
 
   .content {
     margin-bottom: 30px;
+    flex-direction: column;
   }
 
   .buttons {
     justify-content: space-between;
+    flex-direction: column;
   }
 
-  .cell strong {
-    margin-right: 10px;
+  .getToKnowButton {
+    height: 56px;
+    margin-bottom: 12px;
+  }
+
+  .createApplicationButton {
+    height: 56px;
+    white-space: nowrap;
+    width: 100%;
+  }
+
+  .apartmentCell {
+    align-items: center;
+    font-size: 18px;
+    line-height: 27px;
+
+    strong {
+      margin-right: 41px;
+      font-size: 24px;
+      line-height: 29px;
+      flex-basis: 70px;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
