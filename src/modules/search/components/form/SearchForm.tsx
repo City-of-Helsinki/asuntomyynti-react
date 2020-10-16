@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './SearchForm.module.scss';
 import { Button } from 'hds-react';
 import QueryFilter from './filter/QueryFilter';
 import Dropdown from './filter/Dropdown';
+import Collapsible from '../../../../common/collapsible/Collapsible';
 import { FilterConfigs } from '../../../../types/common';
 import TagList from './tag/TagList';
 
@@ -12,6 +13,8 @@ type Props = {
 };
 
 const SearchForm = ({ config, onSubmit }: Props) => {
+  const [showMoreOptions, setShowMoreOptions] = useState(false);
+
   const {
     project_district,
     room_count,
@@ -21,8 +24,9 @@ const SearchForm = ({ config, onSubmit }: Props) => {
     properties,
     state_of_sale,
   } = config;
+
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${showMoreOptions ? styles.expand : ''}`}>
       <div className={styles.form}>
         <h1>Etsi Hitas-omistusasuntoja</h1>
         <div className={styles.row}>
@@ -42,20 +46,40 @@ const SearchForm = ({ config, onSubmit }: Props) => {
             <Button onClick={() => onSubmit()}>Submit</Button>
           </div>
         </div>
-        <div className={styles.divider} />
+        <Collapsible expand={showMoreOptions}>
+          <div className={styles.row}>
+            <div className={styles.divider} />
+          </div>
+          <div className={styles.row}>
+            <div className={styles.column}>
+              <QueryFilter name="project_building_type" {...project_building_type} />
+            </div>
+            <div className={styles.column}>
+              <QueryFilter name="properties" {...properties} />
+            </div>
+            <div className={styles.column}>
+              <QueryFilter name="state_of_sale" {...state_of_sale} />
+            </div>
+          </div>
+        </Collapsible>
+        <div className={styles.row}>
+          <TagList config={config} />
+        </div>
+        <div className={styles.row}>
+          <div className={styles.divider} />
+        </div>
         <div className={styles.row}>
           <div className={styles.column}>
-            <QueryFilter name="project_building_type" {...project_building_type} />
-          </div>
-          <div className={styles.column}>
-            <QueryFilter name="properties" {...properties} />
-          </div>
-          <div className={styles.column}>
-            <QueryFilter name="state_of_sale" {...state_of_sale} />
+            <button
+              className={styles.showMoreButton}
+              onClick={() => {
+                setShowMoreOptions(!showMoreOptions);
+              }}
+            >
+              <span>{setShowMoreOptions ? 'Näytä vähemmän valintoja' : 'Näytä enemmän valintoja'}</span>
+            </button>
           </div>
         </div>
-        <TagList config={config} />
-        <div className={styles.divider} />
       </div>
     </div>
   );
