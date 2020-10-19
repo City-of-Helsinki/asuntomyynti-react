@@ -22,7 +22,7 @@ const SearchForm = ({ config, onSubmit }: Props) => {
     sales_price,
     project_building_type,
     properties,
-    state_of_sale,
+    project_new_development_status,
   } = config;
 
   return (
@@ -58,7 +58,7 @@ const SearchForm = ({ config, onSubmit }: Props) => {
               <QueryFilter name="properties" {...properties} />
             </div>
             <div className={styles.column}>
-              <QueryFilter name="state_of_sale" {...state_of_sale} />
+              <QueryFilter name="project_new_development_status" {...project_new_development_status} />
             </div>
           </div>
         </Collapsible>
