@@ -63,5 +63,6 @@
   },
   "lint-staged": {
     "*.{ts,tsx,js,css,md}": "prettier --write"
-  }
+  },
+  "proxy": "http://dev.asuntotuotanto.druidfi.wod.by"
 }
