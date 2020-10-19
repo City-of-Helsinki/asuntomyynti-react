@@ -31,7 +31,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build:drupal": "react-app-rewired build && yarn build:dist",
+    "build:drupal": "yarn build && yarn build:dist",
     "build:dist": "cd build && mkdir -p drupal && cp static/js/main.*.chunk.js drupal/main.js && cp static/js/runtime-main.*.js drupal/runtime-main.js && cp static/js/[0-9]*.*.chunk.js drupal/vendors.js && cp static/css/*.css drupal/main.css"
   },
   "eslintConfig": {
