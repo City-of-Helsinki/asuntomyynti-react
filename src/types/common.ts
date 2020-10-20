@@ -272,7 +272,7 @@ export type DefaultFilterConfig = {
   items: string[];
   getQuery: (values: string[]) => QueryParams[];
   getLabel: (values: string[]) => string;
-  unserialize: (value: string) => { name: FilterName; value: string }[];
+  unserialize: (serializedValue: string) => { name: FilterName; value: string }[];
 };
 
 export type FilterConfig = Omit<DefaultFilterConfig, 'items'> & {
