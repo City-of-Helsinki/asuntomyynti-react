@@ -12,9 +12,9 @@ const TagList = ({ config }: Props) => {
   const { clearFilter, removeFilter, getAllFilters } = useFilters();
 
   const params = getAllFilters().reduce((all: ParamList, [name, value]) => {
-    const { unserialize } = config[name] || {};
-    if (unserialize) {
-      return [...all, ...unserialize(value)];
+    const { getTagLabel } = config[name] || {};
+    if (getTagLabel) {
+      return [...all, ...getTagLabel(value)];
     }
     return all;
   }, []);
