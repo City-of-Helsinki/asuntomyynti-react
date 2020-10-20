@@ -1,37 +1,50 @@
-import { PartialConfig, FilterType, QueryParams } from '../../../types/common';
+import {
+  DefaultFilterConfig,
+  FilterConfig,
+  FilterName,
+  FilterType,
+  PartialConfig,
+  QueryParams,
+} from '../../../types/common';
 import { formatRange } from './formatRange';
 import { groupConsecutiveNumbers, listGroupedNumbers } from '../../../utils/groupConsecutiveNumbers';
 
-const fiveOrMoreRooms = '5+ h';
+const fiveOrMoreRooms = '5+';
 
-const filterMap: { [key: string]: PartialConfig } = {
-  project_district: {
+type FilterMap = {
+  [key in FilterName]: (config: DefaultFilterConfig | (DefaultFilterConfig & PartialConfig)) => FilterConfig;
+};
+
+const filterMap: FilterMap = {
+  project_district: (config) => ({
+    ...config,
     type: FilterType.MultiSelect,
     icon: 'location',
-    getLabel: (values) => {
+    getLabel: (values: string[]) => {
       const [firstItem] = values;
       if (!firstItem) {
         return '';
       }
       return firstItem + (values.length > 1 ? ` +${values.length - 1}` : '');
     },
-  },
+  }),
 
-  room_count: {
+  room_count: (config) => ({
+    ...config,
     type: FilterType.MultiSelect,
     icon: 'home',
     getQuery: (values) => {
       const filters: QueryParams[] = [
         {
           terms: {
-            room_count: values.map((x) => parseInt(x)),
+            [FilterName.RoomCount]: values.map((x) => parseInt(x)),
           },
         },
       ];
       if (values.includes(fiveOrMoreRooms)) {
         filters.push({
           range: {
-            room_count: {
+            [FilterName.RoomCount]: {
               gte: 4,
             },
           },
@@ -43,19 +56,15 @@ const filterMap: { [key: string]: PartialConfig } = {
       const groupedNumbers = groupConsecutiveNumbers(values.map((x) => parseInt(x)));
       return listGroupedNumbers(groupedNumbers, (first, last) => (last === 5 ? `h, 5+` : `h`));
     },
-  },
+    unserialize: (value) => value.split(',').map((item) => ({ name: FilterName.RoomCount, value: `${item}h` })),
+  }),
 
-  living_area: {
+  living_area: ({ items: [from, to], ...rest }) => ({
+    ...rest,
     type: FilterType.Range,
     items: [
-      {
-        label: 'Vähintään',
-        placeholder: 'm²',
-      },
-      {
-        label: 'Enintään',
-        placeholder: 'm²',
-      },
+      { label: from || '', placeholder: 'm²' },
+      { label: to || '', placeholder: 'm²' },
     ],
     label: 'Pinta-ala, m²',
     getQuery: (values) => {
@@ -63,7 +72,7 @@ const filterMap: { [key: string]: PartialConfig } = {
       return [
         {
           range: {
-            living_area: {
+            [FilterName.LivingArea]: {
               // Add key and value only if has value
               ...(gte ? { gte } : {}),
               ...(lte ? { lte } : {}),
@@ -75,23 +84,15 @@ const filterMap: { [key: string]: PartialConfig } = {
     getLabel: (values) => {
       return formatRange(values);
     },
-    getTagLabel: (value) => {
+    unserialize: (value) => {
       const formattedRange = formatRange(value.split(','));
-      return [{ name: 'living_area', value: formattedRange }];
+      return [{ name: FilterName.LivingArea, value: formattedRange }];
     },
-  },
+  }),
 
-  sales_price: {
+  sales_price: (config) => ({
+    ...config,
     type: FilterType.Input,
-    getQuery: ([value]) => [
-      {
-        range: {
-          sales_price: {
-            lte: parseInt(value),
-          },
-        },
-      },
-    ],
     items: [
       {
         label: 'Hinta korkeintaan',
@@ -100,23 +101,35 @@ const filterMap: { [key: string]: PartialConfig } = {
       },
     ],
     label: 'Hinta',
+    getQuery: ([value]) => [
+      {
+        range: {
+          [FilterName.SalesPrice]: {
+            lte: parseInt(value),
+          },
+        },
+      },
+    ],
     getLabel: ([value]) => {
       return `${value} 000 m²`;
     },
-  },
+  }),
 
-  project_building_type: {
+  project_building_type: (config) => ({
+    ...config,
     type: FilterType.MultiSelect,
-  },
+  }),
 
-  properties: {
+  properties: (config) => ({
+    ...config,
     type: FilterType.MultiSelect,
     getQuery: (values: string[]) => values.map((value) => ({ term: { [value]: true } })),
-  },
+  }),
 
-  state_of_sale: {
+  project_new_development_status: (config) => ({
+    ...config,
     type: FilterType.MultiSelect,
-  },
+  }),
 };
 
 export default filterMap;
