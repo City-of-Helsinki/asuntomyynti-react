@@ -56,7 +56,7 @@ const filterMap: FilterMap = {
       const groupedNumbers = groupConsecutiveNumbers(values.map((x) => parseInt(x)));
       return listGroupedNumbers(groupedNumbers, (first, last) => (last === 5 ? `h, 5+` : `h`));
     },
-    unserialize: (serializedValue) =>
+    getTagLabel: (serializedValue) =>
       serializedValue.split(',').map((item) => ({ name: FilterName.RoomCount, value: `${item}h` })),
   }),
 
@@ -85,7 +85,7 @@ const filterMap: FilterMap = {
     getLabel: (values) => {
       return formatRange(values);
     },
-    unserialize: (serializedValue) => {
+    getTagLabel: (serializedValue) => {
       const formattedRange = formatRange(serializedValue.split(','));
       return [{ name: FilterName.LivingArea, value: formattedRange }];
     },
