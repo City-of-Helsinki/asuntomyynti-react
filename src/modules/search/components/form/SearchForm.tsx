@@ -76,7 +76,7 @@ const SearchForm = ({ config, onSubmit }: Props) => {
                 setShowMoreOptions(!showMoreOptions);
               }}
             >
-              <span>{setShowMoreOptions ? 'Näytä vähemmän valintoja' : 'Näytä enemmän valintoja'}</span>
+              <span>{showMoreOptions ? 'Näytä vähemmän valintoja' : 'Näytä enemmän valintoja'}</span>
             </button>
           </div>
         </div>
