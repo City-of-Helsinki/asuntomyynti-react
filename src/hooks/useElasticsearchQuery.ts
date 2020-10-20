@@ -1,4 +1,4 @@
-import { FilterConfigs, QueryParams } from '../types/common';
+import { FilterConfigs, FilterName, QueryParams } from '../types/common';
 import { useEffect, useState } from 'react';
 import useFilters from './useFilters';
 
@@ -9,7 +9,7 @@ const useElasticsearchQuery = (config: FilterConfigs) => {
   const buildQuery = () => {
     const filters = Object.keys(config).reduce((filters: QueryParams[], name) => {
       const values = getFilters(name);
-      const { getQuery } = config[name];
+      const { getQuery } = config[name as FilterName];
 
       if (values.length === 0) {
         return filters;
