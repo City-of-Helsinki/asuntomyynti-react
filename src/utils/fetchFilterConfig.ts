@@ -1,10 +1,8 @@
 // TODO: look into react-query for caching and such
 import { BaseFilterConfigs } from '../types/common';
-import mockSearchConfig from '../modules/search/mocks/filter-config.json';
+import axios from 'axios';
 
-export const fetchFilterConfig = (): Promise<BaseFilterConfigs> =>
-  new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(mockSearchConfig as BaseFilterConfigs);
-    }, 1000);
-  });
+export const fetchFilterConfig = async (): Promise<BaseFilterConfigs> => {
+  const { data } = await axios.get('/fi/filters');
+  return data;
+};
