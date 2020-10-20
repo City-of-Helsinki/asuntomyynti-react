@@ -13,8 +13,8 @@ const getDefaultConfig = (name: FilterName): DefaultFilterConfig => ({
   getLabel: (values: string[]) => {
     return values.join(', ');
   },
-  unserialize: (value: string) =>
-    value
+  unserialize: (serializedValue: string) =>
+    serializedValue
       .split(',')
       .filter((value) => value !== '') // Filter out empty values
       .map((value) => ({ name, value })),
