@@ -1,34 +1,16 @@
-import { useEffect, useState } from 'react';
-import { BaseFilterConfigs, FilterConfigs } from '../../../types/common';
-import filterMap from '../utils/filterMap';
 import { fetchFilterConfig } from '../../../utils/fetchFilterConfig';
-import { defaultConfig } from '../utils/defaultConfig';
+import { useQuery } from 'react-query';
+import { enhanceConfig } from '../../../utils/enhanceConfig';
 
-const enhanceConfig = (config: BaseFilterConfigs): FilterConfigs => {
-  return Object.keys(filterMap).reduce((accumulator, key) => {
-    return {
-      ...accumulator,
-      [key]: {
-        ...defaultConfig(key),
-        ...config[key],
-        ...filterMap[key],
-      },
-    };
-  }, {});
-};
+const DAY_IN_SECONDS = 86400;
 
 const useFilterConfig = () => {
-  const [config, setConfig] = useState<FilterConfigs>(enhanceConfig({}));
-
-  useEffect(() => {
-    const updateFilterConfig = async () => {
-      const config = await fetchFilterConfig();
-      setConfig(enhanceConfig(config));
-    };
-    updateFilterConfig();
-  }, []);
-
-  return config;
+  const { data } = useQuery('filterConfig', fetchFilterConfig, {
+    staleTime: DAY_IN_SECONDS,
+    initialStale: true,
+    initialData: {},
+  });
+  return enhanceConfig(data || {});
 };
 
 export default useFilterConfig;
