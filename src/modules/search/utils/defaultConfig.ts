@@ -1,6 +1,7 @@
-import { PartialConfig } from '../../../types/common';
+import { DefaultFilterConfig, DefaultFilterConfigs, FilterName } from '../../../types/common';
 
-export const defaultConfig = (name: string): PartialConfig => ({
+const getDefaultConfig = (name: FilterName): DefaultFilterConfig => ({
+  label: '',
   items: [],
   getQuery: (values: string[]) => [
     {
@@ -12,9 +13,14 @@ export const defaultConfig = (name: string): PartialConfig => ({
   getLabel: (values: string[]) => {
     return values.join(', ');
   },
-  getTagLabel: (value: string) =>
+  unserialize: (value: string) =>
     value
       .split(',')
       .filter((value) => value !== '') // Filter out empty values
       .map((value) => ({ name, value })),
 });
+
+export const defaultConfig = Object.values(FilterName).reduce(
+  (config, name) => ({ ...config, [name]: getDefaultConfig(name) }),
+  {} as DefaultFilterConfigs
+);
