@@ -272,7 +272,7 @@ export type DefaultFilterConfig = {
   items: string[];
   getQuery: (values: string[]) => QueryParams[];
   getLabel: (values: string[]) => string;
-  getTagLabel: (serializedValue: string) => { name: FilterName; value: string }[];
+  getTagLabel: (serializedValue: string) => [FilterName, string][];
 };
 
 export type FilterConfig = Omit<DefaultFilterConfig, 'items'> & {
@@ -303,4 +303,4 @@ export type DefaultFilterConfigs = {
   [key in FilterName]: DefaultFilterConfig;
 };
 
-export type ParamList = { name: FilterName; value: string }[];
+export type ParamList = [FilterName, string][];

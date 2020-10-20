@@ -17,7 +17,7 @@ const getDefaultConfig = (name: FilterName): DefaultFilterConfig => ({
     serializedValue
       .split(',')
       .filter((value) => value !== '') // Filter out empty values
-      .map((value) => ({ name, value })),
+      .map((value) => [name, value]),
 });
 
 export const defaultConfig = Object.values(FilterName).reduce(
