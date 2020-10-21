@@ -1,7 +1,7 @@
 import { DefaultFilterConfig, DefaultFilterConfigs, FilterName } from '../../../types/common';
 
 const getDefaultConfig = (name: FilterName): DefaultFilterConfig => ({
-  label: '',
+  label: name,
   items: [],
   getQuery: (values: string[]) => [
     {

@@ -9,10 +9,11 @@ import TagList from './tag/TagList';
 
 type Props = {
   onSubmit: () => void;
-  config: FilterConfigs;
+  config?: FilterConfigs;
+  isLoading: boolean;
 };
 
-const SearchForm = ({ config, onSubmit }: Props) => {
+const SearchForm = ({ config, onSubmit, isLoading }: Props) => {
   const [showMoreOptions, setShowMoreOptions] = useState(false);
 
   const {
@@ -23,27 +24,27 @@ const SearchForm = ({ config, onSubmit }: Props) => {
     project_building_type,
     properties,
     project_new_development_status,
-  } = config;
+  } = config || {};
 
   return (
-    <div className={`${styles.container} ${showMoreOptions ? styles.expand : ''}`}>
+    <div className={`${styles.container} ${showMoreOptions ? styles.expand : ''} ${isLoading ? styles.isLoading : ''}`}>
       <div className={styles.form}>
         <h1>Etsi Hitas-omistusasuntoja</h1>
         <div className={styles.row}>
-          <div className={styles.column}>
-            <Dropdown name="project_district" {...project_district} />
+          <div className={`${styles.column} ${styles.canShimmer}`}>
+            {project_district && <Dropdown name="project_district" {...project_district} />}
           </div>
-          <div className={styles.column}>
-            <Dropdown name="room_count" {...room_count} />
+          <div className={`${styles.column} ${styles.canShimmer}`}>
+            {room_count && <Dropdown name="room_count" {...room_count} />}
           </div>
-          <div className={styles.column}>
-            <Dropdown name="living_area" {...living_area} />
+          <div className={`${styles.column} ${styles.canShimmer}`}>
+            {living_area && <Dropdown name="living_area" {...living_area} />}
           </div>
-          <div className={styles.column}>
-            <Dropdown name="sales_price" {...sales_price} />
+          <div className={`${styles.column} ${styles.canShimmer}`}>
+            {sales_price && <Dropdown name="sales_price" {...sales_price} />}
           </div>
-          <div className={styles.column}>
-            <Button onClick={() => onSubmit()}>Submit</Button>
+          <div className={`${styles.column} ${styles.canShimmer}`}>
+            {!isLoading && <Button onClick={() => onSubmit()}>Submit</Button>}
           </div>
         </div>
         <Collapsible expand={showMoreOptions}>
@@ -52,19 +53,17 @@ const SearchForm = ({ config, onSubmit }: Props) => {
           </div>
           <div className={styles.row}>
             <div className={styles.column}>
-              <QueryFilter name="project_building_type" {...project_building_type} />
+              {project_building_type && <QueryFilter name="project_building_type" {...project_building_type} />}
             </div>
+            <div className={styles.column}>{properties && <QueryFilter name="properties" {...properties} />}</div>
             <div className={styles.column}>
-              <QueryFilter name="properties" {...properties} />
-            </div>
-            <div className={styles.column}>
-              <QueryFilter name="project_new_development_status" {...project_new_development_status} />
+              {project_new_development_status && (
+                <QueryFilter name="project_new_development_status" {...project_new_development_status} />
+              )}
             </div>
           </div>
         </Collapsible>
-        <div className={styles.row}>
-          <TagList config={config} />
-        </div>
+        <div className={styles.row}>{config && <TagList config={config} />}</div>
         <div className={styles.row}>
           <div className={styles.divider} />
         </div>
