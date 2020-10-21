@@ -1,7 +1,8 @@
-import { DefaultFilterConfig, DefaultFilterConfigs, FilterName } from '../../../types/common';
+import { DefaultFilterConfig, FilterName } from '../../../types/common';
 
-const getDefaultConfig = (name: FilterName): DefaultFilterConfig => ({
+export const defaultConfig = (name: FilterName): DefaultFilterConfig => ({
   label: name,
+  suffix: null,
   items: [],
   getQuery: (values: string[]) => [
     {
@@ -19,8 +20,3 @@ const getDefaultConfig = (name: FilterName): DefaultFilterConfig => ({
       .filter((value) => value !== '') // Filter out empty values
       .map((value) => ({ name, value })),
 });
-
-export const defaultConfig = Object.values(FilterName).reduce(
-  (config, name) => ({ ...config, [name]: getDefaultConfig(name) }),
-  {} as DefaultFilterConfigs
-);

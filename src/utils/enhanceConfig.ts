@@ -1,11 +1,12 @@
-import { BaseFilterConfigs, DefaultFilterConfig, FilterConfigs, FilterName, PartialConfig } from '../types/common';
+import { BaseFilterConfigs, FilterConfigs, FilterName, PartialConfig } from '../types/common';
 import filterMap from '../modules/search/utils/filterMap';
 import { defaultConfig } from '../modules/search/utils/defaultConfig';
 
-export const enhanceConfig = (config: BaseFilterConfigs) =>
-  Object.keys(filterMap).reduce<BaseFilterConfigs>((accumulator, key) => {
+export const enhanceConfig = (config: BaseFilterConfigs): FilterConfigs =>
+  Object.keys(filterMap).reduce<FilterConfigs>((accumulator, key) => {
     const filterConfig = {
-      ...(accumulator[key as FilterName] as DefaultFilterConfig),
+      ...accumulator[key as FilterName],
+      ...defaultConfig(key as FilterName),
       ...((config[key as FilterName] || {}) as PartialConfig | {}),
     };
     return {
@@ -14,4 +15,4 @@ export const enhanceConfig = (config: BaseFilterConfigs) =>
         ...filterMap[key as FilterName](filterConfig),
       },
     };
-  }, defaultConfig) as FilterConfigs;
+  }, {} as FilterConfigs);

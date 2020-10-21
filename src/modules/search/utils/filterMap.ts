@@ -1,18 +1,11 @@
-import {
-  DefaultFilterConfig,
-  FilterConfig,
-  FilterName,
-  FilterType,
-  PartialConfig,
-  QueryParams,
-} from '../../../types/common';
+import { DefaultFilterConfig, FilterConfig, FilterName, FilterType, QueryParams } from '../../../types/common';
 import { formatRange } from './formatRange';
 import { groupConsecutiveNumbers, listGroupedNumbers } from '../../../utils/groupConsecutiveNumbers';
 
 const fiveOrMoreRooms = '5+h';
 
 type FilterMap = {
-  [key in FilterName]: (config: DefaultFilterConfig | (DefaultFilterConfig & PartialConfig)) => FilterConfig;
+  [key in FilterName]: (config: DefaultFilterConfig) => FilterConfig;
 };
 
 const filterMap: FilterMap = {
@@ -55,16 +48,18 @@ const filterMap: FilterMap = {
     },
     getLabel: (values) => {
       const groupedNumbers = groupConsecutiveNumbers(values.map((x) => parseInt(x)));
-      return listGroupedNumbers(groupedNumbers, (first, last) => (last === 5 ? `${suffix}, 5+${suffix}` : suffix));
+      return listGroupedNumbers(groupedNumbers, (first, last) =>
+        last === 5 ? `${suffix}, 5+${suffix}` : suffix || ''
+      );
     },
   }),
 
-  living_area: ({ items: [from, to], suffix: placeholder, ...rest }) => ({
+  living_area: ({ items: [from, to], suffix, ...rest }) => ({
     ...rest,
     type: FilterType.Range,
     items: [
-      { label: from || '', placeholder },
-      { label: to || '', placeholder },
+      { label: from || '', placeholder: suffix || '' },
+      { label: to || '', placeholder: suffix || '' },
     ],
     getQuery: (values) => {
       const [gte, lte] = values.map((x) => parseInt(x));
@@ -95,7 +90,7 @@ const filterMap: FilterMap = {
     items: [
       {
         label,
-        placeholder: suffix,
+        placeholder: suffix || '',
       },
     ],
     getQuery: ([value]) => [
