@@ -105,6 +105,7 @@ const filterMap: FilterMap = {
     getLabel: ([value]) => {
       return `${value} 000 ${suffix}`;
     },
+    getTagLabel: (value) => [{ name: FilterName.SalesPrice, value: `${value} 000 ${suffix}` }],
   }),
 
   project_building_type: (config) => ({
