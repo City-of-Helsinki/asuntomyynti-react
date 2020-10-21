@@ -24,10 +24,10 @@ const TagList = ({ config }: Props) => {
 
   return (
     <div className={styles.container}>
-      {params.map(([name, value], index) => (
+      {params.map(([name, value, label], index) => (
         <button key={index} className={styles.tag} onClick={handleClick(name, value)}>
           <IconCross className={styles.icon} />
-          <span className={styles.label}>{value}</span>
+          <span className={styles.label}>{label || value}</span>
         </button>
       ))}
     </div>

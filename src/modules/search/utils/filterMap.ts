@@ -56,7 +56,8 @@ const filterMap: FilterMap = {
       const groupedNumbers = groupConsecutiveNumbers(values.map((x) => parseInt(x)));
       return listGroupedNumbers(groupedNumbers, (first, last) => (last === 5 ? `h, 5+` : `h`));
     },
-    getTagLabel: (serializedValue) => serializedValue.split(',').map((item) => [FilterName.RoomCount, `${item}h`]),
+    getTagLabel: (serializedValue) =>
+      serializedValue.split(',').map((item) => [FilterName.RoomCount, item, `${item}h`]),
   }),
 
   living_area: ({ items: [from, to], ...rest }) => ({
@@ -113,7 +114,7 @@ const filterMap: FilterMap = {
     getLabel: ([value]) => {
       return `${value} 000 m²`;
     },
-    getTagLabel: (value) => [[FilterName.SalesPrice, `${value} 000 m²`]],
+    getTagLabel: (value) => [[FilterName.SalesPrice, value, `${value} 000 m²`]],
   }),
 
   project_building_type: (config) => ({
