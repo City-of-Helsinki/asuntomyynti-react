@@ -6,17 +6,20 @@ import useLang from '../../hooks/useLang';
 import useFilterConfig from './hooks/useFilterConfig';
 import useElasticsearchQuery from '../../hooks/useElasticsearchQuery';
 import useSearchResults from '../../hooks/useSearchResults';
+import ErrorToast from "../../common/errorToast/ErrorToast";
 
 const SearchContainer = () => {
   useLang();
 
   // TODO: Consider saving config to context for easier access
-  const { isLoading: filterConfigIsLoading, data: filterConfig } = useFilterConfig();
+  const { isLoading: filterConfigIsLoading, data: filterConfig, isError: configError } = useFilterConfig();
 
   // Query, as in elasticsearch query params
   const { query, updateQuery } = useElasticsearchQuery(filterConfig || {});
 
-  const { data: searchResults } = useSearchResults(query);
+  const { data: searchResults, isError: searchError } = useSearchResults(query);
+
+  const isError = configError || searchError;
 
   return (
     <div>
@@ -27,6 +30,7 @@ const SearchContainer = () => {
         }
       />
       <SearchResults searchResults={searchResults} />
+      {isError && <ErrorToast />}
     </div>
   );
 };

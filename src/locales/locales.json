@@ -8,12 +8,14 @@
       "applications": "Applications",
       "apply": "Apply",
       "area": "Area",
+      "error": "Error",
       "floor": "Floor",
       "free-apartments": "Free apartments",
       "free-of-debt-price": "Free of debt price",
       "info": "Info",
       "learn-more": "Learn more",
       "project": "project",
+      "something-wrong": "Oops, something went wrong.",
       "total": "Total",
       "until": "until"
     }
@@ -27,12 +29,14 @@
       "applications": "Hakijatilanne",
       "apply": "Luo hakemus",
       "area": "Pinta-ala",
+      "error": "Virhe",
       "floor": "Kerros",
       "free-apartments": "Vapaat asunnot",
       "free-of-debt-price": "Velaton hinta",
       "info": "Tutustu",
       "learn-more": "Tutustu kohteeseen",
       "project": "kohde",
+      "something-wrong": "Uups, jokin meni pieleen.",
       "total": "Yhteensä",
       "until": "asti"
     }
