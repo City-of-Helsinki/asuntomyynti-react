@@ -1,5 +1,6 @@
 .collapsible {
   height: auto;
-  transition: height 0.1s;
+  transition: height 0.2s;
   overflow: hidden;
+  transition-timing-function: ease-in;
 }

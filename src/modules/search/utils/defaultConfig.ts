@@ -1,6 +1,8 @@
-import { PartialConfig } from '../../../types/common';
+import { DefaultFilterConfig, FilterName } from '../../../types/common';
 
-export const defaultConfig = (name: string): PartialConfig => ({
+export const defaultConfig = (name: FilterName): DefaultFilterConfig => ({
+  label: name,
+  suffix: null,
   items: [],
   getQuery: (values: string[]) => [
     {
@@ -12,8 +14,8 @@ export const defaultConfig = (name: string): PartialConfig => ({
   getLabel: (values: string[]) => {
     return values.join(', ');
   },
-  getTagLabel: (value: string) =>
-    value
+  getTagLabel: (serializedValue: string) =>
+    serializedValue
       .split(',')
       .filter((value) => value !== '') // Filter out empty values
       .map((value) => ({ name, value })),

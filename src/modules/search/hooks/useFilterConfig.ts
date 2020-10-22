@@ -1,34 +1,24 @@
-import { useEffect, useState } from 'react';
-import { BaseFilterConfigs, FilterConfigs } from '../../../types/common';
-import filterMap from '../utils/filterMap';
-import { fetchFilterConfig } from '../../../utils/fetchFilterConfig';
-import { defaultConfig } from '../utils/defaultConfig';
+import { useQuery } from 'react-query';
+import axios from 'axios';
+import { enhanceConfig } from '../../../utils/enhanceConfig';
+import useSearchParams from '../../../hooks/useSearchParams';
+import { FilterConfigs } from '../../../types/common';
 
-const enhanceConfig = (config: BaseFilterConfigs): FilterConfigs => {
-  return Object.keys(filterMap).reduce((accumulator, key) => {
-    return {
-      ...accumulator,
-      [key]: {
-        ...defaultConfig(key),
-        ...config[key],
-        ...filterMap[key],
-      },
-    };
-  }, {});
-};
+const DAY_IN_SECONDS = 86400;
 
 const useFilterConfig = () => {
-  const [config, setConfig] = useState<FilterConfigs>(enhanceConfig({}));
+  const searchParams = useSearchParams();
+  const language = searchParams.get('lang') || 'fi';
 
-  useEffect(() => {
-    const updateFilterConfig = async () => {
-      const config = await fetchFilterConfig();
-      setConfig(enhanceConfig(config));
-    };
-    updateFilterConfig();
-  }, []);
+  const fetchFilterConfig = async () => {
+    const { data } = await axios.get(`/${language}/filters`);
+    return enhanceConfig(data);
+  };
 
-  return config;
+  return useQuery('filterConfig', fetchFilterConfig, {
+    staleTime: DAY_IN_SECONDS,
+    initialStale: true,
+  });
 };
 
 export default useFilterConfig;

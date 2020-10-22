@@ -2,7 +2,7 @@ import React from 'react';
 import { IconCross } from 'hds-react';
 import styles from './TagList.module.scss';
 import useFilters from '../../../../../hooks/useFilters';
-import { FilterConfigs, FilterType, ParamList } from '../../../../../types/common';
+import { FilterConfigs, FilterName, FilterType, ParamList } from '../../../../../types/common';
 
 type Props = {
   config: FilterConfigs;
@@ -19,7 +19,7 @@ const TagList = ({ config }: Props) => {
     return all;
   }, []);
 
-  const handleClick = (name: string, value: string) => () =>
+  const handleClick = (name: FilterName, value: string) => () =>
     config[name].type === FilterType.Range ? clearFilter(name) : removeFilter(name, value);
 
   return (

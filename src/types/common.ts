@@ -233,13 +233,13 @@ export type SearchResult = {
 
 export type QueryParams = {
   terms?: {
-    [key: string]: (number | string)[];
+    [key in FilterName]?: (number | string)[];
   };
   term?: {
-    [key: string]: number | string | boolean;
+    [key in FilterName]?: number | string | boolean;
   };
   range?: {
-    [key: string]: {
+    [key in FilterName]?: {
       gte?: number;
       lte?: number;
       boost?: number;
@@ -263,35 +263,43 @@ export enum FilterType {
 }
 
 export type PartialConfig = {
-  type?: FilterType;
-  icon?: string;
-  items?: (FilterItem | string)[];
-  label?: string;
-  getQuery?: (values: string[]) => QueryParams[];
-  getLabel?: (values: string[]) => string;
-  getTagLabel?: (value: string) => { name: string; value: string }[];
-  serialize?: (values: string) => string;
-  unserialize?: (value: string) => string[];
+  items: string[];
+  label: string;
+  suffix: string | null;
 };
 
-export type FilterConfig = {
+export type DefaultFilterConfig = PartialConfig & {
+  getQuery: (values: string[]) => QueryParams[];
+  getLabel: (values: string[]) => string;
+  getTagLabel: (serializedValue: string) => { name: FilterName; value: string }[];
+};
+
+export type FilterConfig = Omit<DefaultFilterConfig, 'items' | 'suffix'> & {
   type: FilterType;
   icon?: string;
   items: (FilterItem | string)[];
-  label: string;
-  getQuery: (values: string[]) => QueryParams[];
-  getLabel: (values: string[]) => string;
-  getTagLabel: (value: string) => { name: string; value: string }[];
-  serialize?: (values: string) => string;
-  unserialize?: (value: string) => string[];
 };
 
+export enum FilterName {
+  LivingArea = 'living_area',
+  ProjectBuildingType = 'project_building_type',
+  ProjectDistrict = 'project_district',
+  ProjectNewDevelopmentStatus = 'project_new_development_status',
+  Properties = 'properties',
+  RoomCount = 'room_count',
+  SalesPrice = 'sales_price',
+}
+
 export type FilterConfigs = {
-  [key: string]: FilterConfig;
+  [key in FilterName]: FilterConfig;
 };
 
 export type BaseFilterConfigs = {
-  [key: string]: PartialConfig;
+  [key in FilterName]?: PartialConfig;
 };
 
-export type ParamList = { name: string; value: string }[];
+export type DefaultFilterConfigs = {
+  [key in FilterName]: DefaultFilterConfig;
+};
+
+export type ParamList = { name: FilterName; value: string }[];
