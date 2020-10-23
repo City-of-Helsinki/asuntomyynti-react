@@ -52,8 +52,6 @@ const filterMap: FilterMap = {
         last === 5 ? `${suffix}, 5+${suffix}` : suffix || ''
       );
     },
-    getTagLabel: (serializedValue) =>
-      serializedValue.split(',').map((item) => [FilterName.RoomCount, item, `${item}h`]),
   }),
 
   living_area: ({ items: [from, to], suffix, ...rest }) => ({
