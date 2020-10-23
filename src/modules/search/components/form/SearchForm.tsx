@@ -6,6 +6,8 @@ import Dropdown from './filter/Dropdown';
 import Collapsible from '../../../../common/collapsible/Collapsible';
 import { FilterConfigs, FilterName } from '../../../../types/common';
 import TagList from './tag/TagList';
+import { useTranslation } from 'react-i18next';
+import useFilters from '../../../../hooks/useFilters';
 
 type Props = {
   onSubmit: () => void;
@@ -14,7 +16,9 @@ type Props = {
 };
 
 const SearchForm = ({ config, onSubmit, isLoading }: Props) => {
+  const { clearAllFilters, hasFilters } = useFilters();
   const [showMoreOptions, setShowMoreOptions] = useState(false);
+  const { t } = useTranslation();
 
   const {
     project_district,
@@ -79,9 +83,16 @@ const SearchForm = ({ config, onSubmit, isLoading }: Props) => {
                 setShowMoreOptions(!showMoreOptions);
               }}
             >
-              <span>{showMoreOptions ? 'Näytä vähemmän valintoja' : 'Näytä enemmän valintoja'}</span>
+              <span>{showMoreOptions ? t('SEARCH:show-less-options') : t('SEARCH:show-more-options')}</span>
             </button>
           </div>
+          {config && hasFilters(config) && (
+            <div className={styles.column}>
+              <button onClick={() => clearAllFilters(config)} className={styles.clearFilters}>
+                {t('SEARCH:clear-all-filters')}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

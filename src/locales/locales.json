@@ -17,7 +17,10 @@
       "project": "project",
       "something-wrong": "Oops, something went wrong.",
       "total": "Total",
-      "until": "until"
+      "until": "until",
+      "show-less-options": "Show less options",
+      "show-more-options": "Show more options",
+      "clear-all-filters": "Clear all filters"
     }
   },
   "fi": {
@@ -38,7 +41,10 @@
       "project": "kohde",
       "something-wrong": "Uups, jokin meni pieleen.",
       "total": "Yhteensä",
-      "until": "asti"
+      "until": "asti",
+      "show-less-options": "Näytä vähemmän valintoja",
+      "show-more-options": "Näytä enemmän valintoja",
+      "clear-all-filters": "Tyhjennä kaikki valinnat"
     }
   }
 }

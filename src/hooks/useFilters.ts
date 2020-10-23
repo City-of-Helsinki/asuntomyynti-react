@@ -1,14 +1,15 @@
 import useSearchParams from './useSearchParams';
 import { getParamsByName } from '../utils/getParamsByName';
 import { useHistory } from 'react-router-dom';
-import { FilterName } from '../types/common';
+import { FilterConfigs, FilterName } from '../types/common';
+import useFilterConfig from '../modules/search/hooks/useFilterConfig';
 
 const useFilters = () => {
   const query = useSearchParams();
   const history = useHistory();
 
   const getAllFilters = () => {
-    return Array.from(query.entries()) as [FilterName, string][];
+    return Array.from(query.entries()).filter(([name, value]) => value !== '') as [FilterName, string][];
   };
 
   const getFilters = (name: string): string[] => {
@@ -55,7 +56,32 @@ const useFilters = () => {
     history.push(`?${query.toString()}`);
   };
 
-  return { getAllFilters, getFilter, getFilters, addFilter, setFilter, setFilters, removeFilter, clearFilter };
+  const clearAllFilters = (filterConfig: FilterConfigs) => {
+    Object.keys(filterConfig).forEach((name) => {
+      console.log(name);
+      query.delete(name);
+    });
+    history.push(`?${query.toString()}`);
+  };
+
+  const hasFilters = (filterConfig: FilterConfigs) => {
+    return Object.keys(filterConfig).some((name) => {
+      return !!query.get(name);
+    });
+  };
+
+  return {
+    hasFilters,
+    clearAllFilters,
+    getAllFilters,
+    getFilter,
+    getFilters,
+    addFilter,
+    setFilter,
+    setFilters,
+    removeFilter,
+    clearFilter,
+  };
 };
 
 export default useFilters;
