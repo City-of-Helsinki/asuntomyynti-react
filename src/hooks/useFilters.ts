@@ -1,10 +1,10 @@
-import useQuery from './useQuery';
+import useSearchParams from './useSearchParams';
 import { getParamsByName } from '../utils/getParamsByName';
 import { useHistory } from 'react-router-dom';
 import { FilterName } from '../types/common';
 
 const useFilters = () => {
-  const query = useQuery();
+  const query = useSearchParams();
   const history = useHistory();
 
   const getAllFilters = () => {

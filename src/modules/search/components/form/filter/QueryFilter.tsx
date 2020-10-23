@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import useQuery from '../../../../../hooks/useQuery';
+import useSearchParams from '../../../../../hooks/useSearchParams';
 import RangeInput from './RangeInput';
 import CheckList from './CheckList';
 import { FilterItem, FilterConfig, FilterType, FilterName } from '../../../../../types/common';
@@ -16,7 +16,7 @@ type Props = {
  */
 const QueryFilter = ({ name, onFilter, isWrapped = false, items, type, label, ...rest }: Props) => {
   // Get the current params
-  const searchParams = useQuery();
+  const searchParams = useSearchParams();
 
   const filterCallback = useCallback(() => {
     onFilter && onFilter({ label, type, items, ...rest });

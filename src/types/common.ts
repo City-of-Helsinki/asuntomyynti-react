@@ -265,17 +265,16 @@ export enum FilterType {
 export type PartialConfig = {
   items: string[];
   label: string;
+  suffix: string | null;
 };
 
-export type DefaultFilterConfig = {
-  label: string;
-  items: string[];
+export type DefaultFilterConfig = PartialConfig & {
   getQuery: (values: string[]) => QueryParams[];
   getLabel: (values: string[]) => string;
   getTagLabel: (serializedValue: string) => ParamList;
 };
 
-export type FilterConfig = Omit<DefaultFilterConfig, 'items'> & {
+export type FilterConfig = Omit<DefaultFilterConfig, 'items' | 'suffix'> & {
   type: FilterType;
   icon?: string;
   items: (FilterItem | string)[];
@@ -296,7 +295,7 @@ export type FilterConfigs = {
 };
 
 export type BaseFilterConfigs = {
-  [key in FilterName]?: DefaultFilterConfig;
+  [key in FilterName]?: PartialConfig;
 };
 
 export type DefaultFilterConfigs = {
