@@ -45,7 +45,6 @@
   flex-direction: column;
   flex: 1;
   position: relative;
-  min-height: 56px;
 
   .isLoading &.canShimmer {
     @include shimmer;
