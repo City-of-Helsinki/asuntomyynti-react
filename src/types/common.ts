@@ -288,6 +288,7 @@ export enum FilterName {
   Properties = 'properties',
   RoomCount = 'room_count',
   SalesPrice = 'sales_price',
+  StateOfSale = 'state_of_sale',
 }
 
 export type FilterConfigs = {

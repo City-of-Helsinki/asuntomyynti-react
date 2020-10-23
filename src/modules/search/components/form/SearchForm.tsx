@@ -28,6 +28,7 @@ const SearchForm = ({ config, onSubmit, isLoading }: Props) => {
     project_building_type,
     properties,
     project_new_development_status,
+    state_of_sale,
   } = config || {};
 
   return (
@@ -69,9 +70,14 @@ const SearchForm = ({ config, onSubmit, isLoading }: Props) => {
                 <QueryFilter name={FilterName.ProjectNewDevelopmentStatus} {...project_new_development_status} />
               )}
             </div>
+            <div className={styles.column}>
+              {state_of_sale && <QueryFilter name={FilterName.StateOfSale} {...state_of_sale} />}
+            </div>
           </div>
         </Collapsible>
-        <div className={styles.row}>{config && <TagList config={config} />}</div>
+        <div className={styles.row}>
+          <div className={styles.column}>{config && <TagList config={config} />}</div>
+        </div>
         <div className={styles.row}>
           <div className={styles.divider} />
         </div>

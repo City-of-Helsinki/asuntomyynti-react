@@ -123,6 +123,11 @@ const filterMap: FilterMap = {
     ...config,
     type: FilterType.MultiSelect,
   }),
+
+  state_of_sale: (config) => ({
+    ...config,
+    type: FilterType.MultiSelect,
+  }),
 };
 
 export default filterMap;
