@@ -20,16 +20,7 @@ const SearchForm = ({ config, onSubmit, isLoading }: Props) => {
   const [showMoreOptions, setShowMoreOptions] = useState(false);
   const { t } = useTranslation();
 
-  const {
-    project_district,
-    room_count,
-    living_area,
-    sales_price,
-    project_building_type,
-    properties,
-    project_new_development_status,
-    state_of_sale,
-  } = config || {};
+  const { project_district, room_count, living_area, sales_price, ...rest } = config || {};
 
   return (
     <div className={`${styles.container} ${showMoreOptions ? styles.expand : ''} ${isLoading ? styles.isLoading : ''}`}>
@@ -57,22 +48,11 @@ const SearchForm = ({ config, onSubmit, isLoading }: Props) => {
             <div className={styles.divider} />
           </div>
           <div className={styles.row}>
-            <div className={styles.column}>
-              {project_building_type && (
-                <QueryFilter name={FilterName.ProjectBuildingType} {...project_building_type} />
-              )}
-            </div>
-            <div className={styles.column}>
-              {properties && <QueryFilter name={FilterName.Properties} {...properties} />}
-            </div>
-            <div className={styles.column}>
-              {project_new_development_status && (
-                <QueryFilter name={FilterName.ProjectNewDevelopmentStatus} {...project_new_development_status} />
-              )}
-            </div>
-            <div className={styles.column}>
-              {state_of_sale && <QueryFilter name={FilterName.StateOfSale} {...state_of_sale} />}
-            </div>
+            {(Object.keys(rest) as FilterName[]).map<JSX.Element>((name) => (
+              <div className={styles.column}>
+                {(rest as FilterConfigs)[name] && <QueryFilter name={name} {...(rest as FilterConfigs)[name]} />}
+              </div>
+            ))}
           </div>
         </Collapsible>
         <div className={styles.row}>
