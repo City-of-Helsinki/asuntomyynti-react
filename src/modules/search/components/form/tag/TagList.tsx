@@ -20,7 +20,7 @@ const TagList = ({ config }: Props) => {
   }, []);
 
   const handleClick = (name: FilterName, value: string) => () =>
-    config[name].type === FilterType.Range ? clearFilter(name) : removeFilter(name, value);
+    config[name].type === FilterType.MultiSelect ? removeFilter(name, value) : clearFilter(name);
 
   return (
     <div className={styles.container}>
