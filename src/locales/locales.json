@@ -1,6 +1,7 @@
 {
   "en": {
     "SEARCH": {
+      "add-search-alert": "Add search alert",
       "apartment": "Apartment",
       "apartments": "apartments",
       "apartments-available": "Apartments available",
@@ -8,20 +9,28 @@
       "applications": "Applications",
       "apply": "Apply",
       "area": "Area",
+      "cancel": "Cancel",
+      "email": "Email",
       "error": "Error",
       "floor": "Floor",
       "free-apartments": "Free apartments",
       "free-of-debt-price": "Free of debt price",
       "info": "Info",
       "learn-more": "Learn more",
+      "name-of-the-alert": "Name of the alert",
       "project": "project",
+      "save-search-alert": "Save search alert",
+      "search-alert-helper-text": "We will notify you via email when project is available",
       "something-wrong": "Oops, something went wrong.",
+      "subscribe-for-upcoming-sales": "Set alert",
+      "subscribe-to-newsletter": "Subscribe to Asuntotuotanto newsletter",
       "total": "Total",
       "until": "until"
     }
   },
   "fi": {
     "SEARCH": {
+      "add-search-alert": "Lisää hakuvahti",
       "apartment": "Huoneisto",
       "apartments": "asuntoa",
       "apartments-available": "Huoneistoa vapaana",
@@ -29,14 +38,21 @@
       "applications": "Hakijatilanne",
       "apply": "Luo hakemus",
       "area": "Pinta-ala",
+      "cancel": "Peruuta",
+      "email": "Sähköposti",
       "error": "Virhe",
       "floor": "Kerros",
       "free-apartments": "Vapaat asunnot",
       "free-of-debt-price": "Velaton hinta",
       "info": "Tutustu",
       "learn-more": "Tutustu kohteeseen",
+      "name-of-the-alert": "Vahdin nimi",
       "project": "kohde",
+      "save-search-alert": "Tallenna hakuvahti",
+      "search-alert-helper-text": "Lähetämme tiedon sähköpostiosoitteeseen kun kohde valmistuu",
       "something-wrong": "Uups, jokin meni pieleen.",
+      "subscribe-for-upcoming-sales": "Tilaa vahti",
+      "subscribe-to-newsletter": "Haluan tilata Asuntotuotannon uutiskirjeen",
       "total": "Yhteensä",
       "until": "asti"
     }
