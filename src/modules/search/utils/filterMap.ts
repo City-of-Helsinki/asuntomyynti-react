@@ -2,7 +2,7 @@ import { DefaultFilterConfig, FilterConfig, FilterName, FilterType, QueryParams 
 import { formatRange } from './formatRange';
 import { groupConsecutiveNumbers, listGroupedNumbers } from '../../../utils/groupConsecutiveNumbers';
 
-const fiveOrMoreRooms = '5+h';
+const fiveOrMoreRooms = '5+';
 
 type FilterMap = {
   [key in FilterName]: (config: DefaultFilterConfig) => FilterConfig;
@@ -52,6 +52,8 @@ const filterMap: FilterMap = {
         last === 5 ? `${suffix}, 5+${suffix}` : suffix || ''
       );
     },
+    getTagLabel: (serializedValue) =>
+      serializedValue.split(',').map((item) => [FilterName.RoomCount, item, `${item}h`]),
   }),
 
   living_area: ({ items: [from, to], suffix, ...rest }) => ({
@@ -80,7 +82,7 @@ const filterMap: FilterMap = {
     },
     getTagLabel: (serializedValue) => {
       const formattedRange = formatRange(serializedValue.split(','));
-      return [{ name: FilterName.LivingArea, value: formattedRange }];
+      return [[FilterName.LivingArea, formattedRange]];
     },
   }),
 
@@ -97,7 +99,7 @@ const filterMap: FilterMap = {
       {
         range: {
           [FilterName.SalesPrice]: {
-            lte: parseInt(value),
+            lte: parseInt(value) * 1000,
           },
         },
       },
@@ -105,7 +107,7 @@ const filterMap: FilterMap = {
     getLabel: ([value]) => {
       return `${value} 000 ${suffix}`;
     },
-    getTagLabel: (value) => [{ name: FilterName.SalesPrice, value: `${value} 000 ${suffix}` }],
+    getTagLabel: (value) => [[FilterName.SalesPrice, value, `${value} 000 m²`]],
   }),
 
   project_building_type: (config) => ({

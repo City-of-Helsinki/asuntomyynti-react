@@ -4,7 +4,7 @@ import { Button } from 'hds-react';
 import QueryFilter from './filter/QueryFilter';
 import Dropdown from './filter/Dropdown';
 import Collapsible from '../../../../common/collapsible/Collapsible';
-import { FilterConfigs } from '../../../../types/common';
+import { FilterConfigs, FilterName } from '../../../../types/common';
 import TagList from './tag/TagList';
 
 type Props = {
@@ -32,16 +32,16 @@ const SearchForm = ({ config, onSubmit, isLoading }: Props) => {
         <h1>Etsi Hitas-omistusasuntoja</h1>
         <div className={styles.row}>
           <div className={`${styles.column} ${styles.canShimmer}`}>
-            {project_district && <Dropdown name="project_district" {...project_district} />}
+            {project_district && <Dropdown name={FilterName.ProjectDistrict} {...project_district} />}
           </div>
           <div className={`${styles.column} ${styles.canShimmer}`}>
-            {room_count && <Dropdown name="room_count" {...room_count} />}
+            {room_count && <Dropdown name={FilterName.RoomCount} {...room_count} />}
           </div>
           <div className={`${styles.column} ${styles.canShimmer}`}>
-            {living_area && <Dropdown name="living_area" {...living_area} />}
+            {living_area && <Dropdown name={FilterName.LivingArea} {...living_area} />}
           </div>
           <div className={`${styles.column} ${styles.canShimmer}`}>
-            {sales_price && <Dropdown name="sales_price" {...sales_price} />}
+            {sales_price && <Dropdown name={FilterName.SalesPrice} {...sales_price} />}
           </div>
           <div className={`${styles.column} ${styles.canShimmer}`}>
             {!isLoading && <Button onClick={() => onSubmit()}>Submit</Button>}
@@ -53,12 +53,16 @@ const SearchForm = ({ config, onSubmit, isLoading }: Props) => {
           </div>
           <div className={styles.row}>
             <div className={styles.column}>
-              {project_building_type && <QueryFilter name="project_building_type" {...project_building_type} />}
+              {project_building_type && (
+                <QueryFilter name={FilterName.ProjectBuildingType} {...project_building_type} />
+              )}
             </div>
-            <div className={styles.column}>{properties && <QueryFilter name="properties" {...properties} />}</div>
+            <div className={styles.column}>
+              {properties && <QueryFilter name={FilterName.Properties} {...properties} />}
+            </div>
             <div className={styles.column}>
               {project_new_development_status && (
-                <QueryFilter name="project_new_development_status" {...project_new_development_status} />
+                <QueryFilter name={FilterName.ProjectNewDevelopmentStatus} {...project_new_development_status} />
               )}
             </div>
           </div>

@@ -3,16 +3,16 @@ import styles from './Dropdown.module.scss';
 import IconByName from './IconByName';
 import useOutsideClick from '../../../../../hooks/useOutsideClick';
 import QueryFilter from './QueryFilter';
-import { FilterConfig } from '../../../../../types/common';
+import { FilterConfig, FilterName } from '../../../../../types/common';
 import useFilters from '../../../../../hooks/useFilters';
 
 type Props = {
-  name: string;
+  name: FilterName;
 } & FilterConfig;
 
 const Dropdown = ({ name, icon, ...rest }: Props) => {
   const [active, setActive] = useState(false);
-  const [label, setLabel] = useState(name);
+  const [label, setLabel] = useState<string>(name);
 
   const ref = useRef<HTMLDivElement>(null);
 

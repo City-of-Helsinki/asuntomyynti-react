@@ -2,7 +2,6 @@ import { useQuery } from 'react-query';
 import axios from 'axios';
 import { enhanceConfig } from '../../../utils/enhanceConfig';
 import useSearchParams from '../../../hooks/useSearchParams';
-import { FilterConfigs } from '../../../types/common';
 
 const DAY_IN_SECONDS = 86400;
 

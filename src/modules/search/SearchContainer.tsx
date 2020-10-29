@@ -6,7 +6,7 @@ import useLang from '../../hooks/useLang';
 import useFilterConfig from './hooks/useFilterConfig';
 import useElasticsearchQuery from '../../hooks/useElasticsearchQuery';
 import useSearchResults from '../../hooks/useSearchResults';
-import ErrorToast from "../../common/errorToast/ErrorToast";
+import ErrorToast from '../../common/errorToast/ErrorToast';
 
 const SearchContainer = () => {
   useLang();
