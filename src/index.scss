@@ -11,12 +11,15 @@ body {
   code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
   }
+  * {
+    box-sizing: border-box;
+  }
   a {
     text-decoration: none;
   }
 }
 
 .leaflet-container {
-  height: 400px;
+  height: 500px;
   width: 100%;
 }
