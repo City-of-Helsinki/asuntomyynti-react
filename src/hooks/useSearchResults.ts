@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 import mapSearchResults from '../modules/search/utils/mapSearchResults';
 
-const useSearchResults = (query: { query: QueryParams }) => {
+const useSearchResults = (query: { query?: QueryParams }) => {
   const fetchProjects = async () => {
     const { data } = await axios.post('http://dev.asuntomyynti-elastic.druidfi.wod.by/_search', {
       ...query,

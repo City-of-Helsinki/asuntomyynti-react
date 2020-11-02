@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import useFilters from './useFilters';
 
 const useElasticsearchQuery = (config: Partial<FilterConfigs>) => {
-  const [query, setQuery] = useState();
+  const [query, setQuery] = useState({});
   const { getFilters } = useFilters();
 
   const buildQuery = () => {
