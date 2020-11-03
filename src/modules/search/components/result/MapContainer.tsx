@@ -3,11 +3,10 @@ import ReactDOMServer from 'react-dom/server';
 import css from './MapContainer.module.scss';
 import { Project } from '../../../../types/common';
 import { useTranslation } from 'react-i18next';
-import { Map, TileLayer, Marker, LatLng } from 'react-leaflet';
-import { IconClock, IconCogwheel, IconLocation } from 'hds-react';
+import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import { IconLocation } from 'hds-react';
 import L from 'leaflet';
-import { format } from 'date-fns';
-import ProjectCard from "./ProjectCard";
+import ProjectCard from './ProjectCard';
 
 type Props = {
   searchResults: Project[];
@@ -15,7 +14,7 @@ type Props = {
 
 const MAP_URL = 'https://tiles.hel.ninja/styles/hel-osm-bright/{z}/{x}/{y}.png';
 
-const MapContainer = ({ searchResults }: Props) => {
+const Map = ({ searchResults }: Props) => {
   const { t } = useTranslation();
   const [activeProject, setActiveProject] = useState<Project | undefined>(undefined);
 
@@ -28,10 +27,12 @@ const MapContainer = ({ searchResults }: Props) => {
     html: ReactDOMServer.renderToString(<IconLocation size={'l'} color={'#626578'} />),
   });
 
+  console.log(searchResults);
+
   return (
     <div className={css.container}>
       <div id={'mapid'}>
-        <Map
+        <MapContainer
           center={[60.2, 24.92]}
           zoom={13}
           maxBounds={[
@@ -44,16 +45,21 @@ const MapContainer = ({ searchResults }: Props) => {
             url={MAP_URL}
           />
           {searchResults.map((x) => (
-            <Marker key={x.uuid} icon={icon} position={[60.2, 24.92]} onClick={() => handleMarkerClick(x)} />
+            <Marker
+              key={x.uuid}
+              icon={icon}
+              position={[x.coordinate_lat, x.coordinate_lon]}
+              eventHandlers={{click: () => handleMarkerClick(x)}}
+            />
           ))}
-        </Map>
+        </MapContainer>
         {activeProject && <ProjectCard project={activeProject} hideImgOnSmallScreen={true} />}
       </div>
     </div>
   );
 };
 
-export default MapContainer;
+export default Map;
 
 /*const ProjectDetails = ({ activeProject }: { activeProject: Project }) => {
   const { t } = useTranslation();
