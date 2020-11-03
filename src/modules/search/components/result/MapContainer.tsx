@@ -22,10 +22,38 @@ const Map = ({ searchResults }: Props) => {
     setActiveProject(targetProject);
   };
 
-  const icon = L.divIcon({
-    className: 'custom-icon',
-    html: ReactDOMServer.renderToString(<IconLocation size={'l'} color={'#626578'} />),
-  });
+  const getMarkerIcon = (project: Project) => {
+    const blue = '#0000bf';
+    const isActive = project.uuid === activeProject?.uuid;
+
+    const element = (
+      <div
+        style={{
+          marginLeft: -14,
+          marginTop: -14,
+          width: 40,
+          height: 40,
+          backgroundColor: isActive ? blue : 'white',
+          borderRadius: '50%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <IconLocation size={'m'} color={isActive ? 'white' : blue} />
+      </div>
+    );
+
+    /*if (project.building_type === 'hitas') {
+
+    }*/
+    const icon = L.divIcon({
+      className: 'custom-icon',
+      html: ReactDOMServer.renderToString(element),
+    });
+
+    return icon;
+  };
 
   console.log(searchResults);
 
@@ -47,9 +75,9 @@ const Map = ({ searchResults }: Props) => {
           {searchResults.map((x) => (
             <Marker
               key={x.uuid}
-              icon={icon}
+              icon={getMarkerIcon(x)}
               position={[x.coordinate_lat, x.coordinate_lon]}
-              eventHandlers={{click: () => handleMarkerClick(x)}}
+              eventHandlers={{ click: () => handleMarkerClick(x) }}
             />
           ))}
         </MapContainer>
@@ -60,47 +88,3 @@ const Map = ({ searchResults }: Props) => {
 };
 
 export default Map;
-
-/*const ProjectDetails = ({ activeProject }: { activeProject: Project }) => {
-  const { t } = useTranslation();
-  const {
-    main_image_url,
-    housing_company,
-    district,
-    street_address,
-    ownership_type,
-    estimated_completion,
-    estimated_completion_date,
-    publication_end_time,
-  } = activeProject;
-  return (
-    <div style={{ display: 'flex' }}>
-      <img src={main_image_url} height="200" width="200" />
-      <div style={{ padding: '0 15px' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-          <div className={css.titles}>
-            <h2 style={{ marginBottom: 5, textAlign: 'left' }}>{housing_company}</h2>
-            <div style={{ marginBottom: 5 }}>
-              <b>{district},</b> {street_address}
-            </div>
-            <span className={css.label}>{ownership_type}</span>
-          </div>
-          <div className={css.deadlines}>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <IconCogwheel style={{ marginRight: 10 }} role="presentation" />
-              {estimated_completion} {format(new Date(estimated_completion_date), 'MM/yyyy')}
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <IconClock style={{ marginRight: 10 }} role="presentation" />
-              {t('SEARCH:application-open')} {format(new Date(publication_end_time), "dd.MM.yyyy 'klo' hh.mm")}{' '}
-              {t('SEARCH:until')}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>Sami</div>
-      </div>
-    </div>
-  );
-};*/
