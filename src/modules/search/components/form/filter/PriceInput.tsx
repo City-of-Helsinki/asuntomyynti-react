@@ -11,7 +11,7 @@ type Props = {
   items: FilterItem[];
 };
 
-const PriceInput = ({ name, label, isWrapped, items }: Props) => {
+const PriceInput = ({ name, label, isWrapped }: Props) => {
   const { getFilter, setFilter } = useFilters();
 
   const value = getFilter(name) || '';
@@ -28,7 +28,6 @@ const PriceInput = ({ name, label, isWrapped, items }: Props) => {
       onChange={handleChange}
       className={styles.priceInput}
       style={isWrapped ? { padding: '14px' } : {}}
-      {...items[0]}
     />
   );
 };
