@@ -39,11 +39,13 @@ const Collapsible: React.FunctionComponent<Props> = ({ expand, children, ...rest
     return () => {
       window.removeEventListener('resize', handleOnResize);
     };
+    // eslint-disable-next-line
   }, []);
 
   // Update height when is expanded or children changes
   useEffect(() => {
     updateHeight();
+    // eslint-disable-next-line
   }, [expand, children]);
 
   return (

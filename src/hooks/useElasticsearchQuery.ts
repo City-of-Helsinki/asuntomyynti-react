@@ -39,6 +39,7 @@ const useElasticsearchQuery = (config: Partial<FilterConfigs>) => {
   useEffect(() => {
     // Update query once on mount and then only by calling updateQuery
     updateQuery();
+    // eslint-disable-next-line
   }, []);
 
   return { query, updateQuery };
