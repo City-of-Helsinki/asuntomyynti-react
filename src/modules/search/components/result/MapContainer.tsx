@@ -4,17 +4,18 @@ import css from './MapContainer.module.scss';
 import { Project } from '../../../../types/common';
 import { useTranslation } from 'react-i18next';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
-import { IconLocation } from 'hds-react';
+import {Button, IconLocation, IconMap} from 'hds-react';
 import L from 'leaflet';
 import ProjectCard from './ProjectCard';
 
 type Props = {
   searchResults: Project[];
+  closeMap: () => void;
 };
 
 const MAP_URL = 'https://tiles.hel.ninja/styles/hel-osm-bright/{z}/{x}/{y}.png';
 
-const Map = ({ searchResults }: Props) => {
+const Map = ({ searchResults, closeMap }: Props) => {
   const { t } = useTranslation();
   const [activeProject, setActiveProject] = useState<Project | undefined>(undefined);
 
@@ -59,6 +60,25 @@ const Map = ({ searchResults }: Props) => {
 
   return (
     <div className={css.container}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '62px 48px 32px' }}>
+        <div className={css.titleContainer}>
+          <h1>{t('SEARCH:free-apartments')}</h1>
+          <div className={css.resultsCount}>
+            {t('SEARCH:total')} {searchResults.length} {t('SEARCH:apartments')}
+          </div>
+        </div>
+        <div>
+          <Button
+            style={{ height: 56, margin: '.67em 0', display: 'flex', alignItems: 'center' }}
+            variant="secondary"
+            onClick={closeMap}
+          >
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <IconMap style={{ marginRight: 20 }} /> {'SEARCH:show-on-map'}
+            </div>
+          </Button>
+        </div>
+      </div>
       <div id={'mapid'}>
         <MapContainer
           center={[60.2, 24.92]}
