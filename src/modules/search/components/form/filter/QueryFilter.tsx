@@ -20,8 +20,7 @@ const QueryFilter = ({ name, onFilter, isWrapped = false, items, type, label, ..
 
   const filterCallback = useCallback(() => {
     onFilter && onFilter({ label, type, items, ...rest });
-    // eslint-disable-next-line
-  }, [items, label, onFilter, type]);
+  }, [items, label, onFilter, type, rest]);
 
   // Update parent on mount
   useEffect(() => {

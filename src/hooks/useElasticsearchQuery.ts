@@ -1,15 +1,21 @@
-import { FilterConfigs, FilterName, QueryParams } from '../types/common';
-import { useEffect, useState } from 'react';
+import { FilterName, QueryParams } from '../types/common';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { FilterContext } from '../modules/search/FilterContext';
 import useFilters from './useFilters';
 
-const useElasticsearchQuery = (config: Partial<FilterConfigs>) => {
+const useElasticsearchQuery = () => {
   const [query, setQuery] = useState({});
+  const config = useContext(FilterContext);
   const { getFilters } = useFilters();
 
-  const buildQuery = () => {
-    const filters = Object.keys(config).reduce((filters: QueryParams[], name) => {
+  const buildQuery = useCallback(() => {
+    if (!config) {
+      return {};
+    }
+
+    const filters = (Object.keys({}) as FilterName[]).reduce((filters: QueryParams[], name) => {
       const values = getFilters(name);
-      const { getQuery } = config[name as FilterName] || {};
+      const { getQuery } = config[name] || {};
 
       if (values.length === 0 || !getQuery) {
         return filters;
@@ -29,18 +35,17 @@ const useElasticsearchQuery = (config: Partial<FilterConfigs>) => {
         },
       },
     };
-  };
+  }, [config, getFilters]);
 
-  const updateQuery = () => {
+  const updateQuery = useCallback(() => {
     const localQuery = buildQuery();
     setQuery(localQuery);
-  };
+  }, [buildQuery]);
 
   useEffect(() => {
     // Update query once on mount and then only by calling updateQuery
     updateQuery();
-    // eslint-disable-next-line
-  }, []);
+  }, [updateQuery]);
 
   return { query, updateQuery };
 };
