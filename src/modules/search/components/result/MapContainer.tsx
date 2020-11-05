@@ -56,6 +56,36 @@ const Map = ({ searchResults, closeMap }: Props) => {
     return icon;
   };
 
+  // Centers the map to middle of all the projects on initial render
+  const getInitialPosition = () => {
+    let maxLon: number = searchResults[0].coordinate_lon;
+    let minLon: number = searchResults[0].coordinate_lon;
+    let maxLat: number = searchResults[0].coordinate_lat;
+    let minLat: number = searchResults[0].coordinate_lat;
+
+    searchResults.forEach(x => {
+      const {coordinate_lon, coordinate_lat} = x;
+      if (maxLon < coordinate_lon) {
+        maxLon = coordinate_lon;
+      }
+      if (!minLon || minLon > coordinate_lon) {
+        minLon = coordinate_lon;
+      }
+      if (!maxLat || maxLat < coordinate_lat) {
+        maxLat = coordinate_lat;
+      }
+      if (!maxLat || maxLat < coordinate_lat) {
+        minLat = coordinate_lat;
+      }
+    });
+
+    const lon = (maxLon - minLon) / 2 + minLon;
+    const lat = (maxLat - minLat) / 2 + minLat;
+
+    return [lat, lon];
+
+  }
+
   console.log(searchResults);
 
   return (
@@ -81,8 +111,9 @@ const Map = ({ searchResults, closeMap }: Props) => {
       </div>
       <div id={'mapid'}>
         <MapContainer
-          center={[60.2, 24.92]}
-          zoom={13}
+          // @ts-ignore
+          center={getInitialPosition()}
+          zoom={12}
           maxBounds={[
             [59.4, 23.8],
             [61.5, 25.8],
