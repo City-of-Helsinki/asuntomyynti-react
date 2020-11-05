@@ -90,7 +90,7 @@ const Map = ({ searchResults, closeMap }: Props) => {
 
   return (
     <div className={css.container}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '62px 48px 32px' }}>
+      <header>
         <div className={css.titleContainer}>
           <h1>{t('SEARCH:all-apartments')}</h1>
           <div className={css.resultsCount}>
@@ -108,7 +108,7 @@ const Map = ({ searchResults, closeMap }: Props) => {
             </div>
           </Button>
         </div>
-      </div>
+      </header>
       <div id={'mapid'}>
         <MapContainer
           // @ts-ignore

@@ -15,7 +15,7 @@ const SearchResults = ({ searchResults, openMap }: Props) => {
 
   return (
     <div className={css.container}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '62px 48px 32px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', padding: '62px 48px 32px' }}>
         <div className={css.titleContainer}>
           <h1>{t('SEARCH:free-apartments')}</h1>
           <div className={css.resultsCount}>
