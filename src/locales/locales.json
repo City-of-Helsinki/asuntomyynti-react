@@ -1,6 +1,7 @@
 {
   "en": {
     "SEARCH": {
+      "all-apartments": "All apartments",
       "apartment": "Apartment",
       "apartments": "apartments",
       "apartments-available": "Apartments available",
@@ -15,6 +16,7 @@
       "info": "Info",
       "learn-more": "Learn more",
       "project": "project",
+      "show-on-map": "Show on map",
       "something-wrong": "Oops, something went wrong.",
       "total": "Total",
       "until": "until"
@@ -22,6 +24,7 @@
   },
   "fi": {
     "SEARCH": {
+      "all-apartments": "Kaikki asunnot",
       "apartment": "Huoneisto",
       "apartments": "asuntoa",
       "apartments-available": "Huoneistoa vapaana",
@@ -36,6 +39,7 @@
       "info": "Tutustu",
       "learn-more": "Tutustu kohteeseen",
       "project": "kohde",
+      "show-on-map": "Näytä kartalla",
       "something-wrong": "Uups, jokin meni pieleen.",
       "total": "Yhteensä",
       "until": "asti"

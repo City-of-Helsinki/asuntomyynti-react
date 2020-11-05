@@ -62,7 +62,7 @@ const Map = ({ searchResults, closeMap }: Props) => {
     <div className={css.container}>
       <div style={{ display: 'flex', justifyContent: 'space-between', padding: '62px 48px 32px' }}>
         <div className={css.titleContainer}>
-          <h1>{t('SEARCH:free-apartments')}</h1>
+          <h1>{t('SEARCH:all-apartments')}</h1>
           <div className={css.resultsCount}>
             {t('SEARCH:total')} {searchResults.length} {t('SEARCH:apartments')}
           </div>
