@@ -3,6 +3,7 @@ import { IconCross } from 'hds-react';
 import styles from './TagList.module.scss';
 import useFilters from '../../../../../hooks/useFilters';
 import { FilterConfigs, FilterName, FilterType, ParamList } from '../../../../../types/common';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   config: FilterConfigs;
@@ -10,6 +11,7 @@ type Props = {
 
 const TagList = ({ config }: Props) => {
   const { clearFilter, removeFilter, getAllFilters } = useFilters();
+  const { t } = useTranslation();
 
   const params = getAllFilters().reduce((all: ParamList, [name, value]) => {
     const { getTagLabel } = config[name] || {};
@@ -27,7 +29,7 @@ const TagList = ({ config }: Props) => {
       {params.map(([name, value, label], index) => (
         <button key={index} className={styles.tag} onClick={handleClick(name, value)}>
           <IconCross className={styles.icon} />
-          <span className={styles.label}>{label || value}</span>
+          <span className={styles.label}>{t(`ES:${label || value}`)}</span>
         </button>
       ))}
     </div>
