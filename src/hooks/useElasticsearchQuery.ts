@@ -13,7 +13,7 @@ const useElasticsearchQuery = () => {
       return {};
     }
 
-    const filters = (Object.keys({}) as FilterName[]).reduce((filters: QueryParams[], name) => {
+    const filters = (Object.keys(config) as FilterName[]).reduce((filters: QueryParams[], name) => {
       const values = getFilters(name);
       const { getQuery } = config[name] || {};
 
@@ -43,9 +43,10 @@ const useElasticsearchQuery = () => {
   }, [buildQuery]);
 
   useEffect(() => {
-    // Update query once on mount and then only by calling updateQuery
+    // Update query ONCE when the config is loaded and when manually triggered
     updateQuery();
-  }, [updateQuery]);
+    // eslint-disable-next-line
+  }, [config]);
 
   return { query, updateQuery };
 };
