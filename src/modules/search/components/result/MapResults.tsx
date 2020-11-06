@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactDOMServer from 'react-dom/server';
-import css from './MapContainer.module.scss';
+import css from './MapResults.module.scss';
 import { Project } from '../../../../types/common';
 import { useTranslation } from 'react-i18next';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
@@ -15,7 +15,7 @@ type Props = {
 
 const MAP_URL = 'https://tiles.hel.ninja/styles/hel-osm-bright/{z}/{x}/{y}.png';
 
-const Map = ({ searchResults, closeMap }: Props) => {
+const MapResults = ({ searchResults, closeMap }: Props) => {
   const { t } = useTranslation();
   const [activeProject, setActiveProject] = useState<Project | undefined>(undefined);
 
@@ -69,34 +69,37 @@ const Map = ({ searchResults, closeMap }: Props) => {
 
   // Centers the map to middle of all the projects on initial render
   const getInitialPosition = () => {
-    let maxLon: number = searchResults[0].coordinate_lon;
-    let minLon: number = searchResults[0].coordinate_lon;
-    let maxLat: number = searchResults[0].coordinate_lat;
-    let minLat: number = searchResults[0].coordinate_lat;
 
-    searchResults.forEach((x) => {
-      const { coordinate_lon, coordinate_lat } = x;
-      if (maxLon < coordinate_lon) {
-        maxLon = coordinate_lon;
-      }
-      if (!minLon || minLon > coordinate_lon) {
-        minLon = coordinate_lon;
-      }
-      if (!maxLat || maxLat < coordinate_lat) {
-        maxLat = coordinate_lat;
-      }
-      if (!maxLat || maxLat < coordinate_lat) {
-        minLat = coordinate_lat;
-      }
-    });
+    if (searchResults.length > 0) {
+      let maxLon: number = searchResults[0].coordinate_lon;
+      let minLon: number = searchResults[0].coordinate_lon;
+      let maxLat: number = searchResults[0].coordinate_lat;
+      let minLat: number = searchResults[0].coordinate_lat;
 
-    const lon = (maxLon - minLon) / 2 + minLon;
-    const lat = (maxLat - minLat) / 2 + minLat;
+      searchResults.forEach((x) => {
+        const { coordinate_lon, coordinate_lat } = x;
+        if (maxLon < coordinate_lon) {
+          maxLon = coordinate_lon;
+        }
+        if (!minLon || minLon > coordinate_lon) {
+          minLon = coordinate_lon;
+        }
+        if (!maxLat || maxLat < coordinate_lat) {
+          maxLat = coordinate_lat;
+        }
+        if (!maxLat || maxLat < coordinate_lat) {
+          minLat = coordinate_lat;
+        }
+      });
 
-    return [lat, lon];
+      const lon = (maxLon - minLon) / 2 + minLon;
+      const lat = (maxLat - minLat) / 2 + minLat;
+
+      return [lat, lon];
+    }
+
+    return [60.17, 24.94];
   };
-
-  console.log(searchResults);
 
   return (
     <div className={css.container}>
@@ -148,4 +151,4 @@ const Map = ({ searchResults, closeMap }: Props) => {
   );
 };
 
-export default Map;
+export default MapResults;

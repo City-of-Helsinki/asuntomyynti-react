@@ -7,7 +7,7 @@ import useFilterConfig from './hooks/useFilterConfig';
 import useElasticsearchQuery from '../../hooks/useElasticsearchQuery';
 import useSearchResults from '../../hooks/useSearchResults';
 import ErrorToast from '../../common/errorToast/ErrorToast';
-import MapContainer from './components/result/MapContainer';
+import MapContainer from './components/result/MapResults';
 
 const SearchContainer = () => {
   const [showMap, setShowMap] = useState<boolean>(false);
