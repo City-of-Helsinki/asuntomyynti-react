@@ -4,7 +4,7 @@ import css from './MapContainer.module.scss';
 import { Project } from '../../../../types/common';
 import { useTranslation } from 'react-i18next';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
-import {Button, IconLocation, IconMap} from 'hds-react';
+import { Button, IconLocation, IconMap } from 'hds-react';
 import L from 'leaflet';
 import ProjectCard from './ProjectCard';
 
@@ -23,8 +23,19 @@ const Map = ({ searchResults, closeMap }: Props) => {
     setActiveProject(targetProject);
   };
 
+  const getMarkerColor = (state?: string) => {
+    switch (state) {
+      case 'PRE_MARKETING':
+        return '#000000';
+      case 'ON_SALE':
+        return '#0000bf';
+      default:
+        return '#0000bf';
+    }
+  };
+
   const getMarkerIcon = (project: Project) => {
-    const blue = '#0000bf';
+    const color = getMarkerColor(project.state_of_sale);
     const isActive = project.uuid === activeProject?.uuid;
 
     const element = (
@@ -34,14 +45,14 @@ const Map = ({ searchResults, closeMap }: Props) => {
           marginTop: -14,
           width: 40,
           height: 40,
-          backgroundColor: isActive ? blue : 'white',
+          backgroundColor: isActive ? color : 'white',
           borderRadius: '50%',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
         }}
       >
-        <IconLocation size={'m'} color={isActive ? 'white' : blue} />
+        <IconLocation size={'m'} color={isActive ? 'white' : color} />
       </div>
     );
 
@@ -63,8 +74,8 @@ const Map = ({ searchResults, closeMap }: Props) => {
     let maxLat: number = searchResults[0].coordinate_lat;
     let minLat: number = searchResults[0].coordinate_lat;
 
-    searchResults.forEach(x => {
-      const {coordinate_lon, coordinate_lat} = x;
+    searchResults.forEach((x) => {
+      const { coordinate_lon, coordinate_lat } = x;
       if (maxLon < coordinate_lon) {
         maxLon = coordinate_lon;
       }
@@ -83,8 +94,7 @@ const Map = ({ searchResults, closeMap }: Props) => {
     const lat = (maxLat - minLat) / 2 + minLat;
 
     return [lat, lon];
-
-  }
+  };
 
   console.log(searchResults);
 
