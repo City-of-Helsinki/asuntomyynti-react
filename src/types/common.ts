@@ -133,6 +133,7 @@ export type Project = {
   shareholder_meeting_date: string;
   site_area: number;
   site_renter: string;
+  state_of_sale: string;
   street_address: string;
   uuid: string;
   virtual_presentation_url: string;
