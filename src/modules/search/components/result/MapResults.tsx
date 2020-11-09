@@ -23,7 +23,7 @@ const MapResults = ({ searchResults, closeMap }: Props) => {
     setActiveProject(targetProject);
   };
 
-  const getMarkerColor = (state?: string) => {
+  const getMarkerColor = (state?: Project["state_of_sale"]) => {
     switch (state) {
       case 'PRE_MARKETING':
         return '#000000';
@@ -65,7 +65,7 @@ const MapResults = ({ searchResults, closeMap }: Props) => {
   };
 
   // Centers the map to middle of all the projects on initial render
-  const getInitialPosition = () => {
+  const getInitialPosition = (): [number, number] => {
 
     if (searchResults.length > 0) {
       let maxLon: number = searchResults[0].coordinate_lon;
@@ -121,7 +121,6 @@ const MapResults = ({ searchResults, closeMap }: Props) => {
       </header>
       <div id={'mapid'}>
         <MapContainer
-          // @ts-ignore
           center={getInitialPosition()}
           zoom={12}
           maxBounds={[
