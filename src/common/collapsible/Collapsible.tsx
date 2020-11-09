@@ -1,4 +1,4 @@
-import React, { HTMLProps } from 'react';
+import React, { HTMLProps, useCallback } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import styles from './Collapsible.module.scss';
 
@@ -10,28 +10,28 @@ const Collapsible: React.FunctionComponent<Props> = ({ expand, children, ...rest
   const [height, setHeight] = useState(0);
 
   const ref = useRef<HTMLDivElement>(null);
-  let timer: NodeJS.Timeout | null = null;
+  let timer = useRef<NodeJS.Timeout | null>(null);
 
-  const updateHeight = () => {
+  const updateHeight = useCallback(() => {
     if (expand) {
       const { clientHeight } = ref.current || {};
       setHeight(clientHeight || 0);
     } else {
       setHeight(0);
     }
-  };
+  }, [expand]);
 
   /**
    * Debounce to prevent too much re-rendering
    */
-  const handleOnResize = () => {
-    if (timer) {
-      clearTimeout(timer);
+  const handleOnResize = useCallback(() => {
+    if (timer.current) {
+      clearTimeout(timer.current);
     }
-    timer = setTimeout(() => {
+    timer.current = setTimeout(() => {
       updateHeight();
     }, 250);
-  };
+  }, [updateHeight]);
 
   // Add listener for resize event
   useEffect(() => {
@@ -39,12 +39,12 @@ const Collapsible: React.FunctionComponent<Props> = ({ expand, children, ...rest
     return () => {
       window.removeEventListener('resize', handleOnResize);
     };
-  }, []);
+  }, [handleOnResize]);
 
   // Update height when is expanded or children changes
   useEffect(() => {
     updateHeight();
-  }, [expand, children]);
+  }, [expand, children, updateHeight]);
 
   return (
     <div {...rest}>

@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styles from './SearchForm.module.scss';
 import { Button } from 'hds-react';
 import QueryFilter from './filter/QueryFilter';
 import Dropdown from './filter/Dropdown';
 import Collapsible from '../../../../common/collapsible/Collapsible';
-import { FilterConfigs, FilterName } from '../../../../types/common';
+import { FilterName } from '../../../../types/common';
 import TagList from './tag/TagList';
+import { FilterContext } from '../../FilterContext';
 
 type Props = {
   onSubmit: () => void;
-  config?: FilterConfigs;
-  isLoading: boolean;
 };
 
-const SearchForm = ({ config, onSubmit, isLoading }: Props) => {
+const SearchForm = ({ onSubmit }: Props) => {
   const [showMoreOptions, setShowMoreOptions] = useState(false);
+  const config = useContext(FilterContext);
 
   const {
     project_district,
@@ -25,6 +25,8 @@ const SearchForm = ({ config, onSubmit, isLoading }: Props) => {
     properties,
     project_new_development_status,
   } = config || {};
+
+  const isLoading = !config;
 
   return (
     <div className={`${styles.container} ${showMoreOptions ? styles.expand : ''} ${isLoading ? styles.isLoading : ''}`}>
