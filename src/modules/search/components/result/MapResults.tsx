@@ -56,9 +56,6 @@ const MapResults = ({ searchResults, closeMap }: Props) => {
       </div>
     );
 
-    /*if (project.building_type === 'hitas') {
-
-    }*/
     const icon = L.divIcon({
       className: 'custom-icon',
       html: ReactDOMServer.renderToString(element),
