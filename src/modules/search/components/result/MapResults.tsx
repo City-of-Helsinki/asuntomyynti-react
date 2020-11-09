@@ -114,7 +114,7 @@ const MapResults = ({ searchResults, closeMap }: Props) => {
             onClick={closeMap}
           >
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <IconMap style={{ marginRight: 20 }} /> {'SEARCH:show-on-map'}
+              <IconMap style={{ marginRight: 20 }} /> {t('SEARCH:show-as-list')}
             </div>
           </Button>
         </div>

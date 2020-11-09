@@ -29,7 +29,7 @@ const SearchResults = ({ searchResults, openMap }: Props) => {
             onClick={openMap}
           >
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <IconMap style={{ marginRight: 20 }} /> {'SEARCH:show-on-map'}
+              <IconMap style={{ marginRight: 20 }} /> {t('SEARCH:show-on-map')}
             </div>
           </Button>
         </div>
