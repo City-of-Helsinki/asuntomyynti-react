@@ -15,7 +15,7 @@ const SearchResults = ({ searchResults, openMap }: Props) => {
 
   return (
     <div className={css.container}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', padding: '62px 48px 32px' }}>
+      <header>
         <div className={css.titleContainer}>
           <h1>{t('SEARCH:free-apartments')}</h1>
           <div className={css.resultsCount}>
@@ -24,7 +24,7 @@ const SearchResults = ({ searchResults, openMap }: Props) => {
         </div>
         <div>
           <Button
-            style={{ height: 56, margin: '.67em 0', display: 'flex', alignItems: 'center' }}
+            className={css.showButton}
             variant="secondary"
             onClick={openMap}
           >
@@ -33,7 +33,7 @@ const SearchResults = ({ searchResults, openMap }: Props) => {
             </div>
           </Button>
         </div>
-      </div>
+      </header>
       <div className={css.resultWrapper}>
         {searchResults.map((x) => (
           <ProjectCard key={x.id} project={x} />

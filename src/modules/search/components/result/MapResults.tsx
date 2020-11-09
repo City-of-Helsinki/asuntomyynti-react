@@ -109,7 +109,7 @@ const MapResults = ({ searchResults, closeMap }: Props) => {
         </div>
         <div>
           <Button
-            style={{ height: 56, margin: '.67em 0', display: 'flex', alignItems: 'center' }}
+            className={css.showButton}
             variant="secondary"
             onClick={closeMap}
           >
