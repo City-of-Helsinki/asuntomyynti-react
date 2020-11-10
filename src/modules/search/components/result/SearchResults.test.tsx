@@ -4,7 +4,7 @@ import SearchResults from "./SearchResults";
 
 test('renders SearchResults component', () => {
     const { container } = render(
-      <SearchResults searchResults={[]} />
+      <SearchResults searchResults={[]} openMap={() => {}} />
     );
     const element = container.firstChild;
     expect(element).toBeDefined();
