@@ -28,7 +28,9 @@
       "subscribe-for-upcoming-sales": "Set alert",
       "subscribe-to-newsletter": "Subscribe to Asuntotuotanto newsletter",
       "total": "Total",
-      "until": "until"
+      "until": "until",
+      "for-sale": "For sale",
+      "pre-marketing": "Pre-marketing"
     },
     "ES": {
       "additional_information": "Additional information",
@@ -141,7 +143,9 @@
       "subscribe-for-upcoming-sales": "Tilaa vahti",
       "subscribe-to-newsletter": "Haluan tilata Asuntotuotannon uutiskirjeen",
       "total": "Yhteensä",
-      "until": "asti"
+      "until": "asti",
+      "for-sale": "Vapaat asunnot",
+      "pre-marketing": "Enakkomyynnissä"
     },
     "ES": {
       "additional_information": "Lisätiedot",

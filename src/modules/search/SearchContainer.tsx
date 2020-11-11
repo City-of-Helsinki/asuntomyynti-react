@@ -7,15 +7,20 @@ import useElasticsearchQuery from '../../hooks/useElasticsearchQuery';
 import useSearchResults from '../../hooks/useSearchResults';
 import ErrorToast from '../../common/errorToast/ErrorToast';
 import MapContainer from './components/result/MapResults';
+import { groupProjectsByState } from './utils/groupProjectsByState';
+import { useTranslation } from 'react-i18next';
 
 const SearchContainer = () => {
   const [showMap, setShowMap] = useState<boolean>(false);
+  const { t } = useTranslation();
   useLang();
 
   // Query, as in elasticsearch query params
   const { query, updateQuery } = useElasticsearchQuery();
 
   const { data: searchResults, isError } = useSearchResults(query);
+
+  const { FOR_SALE: forSale = [], PRE_MARKETING: preMarketing = [] } = groupProjectsByState(searchResults);
 
   const openMap = () => {
     setShowMap(true);
@@ -36,7 +41,10 @@ const SearchContainer = () => {
       {showMap ? (
         <MapContainer searchResults={searchResults} closeMap={closeMap} />
       ) : (
-        <SearchResults searchResults={searchResults} openMap={openMap} />
+        <>
+          <SearchResults header={t('SEARCH:for-sale')} searchResults={forSale} openMap={openMap} />
+          <SearchResults header={t('SEARCH:pre-marketing')} searchResults={preMarketing} />
+        </>
       )}
       {isError && <ErrorToast />}
     </div>
