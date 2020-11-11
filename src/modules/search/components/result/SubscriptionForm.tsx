@@ -1,44 +1,66 @@
-import React, { useState } from 'react';
-import { Button, Checkbox, TextInput } from 'hds-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Button, Checkbox, Notification, TextInput } from 'hds-react';
 import { useTranslation } from 'react-i18next';
 import styles from './SubscriptionForm.module.scss';
 import axios from 'axios';
 import { Project } from '../../../../types/common';
+import useSearchParams from '../../../../hooks/useSearchParams';
 
 type Props = {
-  onSubscribe?: () => void;
-  onCancel?: () => void;
+  onClose?: () => void;
   project: Project;
 };
 
-const SubscriptionForm = ({ onSubscribe, onCancel, project }: Props) => {
+enum FormState {
+  InProgress,
+  Error,
+  Ready,
+}
+
+const SubscriptionForm = ({ onClose, project }: Props) => {
   const [email, setEmail] = useState('');
   const [subscribeToNewsLetter, setSubscribeToNewsLetter] = useState(false);
+  const [state, setState] = useState(FormState.InProgress);
 
   const { t } = useTranslation();
+  const searchParams = useSearchParams();
+
+  const emailRef = useRef<HTMLInputElement>(null);
+
+  const handleClose = () => {
+    typeof onClose === 'function' && onClose();
+  };
 
   const handleSubscribe = async () => {
     try {
-      await axios.post('/search-alert', {
-        email,
-        projects: [project.id],
-        subscribeToNewsLetter,
+      const lang = searchParams.get('lang') || 'fi';
+      await axios.post(`/${lang}/mailinglist`, {
+        user_email: email,
+        project_id: project.id,
+        subscribe_mailinglist: subscribeToNewsLetter,
       });
+      setState(FormState.Ready);
+      typeof onClose === 'function' &&
+        setTimeout(() => {
+          onClose();
+        }, 1000);
     } catch (e) {
-      console.log(e.message);
+      setState(FormState.Error);
+      emailRef.current?.select();
     }
-    typeof onSubscribe === 'function' && onSubscribe();
   };
 
-  const handleCancel = () => {
-    typeof onCancel === 'function' && onCancel();
-  };
+  useEffect(() => {
+    emailRef.current?.select();
+  }, []);
 
   const { housing_company, district, street_address } = project;
 
   return (
     <div>
       <h1 className={styles.header}>{t('SEARCH:save-search-alert')}</h1>
+      {state === FormState.Error && <Notification type="error" label={'SEARCH:search-alert-error'} />}
+      {state === FormState.Ready && <Notification type="success" label={'SEARCH:search-alert-saved'} />}
       <div className={styles.fieldWrapper}>
         <p>
           <strong>{housing_company}</strong> {district}, {street_address}
@@ -49,7 +71,12 @@ const SubscriptionForm = ({ onSubscribe, onCancel, project }: Props) => {
           id="email"
           label={t('SEARCH:email')}
           value={email}
-          onChange={(event) => setEmail(event.target.value)}
+          ref={emailRef}
+          disabled={state === FormState.Ready}
+          onChange={(event) => {
+            setEmail(event.target.value);
+            setState(FormState.InProgress);
+          }}
           helperText={t('SEARCH:search-alert-helper-text')}
         />
       </div>
@@ -62,10 +89,12 @@ const SubscriptionForm = ({ onSubscribe, onCancel, project }: Props) => {
         />
       </div>
       <div className={styles.buttonWrapper}>
-        <Button onClick={handleCancel} variant="secondary">
+        <Button onClick={handleClose} variant="secondary">
           {t('SEARCH:cancel')}
         </Button>
-        <Button onClick={handleSubscribe}>{t('SEARCH:save-search-alert')}</Button>
+        <Button onClick={handleSubscribe} disabled={state !== FormState.InProgress}>
+          {t('SEARCH:save-search-alert')}
+        </Button>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Modal from '../common/modal/Modal';
 
 type Props = {
@@ -7,9 +7,19 @@ type Props = {
 
 const useModal = () => {
   const [isVisible, setVisible] = useState(false);
+
+  const handleOpenModal = useCallback(() => {
+    setVisible(true);
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setVisible(false);
+  }, []);
+
   return {
-    isVisible,
-    setVisible,
+    isOpen: isVisible,
+    openModal: handleOpenModal,
+    closeModal: handleCloseModal,
     Modal: ({ children }: Props) => (
       <Modal isVisible={isVisible} setVisible={setVisible}>
         {children}

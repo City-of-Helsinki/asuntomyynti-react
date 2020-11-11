@@ -30,7 +30,9 @@
       "total": "Total",
       "until": "until",
       "for-sale": "For sale",
-      "pre-marketing": "Pre-marketing"
+      "pre-marketing": "Pre-marketing",
+      "search-alert-error": "Email is required!",
+      "search-alert-saved": "Search alert saved!"
     },
     "ES": {
       "additional_information": "Additional information",
@@ -145,7 +147,9 @@
       "total": "Yhteensä",
       "until": "asti",
       "for-sale": "Vapaat asunnot",
-      "pre-marketing": "Enakkomyynnissä"
+      "pre-marketing": "Enakkomyynnissä",
+      "search-alert-error": "Sähköpostiosoite on pakollinen tieto!",
+      "search-alert-saved": "Hakuvahti on tallennettu!"
     },
     "ES": {
       "additional_information": "Lisätiedot",
