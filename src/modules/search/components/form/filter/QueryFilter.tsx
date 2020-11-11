@@ -2,12 +2,11 @@ import React, { useCallback, useEffect } from 'react';
 import useSearchParams from '../../../../../hooks/useSearchParams';
 import RangeInput from './RangeInput';
 import CheckList from './CheckList';
-import { TextInput } from 'hds-react';
-import { FilterItem, FilterConfig, FilterType } from '../../../../../types/common';
-import useFilters from '../../../../../hooks/useFilters';
+import { FilterItem, FilterConfig, FilterType, FilterName } from '../../../../../types/common';
+import PriceInput from './PriceInput';
 
 type Props = {
-  name: string;
+  name: FilterName;
   onFilter?: (props: FilterConfig) => void;
   isWrapped?: boolean;
 } & FilterConfig;
@@ -18,11 +17,10 @@ type Props = {
 const QueryFilter = ({ name, onFilter, isWrapped = false, items, type, label, ...rest }: Props) => {
   // Get the current params
   const searchParams = useSearchParams();
-  const { setFilter, getFilter } = useFilters();
 
   const filterCallback = useCallback(() => {
     onFilter && onFilter({ label, type, items, ...rest });
-  }, [items, label, onFilter, type]);
+  }, [items, label, onFilter, type, rest]);
 
   // Update parent on mount
   useEffect(() => {
@@ -39,19 +37,7 @@ const QueryFilter = ({ name, onFilter, isWrapped = false, items, type, label, ..
       return <RangeInput name={name} from={from as FilterItem} to={to as FilterItem} />;
 
     case FilterType.Input:
-      const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setFilter(name, event.target.value || '');
-      };
-      return (
-        <TextInput
-          id={`${name}-${label}`}
-          label={label}
-          value={getFilter(name) || ''}
-          onChange={handleChange}
-          style={isWrapped ? { padding: '14px' } : {}}
-          {...items[0]}
-        />
-      );
+      return <PriceInput name={name} label={label} isWrapped={isWrapped} items={items as FilterItem[]} />;
 
     default:
       return null;

@@ -133,6 +133,7 @@ export type Project = {
   shareholder_meeting_date: string;
   site_area: number;
   site_renter: string;
+  state_of_sale: 'PRE_MARKETING' | 'ON_SALE';
   street_address: string;
   uuid: string;
   virtual_presentation_url: string;
@@ -271,7 +272,7 @@ export type PartialConfig = {
 export type DefaultFilterConfig = PartialConfig & {
   getQuery: (values: string[]) => QueryParams[];
   getLabel: (values: string[]) => string;
-  getTagLabel: (serializedValue: string) => { name: FilterName; value: string }[];
+  getTagLabel: (serializedValue: string) => ParamList;
 };
 
 export type FilterConfig = Omit<DefaultFilterConfig, 'items' | 'suffix'> & {
@@ -302,4 +303,4 @@ export type DefaultFilterConfigs = {
   [key in FilterName]: DefaultFilterConfig;
 };
 
-export type ParamList = { name: FilterName; value: string }[];
+export type ParamList = Array<[FilterName, string] | [FilterName, string, string]>;

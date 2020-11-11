@@ -6,7 +6,7 @@ const ErrorToast = () => {
   const { t } = useTranslation();
 
   return (
-    <Notification label={t('error')} position="top-right" autoClose type="alert" >
+    <Notification label={t('error')} position="top-right" autoClose type="alert">
       {t('SEARCH:something-wrong')}
     </Notification>
   );
