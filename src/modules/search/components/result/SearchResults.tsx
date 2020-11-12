@@ -7,32 +7,31 @@ import { Button, IconMap } from 'hds-react';
 
 type Props = {
   searchResults: Project[];
-  openMap: () => void;
+  header: string;
+  openMap?: () => void;
 };
 
-const SearchResults = ({ searchResults, openMap }: Props) => {
+const SearchResults = ({ searchResults, header, openMap }: Props) => {
   const { t } = useTranslation();
 
   return (
     <div className={css.container}>
       <header>
         <div className={css.titleContainer}>
-          <h1>{t('SEARCH:free-apartments')}</h1>
+          <h1>{header}</h1>
           <div className={css.resultsCount}>
             {t('SEARCH:total')} {searchResults.length} {t('SEARCH:apartments')}
           </div>
         </div>
-        <div>
-          <Button
-            className={css.showButton}
-            variant="secondary"
-            onClick={openMap}
-          >
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <IconMap style={{ marginRight: 20 }} /> {t('SEARCH:show-on-map')}
-            </div>
-          </Button>
-        </div>
+        {openMap && (
+          <div>
+            <Button className={css.showButton} variant="secondary" onClick={openMap}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <IconMap style={{ marginRight: 20 }} /> {t('SEARCH:show-on-map')}
+              </div>
+            </Button>
+          </div>
+        )}
       </header>
       <div className={css.resultWrapper}>
         {searchResults.map((x) => (

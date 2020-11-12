@@ -20,7 +20,9 @@
       "show-on-map": "Show on map",
       "something-wrong": "Oops, something went wrong.",
       "total": "Total",
-      "until": "until"
+      "until": "until",
+      "for-sale": "For sale",
+      "pre-marketing": "Pre-marketing"
     },
     "ES": {
       "additional_information": "Additional information",
@@ -125,7 +127,9 @@
       "show-on-map": "Näytä kartalla",
       "something-wrong": "Uups, jokin meni pieleen.",
       "total": "Yhteensä",
-      "until": "asti"
+      "until": "asti",
+      "for-sale": "Vapaat asunnot",
+      "pre-marketing": "Enakkomyynnissä"
     },
     "ES": {
       "additional_information": "Lisätiedot",
