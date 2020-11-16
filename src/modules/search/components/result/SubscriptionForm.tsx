@@ -20,7 +20,7 @@ enum FormState {
 const SubscriptionForm = ({ onClose, project }: Props) => {
   const [email, setEmail] = useState('');
   const [subscribeToNewsLetter, setSubscribeToNewsLetter] = useState(false);
-  const [state, setState] = useState(FormState.InProgress);
+  const [formState, setFormState] = useState(FormState.InProgress);
 
   const { t } = useTranslation();
   const searchParams = useSearchParams();
@@ -39,13 +39,13 @@ const SubscriptionForm = ({ onClose, project }: Props) => {
         project_id: project.id,
         subscribe_mailinglist: subscribeToNewsLetter,
       });
-      setState(FormState.Ready);
+      setFormState(FormState.Ready);
       typeof onClose === 'function' &&
         setTimeout(() => {
           onClose();
         }, 1000);
     } catch (e) {
-      setState(FormState.Error);
+      setFormState(FormState.Error);
       emailRef.current?.select();
     }
   };
@@ -59,8 +59,8 @@ const SubscriptionForm = ({ onClose, project }: Props) => {
   return (
     <div>
       <h1 className={styles.header}>{t('SEARCH:save-search-alert')}</h1>
-      {state === FormState.Error && <Notification type="error" label={t('SEARCH:search-alert-error')} />}
-      {state === FormState.Ready && <Notification type="success" label={t('SEARCH:search-alert-saved')} />}
+      {formState === FormState.Error && <Notification type="error" label={t('SEARCH:search-alert-error')} />}
+      {formState === FormState.Ready && <Notification type="success" label={t('SEARCH:search-alert-saved')} />}
       <div className={styles.fieldWrapper}>
         <p>
           <strong>{housing_company}</strong> {district}, {street_address}
@@ -72,10 +72,10 @@ const SubscriptionForm = ({ onClose, project }: Props) => {
           label={t('SEARCH:email')}
           value={email}
           ref={emailRef}
-          disabled={state === FormState.Ready}
+          disabled={formState === FormState.Ready}
           onChange={(event) => {
             setEmail(event.target.value);
-            setState(FormState.InProgress);
+            setFormState(FormState.InProgress);
           }}
           helperText={t('SEARCH:search-alert-helper-text')}
         />
@@ -92,7 +92,7 @@ const SubscriptionForm = ({ onClose, project }: Props) => {
         <Button onClick={handleClose} variant="secondary">
           {t('SEARCH:cancel')}
         </Button>
-        <Button onClick={handleSubscribe} disabled={state !== FormState.InProgress}>
+        <Button onClick={handleSubscribe} disabled={formState !== FormState.InProgress}>
           {t('SEARCH:save-search-alert')}
         </Button>
       </div>
