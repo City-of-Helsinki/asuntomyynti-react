@@ -50,8 +50,8 @@ const SearchForm = ({ onSubmit }: Props) => {
             <div className={styles.divider} />
           </div>
           <div className={styles.row}>
-            {(Object.keys(rest) as FilterName[]).map<JSX.Element>((name) => (
-              <div className={styles.column}>
+            {(Object.keys(rest) as FilterName[]).map<JSX.Element>((name, index) => (
+              <div className={styles.column} key={index}>
                 {(rest as FilterConfigs)[name] && <QueryFilter name={name} {...(rest as FilterConfigs)[name]} />}
               </div>
             ))}
