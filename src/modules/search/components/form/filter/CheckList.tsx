@@ -2,6 +2,8 @@ import React from 'react';
 import styles from './CheckList.module.scss';
 import { Checkbox } from 'hds-react';
 import useFilters from '../../../../../hooks/useFilters';
+import useLang from '../../../../../hooks/useLang';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   name: string;
@@ -12,6 +14,7 @@ type Props = {
 
 const CheckList = ({ name, items, label, isWrapped }: Props) => {
   const { addFilter, removeFilter, getFilters } = useFilters();
+  const { t } = useTranslation();
 
   const selected = getFilters(name);
 
@@ -32,7 +35,7 @@ const CheckList = ({ name, items, label, isWrapped }: Props) => {
             <Checkbox
               id={`${label}-${item}-${index}`}
               onChange={handleChange(item)}
-              label={item}
+              label={t(`ES:${item}`)}
               checked={selected.includes(item)}
             />
           </div>

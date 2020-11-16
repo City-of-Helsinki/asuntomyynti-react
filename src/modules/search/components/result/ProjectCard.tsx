@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import css from './ProjectCard.module.scss';
 import ApartmentRow from './ApartmentRow';
@@ -6,10 +6,29 @@ import { IconArrowDown, IconArrowUp, IconCogwheel, IconClock, Button } from 'hds
 import { Project } from '../../../../types/common';
 import { useTranslation } from 'react-i18next';
 
-const ProjectCard = ({ project }: { project: Project }) => {
+const ProjectCard = ({
+  project,
+  hideImgOnSmallScreen = false,
+}: {
+  project: Project;
+  hideImgOnSmallScreen?: boolean;
+}) => {
   const { t } = useTranslation();
   const [listOpen, setListOpen] = useState(false);
   const [page, setPage] = useState(1);
+  const [width, setWidth] = useState(window.innerWidth);
+
+  const handleOnResize = () => {
+    setWidth(window.innerWidth);
+  };
+
+  // Add listener for resize event
+  useEffect(() => {
+    window.addEventListener('resize', handleOnResize);
+    return () => {
+      window.removeEventListener('resize', handleOnResize);
+    };
+  }, []);
 
   const toggleList = () => {
     setListOpen(!listOpen);
@@ -57,11 +76,12 @@ const ProjectCard = ({ project }: { project: Project }) => {
   };
 
   const displayedApartments = apartments.slice(page * 10 - 10, page * 10);
+  const isSmallScreen = width < 993;
 
   return (
     <div className={css.container}>
       <div className={css.content}>
-        <div className={css.imageContainer}>
+        <div className={css.imageContainer} style={hideImgOnSmallScreen && isSmallScreen ? { display: 'none' } : {}}>
           <img src={main_image_url} alt={housing_company + ' ' + t('SEARCH:project')} />
         </div>
         <div className={css.info}>

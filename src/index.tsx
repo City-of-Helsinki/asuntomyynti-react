@@ -5,11 +5,14 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import './index.scss';
 import * as serviceWorker from './serviceWorker';
 import SearchContainer from './modules/search/SearchContainer';
+import FilterContextProvider from './modules/search/FilterContext';
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <SearchContainer />
+      <FilterContextProvider>
+        <SearchContainer />
+      </FilterContextProvider>
     </Router>
   </React.StrictMode>,
   document.getElementById('search')

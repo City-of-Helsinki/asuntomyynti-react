@@ -1,26 +1,28 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styles from './SearchForm.module.scss';
 import { Button } from 'hds-react';
 import QueryFilter from './filter/QueryFilter';
 import Dropdown from './filter/Dropdown';
 import Collapsible from '../../../../common/collapsible/Collapsible';
-import { FilterConfigs, FilterName } from '../../../../types/common';
+import { FilterName, FilterConfigs } from '../../../../types/common';
 import TagList from './tag/TagList';
 import { useTranslation } from 'react-i18next';
 import useFilters from '../../../../hooks/useFilters';
+import { FilterContext } from '../../FilterContext';
 
 type Props = {
   onSubmit: () => void;
-  config?: FilterConfigs;
-  isLoading: boolean;
 };
 
-const SearchForm = ({ config, onSubmit, isLoading }: Props) => {
+const SearchForm = ({ onSubmit }: Props) => {
   const { clearAllFilters, hasFilters } = useFilters();
   const [showMoreOptions, setShowMoreOptions] = useState(false);
   const { t } = useTranslation();
+  const config = useContext(FilterContext);
 
   const { project_district, room_count, living_area, sales_price, ...rest } = config || {};
+
+  const isLoading = !config;
 
   return (
     <div className={`${styles.container} ${showMoreOptions ? styles.expand : ''} ${isLoading ? styles.isLoading : ''}`}>

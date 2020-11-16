@@ -2,7 +2,7 @@ import useSearchParams from './useSearchParams';
 import { getParamsByName } from '../utils/getParamsByName';
 import { useHistory } from 'react-router-dom';
 import { FilterConfigs, FilterName } from '../types/common';
-import useFilterConfig from '../modules/search/hooks/useFilterConfig';
+import { useCallback } from 'react';
 
 const useFilters = () => {
   const query = useSearchParams();
@@ -12,9 +12,12 @@ const useFilters = () => {
     return Array.from(query.entries()).filter(([name, value]) => value !== '') as [FilterName, string][];
   };
 
-  const getFilters = (name: string): string[] => {
-    return getParamsByName(query, name, []);
-  };
+  const getFilters = useCallback(
+    (name: string): string[] => {
+      return getParamsByName(query, name, []);
+    },
+    [query]
+  );
 
   const getFilter = (name: string): string => {
     return query.get(name) || '';

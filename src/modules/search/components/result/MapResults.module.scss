@@ -1,14 +1,13 @@
 .container {
-  text-align: center;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 72px;
+  padding: 0 48px 80px;
 
   header {
     display: flex;
     justify-content: space-between;
+    padding: 62px 0 32px;
     flex-wrap: wrap;
-    padding: 62px 48px 32px;
   }
 }
 
@@ -31,27 +30,22 @@
   line-height: 43px;
 }
 
-.resultsCount {
-  color: rgb(26, 26, 26);
-  font-size: 16px;
+.label {
+  padding: 3px 8px;
+  color: #1d1d1d;
+  font-size: 14px;
   font-family: var(--font-default);
   font-weight: normal;
-  line-height: 24px;
+  line-height: 26px;
+  background-color: var(--color-engel-dark-50);
 }
 
-.resultWrapper {
-  padding: 48px;
-  background: #f2f2f2;
-}
-
-@media (max-width: 992px) {
-  .container {
-    padding: 0;
-  }
+.titles {
+  margin-bottom: 20px;
 }
 
 @media (max-width: 768px) {
-  .resultWrapper {
-    padding: 16px;
+  .container {
+    padding: 0 16px 80px;
   }
 }

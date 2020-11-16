@@ -16,11 +16,13 @@
     "hds-design-tokens": "^0.13.2",
     "hds-react": "^0.13.3",
     "i18next": "^19.7.0",
+    "leaflet": "^1.7.1",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-app-rewired": "^2.1.6",
     "react-dom": "^16.13.1",
     "react-i18next": "^11.7.3",
+    "react-leaflet": "^3.0.0",
     "react-query": "^2.23.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
@@ -51,6 +53,7 @@
   },
   "devDependencies": {
     "@testing-library/react-hooks": "^3.4.2",
+    "@types/leaflet": "^1.5.19",
     "husky": ">=4",
     "lint-staged": ">=10",
     "prettier": "^2.1.2",
@@ -62,7 +65,10 @@
     }
   },
   "lint-staged": {
-    "*.{ts,tsx,js,css,md}": "prettier --write"
+    "*.{ts,tsx,js,css,md}": [
+      "eslint",
+      "prettier --write"
+    ]
   },
   "proxy": "http://dev.asuntotuotanto.druidfi.wod.by"
 }
