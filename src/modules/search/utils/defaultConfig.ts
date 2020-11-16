@@ -7,7 +7,7 @@ export const defaultConfig = (name: FilterName): DefaultFilterConfig => ({
   getQuery: (values: string[]) => [
     {
       terms: {
-        [name]: values,
+        [`${name}.keyword`]: values,
       },
     },
   ],
