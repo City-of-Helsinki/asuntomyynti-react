@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import css from './MapResults.module.scss';
-import { Project } from '../../../../types/common';
+import { Project, StateOfSale } from '../../../../types/common';
 import { useTranslation } from 'react-i18next';
-import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 import { Button, IconLocation, IconMap } from 'hds-react';
 import L from 'leaflet';
 import ProjectCard from './ProjectCard';
@@ -23,11 +23,11 @@ const MapResults = ({ searchResults, closeMap }: Props) => {
     setActiveProject(targetProject);
   };
 
-  const getMarkerColor = (state?: Project['state_of_sale']) => {
+  const getMarkerColor = (state?: StateOfSale) => {
     switch (state) {
-      case 'PRE_MARKETING':
+      case StateOfSale.PreMarketing:
         return '#000000';
-      case 'ON_SALE':
+      case StateOfSale.ForSale:
         return '#0000bf';
       default:
         return '#0000bf';
