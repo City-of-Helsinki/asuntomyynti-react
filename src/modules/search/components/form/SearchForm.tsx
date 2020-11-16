@@ -20,7 +20,7 @@ const SearchForm = ({ onSubmit }: Props) => {
   const { t } = useTranslation();
   const config = useContext(FilterContext);
 
-  const { project_district, room_count, living_area, sales_price, ...rest } = config || {};
+  const { project_district, room_count, living_area, sales_price, ...additionalFilters } = config || {};
 
   const isLoading = !config;
 
@@ -50,9 +50,11 @@ const SearchForm = ({ onSubmit }: Props) => {
             <div className={styles.divider} />
           </div>
           <div className={styles.row}>
-            {(Object.keys(rest) as FilterName[]).map<JSX.Element>((name, index) => (
+            {(Object.keys(additionalFilters) as FilterName[]).map<JSX.Element>((name, index) => (
               <div className={styles.column} key={index}>
-                {(rest as FilterConfigs)[name] && <QueryFilter name={name} {...(rest as FilterConfigs)[name]} />}
+                {(additionalFilters as FilterConfigs)[name] && (
+                  <QueryFilter name={name} {...(additionalFilters as FilterConfigs)[name]} />
+                )}
               </div>
             ))}
           </div>
