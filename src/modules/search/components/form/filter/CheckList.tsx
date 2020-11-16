@@ -2,7 +2,6 @@ import React from 'react';
 import styles from './CheckList.module.scss';
 import { Checkbox } from 'hds-react';
 import useFilters from '../../../../../hooks/useFilters';
-import useLang from '../../../../../hooks/useLang';
 import { useTranslation } from 'react-i18next';
 
 type Props = {

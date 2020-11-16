@@ -2,17 +2,17 @@ import { BaseFilterConfigs, FilterConfigs, FilterName, PartialConfig } from '../
 import filterMap from '../modules/search/utils/filterMap';
 import { defaultConfig } from '../modules/search/utils/defaultConfig';
 
-export const enhanceConfig = (config: BaseFilterConfigs): FilterConfigs =>
-  Object.keys(filterMap).reduce<FilterConfigs>((accumulator, key) => {
+export const enhanceConfig = (config: BaseFilterConfigs) =>
+  (Object.keys(filterMap) as FilterName[]).reduce((accumulator, filterName) => {
     const filterConfig = {
-      ...accumulator[key as FilterName],
-      ...defaultConfig(key as FilterName),
-      ...((config[key as FilterName] || {}) as PartialConfig | {}),
+      ...accumulator[filterName],
+      ...defaultConfig(filterName),
+      ...((config[filterName] || {}) as PartialConfig | {}),
     };
     return {
       ...accumulator,
-      [key]: {
-        ...filterMap[key as FilterName](filterConfig),
+      [filterName]: {
+        ...filterMap[filterName](filterConfig),
       },
     };
   }, {} as FilterConfigs);

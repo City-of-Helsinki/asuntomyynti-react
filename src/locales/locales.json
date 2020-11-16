@@ -29,6 +29,9 @@
       "subscribe-to-newsletter": "Subscribe to Asuntotuotanto newsletter",
       "total": "Total",
       "until": "until",
+      "show-less-options": "Show less options",
+      "show-more-options": "Show more options",
+      "clear-all-filters": "Clear all filters",
       "for-sale": "For sale",
       "pre-marketing": "Pre-marketing",
       "search-alert-error": "Email is required!",
@@ -113,7 +116,9 @@
       "storage_description": "Storage description",
       "view_description": "View description",
       "water_fee": "Water fee",
-      "water_fee_explanation": "Water fee explanation"
+      "water_fee_explanation": "Water fee explanation",
+      "PRE_MARKETING":"Pre-marketing",
+      "FOR_SALE": "For sale"
     }
   },
   "fi": {
@@ -146,6 +151,9 @@
       "subscribe-to-newsletter": "Haluan tilata Asuntotuotannon uutiskirjeen",
       "total": "Yhteensä",
       "until": "asti",
+      "show-less-options": "Näytä vähemmän valintoja",
+      "show-more-options": "Näytä enemmän valintoja",
+      "clear-all-filters": "Tyhjennä kaikki valinnat",
       "for-sale": "Vapaat asunnot",
       "pre-marketing": "Enakkomyynnissä",
       "search-alert-error": "Sähköpostiosoite on pakollinen tieto!",
@@ -230,7 +238,9 @@
       "storage_description": "Säilytystilat",
       "view_description": "Näkymät",
       "water_fee": "Vesimaksu",
-      "water_fee_explanation": "Vesimaksun lisätiedot"
+      "water_fee_explanation": "Vesimaksun lisätiedot",
+      "PRE_MARKETING":"Ennakkomarkkinoinnissa",
+      "FOR_SALE": "Vapaat asunnot"
     }
   }
 }

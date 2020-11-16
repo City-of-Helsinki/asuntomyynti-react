@@ -14,9 +14,12 @@
   flex-direction: row;
   padding: 10px 0;
   margin: 0 -10px;
-  & >* {
+  & > * {
+    @media (max-width: 768px) {
+      padding: 0 10px;
+    }
     margin: 0 10px;
-    flex:1;
+    flex: 1;
   }
 }
 
@@ -31,12 +34,12 @@
   background-size: 1000px 640px;
 }
 
-@keyframes placeHolderShimmer{
-  0%{
-    background-position: -468px 0
+@keyframes placeHolderShimmer {
+  0% {
+    background-position: -468px 0;
   }
-  100%{
-    background-position: 468px 0
+  100% {
+    background-position: 468px 0;
   }
 }
 
@@ -45,7 +48,6 @@
   flex-direction: column;
   flex: 1;
   position: relative;
-  min-height: 56px;
 
   .isLoading &.canShimmer {
     @include shimmer;
@@ -104,5 +106,32 @@
     height: 2px;
     width: 12px;
     background-color: var(--color-black);
+  }
+}
+
+.clearFilters {
+  all: unset;
+  padding-left: 20px;
+  cursor: pointer;
+  position: relative;
+  &::after {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    content: '';
+    height: 2px;
+    width: 12px;
+    background-color: var(--color-black);
+    transform: rotate(45deg);
+  }
+  &::before {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    content: '';
+    height: 2px;
+    width: 12px;
+    background-color: var(--color-black);
+    transform: rotate(-45deg);
   }
 }

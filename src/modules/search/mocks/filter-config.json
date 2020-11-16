@@ -30,7 +30,7 @@
     ],
     "label": "Lisävalinnat"
   },
-  "state_of_sale": {
+  "project_state_of_sale": {
     "items": ["Nyt haettavana", "Vapaat asunnot", "Tulossa haettavaksi"],
     "label": "Myynnin tila"
   }
