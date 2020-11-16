@@ -5,17 +5,20 @@ import ApartmentRow from './ApartmentRow';
 import { IconArrowDown, IconArrowUp, IconCogwheel, IconClock, Button } from 'hds-react';
 import { Project } from '../../../../types/common';
 import { useTranslation } from 'react-i18next';
+import useModal from '../../../../hooks/useModal';
+import SubscriptionForm from './SubscriptionForm';
 
-const ProjectCard = ({
-  project,
-  hideImgOnSmallScreen = false,
-}: {
+type Props = {
   project: Project;
   hideImgOnSmallScreen?: boolean;
-}) => {
+  showSearchAlert?: boolean;
+};
+
+const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = false }: Props) => {
   const { t } = useTranslation();
   const [listOpen, setListOpen] = useState(false);
   const [page, setPage] = useState(1);
+  const { openModal, closeModal, Modal } = useModal();
   const [width, setWidth] = useState(window.innerWidth);
 
   const handleOnResize = () => {
@@ -106,9 +109,17 @@ const ProjectCard = ({
             </div>
           </div>
           <div className={css.controls}>
-            <Button className={css.detailsButton} variant="secondary">
-              {t('SEARCH:learn-more')}
-            </Button>
+            <Button className={css.detailsButton}>{t('SEARCH:learn-more')}</Button>
+            {showSearchAlert && (
+              <>
+                <Modal>
+                  <SubscriptionForm onClose={closeModal} project={project} />
+                </Modal>
+                <Button className={css.detailsButton} onClick={openModal} variant="secondary">
+                  {t('SEARCH:subscribe-for-upcoming-sales')}
+                </Button>
+              </>
+            )}
             <button className={css.apartmentListButton} onClick={toggleList}>
               {apartments.length} {t('SEARCH:apartments-available')}{' '}
               {listOpen ? (

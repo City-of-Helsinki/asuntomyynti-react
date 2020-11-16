@@ -43,7 +43,7 @@ const SearchContainer = () => {
       ) : (
         <>
           <SearchResults header={t('SEARCH:for-sale')} searchResults={forSale} openMap={openMap} />
-          <SearchResults header={t('SEARCH:pre-marketing')} searchResults={preMarketing} />
+          <SearchResults header={t('SEARCH:pre-marketing')} searchResults={preMarketing} showSearchAlert />
         </>
       )}
       {isError && <ErrorToast />}
