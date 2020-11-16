@@ -59,8 +59,8 @@ const SubscriptionForm = ({ onClose, project }: Props) => {
   return (
     <div>
       <h1 className={styles.header}>{t('SEARCH:save-search-alert')}</h1>
-      {state === FormState.Error && <Notification type="error" label={'SEARCH:search-alert-error'} />}
-      {state === FormState.Ready && <Notification type="success" label={'SEARCH:search-alert-saved'} />}
+      {state === FormState.Error && <Notification type="error" label={t('SEARCH:search-alert-error')} />}
+      {state === FormState.Ready && <Notification type="success" label={t('SEARCH:search-alert-saved')} />}
       <div className={styles.fieldWrapper}>
         <p>
           <strong>{housing_company}</strong> {district}, {street_address}
