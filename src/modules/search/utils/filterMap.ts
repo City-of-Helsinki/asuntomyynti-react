@@ -124,7 +124,7 @@ const filterMap: FilterMap = {
     type: FilterType.MultiSelect,
   }),
 
-  state_of_sale: (config) => ({
+  project_state_of_sale: (config) => ({
     ...config,
     type: FilterType.MultiSelect,
   }),
