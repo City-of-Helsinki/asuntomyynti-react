@@ -133,7 +133,7 @@ export type Project = {
   shareholder_meeting_date: string;
   site_area: number;
   site_renter: string;
-  state_of_sale: 'PRE_MARKETING' | 'ON_SALE';
+  state_of_sale: StateOfSale;
   street_address: string;
   uuid: string;
   virtual_presentation_url: string;
@@ -281,6 +281,11 @@ export type FilterConfig = Omit<DefaultFilterConfig, 'items' | 'suffix'> & {
   items: (FilterItem | string)[];
 };
 
+export enum StateOfSale {
+  ForSale = 'FOR_SALE',
+  PreMarketing = 'PRE_MARKETING',
+}
+
 export enum FilterName {
   LivingArea = 'living_area',
   ProjectBuildingType = 'project_building_type',
@@ -289,6 +294,7 @@ export enum FilterName {
   Properties = 'properties',
   RoomCount = 'room_count',
   SalesPrice = 'sales_price',
+  StateOfSale = 'project_state_of_sale',
 }
 
 export type FilterConfigs = {

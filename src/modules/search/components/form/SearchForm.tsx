@@ -4,8 +4,10 @@ import { Button } from 'hds-react';
 import QueryFilter from './filter/QueryFilter';
 import Dropdown from './filter/Dropdown';
 import Collapsible from '../../../../common/collapsible/Collapsible';
-import { FilterName } from '../../../../types/common';
+import { FilterName, FilterConfigs } from '../../../../types/common';
 import TagList from './tag/TagList';
+import { useTranslation } from 'react-i18next';
+import useFilters from '../../../../hooks/useFilters';
 import { FilterContext } from '../../FilterContext';
 
 type Props = {
@@ -13,18 +15,12 @@ type Props = {
 };
 
 const SearchForm = ({ onSubmit }: Props) => {
+  const { clearAllFilters, hasFilters } = useFilters();
   const [showMoreOptions, setShowMoreOptions] = useState(false);
+  const { t } = useTranslation();
   const config = useContext(FilterContext);
 
-  const {
-    project_district,
-    room_count,
-    living_area,
-    sales_price,
-    project_building_type,
-    properties,
-    project_new_development_status,
-  } = config || {};
+  const { project_district, room_count, living_area, sales_price, ...additionalFilters } = config || {};
 
   const isLoading = !config;
 
@@ -54,22 +50,18 @@ const SearchForm = ({ onSubmit }: Props) => {
             <div className={styles.divider} />
           </div>
           <div className={styles.row}>
-            <div className={styles.column}>
-              {project_building_type && (
-                <QueryFilter name={FilterName.ProjectBuildingType} {...project_building_type} />
-              )}
-            </div>
-            <div className={styles.column}>
-              {properties && <QueryFilter name={FilterName.Properties} {...properties} />}
-            </div>
-            <div className={styles.column}>
-              {project_new_development_status && (
-                <QueryFilter name={FilterName.ProjectNewDevelopmentStatus} {...project_new_development_status} />
-              )}
-            </div>
+            {(Object.keys(additionalFilters) as FilterName[]).map<JSX.Element>((name, index) => (
+              <div className={styles.column} key={index}>
+                {(additionalFilters as FilterConfigs)[name] && (
+                  <QueryFilter name={name} {...(additionalFilters as FilterConfigs)[name]} />
+                )}
+              </div>
+            ))}
           </div>
         </Collapsible>
-        <div className={styles.row}>{config && <TagList config={config} />}</div>
+        <div className={styles.row}>
+          <div className={styles.column}>{config && <TagList config={config} />}</div>
+        </div>
         <div className={styles.row}>
           <div className={styles.divider} />
         </div>
@@ -81,9 +73,16 @@ const SearchForm = ({ onSubmit }: Props) => {
                 setShowMoreOptions(!showMoreOptions);
               }}
             >
-              <span>{showMoreOptions ? 'Näytä vähemmän valintoja' : 'Näytä enemmän valintoja'}</span>
+              <span>{showMoreOptions ? t('SEARCH:show-less-options') : t('SEARCH:show-more-options')}</span>
             </button>
           </div>
+          {config && hasFilters(config) && (
+            <div className={styles.column}>
+              <button onClick={() => clearAllFilters(config)} className={styles.clearFilters}>
+                {t('SEARCH:clear-all-filters')}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

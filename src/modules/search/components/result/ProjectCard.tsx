@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import css from './ProjectCard.module.scss';
 import ApartmentRow from './ApartmentRow';
@@ -6,7 +6,13 @@ import { IconArrowDown, IconArrowUp, IconCogwheel, IconClock, Button } from 'hds
 import { Project } from '../../../../types/common';
 import { useTranslation } from 'react-i18next';
 
-const ProjectCard = ({ project, hideImgOnSmallScreen = false }: { project: Project, hideImgOnSmallScreen?: boolean }) => {
+const ProjectCard = ({
+  project,
+  hideImgOnSmallScreen = false,
+}: {
+  project: Project;
+  hideImgOnSmallScreen?: boolean;
+}) => {
   const { t } = useTranslation();
   const [listOpen, setListOpen] = useState(false);
   const [page, setPage] = useState(1);
@@ -75,7 +81,7 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false }: { project: Proje
   return (
     <div className={css.container}>
       <div className={css.content}>
-        <div className={css.imageContainer} style={hideImgOnSmallScreen && isSmallScreen ? {display: 'none'} : {}}>
+        <div className={css.imageContainer} style={hideImgOnSmallScreen && isSmallScreen ? { display: 'none' } : {}}>
           <img src={main_image_url} alt={housing_company + ' ' + t('SEARCH:project')} />
         </div>
         <div className={css.info}>
