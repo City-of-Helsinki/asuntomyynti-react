@@ -1,26 +1,21 @@
-.header {
-  color: #1a1a1a;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 24px;
-  min-height: 30px;
-  display: flex;
+.container {
+  @media (max-width: 768px) {
+    padding-bottom: 20px;
+  }
 }
 
 .item {
-  padding: 7px 0;
-  cursor: pointer;
   label {
     width: 100%;
   }
 }
 
-.isWrapped {
-  .item {
-    padding: 14px;
-  }
-}
-
 .isWrapped .item:hover {
   background: var(--color-black-10);
+}
+
+.isWrapped {
+  legend {
+    display: none;
+  }
 }

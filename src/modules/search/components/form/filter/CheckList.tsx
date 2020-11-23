@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './CheckList.module.scss';
-import { Checkbox } from 'hds-react';
+import { Checkbox, SelectionGroup } from 'hds-react';
 import useFilters from '../../../../../hooks/useFilters';
 import { useTranslation } from 'react-i18next';
 
@@ -26,20 +26,21 @@ const CheckList = ({ name, items, label, isWrapped }: Props) => {
   };
 
   return (
-    <div className={isWrapped ? styles.isWrapped : ''}>
-      {!isWrapped && label && <div className={styles.header}>{label}</div>}
-      {items.map((item, index) => {
-        return (
-          <div key={`${item}-${index}`} className={styles.item}>
+    <div className={`${styles.container} ${isWrapped ? styles.isWrapped : ''}`}>
+      <SelectionGroup label={!isWrapped && label ? label : ''}>
+        {items.map((item, index) => {
+          return (
             <Checkbox
+              key={`${item}-${index}`}
+              className={styles.item}
               id={`${label}-${item}-${index}`}
               onChange={handleChange(item)}
               label={t(`ES:${item}`)}
               checked={selected.includes(item)}
             />
-          </div>
-        );
-      })}
+          );
+        })}
+      </SelectionGroup>
     </div>
   );
 };

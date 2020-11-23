@@ -42,11 +42,11 @@ const Dropdown = ({ name, icon, ...rest }: Props) => {
   }`;
 
   return (
-    <div className={className} ref={ref}>
-      <label className={styles.label} onClick={() => setActive(!active)}>
+    <div className={className} ref={ref} onClick={() => setActive(!active)}>
+      <button className={styles.label}>
         {icon && <IconByName name={icon} className={styles.icon} />}
         <div className={styles.title}>{label}</div>
-      </label>
+      </button>
       <div className={styles.content}>
         <QueryFilter name={name} onFilter={handleFilter} isWrapped {...rest} />
       </div>
