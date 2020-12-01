@@ -51,6 +51,7 @@
   align-items: flex-start;
 
   .isLoading &.canShimmer {
+    min-height: 56px;
     @include shimmer;
   }
 }
