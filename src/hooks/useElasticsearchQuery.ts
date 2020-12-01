@@ -5,7 +5,7 @@ import useFilters from './useFilters';
 
 const useElasticsearchQuery = () => {
   const [query, setQuery] = useState({});
-  const config = useContext(FilterContext);
+  const { data: config } = useContext(FilterContext) || {};
   const { getFilters } = useFilters();
 
   const buildQuery = useCallback(() => {

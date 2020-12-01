@@ -19,11 +19,14 @@ const SearchForm = ({ onSubmit }: Props) => {
   const [isOptionsOpen, setOptionsOpen] = useState(false);
   const [isOptionsVisible, setOptionsVisible] = useState(false);
   const { t } = useTranslation();
-  const config = useContext(FilterContext);
+  const { data: config, isLoading, isError } = useContext(FilterContext) || {};
 
   const { project_district, room_count, living_area, sales_price, ...additionalFilters } = config || {};
 
-  const isLoading = !config;
+  // TODO: Add a notification to indicate something went wrong
+  if (!isLoading && isError) {
+    return null;
+  }
 
   return (
     <div className={`${styles.container} ${isOptionsOpen ? styles.expand : ''} ${isLoading ? styles.isLoading : ''}`}>
