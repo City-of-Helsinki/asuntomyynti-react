@@ -16,16 +16,20 @@ type Props = {
 
 const SearchForm = ({ onSubmit }: Props) => {
   const { clearAllFilters, hasFilters } = useFilters();
-  const [showMoreOptions, setShowMoreOptions] = useState(false);
+  const [isOptionsOpen, setOptionsOpen] = useState(false);
+  const [isOptionsVisible, setOptionsVisible] = useState(false);
   const { t } = useTranslation();
-  const config = useContext(FilterContext);
+  const { data: config, isLoading, isError } = useContext(FilterContext) || {};
 
   const { project_district, room_count, living_area, sales_price, ...additionalFilters } = config || {};
 
-  const isLoading = !config;
+  // TODO: Add a notification to indicate something went wrong
+  if (!isLoading && isError) {
+    return null;
+  }
 
   return (
-    <div className={`${styles.container} ${showMoreOptions ? styles.expand : ''} ${isLoading ? styles.isLoading : ''}`}>
+    <div className={`${styles.container} ${isOptionsOpen ? styles.expand : ''} ${isLoading ? styles.isLoading : ''}`}>
       <div className={styles.form}>
         <h1>Etsi Hitas-omistusasuntoja</h1>
         <div className={styles.row}>
@@ -45,18 +49,24 @@ const SearchForm = ({ onSubmit }: Props) => {
             {!isLoading && <Button onClick={() => onSubmit()}>Submit</Button>}
           </div>
         </div>
-        <Collapsible expand={showMoreOptions}>
+        <Collapsible
+          expand={isOptionsOpen}
+          onCollapse={() => {
+            setOptionsVisible(false);
+          }}
+        >
           <div className={styles.row}>
             <div className={styles.divider} />
           </div>
           <div className={styles.row}>
-            {(Object.keys(additionalFilters) as FilterName[]).map<JSX.Element>((name, index) => (
-              <div className={styles.column} key={index}>
-                {(additionalFilters as FilterConfigs)[name] && (
-                  <QueryFilter name={name} {...(additionalFilters as FilterConfigs)[name]} />
-                )}
-              </div>
-            ))}
+            {isOptionsVisible &&
+              (Object.keys(additionalFilters) as FilterName[]).map<JSX.Element>((name, index) => (
+                <div className={styles.column} key={index}>
+                  {(additionalFilters as FilterConfigs)[name] && (
+                    <QueryFilter name={name} {...(additionalFilters as FilterConfigs)[name]} />
+                  )}
+                </div>
+              ))}
           </div>
         </Collapsible>
         <div className={styles.row}>
@@ -70,10 +80,15 @@ const SearchForm = ({ onSubmit }: Props) => {
             <button
               className={styles.showMoreButton}
               onClick={() => {
-                setShowMoreOptions(!showMoreOptions);
+                if (isOptionsOpen) {
+                  setOptionsOpen(false);
+                } else {
+                  setOptionsOpen(true);
+                  setOptionsVisible(true);
+                }
               }}
             >
-              <span>{showMoreOptions ? t('SEARCH:show-less-options') : t('SEARCH:show-more-options')}</span>
+              <span>{isOptionsOpen ? t('SEARCH:show-less-options') : t('SEARCH:show-more-options')}</span>
             </button>
           </div>
           {config && hasFilters(config) && (

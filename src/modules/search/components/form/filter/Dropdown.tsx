@@ -15,6 +15,7 @@ const Dropdown = ({ name, icon, ...rest }: Props) => {
   const [label, setLabel] = useState<string>(name);
 
   const ref = useRef<HTMLDivElement>(null);
+  const labelRef = useRef<HTMLButtonElement>(null);
 
   const { clearFilter, getFilters, getFilter } = useFilters();
   const hasSelections = !!getFilter(name);
@@ -24,6 +25,8 @@ const Dropdown = ({ name, icon, ...rest }: Props) => {
   });
 
   const handleClearSelection = () => {
+    // Focus on button after clearing selection
+    labelRef.current?.focus();
     clearFilter(name);
     setTimeout(() => {
       // Let the user see selection disappear before closing the dropdown
@@ -43,10 +46,10 @@ const Dropdown = ({ name, icon, ...rest }: Props) => {
 
   return (
     <div className={className} ref={ref}>
-      <label className={styles.label} onClick={() => setActive(!active)}>
+      <button className={styles.label} aria-expanded={active} onClick={() => setActive(!active)} ref={labelRef}>
         {icon && <IconByName name={icon} className={styles.icon} />}
         <div className={styles.title}>{label}</div>
-      </label>
+      </button>
       <div className={styles.content}>
         <QueryFilter name={name} onFilter={handleFilter} isWrapped {...rest} />
       </div>

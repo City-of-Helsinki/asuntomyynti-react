@@ -27,7 +27,6 @@ const PriceInput = ({ name, label, isWrapped }: Props) => {
       value={value}
       onChange={handleChange}
       className={styles.priceInput}
-      style={isWrapped ? { padding: '14px' } : {}}
     />
   );
 };
