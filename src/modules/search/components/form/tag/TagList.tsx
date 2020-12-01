@@ -27,7 +27,12 @@ const TagList = ({ config }: Props) => {
   return (
     <div className={styles.container}>
       {params.map(([name, value, label], index) => (
-        <button key={index} className={styles.tag} onClick={handleClick(name, value)}>
+        <button
+          key={index}
+          className={styles.tag}
+          onClick={handleClick(name, value)}
+          aria-label={`${t('SEARCH:remove-tag')} ${name} ${t(`ES:${label || value}`)}`}
+        >
           <IconCross className={styles.icon} />
           <span className={styles.label}>{t(`ES:${label || value}`)}</span>
         </button>

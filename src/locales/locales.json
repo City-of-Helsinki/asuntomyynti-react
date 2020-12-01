@@ -35,7 +35,8 @@
       "for-sale": "For sale",
       "pre-marketing": "Pre-marketing",
       "search-alert-error": "Email is required!",
-      "search-alert-saved": "Search alert saved!"
+      "search-alert-saved": "Search alert saved!",
+      "remove-tag": "Remove filter"
     },
     "ES": {
       "additional_information": "Additional information",
@@ -117,7 +118,7 @@
       "view_description": "View description",
       "water_fee": "Water fee",
       "water_fee_explanation": "Water fee explanation",
-      "PRE_MARKETING":"Pre-marketing",
+      "PRE_MARKETING": "Pre-marketing",
       "FOR_SALE": "For sale"
     }
   },
@@ -157,7 +158,8 @@
       "for-sale": "Vapaat asunnot",
       "pre-marketing": "Enakkomyynnissä",
       "search-alert-error": "Sähköpostiosoite on pakollinen tieto!",
-      "search-alert-saved": "Hakuvahti on tallennettu!"
+      "search-alert-saved": "Hakuvahti on tallennettu!",
+      "remove-tag": "Poista filtteri "
     },
     "ES": {
       "additional_information": "Lisätiedot",
@@ -239,7 +241,7 @@
       "view_description": "Näkymät",
       "water_fee": "Vesimaksu",
       "water_fee_explanation": "Vesimaksun lisätiedot",
-      "PRE_MARKETING":"Ennakkomarkkinoinnissa",
+      "PRE_MARKETING": "Ennakkomarkkinoinnissa",
       "FOR_SALE": "Vapaat asunnot"
     }
   }
