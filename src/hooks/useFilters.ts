@@ -61,7 +61,6 @@ const useFilters = () => {
 
   const clearAllFilters = (filterConfig: FilterConfigs) => {
     Object.keys(filterConfig).forEach((name) => {
-      console.log(name);
       query.delete(name);
     });
     history.push(`?${query.toString()}`);
