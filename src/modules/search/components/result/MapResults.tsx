@@ -13,7 +13,8 @@ type Props = {
   closeMap: () => void;
 };
 
-const MAP_URL = 'https://tiles.hel.ninja/styles/hel-osm-bright/{z}/{x}/{y}.png';
+const MAP_TILES_URL =
+  process.env.REACT_APP_MAP_TILES_URL || 'https://tiles.hel.ninja/styles/hel-osm-bright/{z}/{x}/{y}.png';
 
 const MapResults = ({ searchResults, closeMap }: Props) => {
   const { t } = useTranslation();
@@ -125,7 +126,7 @@ const MapResults = ({ searchResults, closeMap }: Props) => {
         >
           <TileLayer
             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url={MAP_URL}
+            url={MAP_TILES_URL}
           />
           {searchResults.map((x) => (
             <Marker
