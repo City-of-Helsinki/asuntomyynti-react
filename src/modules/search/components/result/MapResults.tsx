@@ -115,7 +115,7 @@ const MapResults = ({ searchResults, closeMap }: Props) => {
           </Button>
         </div>
       </header>
-      <div id={'mapid'}>
+      <div id={'asuReactMap'}>
         <MapContainer
           center={getInitialPosition()}
           zoom={12}

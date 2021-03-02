@@ -15,7 +15,7 @@ ReactDOM.render(
       </FilterContextProvider>
     </Router>
   </React.StrictMode>,
-  document.getElementById('search')
+  document.getElementById('asu_react_search')
 );
 
 // If you want your app to work offline and load faster, you can change
