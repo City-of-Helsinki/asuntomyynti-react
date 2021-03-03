@@ -123,9 +123,9 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
             <button className={css.apartmentListButton} onClick={toggleList}>
               {apartments.length} {t('SEARCH:apartments-available')}{' '}
               {listOpen ? (
-                <IconArrowDown role="presentation" style={{ marginLeft: 10 }} />
-              ) : (
                 <IconArrowUp role="presentation" style={{ marginLeft: 10 }} />
+              ) : (
+                <IconArrowDown role="presentation" style={{ marginLeft: 10 }} />
               )}
             </button>
           </div>
