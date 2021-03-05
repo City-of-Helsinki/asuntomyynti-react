@@ -1,7 +1,8 @@
 {
   "name": "asuntomyynti-react",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -19,7 +20,6 @@
     "leaflet": "^1.7.1",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
-    "react-app-rewired": "^2.1.6",
     "react-dom": "^16.13.1",
     "react-i18next": "^11.7.3",
     "react-leaflet": "^3.0.0",
@@ -33,8 +33,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build:drupal": "yarn build && yarn build:dist",
-    "build:dist": "cd build && mkdir -p drupal && cp static/js/main.*.chunk.js drupal/main.js && cp static/js/runtime-main.*.js drupal/runtime-main.js && cp static/js/[0-9]*.*.chunk.js drupal/vendors.js && cp static/css/*.css drupal/main.css"
+    "build:dist": "yarn build && yarn build:dist_files",
+    "build:dist_files": "mkdir -p dist && cp build/static/js/main.*.chunk.js dist/asu_react_main.js && cp build/static/js/runtime-main.*.js dist/asu_react_runtime-main.js && cp build/static/js/[0-9]*.*.chunk.js dist/asu_react_vendors.js && cp build/static/js/*.map dist/ && cp build/static/css/main.*.css dist/asu_react_main.css && cp build/static/css/[0-9].*.css dist/asu_react_vendors.css && cp build/static/css/*.map dist/"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -65,7 +65,7 @@
     }
   },
   "lint-staged": {
-    "*.{ts,tsx,js,css,md}": [
+    "*.{ts,tsx,js,css}": [
       "eslint",
       "prettier --write"
     ]

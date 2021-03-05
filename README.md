@@ -1,5 +1,9 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Development and Production
+
+Create `.env` file and copy `.env.example` contents to it. Modify variables as needed.
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -26,6 +30,52 @@ The build is minified and the filenames include the hashes.<br />
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+
+### `yarn build:dist`
+
+**_Custom Script_**
+
+Builds the app with `yarn build` and after that, it copies files under `dist` folder.<br />
+These copied files will always have the same filename, so that it's easier to embed them into other web applications without the need of worrying hashes in filenames. (This will also copy `.map` files and it keeps their original filename, as they are referenced in this way in the generated files.)
+
+We are using `asu_react_` as a prefix in the filenames to avoid naming collisions.
+
+Generated files are:
+
+```
+/dist
+    asu_react_main.js
+    asu_react_runtime-main.js
+    asu_react_vendors.js
+    asu_react_main.css
+    asu_react_vendors.css
+    *.map
+```
+
+**The order of running these files does matter.** Example usage of the application:
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="asu_react_vendors.css?v=x.x.x">
+    <link rel="stylesheet" href="asu_react_main.css?v=x.x.x">
+</head>
+<body>
+    <div id="asu_react_search"></div>
+
+    <script src="asu_react_runtime-main.js?v=x.x.x"></script>
+    <script src="asu_react_vendors.js?v=x.x.x"></script>
+    <script src="asu_react_main.js?v=x.x.x"></script>
+</body>
+</html>
+```
 
 ### `yarn eject`
 
