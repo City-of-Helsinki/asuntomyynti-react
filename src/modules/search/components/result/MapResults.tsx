@@ -4,7 +4,7 @@ import css from './MapResults.module.scss';
 import { Project, StateOfSale } from '../../../../types/common';
 import { useTranslation } from 'react-i18next';
 import { MapContainer, Marker, TileLayer } from 'react-leaflet';
-import { Button, IconLocation, IconMap } from 'hds-react';
+import { Button, IconLocation, IconMenuHamburger } from 'hds-react';
 import L from 'leaflet';
 import ProjectCard from './ProjectCard';
 
@@ -110,7 +110,7 @@ const MapResults = ({ searchResults, closeMap }: Props) => {
         <div>
           <Button className={css.showButton} variant="secondary" onClick={closeMap}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <IconMap style={{ marginRight: 20 }} /> {t('SEARCH:show-as-list')}
+              <IconMenuHamburger style={{ marginRight: 20 }} /> {t('SEARCH:show-as-list')}
             </div>
           </Button>
         </div>
