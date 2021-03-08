@@ -16,14 +16,17 @@
       "error": "Error",
       "floor": "Floor",
       "free-apartments": "Free apartments",
-      "free-of-debt-price": "Free of debt price",
+      "free-of-debt-price": "Debt-free Price",
       "info": "Info",
       "learn-more": "Learn more",
       "name-of-the-alert": "Name of the alert",
+      "next-page": "Next page",
+      "previous-page": "Previous page",
       "project": "project",
       "show-as-list": "Show as list",
       "show-on-map": "Show on map",
       "save-search-alert": "Save search alert",
+      "search": "Search",
       "search-alert-helper-text": "We will notify you via email when project is available",
       "something-wrong": "Oops, something went wrong.",
       "subscribe-for-upcoming-sales": "Set alert",
@@ -144,10 +147,13 @@
       "info": "Tutustu",
       "learn-more": "Tutustu kohteeseen",
       "name-of-the-alert": "Vahdin nimi",
+      "next-page": "Seuraava sivu",
+      "previous-page": "Edellinen sivu",
       "project": "kohde",
       "show-as-list": "Näytä listana",
       "show-on-map": "Näytä kartalla",
       "save-search-alert": "Tallenna hakuvahti",
+      "search": "Hae",
       "search-alert-helper-text": "Lähetämme tiedon sähköpostiosoitteeseen kun kohde valmistuu",
       "something-wrong": "Uups, jokin meni pieleen.",
       "subscribe-for-upcoming-sales": "Tilaa vahti",
@@ -157,11 +163,11 @@
       "show-less-options": "Näytä vähemmän valintoja",
       "show-more-options": "Näytä enemmän valintoja",
       "clear-all-filters": "Tyhjennä kaikki valinnat",
-      "for-sale": "Vapaat asunnot",
-      "pre-marketing": "Enakkomyynnissä",
+      "for-sale": "Nyt haettavana",
+      "pre-marketing": "Tulossa haettavaksi",
       "search-alert-error": "Sähköpostiosoite on pakollinen tieto!",
       "search-alert-saved": "Hakuvahti on tallennettu!",
-      "remove-tag": "Poista filtteri "
+      "remove-tag": "Poista filtteri"
     },
     "ES": {
       "additional_information": "Lisätiedot",
@@ -244,7 +250,7 @@
       "water_fee": "Vesimaksu",
       "water_fee_explanation": "Vesimaksun lisätiedot",
       "PRE_MARKETING": "Ennakkomarkkinoinnissa",
-      "FOR_SALE": "Vapaat asunnot"
+      "FOR_SALE": "Nyt haettavana"
     }
   }
 }
