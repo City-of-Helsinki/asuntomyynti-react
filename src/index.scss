@@ -29,3 +29,35 @@ body {
     height: 400px;
   }
 }
+
+.sr-only {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.carousel {
+  position: relative;
+}
+
+.carousel,
+.carousel__slider,
+.carousel__slider-tray,
+.carousel__slide,
+.carousel__inner-slide {
+  display: flex;
+}
+
+.carousel__slider-tray {
+  height: 100%;
+}
+
+.carousel__slide {
+  height: 100%;
+  padding-bottom: 0 !important;
+}
