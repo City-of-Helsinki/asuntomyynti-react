@@ -123,6 +123,8 @@ const MapResults = ({ searchResults, closeMap }: Props) => {
             [59.4, 23.8],
             [61.5, 25.8],
           ]}
+          dragging={!L.Browser.mobile}
+          tap={!L.Browser.mobile}
         >
           <TileLayer
             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
