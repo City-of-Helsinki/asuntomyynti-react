@@ -13,6 +13,7 @@ export type Apartment = {
   debt_free_sales_price: number;
   financing_fee: number;
   floor: number;
+  floor_max: number;
   has_apartment_sauna: boolean;
   has_balcony: boolean;
   has_terrace: boolean;
@@ -81,6 +82,7 @@ export type Apartment = {
   site_owner: string;
   storage_description: string;
   title: string;
+  url: string;
   uuid: string;
   view_description: string;
   water_fee: number;
@@ -135,6 +137,7 @@ export type Project = {
   site_renter: string;
   state_of_sale: StateOfSale;
   street_address: string;
+  url: string;
   uuid: string;
   virtual_presentation_url: string;
   zoning_info: string;

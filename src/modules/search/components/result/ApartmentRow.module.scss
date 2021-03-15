@@ -1,9 +1,10 @@
 .container {
   background: white;
-  padding: 30px 0;
+  padding: var(--spacing-m) 0;
   display: flex;
   text-align: left;
   border-bottom: 1px solid var(--color-black-20);
+  align-items: center;
 }
 
 .container:last-of-type {
@@ -16,7 +17,6 @@
   font-size: 18px;
   font-family: var(--font-default);
   font-weight: normal;
-  line-height: 36px;
   white-space: nowrap;
 }
 
@@ -40,6 +40,11 @@
 
 .getToKnowButton {
   height: 36px;
+  margin-right: 5px;
+
+  span {
+    padding: var(--spacing-s) !important;
+  }
 }
 
 @media (max-width: 768px) {
@@ -61,6 +66,7 @@
   .getToKnowButton {
     height: 56px;
     margin-bottom: 12px;
+    margin-right: 0;
   }
 
   .createApplicationButton {

@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './Dropdown.module.scss';
 import IconByName from './IconByName';
 import useOutsideClick from '../../../../../hooks/useOutsideClick';
@@ -11,6 +12,7 @@ type Props = {
 } & FilterConfig;
 
 const Dropdown = ({ name, icon, ...rest }: Props) => {
+  const { t } = useTranslation();
   const [active, setActive] = useState(false);
   const [label, setLabel] = useState<string>(name);
 
@@ -47,7 +49,7 @@ const Dropdown = ({ name, icon, ...rest }: Props) => {
   return (
     <div className={className} ref={ref}>
       <button className={styles.label} aria-expanded={active} onClick={() => setActive(!active)} ref={labelRef}>
-        {icon && <IconByName name={icon} className={styles.icon} />}
+        {icon && <IconByName name={icon} className={styles.icon} aria-hidden="true" />}
         <div className={styles.title}>{label}</div>
       </button>
       <div className={styles.content}>
@@ -55,7 +57,7 @@ const Dropdown = ({ name, icon, ...rest }: Props) => {
       </div>
       <div className={styles.footer}>
         <button onClick={handleClearSelection} disabled={!hasSelections} className={styles.clearButton}>
-          Tyhjennä valinta
+          {t('SEARCH:clear-selection')}
         </button>
       </div>
     </div>

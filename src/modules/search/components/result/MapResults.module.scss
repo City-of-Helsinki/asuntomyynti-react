@@ -1,13 +1,14 @@
 .container {
+  text-align: center;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 48px 80px;
+  padding: 0 72px;
 
   header {
     display: flex;
     justify-content: space-between;
-    padding: 62px 0 32px;
     flex-wrap: wrap;
+    padding: 62px 48px 32px;
   }
 }
 

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import styles from './SearchForm.module.scss';
-import { Button } from 'hds-react';
+import { Button, IconSearch } from 'hds-react';
 import QueryFilter from './filter/QueryFilter';
 import Dropdown from './filter/Dropdown';
 import Collapsible from '../../../../common/collapsible/Collapsible';
@@ -46,7 +46,11 @@ const SearchForm = ({ onSubmit }: Props) => {
             {sales_price && <Dropdown name={FilterName.SalesPrice} {...sales_price} />}
           </div>
           <div className={`${styles.column} ${styles.canShimmer}`}>
-            {!isLoading && <Button onClick={() => onSubmit()}>Submit</Button>}
+            {!isLoading && (
+              <Button onClick={() => onSubmit()} iconLeft={<IconSearch aria-hidden="true" />}>
+                {t('SEARCH:search')}
+              </Button>
+            )}
           </div>
         </div>
         <Collapsible

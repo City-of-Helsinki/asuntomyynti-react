@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import css from './ApartmentRow.module.scss';
 import { Apartment } from '../../../../types/common';
 import { useTranslation } from 'react-i18next';
-import { Button, IconAngleDown } from 'hds-react';
+import { IconAngleDown } from 'hds-react';
 
 const BREAK_POINT = 768;
 
@@ -30,7 +30,31 @@ const ApartmentRow = ({ apartment }: { apartment: Apartment }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const { apartment_number, apartment_structure, application_url, floor, living_area, sales_price } = apartment;
+  const {
+    apartment_number,
+    apartment_structure,
+    application_url,
+    floor,
+    floor_max,
+    living_area,
+    debt_free_sales_price,
+    url,
+  } = apartment;
+
+  const calculatedDebtFreeSalesPrice = debt_free_sales_price / 100;
+  const formattedDebtFreeSalesPrice = `${calculatedDebtFreeSalesPrice.toLocaleString('fi-FI')} €`;
+
+  const formattedLivingArea = `${living_area.toLocaleString('fi-FI')} m²`;
+
+  const fullURL = (path: string) => {
+    if (!path) {
+      return undefined;
+    }
+    if (path.toLowerCase().startsWith('http')) {
+      return path;
+    }
+    return `http://${path}`;
+  };
 
   return (
     <div className={css.container}>
@@ -51,37 +75,45 @@ const ApartmentRow = ({ apartment }: { apartment: Apartment }) => {
           <>
             <div className={css.cell} style={{ flex: 1 }}>
               {isMobileSize && <span style={{ flex: 1 }}>{t('SEARCH:floor')} </span>}
-              <span style={{ flex: 1 }}>{floor}</span>
+              <span style={{ flex: 1 }}>
+                {floor} {floor_max && ` / ${floor_max}`}
+              </span>
             </div>
             <div className={css.cell} style={{ flex: 1 }}>
               {isMobileSize && <span style={{ flex: 1 }}>{t('SEARCH:area')}</span>}
-              <span style={{ flex: 1 }}>{living_area} m²</span>
+              <span style={{ flex: 1 }}>{formattedLivingArea}</span>
             </div>
             <div className={css.cell} style={{ flex: 1 }}>
               {isMobileSize && <span style={{ flex: 1 }}>{t('SEARCH:free-of-debt-price')}</span>}
-              <span style={{ flex: 1 }}>{sales_price / 100} €</span>
+              <span style={{ flex: 1 }}>{formattedDebtFreeSalesPrice}</span>
             </div>
           </>
         )}
+        <div className={css.cell} style={{ flex: 1 }}>
+          - {/* TODO: hakijatilanne */}
+        </div>
       </div>
-      {/*<div className={css.cell} style={{ flex: 1 }}>
-        Ei hakijoita
-      </div>*/}
       {(rowOpen || isDesktopSize) && (
         <div className={css.buttons} style={{ flex: '3 3 0' }}>
-          {isDesktopSize ? (
-            <Button className={css.getToKnowButton} variant="supplementary" iconRight={null}>
-              {t('SEARCH:info')}
-            </Button>
-          ) : (
-            <Button className={css.getToKnowButton} variant="secondary">
-              {t('SEARCH:info')}
-            </Button>
-          )}
-          <a href={application_url || ''}>
-            <Button className={css.createApplicationButton} variant={isDesktopSize ? 'secondary' : 'primary'}>
-              {t('SEARCH:apply')}
-            </Button>
+          <a
+            href={fullURL(url) || '#'}
+            className={`${css.getToKnowButton} hds-button hds-button--${
+              isDesktopSize ? 'supplementary' : 'secondary'
+            } hds-button--small`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t('SEARCH:info')}
+          </a>
+          <a
+            href={fullURL(application_url) || '#'}
+            className={`${css.createApplicationButton} hds-button hds-button--${
+              isDesktopSize ? 'secondary' : 'primary'
+            } hds-button--small`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t('SEARCH:apply')}
           </a>
         </div>
       )}
