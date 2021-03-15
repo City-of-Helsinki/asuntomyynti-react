@@ -115,31 +115,33 @@ const MapResults = ({ searchResults, closeMap }: Props) => {
           </Button>
         </div>
       </header>
-      <div id={'asuReactMap'}>
-        <MapContainer
-          center={getInitialPosition()}
-          zoom={12}
-          maxBounds={[
-            [59.4, 23.8],
-            [61.5, 25.8],
-          ]}
-          dragging={!L.Browser.mobile}
-          tap={!L.Browser.mobile}
-        >
-          <TileLayer
-            attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url={MAP_TILES_URL}
-          />
-          {searchResults.map((x) => (
-            <Marker
-              key={x.uuid}
-              icon={getMarkerIcon(x)}
-              position={[x.coordinate_lat, x.coordinate_lon]}
-              eventHandlers={{ click: () => handleMarkerClick(x) }}
+      <div className={css.mapContainer}>
+        <div id={'asuReactMap'}>
+          <MapContainer
+            center={getInitialPosition()}
+            zoom={12}
+            maxBounds={[
+              [59.4, 23.8],
+              [61.5, 25.8],
+            ]}
+            dragging={!L.Browser.mobile}
+            tap={!L.Browser.mobile}
+          >
+            <TileLayer
+              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url={MAP_TILES_URL}
             />
-          ))}
-        </MapContainer>
-        {activeProject && <ProjectCard project={activeProject} hideImgOnSmallScreen={true} />}
+            {searchResults.map((x) => (
+              <Marker
+                key={x.uuid}
+                icon={getMarkerIcon(x)}
+                position={[x.coordinate_lat, x.coordinate_lon]}
+                eventHandlers={{ click: () => handleMarkerClick(x) }}
+              />
+            ))}
+          </MapContainer>
+          {activeProject && <ProjectCard project={activeProject} hideImgOnSmallScreen={true} />}
+        </div>
       </div>
     </div>
   );
