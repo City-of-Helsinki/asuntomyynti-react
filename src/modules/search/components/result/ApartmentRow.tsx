@@ -12,7 +12,7 @@ const ApartmentRow = ({ apartment }: { apartment: Apartment }) => {
   const [rowOpen, setRowOpen] = useState(false);
 
   const isDesktopSize = width > BREAK_POINT;
-  const isMobileSize = width < BREAK_POINT;
+  const isMobileSize = width <= BREAK_POINT;
 
   const handleResize = () => {
     setWidth(window.innerWidth);
