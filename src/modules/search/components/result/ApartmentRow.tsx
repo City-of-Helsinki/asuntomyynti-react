@@ -42,9 +42,9 @@ const ApartmentRow = ({ apartment }: { apartment: Apartment }) => {
   } = apartment;
 
   const calculatedDebtFreeSalesPrice = debt_free_sales_price / 100;
-  const formattedDebtFreeSalesPrice = `${calculatedDebtFreeSalesPrice.toLocaleString('fi-FI')} €`;
+  const formattedDebtFreeSalesPrice = `${calculatedDebtFreeSalesPrice.toLocaleString('fi-FI')} \u20AC`;
 
-  const formattedLivingArea = `${living_area.toLocaleString('fi-FI')} m²`;
+  const formattedLivingArea = `${living_area.toLocaleString('fi-FI')} m\u00b2`;
 
   const fullURL = (path: string) => {
     if (!path) {
