@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import './index.scss';
+import 'hds-core/lib/components/button/button.css';
 import * as serviceWorker from './serviceWorker';
 import SearchContainer from './modules/search/SearchContainer';
 import FilterContextProvider from './modules/search/FilterContext';
