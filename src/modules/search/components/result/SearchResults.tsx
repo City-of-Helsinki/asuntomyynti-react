@@ -19,7 +19,7 @@ const SearchResults = ({ searchResults, header, openMap, showSearchAlert = false
     <div className={css.container}>
       <header>
         <div className={css.titleContainer}>
-          <h1>{header}</h1>
+          <h2>{header}</h2>
           <div className={css.resultsCount}>
             {t('SEARCH:total')} {searchResults.length} {t('SEARCH:apartments')}
           </div>

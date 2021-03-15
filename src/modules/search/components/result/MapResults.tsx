@@ -102,7 +102,7 @@ const MapResults = ({ searchResults, closeMap }: Props) => {
     <div className={css.container}>
       <header>
         <div className={css.titleContainer}>
-          <h1>{t('SEARCH:all-apartments')}</h1>
+          <h2>{t('SEARCH:all-apartments')}</h2>
           <div className={css.resultsCount}>
             {t('SEARCH:total')} {searchResults.length} {t('SEARCH:apartments')}
           </div>

@@ -264,7 +264,7 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
         <div className={css.info}>
           <div className={css.details}>
             <div className={css.titles}>
-              <h2 style={{ marginBottom: 5 }}>{housing_company}</h2>
+              <h3 style={{ marginBottom: 5 }}>{housing_company}</h3>
               <div style={{ marginBottom: 5 }}>
                 <b>{district},</b> {street_address}
               </div>
