@@ -312,32 +312,32 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
           </div>
           <div className={css.controls}>
             <a
-              href={fullURL(url)}
-              className={`${css.detailsButton} hds-button hds-button--secondary`}
+              href={fullURL(url) || '#'}
+              className={`${css.detailsButton} hds-button hds-button--secondary hds-button--small`}
               target="_blank"
               rel="noopener noreferrer"
             >
-              {t('SEARCH:learn-more')}
+              <span className="hds-button__label">{t('SEARCH:learn-more')}</span>
             </a>
             {showSearchAlert && (
               <>
                 <Modal>
                   <SubscriptionForm onClose={closeModal} project={project} />
                 </Modal>
-                <Button className={css.detailsButton} onClick={openModal} variant="secondary">
+                <Button className={css.detailsButton} onClick={openModal} variant="secondary" size="small">
                   {t('SEARCH:subscribe-for-upcoming-sales')}
                 </Button>
               </>
             )}
             {hasApartments && (
-              <button className={css.apartmentListButton} onClick={toggleList}>
-                {apartments.length} {t('SEARCH:apartments-available')}{' '}
-                {listOpen ? (
-                  <IconArrowUp aria-hidden="true" style={{ marginLeft: 10 }} />
-                ) : (
-                  <IconArrowDown aria-hidden="true" style={{ marginLeft: 10 }} />
-                )}
-              </button>
+              <Button
+                className={css.apartmentListButton}
+                onClick={toggleList}
+                variant="supplementary"
+                iconRight={listOpen ? <IconArrowUp aria-hidden="true" /> : <IconArrowDown aria-hidden="true" />}
+              >
+                {apartments.length} {t('SEARCH:apartments-available')}
+              </Button>
             )}
           </div>
         </div>
