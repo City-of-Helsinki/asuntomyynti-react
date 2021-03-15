@@ -300,11 +300,11 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
               </div>
               {/* TODO
               <div className={css.applicationSent}>
-                <IconClock style={{ marginRight: 10 }} aria-hidden="true" />
+                <IconPenLine style={{ marginRight: 10 }} aria-hidden="true" />
                 <span>Sinulla on <a href="#">hakemus</a> tähän kohteeseen</span>
               </div>
               <div className={css.moveInTime}>
-                <IconPenLine style={{ marginRight: 10 }} aria-hidden="true" />
+                <IconClock style={{ marginRight: 10 }} aria-hidden="true" />
                 <span>Muuttopäivä 01.07.2022</span>
               </div>
               */}
