@@ -346,55 +346,54 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
         <div className={css.apartmentList}>
           <div className={css.apartmentListTable}>
             <div className={css.apartmentListHeaders}>
-              <div style={{ flex: 5, display: 'flex', alignItems: 'center' }}>
-                <div className={cx(css.headerCell, css.headerCellSortable)} style={{ flex: 2 }}>
-                  <button
-                    type="button"
-                    onClick={() => requestSort('apartment_number', true)}
-                    className={apartmentSortClasses('apartment_number')}
-                  >
-                    <span>{t('SEARCH:apartment')}</span>
-                    <IconArrowDown aria-hidden="true" className={css.sortArrow} />
-                  </button>
-                </div>
-                <div className={css.headerCell} style={{ flex: 1 }}>
-                  {t('SEARCH:floor')}
-                </div>
-                <div className={cx(css.headerCell, css.headerCellSortable)} style={{ flex: 1 }}>
-                  <button
-                    type="button"
-                    onClick={() => requestSort('living_area', false)}
-                    className={apartmentSortClasses('living_area')}
-                  >
-                    <span>{t('SEARCH:area')}</span>
-                    <IconArrowDown aria-hidden="true" className={css.sortArrow} />
-                  </button>
-                </div>
-                <div className={cx(css.headerCell, css.headerCellSortable)} style={{ flex: 1 }}>
-                  <button
-                    type="button"
-                    onClick={() => requestSort('debt_free_sales_price', false)}
-                    className={apartmentSortClasses('debt_free_sales_price')}
-                  >
-                    <span>{t('SEARCH:free-of-debt-price')}</span>
-                    <IconArrowDown aria-hidden="true" className={css.sortArrow} />
-                  </button>
-                </div>
-                <div className={css.headerCell} style={{ flex: 1 }}>
-                  {t('SEARCH:applications')}
-                </div>
+              <div className={cx(css.headerCell, css.headerCellSortable, css.headerCellApartment)}>
+                <button
+                  type="button"
+                  onClick={() => requestSort('apartment_number', true)}
+                  className={apartmentSortClasses('apartment_number')}
+                >
+                  <span>{t('SEARCH:apartment')}</span>
+                  {getSortIcon('apartment_number')}
+                </button>
               </div>
-              <div className={css.headerFiller} style={{ flex: '3 3 0' }} />
+              <div className={cx(css.headerCell, css.headerCellSortable, css.headerCellNarrow)}>
+                <button
+                  type="button"
+                  onClick={() => requestSort('floor', false)}
+                  className={apartmentSortClasses('floor')}
+                >
+                  <span>{t('SEARCH:floor')}</span>
+                  {getSortIcon('floor')}
+                </button>
+              </div>
+              <div className={cx(css.headerCell, css.headerCellSortable, css.headerCellNarrow)}>
+                <button
+                  type="button"
+                  onClick={() => requestSort('living_area', false)}
+                  className={apartmentSortClasses('living_area')}
+                >
+                  <span>{t('SEARCH:area')}</span>
+                  {getSortIcon('living_area')}
+                </button>
+              </div>
+              <div className={cx(css.headerCell, css.headerCellSortable, css.headerCellNarrow)}>
+                <button
+                  type="button"
+                  onClick={() => requestSort('debt_free_sales_price', false)}
+                  className={apartmentSortClasses('debt_free_sales_price')}
+                >
+                  <span>{t('SEARCH:free-of-debt-price')}</span>
+                  {getSortIcon('debt_free_sales_price')}
+                </button>
+              </div>
+              <div className={cx(css.headerCell, css.headerCellNarrow)}>{t('SEARCH:applications')}</div>
+              <div className={cx(css.headerCell, css.headerCellSpacer)} />
             </div>
             {displayedApartments.map((x) => (
               <ApartmentRow key={x.uuid} apartment={x} />
             ))}
           </div>
-          {showPagination && (
-            <div className={css.pagination}>
-              <div style={{ display: 'flex' }}>{renderPaginationButtons()}</div>
-            </div>
-          )}
+          {showPagination && <div className={css.pagination}>{renderPaginationButtons()}</div>}
         </div>
       )}
     </div>
