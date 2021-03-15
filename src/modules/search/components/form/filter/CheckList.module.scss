@@ -2,11 +2,21 @@
   @media (max-width: 768px) {
     padding-bottom: 20px;
   }
+
+  legend {
+    font-weight: bold;
+  }
 }
 
 .item {
   label {
     width: 100%;
+    overflow-wrap: break-word;
+    hyphens: auto;
+
+    &::after {
+      --background-unselected: #fff;
+    }
   }
 }
 
