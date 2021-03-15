@@ -169,6 +169,7 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
 
     buttons.push(
       <button
+        key={'pagination-btn-prev'}
         className={css.paginationButton}
         onClick={() => handlePageClick(page !== 1 ? page - 1 : page)}
         value={page !== 1 ? page - 1 : page}
@@ -195,6 +196,7 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
 
     buttons.push(
       <button
+        key={'pagination-btn-next'}
         className={css.paginationButton}
         onClick={() => handlePageClick(page !== noOfPages ? page + 1 : page)}
         value={page !== noOfPages ? page + 1 : page}
