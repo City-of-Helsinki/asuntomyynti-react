@@ -37,6 +37,7 @@ const ApartmentRow = ({ apartment }: { apartment: Apartment }) => {
     application_url,
     floor,
     floor_max,
+    project_application_end_time,
     living_area,
     debt_free_sales_price,
     url,
@@ -46,6 +47,8 @@ const ApartmentRow = ({ apartment }: { apartment: Apartment }) => {
   const formattedDebtFreeSalesPrice = `${calculatedDebtFreeSalesPrice.toLocaleString('fi-FI')} \u20AC`;
 
   const formattedLivingArea = `${living_area.toLocaleString('fi-FI')} m\u00b2`;
+
+  const canApply = new Date().getTime() < new Date(project_application_end_time).getTime();
 
   const fullURL = (path: string) => {
     if (!path) {
@@ -171,16 +174,18 @@ const ApartmentRow = ({ apartment }: { apartment: Apartment }) => {
         >
           <span className="hds-button__label">{t('SEARCH:info')}</span>
         </a>
-        <a
-          href={fullURL(application_url) || '#'}
-          className={`${css.createApplicationButton} hds-button hds-button--${
-            isDesktopSize ? 'secondary' : 'primary'
-          } hds-button--small`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span className="hds-button__label">{t('SEARCH:apply')}</span>
-        </a>
+        {canApply && (
+          <a
+            href={fullURL(application_url) || '#'}
+            className={`${css.createApplicationButton} hds-button hds-button--${
+              isDesktopSize ? 'secondary' : 'primary'
+            } hds-button--small`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span className="hds-button__label">{t('SEARCH:apply')}</span>
+          </a>
+        )}
       </div>
     </div>
   );
