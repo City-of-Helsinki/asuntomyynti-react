@@ -136,6 +136,11 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
     return `http://${path}`;
   };
 
+  const setSort = (key: string, alphaNumeric: boolean) => {
+    requestSort(key, alphaNumeric);
+    setPage(1);
+  };
+
   const getSortDirectionFor = (name: string) => {
     if (!sortConfig) {
       return;
@@ -349,7 +354,7 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
               <div className={cx(css.headerCell, css.headerCellSortable, css.headerCellApartment)}>
                 <button
                   type="button"
-                  onClick={() => requestSort('apartment_number', true)}
+                  onClick={() => setSort('apartment_number', true)}
                   className={apartmentSortClasses('apartment_number')}
                 >
                   <span>{t('SEARCH:apartment')}</span>
@@ -357,11 +362,7 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
                 </button>
               </div>
               <div className={cx(css.headerCell, css.headerCellSortable, css.headerCellNarrow)}>
-                <button
-                  type="button"
-                  onClick={() => requestSort('floor', false)}
-                  className={apartmentSortClasses('floor')}
-                >
+                <button type="button" onClick={() => setSort('floor', false)} className={apartmentSortClasses('floor')}>
                   <span>{t('SEARCH:floor')}</span>
                   {getSortIcon('floor')}
                 </button>
@@ -369,7 +370,7 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
               <div className={cx(css.headerCell, css.headerCellSortable, css.headerCellNarrow)}>
                 <button
                   type="button"
-                  onClick={() => requestSort('living_area', false)}
+                  onClick={() => setSort('living_area', false)}
                   className={apartmentSortClasses('living_area')}
                 >
                   <span>{t('SEARCH:area')}</span>
@@ -379,7 +380,7 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
               <div className={cx(css.headerCell, css.headerCellSortable, css.headerCellNarrow)}>
                 <button
                   type="button"
-                  onClick={() => requestSort('debt_free_sales_price', false)}
+                  onClick={() => setSort('debt_free_sales_price', false)}
                   className={apartmentSortClasses('debt_free_sales_price')}
                 >
                   <span>{t('SEARCH:free-of-debt-price')}</span>
