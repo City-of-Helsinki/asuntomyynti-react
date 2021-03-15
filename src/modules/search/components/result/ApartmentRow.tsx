@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import css from './ApartmentRow.module.scss';
-import { Apartment } from '../../../../types/common';
+import { Apartment, StateOfAvailability } from '../../../../types/common';
 import { useTranslation } from 'react-i18next';
 import { IconAngleDown } from 'hds-react';
 
@@ -54,6 +54,51 @@ const ApartmentRow = ({ apartment }: { apartment: Apartment }) => {
       return path;
     }
     return `http://${path}`;
+  };
+
+  // TODO: get the actual availability data for each apartment instead of giving fixed value for all of them
+  const availability = StateOfAvailability.NoApplications;
+
+  const renderAvailabilityInfo = (status: StateOfAvailability, dotOnly: boolean) => {
+    switch (status) {
+      case StateOfAvailability.Free:
+        return (
+          <>
+            <span className={cx(css.statusCircle, css.statusCircleFree)} aria-hidden="true" />
+            <span className={dotOnly ? 'sr-only' : ''}>{t('SEARCH:apartment-free')}</span>
+          </>
+        );
+      case StateOfAvailability.NoApplications:
+        return (
+          <>
+            <span className={cx(css.statusCircle, css.statusCircleNone)} aria-hidden="true" />
+            <span className={dotOnly ? 'sr-only' : ''}>{t('SEARCH:apartment-no-applications')}</span>
+          </>
+        );
+      case StateOfAvailability.OnlyFewApplications:
+        return (
+          <>
+            <span className={cx(css.statusCircle, css.statusCircleFew)} aria-hidden="true" />
+            <span className={dotOnly ? 'sr-only' : ''}>{t('SEARCH:apartment-few-applications')}</span>
+          </>
+        );
+      case StateOfAvailability.SomeApplications:
+        return (
+          <>
+            <span className={cx(css.statusCircle, css.statusCircleSome)} aria-hidden="true" />
+            <span className={dotOnly ? 'sr-only' : ''}>{t('SEARCH:apartment-some-applications')}</span>
+          </>
+        );
+      case StateOfAvailability.LotsOfApplications:
+        return (
+          <>
+            <span className={cx(css.statusCircle, css.statusCircleLots)} aria-hidden="true" />
+            <span className={dotOnly ? 'sr-only' : ''}>{t('SEARCH:apartment-lots-of-applications')}</span>
+          </>
+        );
+      default:
+        return '-';
+    }
   };
 
   return (
