@@ -11,6 +11,8 @@ import {
   IconCogwheel,
   IconClock,
   // IconPenLine,
+  IconSortAscending,
+  IconSortDescending,
   Button,
 } from 'hds-react';
 import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel';
@@ -147,6 +149,16 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
       [css.ascending]: getSortDirectionFor(key) === 'ascending',
       [css.descending]: getSortDirectionFor(key) === 'descending',
     });
+  };
+
+  const getSortIcon = (key: string) => {
+    if (!sortConfig) {
+      return;
+    }
+    if (getSortDirectionFor(key) === 'descending') {
+      return <IconSortDescending aria-hidden="true" className={css.sortArrow} />;
+    }
+    return <IconSortAscending aria-hidden="true" className={css.sortArrow} />;
   };
 
   const showPagination = apartments.length > 10;
