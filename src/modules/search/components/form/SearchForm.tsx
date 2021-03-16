@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import styles from './SearchForm.module.scss';
-import { Button, IconSearch } from 'hds-react';
+import { Button, IconSearch, IconMinus, IconPlus, IconCross } from 'hds-react';
+import cx from 'classnames';
 import QueryFilter from './filter/QueryFilter';
 import Dropdown from './filter/Dropdown';
 import Collapsible from '../../../../common/collapsible/Collapsible';
@@ -23,6 +24,12 @@ const SearchForm = ({ onSubmit }: Props) => {
 
   const { project_district, room_count, living_area, sales_price, ...additionalFilters } = config || {};
 
+  const searchButton = () => (
+    <Button className={styles.submitButton} onClick={() => onSubmit()} iconLeft={<IconSearch aria-hidden="true" />}>
+      {t('SEARCH:search')}
+    </Button>
+  );
+
   // TODO: Add a notification to indicate something went wrong
   if (!isLoading && isError) {
     return null;
@@ -31,26 +38,30 @@ const SearchForm = ({ onSubmit }: Props) => {
   return (
     <div className={`${styles.container} ${isOptionsOpen ? styles.expand : ''} ${isLoading ? styles.isLoading : ''}`}>
       <div className={styles.form}>
-        <h1>Etsi Hitas-omistusasuntoja</h1>
-        <div className={styles.row}>
-          <div className={`${styles.column} ${styles.canShimmer}`}>
-            {project_district && <Dropdown name={FilterName.ProjectDistrict} {...project_district} />}
+        <h1>{t('SEARCH:hitas-title')}</h1>
+        <div className={cx(styles.row, styles.hasBottomPadding)}>
+          <div className={cx(styles.column, styles.columnWide, styles.dropdownColumn, styles.canShimmer)}>
+            <div className={styles.dropdownWrapper}>
+              {project_district && <Dropdown name={FilterName.ProjectDistrict} {...project_district} />}
+            </div>
           </div>
-          <div className={`${styles.column} ${styles.canShimmer}`}>
-            {room_count && <Dropdown name={FilterName.RoomCount} {...room_count} />}
+          <div className={cx(styles.column, styles.columnWide, styles.dropdownColumn, styles.canShimmer)}>
+            <div className={styles.dropdownWrapper}>
+              {room_count && <Dropdown name={FilterName.RoomCount} {...room_count} />}
+            </div>
           </div>
-          <div className={`${styles.column} ${styles.canShimmer}`}>
-            {living_area && <Dropdown name={FilterName.LivingArea} {...living_area} />}
+          <div className={cx(styles.column, styles.columnNarrow, styles.dropdownColumn, styles.canShimmer)}>
+            <div className={styles.dropdownWrapper}>
+              {living_area && <Dropdown name={FilterName.LivingArea} {...living_area} />}
+            </div>
           </div>
-          <div className={`${styles.column} ${styles.canShimmer}`}>
-            {sales_price && <Dropdown name={FilterName.SalesPrice} {...sales_price} />}
+          <div className={cx(styles.column, styles.columnNarrow, styles.dropdownColumn, styles.canShimmer)}>
+            <div className={styles.dropdownWrapper}>
+              {sales_price && <Dropdown name={FilterName.SalesPrice} {...sales_price} />}
+            </div>
           </div>
-          <div className={`${styles.column} ${styles.canShimmer}`}>
-            {!isLoading && (
-              <Button onClick={() => onSubmit()} iconLeft={<IconSearch aria-hidden="true" />}>
-                {t('SEARCH:search')}
-              </Button>
-            )}
+          <div className={cx(styles.column, styles.columnNarrow, styles.canShimmer, styles.searchButtonDesktop)}>
+            {!isLoading && searchButton()}
           </div>
         </div>
         <Collapsible
@@ -62,7 +73,7 @@ const SearchForm = ({ onSubmit }: Props) => {
           <div className={styles.row}>
             <div className={styles.divider} />
           </div>
-          <div className={styles.row}>
+          <div className={cx(styles.row, styles.hasTopPadding, styles.hasBottomPadding)}>
             {isOptionsVisible &&
               (Object.keys(additionalFilters) as FilterName[]).map<JSX.Element>((name, index) => (
                 <div className={styles.column} key={index}>
@@ -76,11 +87,14 @@ const SearchForm = ({ onSubmit }: Props) => {
         <div className={styles.row}>
           <div className={styles.column}>{config && <TagList config={config} />}</div>
         </div>
+        <div className={styles.searchButtonMobile}>{!isLoading && searchButton()}</div>
         <div className={styles.row}>
-          <div className={styles.divider} />
+          <div>
+            <div className={styles.divider} />
+          </div>
         </div>
-        <div className={styles.row}>
-          <div className={styles.column}>
+        <div className={cx(styles.row, styles.hasTopPadding)}>
+          <div className={cx(styles.column, styles.textCenterMobile)}>
             <button
               className={styles.showMoreButton}
               onClick={() => {
@@ -92,13 +106,24 @@ const SearchForm = ({ onSubmit }: Props) => {
                 }
               }}
             >
-              <span>{isOptionsOpen ? t('SEARCH:show-less-options') : t('SEARCH:show-more-options')}</span>
+              {isOptionsOpen ? (
+                <>
+                  <IconMinus aria-hidden="true" />
+                  <span>{t('SEARCH:show-less-options')}</span>
+                </>
+              ) : (
+                <>
+                  <IconPlus aria-hidden="true" />
+                  <span>{t('SEARCH:show-more-options')}</span>
+                </>
+              )}
             </button>
           </div>
           {config && hasFilters(config) && (
-            <div className={styles.column}>
+            <div className={cx(styles.column, styles.textCenterMobile)}>
               <button onClick={() => clearAllFilters(config)} className={styles.clearFilters}>
-                {t('SEARCH:clear-all-filters')}
+                <IconCross aria-hidden="true" />
+                <span>{t('SEARCH:clear-all-filters')}</span>
               </button>
             </div>
           )}

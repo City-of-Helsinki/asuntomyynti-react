@@ -1,7 +1,7 @@
 .priceInput {
   position: relative;
   & *:nth-child(2)::after {
-    content: '000 €';
+    content: '000 \20AC'; // -> 000 €
     display: flex;
     position: absolute;
     right: 10px;

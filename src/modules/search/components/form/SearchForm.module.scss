@@ -1,25 +1,51 @@
 .container {
   background: rgb(242, 242, 242);
-  padding: 40px;
+  padding: var(--spacing-xl) var(--spacing-2-xl);
   width: 100%;
+
+  @media (max-width: 1099px) {
+    padding: var(--spacing-xl) var(--spacing-l);
+  }
 }
 
 .form {
   max-width: 1200px;
   margin: 0 auto;
+
+  h1 {
+    margin: 0 0 var(--spacing-m) 0;
+  }
+}
+
+.hasTopPadding {
+  padding-top: var(--spacing-m);
+}
+
+.hasBottomPadding {
+  padding-bottom: var(--spacing-m);
 }
 
 .row {
   display: flex;
-  flex-direction: row;
-  padding: 10px 0;
-  margin: 0 -10px;
+  flex-direction: column;
+
+  @media (min-width: 769px) {
+    margin-left: -10px;
+    margin-right: -10px;
+    flex-direction: row;
+  }
+
+  @media (min-width: 769px) and (max-width: 1099px) {
+    flex-wrap: wrap;
+  }
+
   & > * {
-    @media (max-width: 768px) {
-      padding: 0 10px;
-    }
-    margin: 0 10px;
     flex: 1;
+
+    @media (min-width: 769px) {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
   }
 }
 
@@ -47,8 +73,47 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  position: relative;
   align-items: flex-start;
+
+  @media (max-width: 1099px) {
+    margin-bottom: var(--spacing-s);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  @media (max-width: 768px) {
+    align-items: stretch;
+  }
+
+  &.dropdownColumn {
+    @media (min-width: 769px) and (max-width: 1099px) {
+      flex-basis: 50%;
+
+      &:nth-child(n+3) {
+        margin-bottom: 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      &:nth-child(n+4) {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &.columnWide {
+    @media (min-width: 1100px) {
+      flex: 3;
+    }
+  }
+
+  &.columnNarrow {
+    @media (min-width: 1100px) {
+      flex: 2;
+    }
+  }
 
   .isLoading &.canShimmer {
     min-height: 56px;
@@ -56,14 +121,12 @@
   }
 }
 
-@media (max-width: 768px) {
-  .row {
-    flex-direction: column;
-  }
-  .column {
-    margin: 5px 0;
-    align-items: stretch;
-  }
+.dropdownWrapper,
+.searchButtonWrapper {
+  position: relative;
+  display: flex;
+  min-height: 56px;
+  width: 100%;
 }
 
 .divider {
@@ -72,77 +135,60 @@
   height: 0;
 }
 
+.submitButton {
+  width: 100%;
+}
+
 .header {
   font-weight: 500;
   height: 24px;
   margin-bottom: 4px;
 }
 
-.showMoreButton {
-  all: unset;
-  cursor: pointer;
-  position: relative;
-  padding-left: 18px;
-  font-size: 16px;
-  font-weight: bold;
-  line-height: 24px;
-  height: 24px;
+.textCenterMobile {
+  @media (max-width: 768px) {
+    text-align: center;
+    align-items: center;
+  }
+}
 
-  &::before {
-    transition: height 0.1s;
-    position: absolute;
-    left: 5px;
-    top: 5px;
-    content: '';
-    height: 12px;
-    width: 2px;
-    background-color: var(--color-black);
-    .expand & {
-      height: 0;
-    }
+.showMoreButton,
+.clearFilters {
+  all: unset;
+  display: inline-block;
+  cursor: pointer;
+
+  svg {
+    vertical-align: middle;
   }
-  &::after {
-    position: absolute;
-    top: 10px;
-    left: 0;
-    content: '';
-    height: 2px;
-    width: 12px;
-    background-color: var(--color-black);
+
+  span {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 24px;
+    margin-left: 3px;
   }
+
   &:focus {
     outline: #0072c6 5px auto;
     outline-offset: 5px;
   }
 }
 
-.clearFilters {
-  all: unset;
-  padding-left: 20px;
-  cursor: pointer;
-  position: relative;
-  &::after {
-    position: absolute;
-    top: 10px;
-    left: 0;
-    content: '';
-    height: 2px;
-    width: 12px;
-    background-color: var(--color-black);
-    transform: rotate(45deg);
+.showMoreButton {
+  font-weight: bold;
+}
+
+.searchButtonDesktop {
+  @media (max-width: 1099px) {
+    display: none;
   }
-  &::before {
-    position: absolute;
-    top: 10px;
-    left: 0;
-    content: '';
-    height: 2px;
-    width: 12px;
-    background-color: var(--color-black);
-    transform: rotate(-45deg);
-  }
-  &:focus {
-    outline: #0072c6 5px auto;
-    outline-offset: 5px;
+}
+
+.searchButtonMobile {
+  margin-bottom: var(--spacing-m);
+
+  @media (min-width: 1100px) {
+    display: none;
   }
 }

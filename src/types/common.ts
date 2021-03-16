@@ -289,6 +289,15 @@ export enum StateOfSale {
   PreMarketing = 'PRE_MARKETING',
 }
 
+// TODO: fix these as we get the actual data from backend
+export enum StateOfAvailability {
+  Free = 'FREE',
+  NoApplications = 'NO_APPLICATIONS',
+  OnlyFewApplications = 'ONLY_FEW_APPLICATIONS',
+  SomeApplications = 'SOME_APPLICATIONS',
+  LotsOfApplications = 'LOTS_OF_APPLICATIONS',
+}
+
 export enum FilterName {
   LivingArea = 'living_area',
   ProjectBuildingType = 'project_building_type',

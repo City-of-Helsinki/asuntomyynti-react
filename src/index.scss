@@ -37,6 +37,14 @@ body {
 
 .carousel {
   position: relative;
+
+  @media (min-width: 769px) and (max-width: 850px){
+    &::before {
+      content: "";
+      padding-top: 100%;
+      display: block;
+    }
+  }
 }
 
 .carousel,
