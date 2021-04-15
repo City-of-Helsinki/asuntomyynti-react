@@ -131,14 +131,16 @@ const MapResults = ({ searchResults, closeMap }: Props) => {
               attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url={MAP_TILES_URL}
             />
-            {searchResults.map((x) => (
-              <Marker
-                key={x.uuid}
-                icon={getMarkerIcon(x)}
-                position={[x.coordinate_lat, x.coordinate_lon]}
-                eventHandlers={{ click: () => handleMarkerClick(x) }}
-              />
-            ))}
+            {searchResults.map((x) =>
+              x.coordinate_lat && x.coordinate_lon ? (
+                <Marker
+                  key={x.uuid}
+                  icon={getMarkerIcon(x)}
+                  position={[x.coordinate_lat, x.coordinate_lon]}
+                  eventHandlers={{ click: () => handleMarkerClick(x) }}
+                />
+              ) : null
+            )}
           </MapContainer>
           {activeProject && <ProjectCard project={activeProject} hideImgOnSmallScreen={true} />}
         </div>
