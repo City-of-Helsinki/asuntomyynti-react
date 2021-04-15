@@ -231,14 +231,21 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
 
   const renderImageCarousel = () => {
     let totalImageCount = 0;
+    let otherImageCount = 0;
 
-    if (main_image_url.length) {
+    if (main_image_url !== undefined && main_image_url.length) {
       totalImageCount = 1;
     }
 
-    const otherImageCount = image_urls.length;
+    if (image_urls !== undefined && image_urls.length) {
+      otherImageCount = image_urls.length;
+    }
 
     totalImageCount += otherImageCount;
+
+    if (totalImageCount === 0) {
+      return;
+    }
 
     return (
       <CarouselProvider
