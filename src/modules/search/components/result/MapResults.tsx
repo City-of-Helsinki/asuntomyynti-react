@@ -11,12 +11,13 @@ import ProjectCard from './ProjectCard';
 type Props = {
   searchResults: Project[];
   closeMap: () => void;
+  currentLang: string;
 };
 
 const MAP_TILES_URL =
   process.env.REACT_APP_MAP_TILES_URL || 'https://tiles.hel.ninja/styles/hel-osm-bright/{z}/{x}/{y}.png';
 
-const MapResults = ({ searchResults, closeMap }: Props) => {
+const MapResults = ({ searchResults, closeMap, currentLang }: Props) => {
   const { t } = useTranslation();
   const [activeProject, setActiveProject] = useState<Project | undefined>(undefined);
 
@@ -142,7 +143,9 @@ const MapResults = ({ searchResults, closeMap }: Props) => {
               ) : null
             )}
           </MapContainer>
-          {activeProject && <ProjectCard project={activeProject} hideImgOnSmallScreen={true} />}
+          {activeProject && (
+            <ProjectCard project={activeProject} hideImgOnSmallScreen={true} currentLang={currentLang} />
+          )}
         </div>
       </div>
     </div>

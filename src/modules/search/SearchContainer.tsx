@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import SearchResults from './components/result/SearchResults';
 import SearchForm from './components/form/SearchForm';
 import Notification from '../../common/notification/Notification';
@@ -8,7 +10,7 @@ import useSearchResults from '../../hooks/useSearchResults';
 import ErrorToast from '../../common/errorToast/ErrorToast';
 import MapContainer from './components/result/MapResults';
 import { groupProjectsByState } from './utils/groupProjectsByState';
-import { useTranslation } from 'react-i18next';
+import useSearchParams from '../../hooks/useSearchParams';
 
 const BREAK_POINT = 768;
 
@@ -17,6 +19,9 @@ const SearchContainer = () => {
   const [width, setWidth] = useState(window.innerWidth);
   const { t } = useTranslation();
   useLang();
+
+  const searchQuery = useSearchParams();
+  const currentLang = searchQuery.get('lang') || 'fi';
 
   // Query, as in elasticsearch query params
   const { query, updateQuery } = useElasticsearchQuery();
@@ -58,11 +63,21 @@ const SearchContainer = () => {
         />
       )}
       {showMap ? (
-        <MapContainer searchResults={searchResults} closeMap={closeMap} />
+        <MapContainer searchResults={searchResults} closeMap={closeMap} currentLang={currentLang} />
       ) : (
         <>
-          <SearchResults header={t('SEARCH:for-sale')} searchResults={forSale} openMap={openMap} />
-          <SearchResults header={t('SEARCH:pre-marketing')} searchResults={preMarketing} showSearchAlert />
+          <SearchResults
+            header={t('SEARCH:for-sale')}
+            searchResults={forSale}
+            openMap={openMap}
+            currentLang={currentLang}
+          />
+          <SearchResults
+            header={t('SEARCH:pre-marketing')}
+            searchResults={preMarketing}
+            showSearchAlert
+            currentLang={currentLang}
+          />
         </>
       )}
       {isError && <ErrorToast />}

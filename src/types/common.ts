@@ -1,4 +1,5 @@
 export type Apartment = {
+  _language: string;
   acc_financeofficer: string;
   acc_salesperson: string;
   additional_information: string;

@@ -10,9 +10,10 @@ type Props = {
   header: string;
   openMap?: () => void;
   showSearchAlert?: boolean;
+  currentLang: string;
 };
 
-const SearchResults = ({ searchResults, header, openMap, showSearchAlert = false }: Props) => {
+const SearchResults = ({ searchResults, header, openMap, showSearchAlert = false, currentLang }: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -36,7 +37,7 @@ const SearchResults = ({ searchResults, header, openMap, showSearchAlert = false
       </header>
       <div className={css.resultWrapper}>
         {searchResults.map((x) => (
-          <ProjectCard key={x.id} project={x} showSearchAlert={showSearchAlert} />
+          <ProjectCard key={x.id} project={x} showSearchAlert={showSearchAlert} currentLang={currentLang} />
         ))}
       </div>
     </div>

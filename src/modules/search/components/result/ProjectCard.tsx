@@ -18,6 +18,7 @@ import {
 import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel';
 import { Project } from '../../../../types/common';
 import { useTranslation } from 'react-i18next';
+import { getLanguageFilteredApartments } from '../../utils/getLanguageFilteredApartments';
 import useModal from '../../../../hooks/useModal';
 import SubscriptionForm from './SubscriptionForm';
 import 'pure-react-carousel/dist/react-carousel.es.css';
@@ -82,9 +83,10 @@ type Props = {
   project: Project;
   hideImgOnSmallScreen?: boolean;
   showSearchAlert?: boolean;
+  currentLang: string;
 };
 
-const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = false }: Props) => {
+const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = false, currentLang }: Props) => {
   const { t } = useTranslation();
   const [listOpen, setListOpen] = useState(false);
   const [page, setPage] = useState(1);
@@ -122,9 +124,9 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
     url,
   } = project;
 
-  const hasApartments = !!apartments.length;
-
-  const { items, requestSort, sortConfig } = UseSortableData(apartments);
+  const filteredApartments = getLanguageFilteredApartments(apartments, currentLang);
+  const hasApartments = !!filteredApartments.length;
+  const { items, requestSort, sortConfig } = UseSortableData(filteredApartments);
   const displayedApartments = items.slice(page * 10 - 10, page * 10);
 
   const fullURL = (path: string) => {
@@ -167,10 +169,10 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
     return <IconSortAscending aria-hidden="true" className={css.sortArrow} />;
   };
 
-  const showPagination = apartments.length > 10;
+  const showPagination = filteredApartments.length > 10;
 
   const renderPaginationButtons = () => {
-    const noOfPages = Math.ceil(apartments.length / 10);
+    const noOfPages = Math.ceil(filteredApartments.length / 10);
     const buttons = [];
 
     buttons.push(
@@ -362,7 +364,7 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
                 variant="supplementary"
                 iconRight={listOpen ? <IconArrowUp aria-hidden="true" /> : <IconArrowDown aria-hidden="true" />}
               >
-                {apartments.length} {t('SEARCH:apartments-available')}
+                {filteredApartments.length} {t('SEARCH:apartments-available')}
               </Button>
             )}
           </div>
