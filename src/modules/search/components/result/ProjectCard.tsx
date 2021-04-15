@@ -305,19 +305,23 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
               <span className={css.label}>{ownership_type}</span>
             </div>
             <div className={css.deadlines}>
-              <div className={css.completionTime}>
-                <IconCogwheel style={{ marginRight: 10 }} aria-hidden="true" />
-                <span>
-                  {estimated_completion} {format(new Date(estimated_completion_date), 'MM/yyyy')}
-                </span>
-              </div>
-              <div className={css.applicationTime}>
-                <IconClock style={{ marginRight: 10 }} aria-hidden="true" />
-                <span>
-                  {t('SEARCH:application-open')} {format(new Date(publication_end_time), "dd.MM.yyyy 'klo' hh.mm")}{' '}
-                  {t('SEARCH:until')}
-                </span>
-              </div>
+              {estimated_completion_date && (
+                <div className={css.completionTime}>
+                  <IconCogwheel style={{ marginRight: 10 }} aria-hidden="true" />
+                  <span>
+                    {estimated_completion} {format(new Date(estimated_completion_date), 'MM/yyyy')}
+                  </span>
+                </div>
+              )}
+              {publication_end_time && (
+                <div className={css.applicationTime}>
+                  <IconClock style={{ marginRight: 10 }} aria-hidden="true" />
+                  <span>
+                    {t('SEARCH:application-open')} {format(new Date(publication_end_time), "dd.MM.yyyy 'klo' hh.mm")}{' '}
+                    {t('SEARCH:until')}
+                  </span>
+                </div>
+              )}
               {/* TODO
               <div className={css.applicationSent}>
                 <IconPenLine style={{ marginRight: 10 }} aria-hidden="true" />
