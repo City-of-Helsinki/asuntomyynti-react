@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { format } from 'date-fns';
 import cx from 'classnames';
 import css from './ProjectCard.module.scss';
@@ -90,6 +90,7 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
   const [page, setPage] = useState(1);
   const { openModal, closeModal, Modal } = useModal();
   const [width, setWidth] = useState(window.innerWidth);
+  const paginationScrollRef = useRef<HTMLDivElement>(null);
 
   const handleOnResize = () => {
     setWidth(window.innerWidth);
@@ -215,8 +216,15 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
     return buttons;
   };
 
+  const paginationScroll = () => {
+    if (paginationScrollRef.current) {
+      paginationScrollRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const handlePageClick = (index: number) => {
     if (index !== page) {
+      paginationScroll();
       setPage(index);
     }
   };
@@ -350,7 +358,7 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
         </div>
       </div>
       {hasApartments && listOpen && (
-        <div className={css.apartmentList}>
+        <div className={css.apartmentList} ref={paginationScrollRef}>
           <div className={css.apartmentListTable}>
             <div className={css.apartmentListHeaders}>
               <div className={cx(css.headerCell, css.headerCellSortable, css.headerCellApartment)}>
