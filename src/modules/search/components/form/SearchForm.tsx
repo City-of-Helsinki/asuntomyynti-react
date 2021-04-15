@@ -22,7 +22,7 @@ const SearchForm = ({ onSubmit }: Props) => {
   const { t } = useTranslation();
   const { data: config, isLoading, isError } = useContext(FilterContext) || {};
 
-  const { project_district, room_count, living_area, sales_price, ...additionalFilters } = config || {};
+  const { project_district, room_count, living_area, debt_free_sales_price, ...additionalFilters } = config || {};
 
   const searchButton = () => (
     <Button className={styles.submitButton} onClick={() => onSubmit()} iconLeft={<IconSearch aria-hidden="true" />}>
@@ -57,7 +57,7 @@ const SearchForm = ({ onSubmit }: Props) => {
           </div>
           <div className={cx(styles.column, styles.columnNarrow, styles.dropdownColumn, styles.canShimmer)}>
             <div className={styles.dropdownWrapper}>
-              {sales_price && <Dropdown name={FilterName.SalesPrice} {...sales_price} />}
+              {debt_free_sales_price && <Dropdown name={FilterName.DebtFreeSalesPrice} {...debt_free_sales_price} />}
             </div>
           </div>
           <div className={cx(styles.column, styles.columnNarrow, styles.canShimmer, styles.searchButtonDesktop)}>
