@@ -97,7 +97,7 @@ const filterMap: FilterMap = {
       {
         range: {
           [FilterName.DebtFreeSalesPrice]: {
-            lte: parseInt(value) * 1000,
+            lte: parseInt(value) * 100000,
           },
         },
       },
