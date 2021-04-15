@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 import mapSearchResults from '../modules/search/utils/mapSearchResults';
 
-const searchUrl = process.env.REACT_APP_SEARCH_BASE_URL || 'http://dev.asuntomyynti-elastic.druidfi.wod.by/_search';
+const searchUrl = process.env.REACT_APP_ELASTIC_BASE_URL || 'http://dev.asuntomyynti-elastic.druidfi.wod.by/_search';
 
 const useSearchResults = (query: { query?: QueryParams }) => {
   const fetchProjects = async () => {
