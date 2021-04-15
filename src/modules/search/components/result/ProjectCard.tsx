@@ -128,12 +128,12 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
 
   const fullURL = (path: string) => {
     if (!path) {
-      return undefined;
+      return '#';
     }
     if (path.toLowerCase().startsWith('http')) {
       return path;
     }
-    return `http://${path}`;
+    return `//${path}`;
   };
 
   const setSort = (key: string, alphaNumeric: boolean) => {
@@ -316,14 +316,16 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
             </div>
           </div>
           <div className={css.controls}>
-            <a
-              href={fullURL(url) || '#'}
-              className={`${css.detailsButton} hds-button hds-button--secondary hds-button--small`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span className="hds-button__label">{t('SEARCH:learn-more')}</span>
-            </a>
+            {url && (
+              <a
+                href={fullURL(url)}
+                className={`${css.detailsButton} hds-button hds-button--secondary hds-button--small`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="hds-button__label">{t('SEARCH:learn-more')}</span>
+              </a>
+            )}
             {showSearchAlert && (
               <>
                 <Modal>

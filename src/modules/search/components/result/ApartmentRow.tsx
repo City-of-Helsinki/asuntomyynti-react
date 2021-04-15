@@ -52,12 +52,12 @@ const ApartmentRow = ({ apartment }: { apartment: Apartment }) => {
 
   const fullURL = (path: string) => {
     if (!path) {
-      return undefined;
+      return '#';
     }
     if (path.toLowerCase().startsWith('http')) {
       return path;
     }
-    return `http://${path}`;
+    return `//${path}`;
   };
 
   // TODO: get the actual availability data for each apartment instead of giving fixed value for all of them
@@ -154,7 +154,7 @@ const ApartmentRow = ({ apartment }: { apartment: Apartment }) => {
           <span>Sinulla on <a href="#">hakemus</a> tähän kohteeseen</span>
         </div>
         <a
-          href={fullURL(url) || '#'}
+          href={fullURL(url)}
           className={`${css.openApartmentDetailsButton} hds-button hds-button--${isDesktopSize ? 'secondary' : 'primary' } hds-button--small`}
           target="_blank"
           rel="noopener noreferrer"
@@ -164,19 +164,21 @@ const ApartmentRow = ({ apartment }: { apartment: Apartment }) => {
       </div>
       */}
       <div className={css.buttons}>
-        <a
-          href={fullURL(url) || '#'}
-          className={`${css.getToKnowButton} hds-button hds-button--${
-            isDesktopSize ? 'supplementary' : 'secondary'
-          } hds-button--small`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span className="hds-button__label">{t('SEARCH:info')}</span>
-        </a>
+        {url && (
+          <a
+            href={fullURL(url)}
+            className={`${css.getToKnowButton} hds-button hds-button--${
+              isDesktopSize ? 'supplementary' : 'secondary'
+            } hds-button--small`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span className="hds-button__label">{t('SEARCH:info')}</span>
+          </a>
+        )}
         {canApply && (
           <a
-            href={fullURL(application_url) || '#'}
+            href={fullURL(application_url)}
             className={`${css.createApplicationButton} hds-button hds-button--${
               isDesktopSize ? 'secondary' : 'primary'
             } hds-button--small`}
