@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import ReactDOMServer from 'react-dom/server';
-import css from './MapResults.module.scss';
-import { Project, StateOfSale } from '../../../../types/common';
 import { useTranslation } from 'react-i18next';
 import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 import { Button, IconLocation, IconMenuHamburger } from 'hds-react';
 import L from 'leaflet';
+import { Project, StateOfSale } from '../../../../types/common';
+import { calculateApartmentCount } from '../../utils/calculateApartmentCount';
 import ProjectCard from './ProjectCard';
+import css from './MapResults.module.scss';
 
 type Props = {
   searchResults: Project[];
@@ -105,7 +106,7 @@ const MapResults = ({ searchResults, closeMap, currentLang }: Props) => {
         <div className={css.titleContainer}>
           <h2>{t('SEARCH:all-apartments')}</h2>
           <div className={css.resultsCount}>
-            {t('SEARCH:total')} {searchResults.length} {t('SEARCH:apartments')}
+            {t('SEARCH:total')} {calculateApartmentCount(searchResults, currentLang)} {t('SEARCH:apartments')}
           </div>
         </div>
         <div>
