@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import SearchResults from './components/result/SearchResults';
 import SearchForm from './components/form/SearchForm';
-import Notification from '../../common/notification/Notification';
+import InfoBlock from '../../common/infoblock/InfoBlock';
 import useLang from '../../hooks/useLang';
 import useElasticsearchQuery from '../../hooks/useElasticsearchQuery';
 import useSearchResults from '../../hooks/useSearchResults';
@@ -12,11 +12,8 @@ import MapContainer from './components/result/MapResults';
 import { groupProjectsByState } from './utils/groupProjectsByState';
 import useSearchParams from '../../hooks/useSearchParams';
 
-const BREAK_POINT = 768;
-
 const SearchContainer = () => {
   const [showMap, setShowMap] = useState<boolean>(false);
-  const [width, setWidth] = useState(window.innerWidth);
   const { t } = useTranslation();
   useLang();
 
@@ -38,30 +35,17 @@ const SearchContainer = () => {
     setShowMap(false);
   };
 
-  const handleResize = () => {
-    setWidth(window.innerWidth);
-  };
-
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const isMobileSize = width <= BREAK_POINT;
-
   return (
     <div>
       <SearchForm onSubmit={updateQuery} />
-      {isMobileSize ? (
-        <Notification message={'Lorem ipsum dolor sit amet'} />
-      ) : (
-        <Notification
-          message={
-            'Duis ante tortor, dignissim vitae finibus at, pellentesque eget risus. Etiam nec mi ut lorem feugiat blandit nec a quam. Praesent luctus felis sit amet arcu imperdiet suscipit. Cras consectetur eros non lectus volutpat, sit amet ultricies nisi pellentesque. Mauris nec augue nec neque faucibus eleifend quis eu lacus.'
-          }
-        />
-      )}
+      <InfoBlock
+        message={
+          'Duis ante tortor, dignissim vitae finibus at, pellentesque eget risus. Etiam nec mi ut lorem feugiat blandit nec a quam. Praesent luctus felis sit amet arcu imperdiet suscipit. Cras consectetur eros non lectus volutpat, sit amet ultricies nisi pellentesque.'
+        }
+        messageMobile={'Lorem ipsum dolor sit amet.'}
+        messageMinified={'Lorem ipsum'}
+        url="#"
+      />
       {showMap ? (
         <MapContainer searchResults={searchResults} closeMap={closeMap} currentLang={currentLang} />
       ) : (
