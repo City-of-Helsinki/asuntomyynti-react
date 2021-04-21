@@ -1,4 +1,5 @@
 export type Apartment = {
+  _language: string;
   acc_financeofficer: string;
   acc_salesperson: string;
   additional_information: string;
@@ -299,13 +300,13 @@ export enum StateOfAvailability {
 }
 
 export enum FilterName {
+  DebtFreeSalesPrice = 'debt_free_sales_price',
   LivingArea = 'living_area',
   ProjectBuildingType = 'project_building_type',
   ProjectDistrict = 'project_district',
   ProjectNewDevelopmentStatus = 'project_new_development_status',
   Properties = 'properties',
   RoomCount = 'room_count',
-  SalesPrice = 'sales_price',
   StateOfSale = 'project_state_of_sale',
 }
 

@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
 import ReactDOMServer from 'react-dom/server';
-import css from './MapResults.module.scss';
-import { Project, StateOfSale } from '../../../../types/common';
 import { useTranslation } from 'react-i18next';
 import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 import { Button, IconLocation, IconMenuHamburger } from 'hds-react';
 import L from 'leaflet';
+import { Project, StateOfSale } from '../../../../types/common';
+import { calculateApartmentCount } from '../../utils/calculateApartmentCount';
 import ProjectCard from './ProjectCard';
+import css from './MapResults.module.scss';
 
 type Props = {
   searchResults: Project[];
   closeMap: () => void;
+  currentLang: string;
 };
 
 const MAP_TILES_URL =
   process.env.REACT_APP_MAP_TILES_URL || 'https://tiles.hel.ninja/styles/hel-osm-bright/{z}/{x}/{y}.png';
 
-const MapResults = ({ searchResults, closeMap }: Props) => {
+const MapResults = ({ searchResults, closeMap, currentLang }: Props) => {
   const { t } = useTranslation();
   const [activeProject, setActiveProject] = useState<Project | undefined>(undefined);
 
@@ -104,7 +106,7 @@ const MapResults = ({ searchResults, closeMap }: Props) => {
         <div className={css.titleContainer}>
           <h2>{t('SEARCH:all-apartments')}</h2>
           <div className={css.resultsCount}>
-            {t('SEARCH:total')} {searchResults.length} {t('SEARCH:apartments')}
+            {t('SEARCH:total')} {calculateApartmentCount(searchResults, currentLang)} {t('SEARCH:apartments')}
           </div>
         </div>
         <div>
@@ -131,16 +133,20 @@ const MapResults = ({ searchResults, closeMap }: Props) => {
               attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url={MAP_TILES_URL}
             />
-            {searchResults.map((x) => (
-              <Marker
-                key={x.uuid}
-                icon={getMarkerIcon(x)}
-                position={[x.coordinate_lat, x.coordinate_lon]}
-                eventHandlers={{ click: () => handleMarkerClick(x) }}
-              />
-            ))}
+            {searchResults.map((x) =>
+              x.coordinate_lat && x.coordinate_lon ? (
+                <Marker
+                  key={x.uuid}
+                  icon={getMarkerIcon(x)}
+                  position={[x.coordinate_lat, x.coordinate_lon]}
+                  eventHandlers={{ click: () => handleMarkerClick(x) }}
+                />
+              ) : null
+            )}
           </MapContainer>
-          {activeProject && <ProjectCard project={activeProject} hideImgOnSmallScreen={true} />}
+          {activeProject && (
+            <ProjectCard project={activeProject} hideImgOnSmallScreen={true} currentLang={currentLang} />
+          )}
         </div>
       </div>
     </div>

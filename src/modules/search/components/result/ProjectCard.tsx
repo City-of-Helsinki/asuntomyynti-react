@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { format } from 'date-fns';
 import cx from 'classnames';
 import css from './ProjectCard.module.scss';
@@ -18,6 +18,7 @@ import {
 import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel';
 import { Project } from '../../../../types/common';
 import { useTranslation } from 'react-i18next';
+import { getLanguageFilteredApartments } from '../../utils/getLanguageFilteredApartments';
 import useModal from '../../../../hooks/useModal';
 import SubscriptionForm from './SubscriptionForm';
 import 'pure-react-carousel/dist/react-carousel.es.css';
@@ -82,14 +83,16 @@ type Props = {
   project: Project;
   hideImgOnSmallScreen?: boolean;
   showSearchAlert?: boolean;
+  currentLang: string;
 };
 
-const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = false }: Props) => {
+const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = false, currentLang }: Props) => {
   const { t } = useTranslation();
   const [listOpen, setListOpen] = useState(false);
   const [page, setPage] = useState(1);
   const { openModal, closeModal, Modal } = useModal();
   const [width, setWidth] = useState(window.innerWidth);
+  const paginationScrollRef = useRef<HTMLDivElement>(null);
 
   const handleOnResize = () => {
     setWidth(window.innerWidth);
@@ -121,19 +124,19 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
     url,
   } = project;
 
-  const hasApartments = !!apartments.length;
-
-  const { items, requestSort, sortConfig } = UseSortableData(apartments);
+  const filteredApartments = getLanguageFilteredApartments(apartments, currentLang);
+  const hasApartments = !!filteredApartments.length;
+  const { items, requestSort, sortConfig } = UseSortableData(filteredApartments);
   const displayedApartments = items.slice(page * 10 - 10, page * 10);
 
   const fullURL = (path: string) => {
     if (!path) {
-      return undefined;
+      return '#';
     }
     if (path.toLowerCase().startsWith('http')) {
       return path;
     }
-    return `http://${path}`;
+    return `//${path}`;
   };
 
   const setSort = (key: string, alphaNumeric: boolean) => {
@@ -166,10 +169,10 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
     return <IconSortAscending aria-hidden="true" className={css.sortArrow} />;
   };
 
-  const showPagination = apartments.length > 10;
+  const showPagination = filteredApartments.length > 10;
 
   const renderPaginationButtons = () => {
-    const noOfPages = Math.ceil(apartments.length / 10);
+    const noOfPages = Math.ceil(filteredApartments.length / 10);
     const buttons = [];
 
     buttons.push(
@@ -215,22 +218,36 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
     return buttons;
   };
 
+  const paginationScroll = () => {
+    if (paginationScrollRef.current) {
+      paginationScrollRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const handlePageClick = (index: number) => {
     if (index !== page) {
+      paginationScroll();
       setPage(index);
     }
   };
 
   const renderImageCarousel = () => {
     let totalImageCount = 0;
+    let otherImageCount = 0;
 
-    if (main_image_url.length) {
+    if (main_image_url !== undefined && main_image_url.length) {
       totalImageCount = 1;
     }
 
-    const otherImageCount = image_urls.length;
+    if (image_urls !== undefined && image_urls.length) {
+      otherImageCount = image_urls.length;
+    }
 
     totalImageCount += otherImageCount;
+
+    if (totalImageCount === 0) {
+      return;
+    }
 
     return (
       <CarouselProvider
@@ -290,19 +307,23 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
               <span className={css.label}>{ownership_type}</span>
             </div>
             <div className={css.deadlines}>
-              <div className={css.completionTime}>
-                <IconCogwheel style={{ marginRight: 10 }} aria-hidden="true" />
-                <span>
-                  {estimated_completion} {format(new Date(estimated_completion_date), 'MM/yyyy')}
-                </span>
-              </div>
-              <div className={css.applicationTime}>
-                <IconClock style={{ marginRight: 10 }} aria-hidden="true" />
-                <span>
-                  {t('SEARCH:application-open')} {format(new Date(publication_end_time), "dd.MM.yyyy 'klo' hh.mm")}{' '}
-                  {t('SEARCH:until')}
-                </span>
-              </div>
+              {estimated_completion_date && (
+                <div className={css.completionTime}>
+                  <IconCogwheel style={{ marginRight: 10 }} aria-hidden="true" />
+                  <span>
+                    {estimated_completion} {format(new Date(estimated_completion_date), 'MM/yyyy')}
+                  </span>
+                </div>
+              )}
+              {publication_end_time && (
+                <div className={css.applicationTime}>
+                  <IconClock style={{ marginRight: 10 }} aria-hidden="true" />
+                  <span>
+                    {t('SEARCH:application-open')} {format(new Date(publication_end_time), "dd.MM.yyyy 'klo' hh.mm")}{' '}
+                    {t('SEARCH:until')}
+                  </span>
+                </div>
+              )}
               {/* TODO
               <div className={css.applicationSent}>
                 <IconPenLine style={{ marginRight: 10 }} aria-hidden="true" />
@@ -316,14 +337,16 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
             </div>
           </div>
           <div className={css.controls}>
-            <a
-              href={fullURL(url) || '#'}
-              className={`${css.detailsButton} hds-button hds-button--secondary hds-button--small`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span className="hds-button__label">{t('SEARCH:learn-more')}</span>
-            </a>
+            {url && (
+              <a
+                href={fullURL(url)}
+                className={`${css.detailsButton} hds-button hds-button--secondary hds-button--small`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="hds-button__label">{t('SEARCH:learn-more')}</span>
+              </a>
+            )}
             {showSearchAlert && (
               <>
                 <Modal>
@@ -341,14 +364,14 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
                 variant="supplementary"
                 iconRight={listOpen ? <IconArrowUp aria-hidden="true" /> : <IconArrowDown aria-hidden="true" />}
               >
-                {apartments.length} {t('SEARCH:apartments-available')}
+                {filteredApartments.length} {t('SEARCH:apartments-available')}
               </Button>
             )}
           </div>
         </div>
       </div>
       {hasApartments && listOpen && (
-        <div className={css.apartmentList}>
+        <div className={css.apartmentList} ref={paginationScrollRef}>
           <div className={css.apartmentListTable}>
             <div className={css.apartmentListHeaders}>
               <div className={cx(css.headerCell, css.headerCellSortable, css.headerCellApartment)}>

@@ -1,18 +1,20 @@
 import React from 'react';
-import css from './SearchResults.module.scss';
-import ProjectCard from './ProjectCard';
-import { Project } from '../../../../types/common';
 import { useTranslation } from 'react-i18next';
 import { Button, IconMap } from 'hds-react';
+import ProjectCard from './ProjectCard';
+import { Project } from '../../../../types/common';
+import { calculateApartmentCount } from '../../utils/calculateApartmentCount';
+import css from './SearchResults.module.scss';
 
 type Props = {
   searchResults: Project[];
   header: string;
   openMap?: () => void;
   showSearchAlert?: boolean;
+  currentLang: string;
 };
 
-const SearchResults = ({ searchResults, header, openMap, showSearchAlert = false }: Props) => {
+const SearchResults = ({ searchResults, header, openMap, showSearchAlert = false, currentLang }: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -21,7 +23,7 @@ const SearchResults = ({ searchResults, header, openMap, showSearchAlert = false
         <div className={css.titleContainer}>
           <h2>{header}</h2>
           <div className={css.resultsCount}>
-            {t('SEARCH:total')} {searchResults.length} {t('SEARCH:apartments')}
+            {t('SEARCH:total')} {calculateApartmentCount(searchResults, currentLang)} {t('SEARCH:apartments')}
           </div>
         </div>
         {openMap && (
@@ -36,7 +38,7 @@ const SearchResults = ({ searchResults, header, openMap, showSearchAlert = false
       </header>
       <div className={css.resultWrapper}>
         {searchResults.map((x) => (
-          <ProjectCard key={x.id} project={x} showSearchAlert={showSearchAlert} />
+          <ProjectCard key={x.id} project={x} showSearchAlert={showSearchAlert} currentLang={currentLang} />
         ))}
       </div>
     </div>
