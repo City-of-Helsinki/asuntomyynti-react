@@ -9,7 +9,7 @@ import { FilterName, FilterConfigs } from '../../../../types/common';
 import TagList from './tag/TagList';
 import { useTranslation } from 'react-i18next';
 import useFilters from '../../../../hooks/useFilters';
-import { FilterContext } from '../../FilterContext';
+import { DataContext } from '../../DataContext';
 
 type Props = {
   onSubmit: () => void;
@@ -20,9 +20,9 @@ const SearchForm = ({ onSubmit }: Props) => {
   const [isOptionsOpen, setOptionsOpen] = useState(false);
   const [isOptionsVisible, setOptionsVisible] = useState(false);
   const { t } = useTranslation();
-  const { data: config, isLoading, isError } = useContext(FilterContext) || {};
-
-  const { project_district, room_count, living_area, debt_free_sales_price, ...additionalFilters } = config || {};
+  const { data: config, isLoading, isError } = useContext(DataContext) || {};
+  const { filters } = config || {};
+  const { project_district, room_count, living_area, debt_free_sales_price, ...additionalFilters } = filters || {};
 
   const searchButton = () => (
     <Button className={styles.submitButton} onClick={() => onSubmit()} iconLeft={<IconSearch aria-hidden="true" />}>
@@ -85,7 +85,7 @@ const SearchForm = ({ onSubmit }: Props) => {
           </div>
         </Collapsible>
         <div className={styles.row}>
-          <div className={styles.column}>{config && <TagList config={config} />}</div>
+          <div className={styles.column}>{filters && <TagList filters={filters} />}</div>
         </div>
         <div className={styles.searchButtonMobile}>{!isLoading && searchButton()}</div>
         <div className={styles.row}>
@@ -119,9 +119,9 @@ const SearchForm = ({ onSubmit }: Props) => {
               )}
             </button>
           </div>
-          {config && hasFilters(config) && (
+          {filters && hasFilters(filters) && (
             <div className={cx(styles.column, styles.textCenterMobile)}>
-              <button onClick={() => clearAllFilters(config)} className={styles.clearFilters}>
+              <button onClick={() => clearAllFilters(filters)} className={styles.clearFilters}>
                 <IconCross aria-hidden="true" />
                 <span>{t('SEARCH:clear-all-filters')}</span>
               </button>

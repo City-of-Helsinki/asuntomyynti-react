@@ -267,13 +267,13 @@ export enum FilterType {
   Range,
 }
 
-export type PartialConfig = {
+export type PartialFilterConfig = {
   items: string[];
   label: string;
   suffix: string | null;
 };
 
-export type DefaultFilterConfig = PartialConfig & {
+export type DefaultFilterConfig = PartialFilterConfig & {
   getQuery: (values: string[]) => QueryParams[];
   getLabel: (values: string[]) => string;
   getTagLabel: (serializedValue: string) => ParamList;
@@ -315,7 +315,7 @@ export type FilterConfigs = {
 };
 
 export type BaseFilterConfigs = {
-  [key in FilterName]?: PartialConfig;
+  [key in FilterName]?: PartialFilterConfig;
 };
 
 export type DefaultFilterConfigs = {
@@ -323,3 +323,10 @@ export type DefaultFilterConfigs = {
 };
 
 export type ParamList = Array<[FilterName, string] | [FilterName, string, string]>;
+
+export type DataConfig = {
+  filters: FilterConfigs;
+  static_content: any;
+  apartment_application_status: any;
+  user: any;
+};

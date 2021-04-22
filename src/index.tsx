@@ -6,14 +6,14 @@ import './index.scss';
 import 'hds-core/lib/components/button/button.css';
 import * as serviceWorker from './serviceWorker';
 import SearchContainer from './modules/search/SearchContainer';
-import FilterContextProvider from './modules/search/FilterContext';
+import DataContextProvider from './modules/search/DataContext';
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <FilterContextProvider>
+      <DataContextProvider>
         <SearchContainer />
-      </FilterContextProvider>
+      </DataContextProvider>
     </Router>
   </React.StrictMode>,
   document.getElementById('asu_react_search')

@@ -1,8 +1,8 @@
-import { enhanceConfig } from './enhanceConfig';
+import { enhanceFilterConfig } from './enhanceFilterConfig';
 
-describe('enhanceConfig', () => {
+describe('enhanceFilterConfig', () => {
   it('should', () => {
-    const subject = enhanceConfig({});
+    const subject = enhanceFilterConfig({});
     expect(subject).toHaveProperty('room_count');
     expect(subject.project_new_development_status).toHaveProperty('items');
     expect(subject.project_new_development_status.items).toHaveLength(0);
