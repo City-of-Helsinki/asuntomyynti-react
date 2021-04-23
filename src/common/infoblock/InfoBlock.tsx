@@ -1,25 +1,27 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { IconAngleRight, IconCross } from 'hds-react';
 import { useTranslation } from 'react-i18next';
+import { DataConfig } from '../../types/common';
 
 import css from './InfoBlock.module.scss';
 
-type Props = {
-  message: string;
-  messageMobile: string;
-  messageMinified: string;
-  url: string;
-};
-
 const BREAK_POINT = 768;
 
-const InfoBlock = ({ message, messageMobile, messageMinified, url }: Props) => {
+type Props = {
+  config: DataConfig | undefined;
+};
+
+const InfoBlock = ({ config }: Props) => {
   const [width, setWidth] = useState(window.innerWidth);
   const [isHidden, setHidden] = React.useState(sessionStorage.getItem('infoBlockHidden') || 'false');
   const [isMinified, setIsMinified] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
   const isMobileSize = width <= BREAK_POINT;
+
+  const { static_content } = config || {};
+  const { hitas_instruction_text, hitas_instruction_text_mobile, hitas_instruction_icon_text, hitas_instruction_url } =
+    static_content || {};
 
   const handleResize = () => {
     setWidth(window.innerWidth);
@@ -68,7 +70,7 @@ const InfoBlock = ({ message, messageMobile, messageMinified, url }: Props) => {
   );
 
   const renderUrl = () => (
-    <a href={url} target="_blank" rel="noreferrer">
+    <a href={hitas_instruction_url} target="_blank" rel="noreferrer">
       <span>{t('SEARCH:read-more')}</span> <IconAngleRight aria-hidden="true" />
     </a>
   );
@@ -77,7 +79,7 @@ const InfoBlock = ({ message, messageMobile, messageMinified, url }: Props) => {
     <>
       {renderIcon()}
       <div className={css.message}>
-        {message} {renderUrl()}
+        {hitas_instruction_text} {renderUrl()}
       </div>
     </>
   );
@@ -85,7 +87,7 @@ const InfoBlock = ({ message, messageMobile, messageMinified, url }: Props) => {
   const renderMinifiedContent = () => (
     <>
       {renderIcon()}
-      <div>{messageMinified}</div>
+      <div>{hitas_instruction_icon_text}</div>
     </>
   );
 
@@ -93,10 +95,14 @@ const InfoBlock = ({ message, messageMobile, messageMinified, url }: Props) => {
     <>
       {renderIcon()}
       <div className={css.message}>
-        {messageMobile} {renderUrl()}
+        {hitas_instruction_text_mobile} {renderUrl()}
       </div>
     </>
   );
+
+  if (!static_content) {
+    return null;
+  }
 
   if (isMobileSize) {
     return (
@@ -115,7 +121,7 @@ const InfoBlock = ({ message, messageMobile, messageMinified, url }: Props) => {
   return (
     <>
       {isMinified && (
-        <a href={url} className={css.minifiedContainer} target="_blank" rel="noreferrer">
+        <a href={hitas_instruction_url} className={css.minifiedContainer} target="_blank" rel="noreferrer">
           {renderMinifiedContent()}
         </a>
       )}

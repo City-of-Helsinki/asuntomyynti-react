@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import SearchResults from './components/result/SearchResults';
@@ -11,19 +11,24 @@ import ErrorToast from '../../common/errorToast/ErrorToast';
 import MapContainer from './components/result/MapResults';
 import { groupProjectsByState } from './utils/groupProjectsByState';
 import useSearchParams from '../../hooks/useSearchParams';
+import { DataContext } from './DataContext';
 
 const SearchContainer = () => {
   const [showMap, setShowMap] = useState<boolean>(false);
   const { t } = useTranslation();
+
   useLang();
 
   const searchQuery = useSearchParams();
   const currentLang = searchQuery.get('lang') || 'fi';
 
+  // Initialize API data
+  const { data: config, isLoading, isError } = useContext(DataContext) || {};
+
   // Query, as in elasticsearch query params
   const { query, updateQuery } = useElasticsearchQuery();
 
-  const { data: searchResults, isError } = useSearchResults(query);
+  const { data: searchResults, isError: isSearchQueryError } = useSearchResults(query);
 
   const { FOR_SALE: forSale = [], PRE_MARKETING: preMarketing = [] } = groupProjectsByState(searchResults);
 
@@ -37,15 +42,8 @@ const SearchContainer = () => {
 
   return (
     <div>
-      <SearchForm onSubmit={updateQuery} />
-      <InfoBlock
-        message={
-          'Duis ante tortor, dignissim vitae finibus at, pellentesque eget risus. Etiam nec mi ut lorem feugiat blandit nec a quam. Praesent luctus felis sit amet arcu imperdiet suscipit. Cras consectetur eros non lectus volutpat, sit amet ultricies nisi pellentesque.'
-        }
-        messageMobile={'Lorem ipsum dolor sit amet.'}
-        messageMinified={'Lorem ipsum'}
-        url="#"
-      />
+      <SearchForm config={config} isLoading={isLoading} isError={isError} onSubmit={updateQuery} />
+      {config && !isError && <InfoBlock config={config} />}
       {showMap ? (
         <MapContainer searchResults={searchResults} closeMap={closeMap} currentLang={currentLang} />
       ) : (
@@ -64,7 +62,7 @@ const SearchContainer = () => {
           />
         </>
       )}
-      {isError && <ErrorToast />}
+      {isSearchQueryError && <ErrorToast />}
     </div>
   );
 };
