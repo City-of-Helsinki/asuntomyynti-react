@@ -1,11 +1,11 @@
 import { FilterName, QueryParams } from '../types/common';
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { FilterContext } from '../modules/search/FilterContext';
+import { DataContext } from '../modules/search/DataContext';
 import useFilters from './useFilters';
 
 const useElasticsearchQuery = () => {
   const [query, setQuery] = useState({});
-  const { data: config } = useContext(FilterContext) || {};
+  const { data: config } = useContext(DataContext) || {};
   const { getFilters } = useFilters();
 
   const buildQuery = useCallback(() => {
@@ -13,25 +13,31 @@ const useElasticsearchQuery = () => {
       return {};
     }
 
-    const filters = (Object.keys(config) as FilterName[]).reduce((filters: QueryParams[], name) => {
+    const { filters } = config;
+
+    if (!filters) {
+      return {};
+    }
+
+    const queryFilters = (Object.keys(filters) as FilterName[]).reduce((allFilters: QueryParams[], name) => {
       const values = getFilters(name);
-      const { getQuery } = config[name] || {};
+      const { getQuery } = filters[name] || {};
 
       if (values.length === 0 || !getQuery) {
-        return filters;
+        return allFilters;
       }
 
-      return [...filters, ...getQuery(values)];
+      return [...allFilters, ...getQuery(values)];
     }, []);
 
-    if (filters.length === 0) {
+    if (queryFilters.length === 0) {
       return {};
     }
 
     return {
       query: {
         bool: {
-          must: filters,
+          must: queryFilters,
         },
       },
     };

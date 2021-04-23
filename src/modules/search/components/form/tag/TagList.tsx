@@ -6,15 +6,15 @@ import { FilterConfigs, FilterName, FilterType, ParamList } from '../../../../..
 import { useTranslation } from 'react-i18next';
 
 type Props = {
-  config: FilterConfigs;
+  filters: FilterConfigs;
 };
 
-const TagList = ({ config }: Props) => {
+const TagList = ({ filters }: Props) => {
   const { clearFilter, removeFilter, getAllFilters } = useFilters();
   const { t } = useTranslation();
 
   const params = getAllFilters().reduce((all: ParamList, [name, value]) => {
-    const { getTagLabel } = config[name] || {};
+    const { getTagLabel } = filters[name] || {};
     if (getTagLabel) {
       return [...all, ...getTagLabel(value)];
     }
@@ -22,7 +22,7 @@ const TagList = ({ config }: Props) => {
   }, []);
 
   const handleClick = (name: FilterName, value: string) => () =>
-    config[name].type === FilterType.MultiSelect ? removeFilter(name, value) : clearFilter(name);
+    filters[name].type === FilterType.MultiSelect ? removeFilter(name, value) : clearFilter(name);
 
   return (
     <div className={styles.container}>
