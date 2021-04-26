@@ -242,6 +242,7 @@
 
   @media (min-width: 1100px) {
     display: table-cell;
+    vertical-align: top;
   }
 
   &.headerCellSortable {
@@ -263,6 +264,14 @@
   &.headerCellApartment {
     @media (min-width: 992px) and (max-width: 1099px) {
       min-width: 200px;
+    }
+  }
+
+  &.headerCellSpan {
+    span {
+      display: flex;
+      align-items: center;
+      min-height: 24px;
     }
   }
 }

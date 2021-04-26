@@ -24,6 +24,7 @@ export type Apartment = {
   living_area: number;
   loan_share: number;
   maintenance_fee: number;
+  nid: number;
   other_fees: number;
   parking_fee: number;
   parking_fee_explanation: string;
@@ -331,10 +332,17 @@ export type StaticContent = {
   hitas_instruction_url: string;
 };
 
+export type UserConfig = {
+  user_id: string;
+  email_address: string | null;
+  username: string;
+  applications: number[][];
+};
+
 export type DataConfig = {
   filters: FilterConfigs;
   static_content: StaticContent;
+  user: UserConfig;
   // TODO
   // apartment_application_status: any;
-  // user: any;
 };

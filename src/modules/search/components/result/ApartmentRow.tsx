@@ -3,11 +3,16 @@ import cx from 'classnames';
 import css from './ApartmentRow.module.scss';
 import { Apartment, StateOfAvailability } from '../../../../types/common';
 import { useTranslation } from 'react-i18next';
-import { IconAngleDown, IconAngleUp /* TODO IconPenLine */ } from 'hds-react';
+import { IconAngleDown, IconAngleUp, IconPenLine } from 'hds-react';
 
 const BREAK_POINT = 768;
 
-const ApartmentRow = ({ apartment }: { apartment: Apartment }) => {
+type Props = {
+  apartment: Apartment;
+  userApplications: number[] | undefined;
+};
+
+const ApartmentRow = ({ apartment, userApplications }: Props) => {
   const { t } = useTranslation();
   const [width, setWidth] = useState(window.innerWidth);
   const [rowOpen, setRowOpen] = useState(false);
@@ -37,11 +42,19 @@ const ApartmentRow = ({ apartment }: { apartment: Apartment }) => {
     application_url,
     floor,
     floor_max,
+    nid,
     project_application_end_time,
     living_area,
     debt_free_sales_price,
     url,
   } = apartment;
+
+  const hasApplication = () => {
+    if (!userApplications) {
+      return false;
+    }
+    return userApplications.includes(nid);
+  };
 
   const calculatedDebtFreeSalesPrice = debt_free_sales_price / 100;
   const formattedDebtFreeSalesPrice = `${calculatedDebtFreeSalesPrice.toLocaleString('fi-FI')} \u20AC`;
@@ -147,48 +160,51 @@ const ApartmentRow = ({ apartment }: { apartment: Apartment }) => {
 
   const apartmentRowActions = (
     <div className={css.cellButtons}>
-      {/* TODO
-      <div className={css.verticalContent}>
-        <div className={css.applicationSent}>
-          <IconPenLine style={{ marginRight: 10 }} aria-hidden="true" />
-          <span>Sinulla on <a href="#">hakemus</a> tähän kohteeseen</span>
-        </div>
-        <a
-          href={fullURL(url)}
-          className={`${css.openApartmentDetailsButton} hds-button hds-button--${isDesktopSize ? 'secondary' : 'primary' } hds-button--small`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span className="hds-button__label">Avaa huoneistosivu</span>
-        </a>
-      </div>
-      */}
-      <div className={css.buttons}>
-        {url && (
+      {hasApplication() ? (
+        <div className={css.verticalContent}>
+          <div className={css.applicationSent}>
+            <IconPenLine style={{ marginRight: 10 }} aria-hidden="true" />
+            <span>{t('SEARCH:user-application-apartment')}</span>
+          </div>
           <a
             href={fullURL(url)}
-            className={`${css.getToKnowButton} hds-button hds-button--${
-              isDesktopSize ? 'supplementary' : 'secondary'
-            } hds-button--small`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span className="hds-button__label">{t('SEARCH:info')}</span>
-          </a>
-        )}
-        {canApply && (
-          <a
-            href={fullURL(application_url)}
-            className={`${css.createApplicationButton} hds-button hds-button--${
+            className={`${css.openApartmentDetailsButton} hds-button hds-button--${
               isDesktopSize ? 'secondary' : 'primary'
             } hds-button--small`}
             target="_blank"
             rel="noopener noreferrer"
           >
-            <span className="hds-button__label">{t('SEARCH:apply')}</span>
+            <span className="hds-button__label">{t('SEARCH:open-apartment-page')}</span>
           </a>
-        )}
-      </div>
+        </div>
+      ) : (
+        <div className={css.buttons}>
+          {url && (
+            <a
+              href={fullURL(url)}
+              className={`${css.getToKnowButton} hds-button hds-button--${
+                isDesktopSize ? 'supplementary' : 'secondary'
+              } hds-button--small`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className="hds-button__label">{t('SEARCH:info')}</span>
+            </a>
+          )}
+          {canApply && (
+            <a
+              href={fullURL(application_url)}
+              className={`${css.createApplicationButton} hds-button hds-button--${
+                isDesktopSize ? 'secondary' : 'primary'
+              } hds-button--small`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className="hds-button__label">{t('SEARCH:apply')}</span>
+            </a>
+          )}
+        </div>
+      )}
     </div>
   );
 

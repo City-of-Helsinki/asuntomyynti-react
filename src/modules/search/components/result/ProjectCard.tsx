@@ -10,13 +10,13 @@ import {
   IconArrowUp,
   IconCogwheel,
   IconClock,
-  // IconPenLine,
+  IconPenLine,
   IconSortAscending,
   IconSortDescending,
   Button,
 } from 'hds-react';
 import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel';
-import { Project } from '../../../../types/common';
+import { DataConfig, Project } from '../../../../types/common';
 import { useTranslation } from 'react-i18next';
 import { getLanguageFilteredApartments } from '../../utils/getLanguageFilteredApartments';
 import useModal from '../../../../hooks/useModal';
@@ -80,13 +80,20 @@ const UseSortableData = (items: any) => {
 };
 
 type Props = {
+  config: DataConfig | undefined;
   project: Project;
   hideImgOnSmallScreen?: boolean;
   showSearchAlert?: boolean;
   currentLang: string;
 };
 
-const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = false, currentLang }: Props) => {
+const ProjectCard = ({
+  config,
+  project,
+  hideImgOnSmallScreen = false,
+  showSearchAlert = false,
+  currentLang,
+}: Props) => {
   const { t } = useTranslation();
   const [listOpen, setListOpen] = useState(false);
   const [page, setPage] = useState(1);
@@ -110,6 +117,8 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
     setListOpen(!listOpen);
   };
 
+  const { user } = config || {};
+
   const {
     apartments,
     street_address,
@@ -119,15 +128,33 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
     housing_company,
     image_urls,
     main_image_url,
+    id,
     publication_end_time,
     ownership_type,
     url,
+    possession_transfer_date,
   } = project;
 
   const filteredApartments = getLanguageFilteredApartments(apartments, currentLang);
   const hasApartments = !!filteredApartments.length;
   const { items, requestSort, sortConfig } = UseSortableData(filteredApartments);
   const displayedApartments = items.slice(page * 10 - 10, page * 10);
+
+  const userHasApplications = () => {
+    if (!user) {
+      return false;
+    }
+    const hasApplications = id in user.applications;
+    return hasApplications;
+  };
+
+  const getUserApplications = () => {
+    if (!user) {
+      return undefined;
+    }
+    const applicationsByProjectId = user.applications[id];
+    return applicationsByProjectId;
+  };
 
   const fullURL = (path: string) => {
     if (!path) {
@@ -324,16 +351,23 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
                   </span>
                 </div>
               )}
-              {/* TODO
-              <div className={css.applicationSent}>
-                <IconPenLine style={{ marginRight: 10 }} aria-hidden="true" />
-                <span>Sinulla on <a href="#">hakemus</a> tähän kohteeseen</span>
-              </div>
-              <div className={css.moveInTime}>
-                <IconClock style={{ marginRight: 10 }} aria-hidden="true" />
-                <span>Muuttopäivä 01.07.2022</span>
-              </div>
-              */}
+              {userHasApplications() && (
+                <>
+                  <div className={css.applicationSent}>
+                    <IconPenLine style={{ marginRight: 10 }} aria-hidden="true" />
+                    <span>{t('SEARCH:user-application-project')}</span>
+                  </div>
+                  {possession_transfer_date && (
+                    <div className={css.moveInTime}>
+                      <IconClock style={{ marginRight: 10 }} aria-hidden="true" />
+                      <span>
+                        {t('SEARCH:move-in-date')}{' '}
+                        {format(new Date(possession_transfer_date), "dd.MM.yyyy 'klo' hh.mm")}{' '}
+                      </span>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           </div>
           <div className={css.controls}>
@@ -410,11 +444,13 @@ const ProjectCard = ({ project, hideImgOnSmallScreen = false, showSearchAlert = 
                   {getSortIcon('debt_free_sales_price')}
                 </button>
               </div>
-              <div className={cx(css.headerCell, css.headerCellNarrow)}>{t('SEARCH:applications')}</div>
+              <div className={cx(css.headerCell, css.headerCellNarrow, css.headerCellSpan)}>
+                <span>{t('SEARCH:applications')}</span>
+              </div>
               <div className={cx(css.headerCell, css.headerCellSpacer)} />
             </div>
             {displayedApartments.map((x) => (
-              <ApartmentRow key={x.uuid} apartment={x} />
+              <ApartmentRow key={x.uuid} apartment={x} userApplications={getUserApplications()} />
             ))}
           </div>
           {showPagination && <div className={css.pagination}>{renderPaginationButtons()}</div>}

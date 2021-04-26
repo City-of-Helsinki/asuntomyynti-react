@@ -45,16 +45,18 @@ const SearchContainer = () => {
       <SearchForm config={config} isLoading={isLoading} isError={isError} onSubmit={updateQuery} />
       {config && !isError && <InfoBlock config={config} />}
       {showMap ? (
-        <MapContainer searchResults={searchResults} closeMap={closeMap} currentLang={currentLang} />
+        <MapContainer config={config} searchResults={searchResults} closeMap={closeMap} currentLang={currentLang} />
       ) : (
         <>
           <SearchResults
+            config={config}
             header={t('SEARCH:for-sale')}
             searchResults={forSale}
             openMap={openMap}
             currentLang={currentLang}
           />
           <SearchResults
+            config={config}
             header={t('SEARCH:pre-marketing')}
             searchResults={preMarketing}
             showSearchAlert

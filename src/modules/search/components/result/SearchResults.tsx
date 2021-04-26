@@ -2,11 +2,12 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, IconMap } from 'hds-react';
 import ProjectCard from './ProjectCard';
-import { Project } from '../../../../types/common';
+import { DataConfig, Project } from '../../../../types/common';
 import { calculateApartmentCount } from '../../utils/calculateApartmentCount';
 import css from './SearchResults.module.scss';
 
 type Props = {
+  config: DataConfig | undefined;
   searchResults: Project[];
   header: string;
   openMap?: () => void;
@@ -14,7 +15,7 @@ type Props = {
   currentLang: string;
 };
 
-const SearchResults = ({ searchResults, header, openMap, showSearchAlert = false, currentLang }: Props) => {
+const SearchResults = ({ config, searchResults, header, openMap, showSearchAlert = false, currentLang }: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -38,7 +39,13 @@ const SearchResults = ({ searchResults, header, openMap, showSearchAlert = false
       </header>
       <div className={css.resultWrapper}>
         {searchResults.map((x) => (
-          <ProjectCard key={x.id} project={x} showSearchAlert={showSearchAlert} currentLang={currentLang} />
+          <ProjectCard
+            config={config}
+            key={x.id}
+            project={x}
+            showSearchAlert={showSearchAlert}
+            currentLang={currentLang}
+          />
         ))}
       </div>
     </div>
