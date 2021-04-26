@@ -1,26 +1,27 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import styles from './SearchForm.module.scss';
 import { Button, IconSearch, IconMinus, IconPlus, IconCross } from 'hds-react';
 import cx from 'classnames';
 import QueryFilter from './filter/QueryFilter';
 import Dropdown from './filter/Dropdown';
 import Collapsible from '../../../../common/collapsible/Collapsible';
-import { FilterName, FilterConfigs } from '../../../../types/common';
+import { DataConfig, FilterName, FilterConfigs } from '../../../../types/common';
 import TagList from './tag/TagList';
 import { useTranslation } from 'react-i18next';
 import useFilters from '../../../../hooks/useFilters';
-import { DataContext } from '../../DataContext';
 
 type Props = {
+  config: DataConfig | undefined;
+  isLoading: boolean | undefined;
+  isError: boolean | undefined;
   onSubmit: () => void;
 };
 
-const SearchForm = ({ onSubmit }: Props) => {
+const SearchForm = ({ config, isLoading, isError, onSubmit }: Props) => {
   const { clearAllFilters, hasFilters } = useFilters();
   const [isOptionsOpen, setOptionsOpen] = useState(false);
   const [isOptionsVisible, setOptionsVisible] = useState(false);
   const { t } = useTranslation();
-  const { data: config, isLoading, isError } = useContext(DataContext) || {};
   const { filters } = config || {};
   const { project_district, room_count, living_area, debt_free_sales_price, ...additionalFilters } = filters || {};
 

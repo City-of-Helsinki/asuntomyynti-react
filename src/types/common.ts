@@ -324,9 +324,17 @@ export type DefaultFilterConfigs = {
 
 export type ParamList = Array<[FilterName, string] | [FilterName, string, string]>;
 
+export type StaticContent = {
+  hitas_instruction_text: string;
+  hitas_instruction_text_mobile: string;
+  hitas_instruction_icon_text: string;
+  hitas_instruction_url: string;
+};
+
 export type DataConfig = {
   filters: FilterConfigs;
-  static_content: any;
-  apartment_application_status: any;
-  user: any;
+  static_content: StaticContent;
+  // TODO
+  // apartment_application_status: any;
+  // user: any;
 };
