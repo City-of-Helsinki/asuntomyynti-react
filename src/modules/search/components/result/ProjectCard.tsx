@@ -57,7 +57,7 @@ const ProjectCard = ({
     setListOpen(!listOpen);
   };
 
-  const { user } = config || {};
+  const { apartment_application_status, user } = config || {};
 
   const {
     apartments,
@@ -92,6 +92,14 @@ const ProjectCard = ({
     }
     const applicationsByProjectId = user.applications[id];
     return applicationsByProjectId;
+  };
+
+  const getApplicationStatus = () => {
+    if (!apartment_application_status) {
+      return undefined;
+    }
+    const statusByProjectId = apartment_application_status[id];
+    return statusByProjectId;
   };
 
   const fullURL = (path: string) => {
@@ -251,7 +259,11 @@ const ProjectCard = ({
         </div>
       </div>
       {hasApartments && listOpen && (
-        <ApartmentTable apartments={filteredApartments} applications={getUserApplications()} />
+        <ApartmentTable
+          apartments={filteredApartments}
+          applications={getUserApplications()}
+          applicationStatus={getApplicationStatus()}
+        />
       )}
     </div>
   );

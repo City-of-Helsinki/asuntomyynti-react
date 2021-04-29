@@ -10,6 +10,7 @@ import css from './ApartmentTable.module.scss';
 type Props = {
   apartments: Apartment[];
   applications: number[] | undefined;
+  applicationStatus: { [key: number]: string } | undefined;
 };
 
 type SortProps = {
@@ -18,7 +19,7 @@ type SortProps = {
   alphaNumeric: boolean;
 };
 
-const ApartmentTable = ({ apartments, applications }: Props) => {
+const ApartmentTable = ({ apartments, applications, applicationStatus }: Props) => {
   const { t } = useTranslation();
   const [page, setPage] = useState(1);
   const paginationScrollRef = useRef<HTMLDivElement>(null);
@@ -168,6 +169,14 @@ const ApartmentTable = ({ apartments, applications }: Props) => {
     }
   };
 
+  const getApartmentApplicationStatus = (id: number) => {
+    if (!applicationStatus) {
+      return undefined;
+    }
+    const statusByApartmentId = applicationStatus[id];
+    return statusByApartmentId;
+  };
+
   return (
     <div className={css.apartmentList} ref={paginationScrollRef}>
       <div className={css.apartmentListTable}>
@@ -214,7 +223,12 @@ const ApartmentTable = ({ apartments, applications }: Props) => {
           <div className={cx(css.headerCell, css.headerCellSpacer)} />
         </div>
         {displayedApartments.map((x) => (
-          <ApartmentRow key={x.uuid} apartment={x} userApplications={applications} />
+          <ApartmentRow
+            key={x.uuid}
+            apartment={x}
+            userApplications={applications}
+            applicationStatus={getApartmentApplicationStatus(x.nid)}
+          />
         ))}
       </div>
       {showPagination && <div className={css.pagination}>{renderPaginationButtons()}</div>}

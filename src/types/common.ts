@@ -291,13 +291,11 @@ export enum StateOfSale {
   PreMarketing = 'PRE_MARKETING',
 }
 
-// TODO: fix these as we get the actual data from backend
-export enum StateOfAvailability {
+export enum ApplicationStatus {
   Free = 'FREE',
-  NoApplications = 'NO_APPLICATIONS',
-  OnlyFewApplications = 'ONLY_FEW_APPLICATIONS',
-  SomeApplications = 'SOME_APPLICATIONS',
-  LotsOfApplications = 'LOTS_OF_APPLICATIONS',
+  Low = 'LOW',
+  Medium = 'MEDIUM',
+  High = 'HIGH',
 }
 
 export enum FilterName {
@@ -343,6 +341,9 @@ export type DataConfig = {
   filters: FilterConfigs;
   static_content: StaticContent;
   user: UserConfig;
-  // TODO
-  // apartment_application_status: any;
+  apartment_application_status: {
+    [key: number]: {
+      [key: number]: string;
+    };
+  };
 };
