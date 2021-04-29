@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 import { Button, IconLocation, IconMenuHamburger } from 'hds-react';
 import L from 'leaflet';
-import { DataConfig, Project, StateOfSale } from '../../../../types/common';
-import { calculateApartmentCount } from '../../utils/calculateApartmentCount';
-import ProjectCard from './ProjectCard';
+import { DataConfig, Project, StateOfSale } from '../../../../../types/common';
+import { calculateApartmentCount } from '../../../utils/calculateApartmentCount';
+import ProjectCard from '../list/ProjectCard';
 import css from './MapResults.module.scss';
 
 type Props = {

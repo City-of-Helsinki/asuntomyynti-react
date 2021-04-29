@@ -13,11 +13,11 @@ import {
 import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel';
 import { useTranslation } from 'react-i18next';
 
-import { DataConfig, Project } from '../../../../types/common';
-import { getLanguageFilteredApartments } from '../../utils/getLanguageFilteredApartments';
+import { DataConfig, Project } from '../../../../../types/common';
+import { getLanguageFilteredApartments } from '../../../utils/getLanguageFilteredApartments';
 import ApartmentTable from './ApartmentTable';
-import useModal from '../../../../hooks/useModal';
-import SubscriptionForm from './SubscriptionForm';
+import useModal from '../../../../../hooks/useModal';
+import SubscriptionForm from '../SubscriptionForm';
 import css from './ProjectCard.module.scss';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 
@@ -216,7 +216,7 @@ const ProjectCard = ({
                       <IconClock style={{ marginRight: 10 }} aria-hidden="true" />
                       <span>
                         {t('SEARCH:move-in-date')}{' '}
-                        {format(new Date(possession_transfer_date), "dd.MM.yyyy 'klo' hh.mm")}{' '}
+                        {format(new Date(possession_transfer_date), "dd.MM.yyyy 'klo' hh.mm")}
                       </span>
                     </div>
                   )}

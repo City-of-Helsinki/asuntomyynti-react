@@ -1,14 +1,14 @@
 import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import SearchResults from './components/result/SearchResults';
+import SearchResults from './components/result/list/SearchResults';
 import SearchForm from './components/form/SearchForm';
 import InfoBlock from '../../common/infoblock/InfoBlock';
 import useLang from '../../hooks/useLang';
 import useElasticsearchQuery from '../../hooks/useElasticsearchQuery';
 import useSearchResults from '../../hooks/useSearchResults';
 import ErrorToast from '../../common/errorToast/ErrorToast';
-import MapContainer from './components/result/MapResults';
+import MapContainer from './components/result/map/MapResults';
 import { groupProjectsByState } from './utils/groupProjectsByState';
 import useSearchParams from '../../hooks/useSearchParams';
 import { DataContext } from './DataContext';

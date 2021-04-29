@@ -2,8 +2,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, IconMap } from 'hds-react';
 import ProjectCard from './ProjectCard';
-import { DataConfig, Project } from '../../../../types/common';
-import { calculateApartmentCount } from '../../utils/calculateApartmentCount';
+import { DataConfig, Project } from '../../../../../types/common';
+import { calculateApartmentCount } from '../../../utils/calculateApartmentCount';
 import css from './SearchResults.module.scss';
 
 type Props = {

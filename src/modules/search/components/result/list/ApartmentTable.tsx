@@ -3,7 +3,7 @@ import cx from 'classnames';
 import { IconAngleLeft, IconAngleRight, IconSortAscending, IconSortDescending } from 'hds-react';
 import { useTranslation } from 'react-i18next';
 
-import { Apartment } from '../../../../types/common';
+import { Apartment } from '../../../../../types/common';
 import ApartmentRow from './ApartmentRow';
 import css from './ApartmentTable.module.scss';
 
