@@ -1,23 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { format } from 'date-fns';
-import {
-  IconAngleLeft,
-  IconAngleRight,
-  IconArrowDown,
-  IconArrowUp,
-  IconCogwheel,
-  IconClock,
-  IconPenLine,
-  Button,
-} from 'hds-react';
+import { IconAngleLeft, IconAngleRight, IconArrowDown, IconArrowUp, Button } from 'hds-react';
 import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel';
 import { useTranslation } from 'react-i18next';
 
 import { DataConfig, Project } from '../../../../../types/common';
 import { getLanguageFilteredApartments } from '../../../utils/getLanguageFilteredApartments';
+import { getProjectApplicationStatus } from '../../../utils/getApplicationStatus';
+import { userHasApplications, getUserApplications } from '../../../utils/userApplications';
+import { fullURL } from '../../../utils/fullURL';
 import ApartmentTable from './ApartmentTable';
 import useModal from '../../../../../hooks/useModal';
 import SubscriptionForm from '../SubscriptionForm';
+import ProjectInfo from '../ProjectInfo';
 import css from './ProjectCard.module.scss';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 
@@ -63,54 +57,16 @@ const ProjectCard = ({
     apartments,
     street_address,
     district,
-    estimated_completion,
-    estimated_completion_date,
     housing_company,
     image_urls,
     main_image_url,
     id,
-    publication_end_time,
     ownership_type,
     url,
-    possession_transfer_date,
   } = project;
 
   const filteredApartments = getLanguageFilteredApartments(apartments, currentLang);
   const hasApartments = !!filteredApartments.length;
-
-  const userHasApplications = () => {
-    if (!user) {
-      return false;
-    }
-    const hasApplications = id in user.applications;
-    return hasApplications;
-  };
-
-  const getUserApplications = () => {
-    if (!user) {
-      return undefined;
-    }
-    const applicationsByProjectId = user.applications[id];
-    return applicationsByProjectId;
-  };
-
-  const getApplicationStatus = () => {
-    if (!apartment_application_status) {
-      return undefined;
-    }
-    const statusByProjectId = apartment_application_status[id];
-    return statusByProjectId;
-  };
-
-  const fullURL = (path: string) => {
-    if (!path) {
-      return '#';
-    }
-    if (path.toLowerCase().startsWith('http')) {
-      return path;
-    }
-    return `//${path}`;
-  };
 
   const renderImageCarousel = () => {
     let totalImageCount = 0;
@@ -187,42 +143,7 @@ const ProjectCard = ({
               </div>
               <span className={css.label}>{ownership_type}</span>
             </div>
-            <div className={css.deadlines}>
-              {estimated_completion_date && (
-                <div className={css.completionTime}>
-                  <IconCogwheel style={{ marginRight: 10 }} aria-hidden="true" />
-                  <span>
-                    {estimated_completion} {format(new Date(estimated_completion_date), 'MM/yyyy')}
-                  </span>
-                </div>
-              )}
-              {publication_end_time && (
-                <div className={css.applicationTime}>
-                  <IconClock style={{ marginRight: 10 }} aria-hidden="true" />
-                  <span>
-                    {t('SEARCH:application-open')} {format(new Date(publication_end_time), "dd.MM.yyyy 'klo' hh.mm")}{' '}
-                    {t('SEARCH:until')}
-                  </span>
-                </div>
-              )}
-              {userHasApplications() && (
-                <>
-                  <div className={css.applicationSent}>
-                    <IconPenLine style={{ marginRight: 10 }} aria-hidden="true" />
-                    <span>{t('SEARCH:user-application-project')}</span>
-                  </div>
-                  {possession_transfer_date && (
-                    <div className={css.moveInTime}>
-                      <IconClock style={{ marginRight: 10 }} aria-hidden="true" />
-                      <span>
-                        {t('SEARCH:move-in-date')}{' '}
-                        {format(new Date(possession_transfer_date), "dd.MM.yyyy 'klo' hh.mm")}
-                      </span>
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
+            <ProjectInfo project={project} userHasApplications={userHasApplications(user, id)} />
           </div>
           <div className={css.controls}>
             {url && (
@@ -261,8 +182,8 @@ const ProjectCard = ({
       {hasApartments && listOpen && (
         <ApartmentTable
           apartments={filteredApartments}
-          applications={getUserApplications()}
-          applicationStatus={getApplicationStatus()}
+          applications={getUserApplications(user, id)}
+          applicationStatus={getProjectApplicationStatus(apartment_application_status, id)}
         />
       )}
     </div>

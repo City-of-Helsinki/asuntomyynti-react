@@ -69,12 +69,12 @@
 
 .label {
   padding: 3px 8px;
-  color: #1d1d1d;
-  font-size: 14px;
+  color: var(--color-black-90);
+  font-size: var(--fontsize-body-s);
   font-family: var(--font-default);
   font-weight: normal;
-  line-height: 26px;
-  background-color: var(--color-engel-dark-50);
+  line-height: var(--lineheight-xl);
+  background-color: var(--color-engel);
 }
 
 .titles {

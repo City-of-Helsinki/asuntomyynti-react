@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import cx from 'classnames';
-import css from './ApartmentRow.module.scss';
-import { Apartment } from '../../../../../types/common';
 import { useTranslation } from 'react-i18next';
 import { IconAngleDown, IconAngleUp, IconPenLine } from 'hds-react';
+
+import { Apartment } from '../../../../../types/common';
+import { fullURL } from '../../../utils/fullURL';
 import RenderAvailabilityInfo from '../ApplicationStatus';
+
+import css from './ApartmentRow.module.scss';
 
 const BREAK_POINT = 768;
 
@@ -64,16 +67,6 @@ const ApartmentRow = ({ apartment, userApplications, applicationStatus }: Props)
   const formattedLivingArea = `${living_area.toLocaleString('fi-FI')} m\u00b2`;
 
   const canApply = new Date().getTime() < new Date(project_application_end_time).getTime();
-
-  const fullURL = (path: string) => {
-    if (!path) {
-      return '#';
-    }
-    if (path.toLowerCase().startsWith('http')) {
-      return path;
-    }
-    return `//${path}`;
-  };
 
   const apartmentRowBaseDetails = (
     <>

@@ -3,14 +3,15 @@ import cx from 'classnames';
 import { IconAngleLeft, IconAngleRight, IconSortAscending, IconSortDescending } from 'hds-react';
 import { useTranslation } from 'react-i18next';
 
-import { Apartment } from '../../../../../types/common';
+import { Apartment, ApartmentApplicationStatusConfig } from '../../../../../types/common';
+import { getApartmentApplicationStatus } from '../../../utils/getApplicationStatus';
 import ApartmentRow from './ApartmentRow';
 import css from './ApartmentTable.module.scss';
 
 type Props = {
   apartments: Apartment[];
   applications: number[] | undefined;
-  applicationStatus: { [key: number]: string } | undefined;
+  applicationStatus: ApartmentApplicationStatusConfig | undefined;
 };
 
 type SortProps = {
@@ -169,14 +170,6 @@ const ApartmentTable = ({ apartments, applications, applicationStatus }: Props) 
     }
   };
 
-  const getApartmentApplicationStatus = (id: number) => {
-    if (!applicationStatus) {
-      return undefined;
-    }
-    const statusByApartmentId = applicationStatus[id];
-    return statusByApartmentId;
-  };
-
   return (
     <div className={css.apartmentList} ref={paginationScrollRef}>
       <div className={css.apartmentListTable}>
@@ -227,7 +220,7 @@ const ApartmentTable = ({ apartments, applications, applicationStatus }: Props) 
             key={x.uuid}
             apartment={x}
             userApplications={applications}
-            applicationStatus={getApartmentApplicationStatus(x.nid)}
+            applicationStatus={getApartmentApplicationStatus(applicationStatus, x.nid)}
           />
         ))}
       </div>
