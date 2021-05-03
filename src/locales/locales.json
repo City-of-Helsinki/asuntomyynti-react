@@ -26,6 +26,7 @@
       "hitas-title": "Search for HITAS apartments",
       "info": "Info",
       "learn-more": "Learn more",
+      "learn-more-apartments": "Learn more",
       "name-of-the-alert": "Name of the alert",
       "next-page": "Next page",
       "move-in-date": "Move-in date",
@@ -34,6 +35,7 @@
       "project": "project",
       "projects": "projects",
       "read-more": "Read More",
+      "show-all": "Show all",
       "show-as-list": "Show as list",
       "show-on-map": "Show on map",
       "save-search-alert": "Save search alert",
@@ -137,7 +139,8 @@
       "water_fee": "Water fee",
       "water_fee_explanation": "Water fee explanation",
       "PRE_MARKETING": "Pre-marketing",
-      "FOR_SALE": "For sale"
+      "FOR_SALE": "For sale",
+      "UPCOMING": "Upcoming"
     }
   },
   "fi": {
@@ -146,11 +149,11 @@
       "all-apartments": "Kaikki asunnot",
       "apartment": "Huoneisto",
       "apartment-few-applications": "Vähän hakijoita",
-      "apartment-free": "Asunto vapaana",
+      "apartment-free": "Huoneisto vapaana",
       "apartment-lots-of-applications": "Paljon hakijoita",
       "apartment-no-applications": "Ei hakijoita",
       "apartment-some-applications": "Hieman hakijoita",
-      "apartments": "asuntoa",
+      "apartments": "huoneistoa",
       "apartments-available": "Huoneistoa vapaana",
       "application-open": "Haku avoinna",
       "applications": "Hakijatilanne",
@@ -167,6 +170,7 @@
       "hitas-title": "Etsi Hitas-omistusasuntoja",
       "info": "Tutustu",
       "learn-more": "Tutustu kohteeseen",
+      "learn-more-apartments": "Tutustu huoneistoon",
       "name-of-the-alert": "Vahdin nimi",
       "next-page": "Seuraava sivu",
       "move-in-date": "Muuttopäivä",
@@ -188,6 +192,7 @@
       "until": "asti",
       "user-application-apartment": "Sinulla on hakemus tähän huoneistoon",
       "user-application-project": "Sinulla on hakemus tähän kohteeseen",
+      "show-all": "Näytä kaikki",
       "show-less-options": "Vähemmän hakuehtoja",
       "show-more-options": "Tarkenna hakuehtoja",
       "clear-all-filters": "Tyhjennä hakuehdot",
@@ -278,7 +283,8 @@
       "water_fee": "Vesimaksu",
       "water_fee_explanation": "Vesimaksun lisätiedot",
       "PRE_MARKETING": "Ennakkomarkkinoinnissa",
-      "FOR_SALE": "Nyt haettavana"
+      "FOR_SALE": "Nyt haettavana",
+      "UPCOMING": "Tuleva kohde"
     }
   }
 }

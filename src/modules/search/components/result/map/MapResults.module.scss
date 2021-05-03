@@ -23,6 +23,7 @@
 
 .mapContainer {
   padding-bottom: var(--spacing-2-xl);
+  margin-bottom: var(--spacing-2-xl);
 
   @media (max-width: 1330px) {
     padding-left: var(--spacing-2-xl);
@@ -38,6 +39,10 @@
     padding-left: var(--spacing-s);
     padding-right: var(--spacing-s);
   }
+}
+
+.mapWrapper {
+  position: relative;
 }
 
 .showButton {
@@ -81,3 +86,85 @@
   margin-bottom: 20px;
 }
 
+.activeProjectWrapper {
+  position: absolute;
+  top: var(--spacing-m);
+  bottom: var(--spacing-m);
+  left: var(--spacing-2-xl);
+  width: 400px;
+  z-index: 2;
+  background-color: #fff;
+  overflow: hidden;
+  box-shadow: 0 0 6px 0 rgba(0,0,0,.2);
+
+  @media (min-width: 578px) and (max-width: 768px) {
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -50px;
+  }
+
+  @media (max-width: 576px) {
+    width: auto;
+    top: var(--spacing-s);
+    left: var(--spacing-s);
+    right: var(--spacing-s);
+    bottom: -50px;
+  }
+}
+
+.closeIcon {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  z-index: 2;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+
+  &:hover,
+  &:focus {
+    background-color: var(--color-black-10);
+  }
+}
+
+.activeProjectDetails {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  overflow: hidden;
+  transform: translate(0, 0);
+}
+
+.popup {
+  margin-bottom: var(--spacing-l);
+
+  :global {
+    .leaflet-popup-content-wrapper {
+      border-radius: 0;
+      box-shadow: 0 0 6px 0 rgba(0,0,0,.2);
+      font-family: var(--font-default);
+      font-size: 1rem;
+      width: 285px;
+      color: var(--color-black);
+    }
+
+    .leaflet-popup-content {
+      line-height: var(--lineheight-l);
+      margin: 0;
+      position: relative;
+      padding: var(--spacing-2-xs);
+      width: 100% !important;
+    }
+  }
+}

@@ -6,6 +6,10 @@
   align-items: center;
   margin-bottom: var(--spacing-xs);
 
+  &.dense {
+    margin-bottom: var(--spacing-2-xs);
+  }
+
   a {
     font-weight: bold;
     text-decoration: underline;
@@ -15,8 +19,12 @@
 
 .completionTime {
   margin-top: var(--spacing-s);
+
+  &.dense {
+    margin-top: var(--spacing-xs);
+  }
 }
 
 .deadlines > div:last-child {
-  margin-bottom: 0;
+  margin-bottom: 0 !important;
 }

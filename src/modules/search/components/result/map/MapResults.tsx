@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { createRef, useRef, useState } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { useTranslation } from 'react-i18next';
-import { MapContainer, Marker, TileLayer } from 'react-leaflet';
-import { Button, IconLocation, IconMenuHamburger } from 'hds-react';
+import { MapContainer, Marker, Popup, TileLayer, ZoomControl } from 'react-leaflet';
+import { Button, IconCross, IconLocation, IconMenuHamburger } from 'hds-react';
 import L from 'leaflet';
 import { DataConfig, Project, StateOfSale } from '../../../../../types/common';
 import { calculateApartmentCount } from '../../../utils/calculateApartmentCount';
-import ProjectCard from '../list/ProjectCard';
+import MapProjectCard from './MapProjectCard';
+import MapProjectPopupCard from './MapProjectPopupCard';
 import css from './MapResults.module.scss';
 
 type Props = {
@@ -24,9 +25,22 @@ const MAP_TILES_URL =
 const MapResults = ({ config, header, searchResults, closeMap, currentLang, resultCountByProjects = false }: Props) => {
   const { t } = useTranslation();
   const [activeProject, setActiveProject] = useState<Project | undefined>(undefined);
+  const popupRef = useRef<any>([]);
+  popupRef.current = searchResults.map((element, i) => popupRef.current[i] ?? createRef());
 
-  const handleMarkerClick = (targetProject: Project) => {
+  const closePopups = (ref: any) => {
+    if (ref.current) {
+      ref.current.remove();
+    }
+  };
+
+  const handleMarkerPopupClick = (targetProject: Project, ref: any) => {
+    closePopups(ref);
     setActiveProject(targetProject);
+  };
+
+  const hideProject = () => {
+    setActiveProject(undefined);
   };
 
   const getMarkerColor = (state?: StateOfSale) => {
@@ -123,8 +137,9 @@ const MapResults = ({ config, header, searchResults, closeMap, currentLang, resu
           </Button>
         </div>
       </header>
+
       <div className={css.mapContainer}>
-        <div id={'asuReactMap'}>
+        <div className={css.mapWrapper} id={'asuReactMap'}>
           <MapContainer
             center={getInitialPosition()}
             zoom={12}
@@ -134,29 +149,42 @@ const MapResults = ({ config, header, searchResults, closeMap, currentLang, resu
             ]}
             dragging={!L.Browser.mobile}
             tap={!L.Browser.mobile}
+            zoomControl={false}
           >
+            {!L.Browser.mobile && <ZoomControl position="bottomright" />}
             <TileLayer
               attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url={MAP_TILES_URL}
             />
-            {searchResults.map((x) =>
+            {searchResults.map((x, i) =>
               x.coordinate_lat && x.coordinate_lon ? (
-                <Marker
-                  key={x.uuid}
-                  icon={getMarkerIcon(x)}
-                  position={[x.coordinate_lat, x.coordinate_lon]}
-                  eventHandlers={{ click: () => handleMarkerClick(x) }}
-                />
+                <Marker key={x.uuid} icon={getMarkerIcon(x)} position={[x.coordinate_lat, x.coordinate_lon]}>
+                  <Popup
+                    ref={popupRef.current[i]}
+                    closeButton={false}
+                    className={css.popup}
+                    onOpen={() => hideProject()}
+                  >
+                    <MapProjectPopupCard
+                      project={x}
+                      currentLang={currentLang}
+                      onCloseBtnClick={() => closePopups(popupRef.current[i])}
+                      onApartmentsBtnClick={() => handleMarkerPopupClick(x, popupRef.current[i])}
+                    />
+                  </Popup>
+                </Marker>
               ) : null
             )}
           </MapContainer>
           {activeProject && (
-            <ProjectCard
-              config={config}
-              project={activeProject}
-              hideImgOnSmallScreen={true}
-              currentLang={currentLang}
-            />
+            <div className={css.activeProjectWrapper}>
+              <button className={css.closeIcon} onClick={() => hideProject()} aria-label={t('SEARCH:hide-project')}>
+                <IconCross aria-hidden="true" />
+              </button>
+              <div className={css.activeProjectDetails}>
+                <MapProjectCard config={config} project={activeProject} currentLang={currentLang} />
+              </div>
+            </div>
           )}
         </div>
       </div>
