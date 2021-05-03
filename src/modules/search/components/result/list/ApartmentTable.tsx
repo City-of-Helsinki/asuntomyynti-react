@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Apartment, ApartmentApplicationStatusConfig } from '../../../../../types/common';
 import { getApartmentApplicationStatus } from '../../../utils/getApplicationStatus';
+import SortApartments from '../../../utils/sortApartments';
 import ApartmentRow from './ApartmentRow';
 import css from './ApartmentTable.module.scss';
 
@@ -14,68 +15,11 @@ type Props = {
   applicationStatus: ApartmentApplicationStatusConfig | undefined;
 };
 
-type SortProps = {
-  key: string;
-  direction: string;
-  alphaNumeric: boolean;
-};
-
 const ApartmentTable = ({ apartments, applications, applicationStatus }: Props) => {
   const { t } = useTranslation();
   const [page, setPage] = useState(1);
   const paginationScrollRef = useRef<HTMLDivElement>(null);
-
-  const useSortableData = (items: any) => {
-    const sortDefaultProps = {
-      key: 'apartment_number',
-      direction: 'ascending',
-      alphaNumeric: true,
-    };
-    const [sortConfig, setSortConfig] = React.useState<SortProps | null>(sortDefaultProps);
-
-    const sortedApartments = React.useMemo(() => {
-      let sortableApartments = [...items];
-
-      if (sortConfig !== null) {
-        if (sortConfig.alphaNumeric) {
-          sortableApartments.sort((a, b) => {
-            const firstValue = a[sortConfig.key].split(' ').join('');
-            const secondValue = b[sortConfig.key].split(' ').join('');
-            if (sortConfig.direction === 'ascending') {
-              return firstValue.localeCompare(secondValue, 'fi', { numeric: true });
-            }
-            return secondValue.localeCompare(firstValue, 'fi', { numeric: true });
-          });
-        } else {
-          sortableApartments.sort((a, b) => {
-            const firstValue = a[sortConfig.key];
-            const secondValue = b[sortConfig.key];
-
-            if (firstValue < secondValue) {
-              return sortConfig.direction === 'ascending' ? -1 : 1;
-            }
-            if (firstValue > secondValue) {
-              return sortConfig.direction === 'ascending' ? 1 : -1;
-            }
-            return 0;
-          });
-        }
-      }
-      return sortableApartments;
-    }, [items, sortConfig]);
-
-    const requestSort = (key: string, alphaNumeric: boolean) => {
-      let direction = 'ascending';
-      if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
-        direction = 'descending';
-      }
-      setSortConfig({ key, direction, alphaNumeric });
-    };
-
-    return { items: sortedApartments, requestSort, sortConfig };
-  };
-
-  const { items, requestSort, sortConfig } = useSortableData(apartments);
+  const { items, requestSort, sortConfig } = SortApartments(apartments);
   const displayedApartments = items.slice(page * 10 - 10, page * 10);
 
   const setSort = (key: string, alphaNumeric: boolean) => {
