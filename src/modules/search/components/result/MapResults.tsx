@@ -4,12 +4,13 @@ import { useTranslation } from 'react-i18next';
 import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 import { Button, IconLocation, IconMenuHamburger } from 'hds-react';
 import L from 'leaflet';
-import { Project, StateOfSale } from '../../../../types/common';
+import { DataConfig, Project, StateOfSale } from '../../../../types/common';
 import { calculateApartmentCount } from '../../utils/calculateApartmentCount';
 import ProjectCard from './ProjectCard';
 import css from './MapResults.module.scss';
 
 type Props = {
+  config: DataConfig | undefined;
   searchResults: Project[];
   closeMap: () => void;
   currentLang: string;
@@ -18,7 +19,7 @@ type Props = {
 const MAP_TILES_URL =
   process.env.REACT_APP_MAP_TILES_URL || 'https://tiles.hel.ninja/styles/hel-osm-bright/{z}/{x}/{y}.png';
 
-const MapResults = ({ searchResults, closeMap, currentLang }: Props) => {
+const MapResults = ({ config, searchResults, closeMap, currentLang }: Props) => {
   const { t } = useTranslation();
   const [activeProject, setActiveProject] = useState<Project | undefined>(undefined);
 
@@ -145,7 +146,12 @@ const MapResults = ({ searchResults, closeMap, currentLang }: Props) => {
             )}
           </MapContainer>
           {activeProject && (
-            <ProjectCard project={activeProject} hideImgOnSmallScreen={true} currentLang={currentLang} />
+            <ProjectCard
+              config={config}
+              project={activeProject}
+              hideImgOnSmallScreen={true}
+              currentLang={currentLang}
+            />
           )}
         </div>
       </div>

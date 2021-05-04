@@ -24,6 +24,7 @@ export type Apartment = {
   living_area: number;
   loan_share: number;
   maintenance_fee: number;
+  nid: number;
   other_fees: number;
   parking_fee: number;
   parking_fee_explanation: string;
@@ -290,13 +291,11 @@ export enum StateOfSale {
   PreMarketing = 'PRE_MARKETING',
 }
 
-// TODO: fix these as we get the actual data from backend
-export enum StateOfAvailability {
+export enum ApplicationStatus {
   Free = 'FREE',
-  NoApplications = 'NO_APPLICATIONS',
-  OnlyFewApplications = 'ONLY_FEW_APPLICATIONS',
-  SomeApplications = 'SOME_APPLICATIONS',
-  LotsOfApplications = 'LOTS_OF_APPLICATIONS',
+  Low = 'LOW',
+  Medium = 'MEDIUM',
+  High = 'HIGH',
 }
 
 export enum FilterName {
@@ -331,10 +330,20 @@ export type StaticContent = {
   hitas_instruction_url: string;
 };
 
+export type UserConfig = {
+  user_id: string;
+  email_address: string | null;
+  username: string;
+  applications: number[][];
+};
+
 export type DataConfig = {
   filters: FilterConfigs;
   static_content: StaticContent;
-  // TODO
-  // apartment_application_status: any;
-  // user: any;
+  user: UserConfig;
+  apartment_application_status: {
+    [key: number]: {
+      [key: number]: string;
+    };
+  };
 };

@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import cx from 'classnames';
 import css from './ApartmentRow.module.scss';
-import { Apartment, StateOfAvailability } from '../../../../types/common';
+import { Apartment, ApplicationStatus } from '../../../../types/common';
 import { useTranslation } from 'react-i18next';
-import { IconAngleDown, IconAngleUp /* TODO IconPenLine */ } from 'hds-react';
+import { IconAngleDown, IconAngleUp, IconPenLine } from 'hds-react';
 
 const BREAK_POINT = 768;
 
-const ApartmentRow = ({ apartment }: { apartment: Apartment }) => {
+type Props = {
+  apartment: Apartment;
+  userApplications: number[] | undefined;
+  applicationStatus: string | undefined;
+};
+
+const ApartmentRow = ({ apartment, userApplications, applicationStatus }: Props) => {
   const { t } = useTranslation();
   const [width, setWidth] = useState(window.innerWidth);
   const [rowOpen, setRowOpen] = useState(false);
@@ -37,11 +43,19 @@ const ApartmentRow = ({ apartment }: { apartment: Apartment }) => {
     application_url,
     floor,
     floor_max,
+    nid,
     project_application_end_time,
     living_area,
     debt_free_sales_price,
     url,
   } = apartment;
+
+  const hasApplication = () => {
+    if (!userApplications) {
+      return false;
+    }
+    return userApplications.includes(nid);
+  };
 
   const calculatedDebtFreeSalesPrice = debt_free_sales_price / 100;
   const formattedDebtFreeSalesPrice = `${calculatedDebtFreeSalesPrice.toLocaleString('fi-FI')} \u20AC`;
@@ -60,40 +74,30 @@ const ApartmentRow = ({ apartment }: { apartment: Apartment }) => {
     return `//${path}`;
   };
 
-  // TODO: get the actual availability data for each apartment instead of giving fixed value for all of them
-  const availability = StateOfAvailability.NoApplications;
-
-  const renderAvailabilityInfo = (status: StateOfAvailability, dotOnly: boolean) => {
+  const renderAvailabilityInfo = (status: typeof applicationStatus, dotOnly: boolean) => {
     switch (status) {
-      case StateOfAvailability.Free:
+      case ApplicationStatus.Free:
         return (
           <>
             <span className={cx(css.statusCircle, css.statusCircleFree)} aria-hidden="true" />
             <span className={dotOnly ? 'sr-only' : ''}>{t('SEARCH:apartment-free')}</span>
           </>
         );
-      case StateOfAvailability.NoApplications:
-        return (
-          <>
-            <span className={cx(css.statusCircle, css.statusCircleNone)} aria-hidden="true" />
-            <span className={dotOnly ? 'sr-only' : ''}>{t('SEARCH:apartment-no-applications')}</span>
-          </>
-        );
-      case StateOfAvailability.OnlyFewApplications:
+      case ApplicationStatus.Low:
         return (
           <>
             <span className={cx(css.statusCircle, css.statusCircleFew)} aria-hidden="true" />
             <span className={dotOnly ? 'sr-only' : ''}>{t('SEARCH:apartment-few-applications')}</span>
           </>
         );
-      case StateOfAvailability.SomeApplications:
+      case ApplicationStatus.Medium:
         return (
           <>
             <span className={cx(css.statusCircle, css.statusCircleSome)} aria-hidden="true" />
             <span className={dotOnly ? 'sr-only' : ''}>{t('SEARCH:apartment-some-applications')}</span>
           </>
         );
-      case StateOfAvailability.LotsOfApplications:
+      case ApplicationStatus.High:
         return (
           <>
             <span className={cx(css.statusCircle, css.statusCircleLots)} aria-hidden="true" />
@@ -101,7 +105,12 @@ const ApartmentRow = ({ apartment }: { apartment: Apartment }) => {
           </>
         );
       default:
-        return '-';
+        return (
+          <>
+            <span className={cx(css.statusCircle, css.statusCircleNone)} aria-hidden="true" />
+            <span className={dotOnly ? 'sr-only' : ''}>{t('SEARCH:apartment-no-applications')}</span>
+          </>
+        );
     }
   };
 
@@ -110,7 +119,7 @@ const ApartmentRow = ({ apartment }: { apartment: Apartment }) => {
       {isMobileSize && <span className="sr-only">{t('SEARCH:apartment')}</span>}
       <strong>{apartment_number}</strong>
       {isMobileSize && (
-        <span className={css.apartmentAvailabilityMobile}>{renderAvailabilityInfo(availability, true)}</span>
+        <span className={css.apartmentAvailabilityMobile}>{renderAvailabilityInfo(applicationStatus, true)}</span>
       )}
       <span>{apartment_structure}</span>
       {isMobileSize &&
@@ -140,55 +149,58 @@ const ApartmentRow = ({ apartment }: { apartment: Apartment }) => {
       </div>
       <div className={css.cell}>
         <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>{t('SEARCH:applications')}</span>
-        <span>{renderAvailabilityInfo(availability, false)}</span>
+        <span>{renderAvailabilityInfo(applicationStatus, false)}</span>
       </div>
     </>
   );
 
   const apartmentRowActions = (
     <div className={css.cellButtons}>
-      {/* TODO
-      <div className={css.verticalContent}>
-        <div className={css.applicationSent}>
-          <IconPenLine style={{ marginRight: 10 }} aria-hidden="true" />
-          <span>Sinulla on <a href="#">hakemus</a> tähän kohteeseen</span>
-        </div>
-        <a
-          href={fullURL(url)}
-          className={`${css.openApartmentDetailsButton} hds-button hds-button--${isDesktopSize ? 'secondary' : 'primary' } hds-button--small`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span className="hds-button__label">Avaa huoneistosivu</span>
-        </a>
-      </div>
-      */}
-      <div className={css.buttons}>
-        {url && (
+      {hasApplication() ? (
+        <div className={css.verticalContent}>
+          <div className={css.applicationSent}>
+            <IconPenLine style={{ marginRight: 10 }} aria-hidden="true" />
+            <span>{t('SEARCH:user-application-apartment')}</span>
+          </div>
           <a
             href={fullURL(url)}
-            className={`${css.getToKnowButton} hds-button hds-button--${
-              isDesktopSize ? 'supplementary' : 'secondary'
-            } hds-button--small`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span className="hds-button__label">{t('SEARCH:info')}</span>
-          </a>
-        )}
-        {canApply && (
-          <a
-            href={fullURL(application_url)}
-            className={`${css.createApplicationButton} hds-button hds-button--${
+            className={`${css.openApartmentDetailsButton} hds-button hds-button--${
               isDesktopSize ? 'secondary' : 'primary'
             } hds-button--small`}
             target="_blank"
             rel="noopener noreferrer"
           >
-            <span className="hds-button__label">{t('SEARCH:apply')}</span>
+            <span className="hds-button__label">{t('SEARCH:open-apartment-page')}</span>
           </a>
-        )}
-      </div>
+        </div>
+      ) : (
+        <div className={css.buttons}>
+          {url && (
+            <a
+              href={fullURL(url)}
+              className={`${css.getToKnowButton} hds-button hds-button--${
+                isDesktopSize ? 'supplementary' : 'secondary'
+              } hds-button--small`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className="hds-button__label">{t('SEARCH:info')}</span>
+            </a>
+          )}
+          {canApply && (
+            <a
+              href={fullURL(application_url)}
+              className={`${css.createApplicationButton} hds-button hds-button--${
+                isDesktopSize ? 'secondary' : 'primary'
+              } hds-button--small`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className="hds-button__label">{t('SEARCH:apply')}</span>
+            </a>
+          )}
+        </div>
+      )}
     </div>
   );
 
