@@ -13,6 +13,9 @@ import { groupProjectsByState } from './utils/groupProjectsByState';
 import useSearchParams from '../../hooks/useSearchParams';
 import { DataContext } from './DataContext';
 
+// "boolean" as a string because env variables are also treated as strings
+const showUpcomingOnly = process.env.REACT_APP_SHOW_UPCOMING_ONLY || 'false';
+
 const SearchContainer = () => {
   const [showMap, setShowMap] = useState<boolean>(false);
   const { t } = useTranslation();
@@ -30,7 +33,9 @@ const SearchContainer = () => {
 
   const { data: searchResults, isError: isSearchQueryError } = useSearchResults(query);
 
-  const { FOR_SALE: forSale = [], PRE_MARKETING: preMarketing = [] } = groupProjectsByState(searchResults);
+  const { FOR_SALE: forSale = [], PRE_MARKETING: preMarketing = [], UPCOMING: upcoming = [] } = groupProjectsByState(
+    searchResults
+  );
 
   const openMap = () => {
     setShowMap(true);
@@ -40,12 +45,48 @@ const SearchContainer = () => {
     setShowMap(false);
   };
 
+  if (showUpcomingOnly === 'true') {
+    return (
+      <div>
+        {showMap ? (
+          <MapContainer
+            config={config}
+            header={t('SEARCH:upcoming')}
+            searchResults={upcoming}
+            closeMap={closeMap}
+            currentLang={currentLang}
+            resultCountByProjects
+          />
+        ) : (
+          <>
+            <SearchResults
+              config={config}
+              header={t('SEARCH:upcoming')}
+              searchResults={upcoming}
+              openMap={openMap}
+              showSearchAlert
+              currentLang={currentLang}
+              resultCountByProjects
+            />
+          </>
+        )}
+        {isSearchQueryError && <ErrorToast />}
+      </div>
+    );
+  }
+
   return (
     <div>
       <SearchForm config={config} isLoading={isLoading} isError={isError} onSubmit={updateQuery} />
       {config && !isError && <InfoBlock config={config} />}
       {showMap ? (
-        <MapContainer config={config} searchResults={searchResults} closeMap={closeMap} currentLang={currentLang} />
+        <MapContainer
+          config={config}
+          header={t('SEARCH:all-apartments')}
+          searchResults={searchResults}
+          closeMap={closeMap}
+          currentLang={currentLang}
+        />
       ) : (
         <>
           <SearchResults
@@ -59,7 +100,6 @@ const SearchContainer = () => {
             config={config}
             header={t('SEARCH:pre-marketing')}
             searchResults={preMarketing}
-            showSearchAlert
             currentLang={currentLang}
           />
         </>

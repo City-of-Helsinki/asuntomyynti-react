@@ -13,9 +13,18 @@ type Props = {
   openMap?: () => void;
   showSearchAlert?: boolean;
   currentLang: string;
+  resultCountByProjects?: boolean;
 };
 
-const SearchResults = ({ config, searchResults, header, openMap, showSearchAlert = false, currentLang }: Props) => {
+const SearchResults = ({
+  config,
+  searchResults,
+  header,
+  openMap,
+  showSearchAlert = false,
+  currentLang,
+  resultCountByProjects = false,
+}: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -24,7 +33,10 @@ const SearchResults = ({ config, searchResults, header, openMap, showSearchAlert
         <div className={css.titleContainer}>
           <h2>{header}</h2>
           <div className={css.resultsCount}>
-            {t('SEARCH:total')} {calculateApartmentCount(searchResults, currentLang)} {t('SEARCH:apartments')}
+            {t('SEARCH:total')}{' '}
+            {resultCountByProjects
+              ? `${searchResults.length} ${t('SEARCH:projects')}`
+              : `${calculateApartmentCount(searchResults, currentLang)} ${t('SEARCH:apartments')}`}
           </div>
         </div>
         {openMap && (

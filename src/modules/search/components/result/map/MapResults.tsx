@@ -11,15 +11,17 @@ import css from './MapResults.module.scss';
 
 type Props = {
   config: DataConfig | undefined;
+  header: string;
   searchResults: Project[];
   closeMap: () => void;
   currentLang: string;
+  resultCountByProjects?: boolean;
 };
 
 const MAP_TILES_URL =
   process.env.REACT_APP_MAP_TILES_URL || 'https://tiles.hel.ninja/styles/hel-osm-bright/{z}/{x}/{y}.png';
 
-const MapResults = ({ config, searchResults, closeMap, currentLang }: Props) => {
+const MapResults = ({ config, header, searchResults, closeMap, currentLang, resultCountByProjects = false }: Props) => {
   const { t } = useTranslation();
   const [activeProject, setActiveProject] = useState<Project | undefined>(undefined);
 
@@ -105,9 +107,12 @@ const MapResults = ({ config, searchResults, closeMap, currentLang }: Props) => 
     <div className={css.container}>
       <header>
         <div className={css.titleContainer}>
-          <h2>{t('SEARCH:all-apartments')}</h2>
+          <h2>{header}</h2>
           <div className={css.resultsCount}>
-            {t('SEARCH:total')} {calculateApartmentCount(searchResults, currentLang)} {t('SEARCH:apartments')}
+            {t('SEARCH:total')}{' '}
+            {resultCountByProjects
+              ? `${searchResults.length} ${t('SEARCH:projects')}`
+              : `${calculateApartmentCount(searchResults, currentLang)} ${t('SEARCH:apartments')}`}
           </div>
         </div>
         <div>
