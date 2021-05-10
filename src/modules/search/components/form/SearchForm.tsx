@@ -1,4 +1,4 @@
-import React, { RefObject, useRef } from 'react';
+import React, { RefObject, useRef, useEffect } from 'react';
 import styles from './SearchForm.module.scss';
 import { Button, IconSearch, IconMinus, IconPlus, IconCross, Notification } from 'hds-react';
 import cx from 'classnames';
@@ -18,10 +18,12 @@ type Props = {
   pageTitle: string;
   projectOwnershipType: string;
   focusRef: RefObject<HTMLDivElement>;
+  resultCount: number | undefined;
+  onUpdate: () => void;
   onSubmit: () => void;
 };
 
-const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipType, focusRef, onSubmit }: Props) => {
+const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipType, focusRef, resultCount, onUpdate, onSubmit }: Props) => {
   const { clearAllFilters, hasFilters } = useFilters();
   const [isOptionsOpen, setOptionsOpen] = useSessionStorageState({ defaultValue: false, key: 'searchFormOptionsOpen' });
   const [isOptionsVisible, setOptionsVisible] = useSessionStorageState({
@@ -41,9 +43,13 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipTyp
     ...additionalFilters
   } = filters || {};
 
+  useEffect(() => {
+    onUpdate();
+  }, [onUpdate, filters]);
+
   const searchButton = () => (
     <Button className={styles.submitButton} onClick={() => onSubmit()} iconLeft={<IconSearch aria-hidden="true" />}>
-      {t('SEARCH:search')}
+      {t('SEARCH:search')} ({resultCount})
     </Button>
   );
 

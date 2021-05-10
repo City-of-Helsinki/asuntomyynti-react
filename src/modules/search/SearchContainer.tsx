@@ -13,6 +13,7 @@ import useSearchParams from '../../hooks/useSearchParams';
 import { DataContext } from './DataContext';
 import { filterProjectsByOwnershipType } from './utils/filterProjectsByOwnershipType';
 import useSessionStorageState from '../../hooks/useSessionStorageState';
+import { Project } from '../../types/common';
 
 // "boolean" as a string because env variables are also treated as strings
 const showUpcomingOnly = process.env.REACT_APP_SHOW_UPCOMING_ONLY || 'false';
@@ -22,6 +23,7 @@ const projectOwnershipType = process.env.REACT_APP_PROJECT_OWNERSHIP_TYPE || 'hi
 
 const SearchContainer = () => {
   const [showMap, setShowMap] = useSessionStorageState({ defaultValue: false, key: 'showMap' });
+  const [results, setResults] = useState<Project[]>([]);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [announce, setAnnounce] = useState(false);
   const mapFocusRef = useRef<HTMLDivElement>(null);
@@ -49,18 +51,33 @@ const SearchContainer = () => {
   // Filter HITAS/HASO apartments by selected ownership type
   const filteredSearchResults = filterProjectsByOwnershipType(searchResults, projectOwnershipType);
 
+  const resultsCount = filteredSearchResults.length;
+
+  // Define page h1 based on project_ownership_type
+  const pageTitle = projectOwnershipType.toLowerCase() === 'haso' ? t('SEARCH:haso-title') : t('SEARCH:hitas-title');
+
+  const submitQuery = () => {
+    // When the first time submit button is clicked, set this to true
+    setHasSubmitted(true);
+    // Clear old screen reader announcement messages
+    setAnnounce(false);
+
+    setResults(filteredSearchResults);
+  };
+
+  // useEffect(() => {
+  //   setResults(filteredSearchResults);
+  // }, [filteredSearchResults, updateQuery]);
+
   // Set READY, FOR_SALE, PRE_MARKETING and UPCOMING apartments from HITAS/HASO filtered lists
   const {
     READY: ready = [],
     FOR_SALE: forSale = [],
     PRE_MARKETING: preMarketing = [],
     UPCOMING: upcoming = [],
-  } = groupProjectsByState(filteredSearchResults);
+  } = groupProjectsByState(results);
 
   const hasFreeApartments = !!ready.length;
-
-  // Define page h1 based on project_ownership_type
-  const pageTitle = projectOwnershipType.toLowerCase() === 'haso' ? t('SEARCH:haso-title') : t('SEARCH:hitas-title');
 
   const openMap = () => {
     setShowMap(true);
@@ -70,14 +87,6 @@ const SearchContainer = () => {
   const closeMap = () => {
     setShowMap(false);
     mapFocusRef.current?.focus();
-  };
-
-  const submitQuery = () => {
-    updateQuery();
-    // When the first time submit button is clicked, set this to true
-    setHasSubmitted(true);
-    // Clear old screen reader announcement messages
-    setAnnounce(false);
   };
 
   useEffect(() => {
@@ -90,6 +99,9 @@ const SearchContainer = () => {
       }, 5000);
     }
   }, [hasSubmitted, query]);
+
+  console.log('filteredSearchResults', filteredSearchResults);
+  console.log('results', results);
 
   if (showUpcomingOnly === 'true') {
     return (
@@ -144,9 +156,11 @@ const SearchContainer = () => {
         isLoading={isLoading}
         isError={isError}
         pageTitle={pageTitle}
-        onSubmit={submitQuery}
         projectOwnershipType={projectOwnershipType}
         focusRef={mapFocusRef}
+        resultCount={resultsCount}
+        onUpdate={updateQuery}
+        onSubmit={submitQuery}
       />
       {config && !isError && <InfoBlock config={config} type={projectOwnershipType} />}
       <div ref={mapFocusRef} tabIndex={-1} />
@@ -155,7 +169,7 @@ const SearchContainer = () => {
           <MapContainer
             config={config}
             header={t('SEARCH:all-apartments')}
-            searchResults={filteredSearchResults}
+            searchResults={results}
             closeMap={closeMap}
             currentLang={currentLang}
           />
