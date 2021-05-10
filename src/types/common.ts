@@ -337,13 +337,17 @@ export type UserConfig = {
   applications: number[][];
 };
 
+export type ProjectApplicationStatusConfig = {
+  [key: number]: ApartmentApplicationStatusConfig;
+};
+
+export type ApartmentApplicationStatusConfig = {
+  [key: number]: string;
+};
+
 export type DataConfig = {
   filters: FilterConfigs;
   static_content: StaticContent;
   user: UserConfig;
-  apartment_application_status: {
-    [key: number]: {
-      [key: number]: string;
-    };
-  };
+  apartment_application_status: ProjectApplicationStatusConfig | undefined;
 };

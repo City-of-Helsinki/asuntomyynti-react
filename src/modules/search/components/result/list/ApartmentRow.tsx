@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import cx from 'classnames';
-import css from './ApartmentRow.module.scss';
-import { Apartment, ApplicationStatus } from '../../../../types/common';
 import { useTranslation } from 'react-i18next';
 import { IconAngleDown, IconAngleUp, IconPenLine } from 'hds-react';
+
+import { Apartment } from '../../../../../types/common';
+import { fullURL } from '../../../utils/fullURL';
+import RenderAvailabilityInfo from '../ApplicationStatus';
+
+import css from './ApartmentRow.module.scss';
 
 const BREAK_POINT = 768;
 
@@ -64,62 +68,14 @@ const ApartmentRow = ({ apartment, userApplications, applicationStatus }: Props)
 
   const canApply = new Date().getTime() < new Date(project_application_end_time).getTime();
 
-  const fullURL = (path: string) => {
-    if (!path) {
-      return '#';
-    }
-    if (path.toLowerCase().startsWith('http')) {
-      return path;
-    }
-    return `//${path}`;
-  };
-
-  const renderAvailabilityInfo = (status: typeof applicationStatus, dotOnly: boolean) => {
-    switch (status) {
-      case ApplicationStatus.Free:
-        return (
-          <>
-            <span className={cx(css.statusCircle, css.statusCircleFree)} aria-hidden="true" />
-            <span className={dotOnly ? 'sr-only' : ''}>{t('SEARCH:apartment-free')}</span>
-          </>
-        );
-      case ApplicationStatus.Low:
-        return (
-          <>
-            <span className={cx(css.statusCircle, css.statusCircleFew)} aria-hidden="true" />
-            <span className={dotOnly ? 'sr-only' : ''}>{t('SEARCH:apartment-few-applications')}</span>
-          </>
-        );
-      case ApplicationStatus.Medium:
-        return (
-          <>
-            <span className={cx(css.statusCircle, css.statusCircleSome)} aria-hidden="true" />
-            <span className={dotOnly ? 'sr-only' : ''}>{t('SEARCH:apartment-some-applications')}</span>
-          </>
-        );
-      case ApplicationStatus.High:
-        return (
-          <>
-            <span className={cx(css.statusCircle, css.statusCircleLots)} aria-hidden="true" />
-            <span className={dotOnly ? 'sr-only' : ''}>{t('SEARCH:apartment-lots-of-applications')}</span>
-          </>
-        );
-      default:
-        return (
-          <>
-            <span className={cx(css.statusCircle, css.statusCircleNone)} aria-hidden="true" />
-            <span className={dotOnly ? 'sr-only' : ''}>{t('SEARCH:apartment-no-applications')}</span>
-          </>
-        );
-    }
-  };
-
   const apartmentRowBaseDetails = (
     <>
       {isMobileSize && <span className="sr-only">{t('SEARCH:apartment')}</span>}
       <strong>{apartment_number}</strong>
       {isMobileSize && (
-        <span className={css.apartmentAvailabilityMobile}>{renderAvailabilityInfo(applicationStatus, true)}</span>
+        <span className={css.apartmentAvailabilityMobile}>
+          <RenderAvailabilityInfo status={applicationStatus} dotOnly={true} />
+        </span>
       )}
       <span>{apartment_structure}</span>
       {isMobileSize &&
@@ -149,7 +105,9 @@ const ApartmentRow = ({ apartment, userApplications, applicationStatus }: Props)
       </div>
       <div className={css.cell}>
         <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>{t('SEARCH:applications')}</span>
-        <span>{renderAvailabilityInfo(applicationStatus, false)}</span>
+        <span>
+          <RenderAvailabilityInfo status={applicationStatus} />
+        </span>
       </div>
     </>
   );

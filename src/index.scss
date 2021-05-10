@@ -14,13 +14,14 @@ body {
 }
 
 .leaflet-container {
-  height: 500px;
+  height: 80vh;
   width: 100%;
-}
+  position: relative;
+  z-index: 1;
+  min-height: 400px;
 
-@media (max-width: 768px) {
-  .leaflet-container {
-    height: 400px;
+  @media (max-width: 768px) {
+    min-height: 300px;
   }
 }
 
