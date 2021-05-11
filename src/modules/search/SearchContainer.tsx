@@ -69,6 +69,7 @@ const SearchContainer = () => {
             closeMap={closeMap}
             currentLang={currentLang}
             resultCountByProjects
+            hideApartments
           />
         ) : (
           <>
@@ -80,6 +81,7 @@ const SearchContainer = () => {
               showSearchAlert
               currentLang={currentLang}
               resultCountByProjects
+              hideApartments
             />
           </>
         )}

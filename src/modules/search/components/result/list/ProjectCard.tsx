@@ -21,6 +21,7 @@ type Props = {
   hideImgOnSmallScreen?: boolean;
   showSearchAlert?: boolean;
   currentLang: string;
+  hideApartments?: boolean;
 };
 
 const ProjectCard = ({
@@ -29,6 +30,7 @@ const ProjectCard = ({
   hideImgOnSmallScreen = false,
   showSearchAlert = false,
   currentLang,
+  hideApartments = false,
 }: Props) => {
   const { t } = useTranslation();
   const [listOpen, setListOpen] = useState(false);
@@ -166,7 +168,7 @@ const ProjectCard = ({
                 </Button>
               </>
             )}
-            {hasApartments && (
+            {!hideApartments && hasApartments && (
               <Button
                 className={css.apartmentListButton}
                 onClick={toggleList}
@@ -179,7 +181,7 @@ const ProjectCard = ({
           </div>
         </div>
       </div>
-      {hasApartments && listOpen && (
+      {!hideApartments && hasApartments && listOpen && (
         <ApartmentTable
           apartments={filteredApartments}
           applications={getUserApplications(user, id)}

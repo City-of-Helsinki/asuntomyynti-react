@@ -17,12 +17,21 @@ type Props = {
   closeMap: () => void;
   currentLang: string;
   resultCountByProjects?: boolean;
+  hideApartments?: boolean;
 };
 
 const MAP_TILES_URL =
   process.env.REACT_APP_MAP_TILES_URL || 'https://tiles.hel.ninja/styles/hel-osm-bright/{z}/{x}/{y}.png';
 
-const MapResults = ({ config, header, searchResults, closeMap, currentLang, resultCountByProjects = false }: Props) => {
+const MapResults = ({
+  config,
+  header,
+  searchResults,
+  closeMap,
+  currentLang,
+  resultCountByProjects = false,
+  hideApartments = false,
+}: Props) => {
   const { t } = useTranslation();
   const [activeProject, setActiveProject] = useState<Project | undefined>(undefined);
   const popupRef = useRef<any>([]);
@@ -170,13 +179,14 @@ const MapResults = ({ config, header, searchResults, closeMap, currentLang, resu
                       currentLang={currentLang}
                       onCloseBtnClick={() => closePopups(popupRef.current[i])}
                       onApartmentsBtnClick={() => handleMarkerPopupClick(x, popupRef.current[i])}
+                      hideApartments={hideApartments}
                     />
                   </Popup>
                 </Marker>
               ) : null
             )}
           </MapContainer>
-          {activeProject && (
+          {!hideApartments && activeProject && (
             <div className={css.activeProjectWrapper}>
               <button className={css.closeIcon} onClick={() => hideProject()} aria-label={t('SEARCH:hide-project')}>
                 <IconCross aria-hidden="true" />
