@@ -42,15 +42,15 @@ const ProjectInfo = ({ project, userHasApplications, dense = false }: Props) => 
             <IconPenLine style={{ marginRight: 10 }} aria-hidden="true" />
             <span>{t('SEARCH:user-application-project')}</span>
           </div>
-          {possession_transfer_date && (
-            <div className={dense ? cx(css.moveInTime, css.dense) : css.moveInTime}>
-              <IconClock style={{ marginRight: 10 }} aria-hidden="true" />
-              <span>
-                {t('SEARCH:move-in-date')} {format(new Date(possession_transfer_date), "dd.MM.yyyy 'klo' hh.mm")}
-              </span>
-            </div>
-          )}
         </>
+      )}
+      {possession_transfer_date && (
+        <div className={dense ? cx(css.moveInTime, css.dense) : css.moveInTime}>
+          <IconClock style={{ marginRight: 10 }} aria-hidden="true" />
+          <span>
+            {t('SEARCH:move-in-date')} {format(new Date(possession_transfer_date), "dd.MM.yyyy 'klo' hh.mm")}
+          </span>
+        </div>
       )}
     </div>
   );
