@@ -70,7 +70,7 @@ const InfoBlock = ({ config }: Props) => {
   );
 
   const renderUrl = () => (
-    <a href={hitas_instruction_url} target="_blank" rel="noreferrer">
+    <a href={hitas_instruction_url}>
       <span>{t('SEARCH:read-more')}</span> <IconAngleRight aria-hidden="true" />
     </a>
   );
@@ -121,7 +121,7 @@ const InfoBlock = ({ config }: Props) => {
   return (
     <>
       {isMinified && (
-        <a href={hitas_instruction_url} className={css.minifiedContainer} target="_blank" rel="noreferrer">
+        <a href={hitas_instruction_url} className={css.minifiedContainer}>
           {renderMinifiedContent()}
         </a>
       )}

@@ -125,8 +125,6 @@ const ApartmentRow = ({ apartment, userApplications, applicationStatus }: Props)
             className={`${css.openApartmentDetailsButton} hds-button hds-button--${
               isDesktopSize ? 'secondary' : 'primary'
             } hds-button--small`}
-            target="_blank"
-            rel="noopener noreferrer"
           >
             <span className="hds-button__label">{t('SEARCH:open-apartment-page')}</span>
           </a>
@@ -139,8 +137,6 @@ const ApartmentRow = ({ apartment, userApplications, applicationStatus }: Props)
               className={`${css.getToKnowButton} hds-button hds-button--${
                 isDesktopSize ? 'supplementary' : 'secondary'
               } hds-button--small`}
-              target="_blank"
-              rel="noopener noreferrer"
             >
               <span className="hds-button__label">{t('SEARCH:info')}</span>
             </a>
@@ -151,8 +147,6 @@ const ApartmentRow = ({ apartment, userApplications, applicationStatus }: Props)
               className={`${css.createApplicationButton} hds-button hds-button--${
                 isDesktopSize ? 'secondary' : 'primary'
               } hds-button--small`}
-              target="_blank"
-              rel="noopener noreferrer"
             >
               <span className="hds-button__label">{t('SEARCH:apply')}</span>
             </a>

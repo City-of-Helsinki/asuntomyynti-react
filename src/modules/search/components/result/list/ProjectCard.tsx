@@ -152,8 +152,6 @@ const ProjectCard = ({
               <a
                 href={fullURL(url)}
                 className={`${css.detailsButton} hds-button hds-button--secondary hds-button--small`}
-                target="_blank"
-                rel="noopener noreferrer"
               >
                 <span className="hds-button__label">{t('SEARCH:learn-more')}</span>
               </a>
