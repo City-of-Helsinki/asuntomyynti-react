@@ -14,10 +14,11 @@ type Props = {
   config: DataConfig | undefined;
   isLoading: boolean | undefined;
   isError: boolean | undefined;
+  pageTitle: string;
   onSubmit: () => void;
 };
 
-const SearchForm = ({ config, isLoading, isError, onSubmit }: Props) => {
+const SearchForm = ({ config, isLoading, isError, pageTitle, onSubmit }: Props) => {
   const { clearAllFilters, hasFilters } = useFilters();
   const [isOptionsOpen, setOptionsOpen] = useState(false);
   const [isOptionsVisible, setOptionsVisible] = useState(false);
@@ -39,7 +40,7 @@ const SearchForm = ({ config, isLoading, isError, onSubmit }: Props) => {
   return (
     <div className={`${styles.container} ${isOptionsOpen ? styles.expand : ''} ${isLoading ? styles.isLoading : ''}`}>
       <div className={styles.form}>
-        <h1>{t('SEARCH:hitas-title')}</h1>
+        <h1>{pageTitle}</h1>
         <div className={cx(styles.row, styles.hasBottomPadding)}>
           <div className={cx(styles.column, styles.columnWide, styles.dropdownColumn, styles.canShimmer)}>
             <div className={styles.dropdownWrapper}>
