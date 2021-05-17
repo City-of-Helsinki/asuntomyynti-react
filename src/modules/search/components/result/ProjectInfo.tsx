@@ -15,7 +15,7 @@ type Props = {
 
 const ProjectInfo = ({ project, userHasApplications, dense = false }: Props) => {
   const { t } = useTranslation();
-  const { estimated_completion, estimated_completion_date, publication_end_time, possession_transfer_date } = project;
+  const { estimated_completion, estimated_completion_date, application_end_time, possession_transfer_date } = project;
 
   return (
     <div className={css.deadlines}>
@@ -27,11 +27,11 @@ const ProjectInfo = ({ project, userHasApplications, dense = false }: Props) => 
           </span>
         </div>
       )}
-      {publication_end_time && (
+      {application_end_time && (
         <div className={dense ? cx(css.applicationTime, css.dense) : css.applicationTime}>
           <IconClock style={{ marginRight: 10 }} aria-hidden="true" />
           <span>
-            {t('SEARCH:application-open')} {format(new Date(publication_end_time), "dd.MM.yyyy 'klo' hh.mm")}{' '}
+            {t('SEARCH:application-open')} {format(new Date(application_end_time), "dd.MM.yyyy 'klo' hh.mm")}{' '}
             {t('SEARCH:until')}
           </span>
         </div>
@@ -42,15 +42,15 @@ const ProjectInfo = ({ project, userHasApplications, dense = false }: Props) => 
             <IconPenLine style={{ marginRight: 10 }} aria-hidden="true" />
             <span>{t('SEARCH:user-application-project')}</span>
           </div>
-          {possession_transfer_date && (
-            <div className={dense ? cx(css.moveInTime, css.dense) : css.moveInTime}>
-              <IconClock style={{ marginRight: 10 }} aria-hidden="true" />
-              <span>
-                {t('SEARCH:move-in-date')} {format(new Date(possession_transfer_date), "dd.MM.yyyy 'klo' hh.mm")}
-              </span>
-            </div>
-          )}
         </>
+      )}
+      {possession_transfer_date && (
+        <div className={dense ? cx(css.moveInTime, css.dense) : css.moveInTime}>
+          <IconClock style={{ marginRight: 10 }} aria-hidden="true" />
+          <span>
+            {t('SEARCH:move-in-date')} {format(new Date(possession_transfer_date), "dd.MM.yyyy 'klo' hh.mm")}
+          </span>
+        </div>
       )}
     </div>
   );

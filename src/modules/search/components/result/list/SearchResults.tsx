@@ -14,6 +14,7 @@ type Props = {
   showSearchAlert?: boolean;
   currentLang: string;
   resultCountByProjects?: boolean;
+  hideApartments?: boolean;
 };
 
 const SearchResults = ({
@@ -24,6 +25,7 @@ const SearchResults = ({
   showSearchAlert = false,
   currentLang,
   resultCountByProjects = false,
+  hideApartments = false,
 }: Props) => {
   const { t } = useTranslation();
 
@@ -57,6 +59,7 @@ const SearchResults = ({
             project={x}
             showSearchAlert={showSearchAlert}
             currentLang={currentLang}
+            hideApartments={hideApartments}
           />
         ))}
       </div>

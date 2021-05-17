@@ -21,6 +21,7 @@ type Props = {
   hideImgOnSmallScreen?: boolean;
   showSearchAlert?: boolean;
   currentLang: string;
+  hideApartments?: boolean;
 };
 
 const ProjectCard = ({
@@ -29,6 +30,7 @@ const ProjectCard = ({
   hideImgOnSmallScreen = false,
   showSearchAlert = false,
   currentLang,
+  hideApartments = false,
 }: Props) => {
   const { t } = useTranslation();
   const [listOpen, setListOpen] = useState(false);
@@ -150,8 +152,6 @@ const ProjectCard = ({
               <a
                 href={fullURL(url)}
                 className={`${css.detailsButton} hds-button hds-button--secondary hds-button--small`}
-                target="_blank"
-                rel="noopener noreferrer"
               >
                 <span className="hds-button__label">{t('SEARCH:learn-more')}</span>
               </a>
@@ -166,7 +166,7 @@ const ProjectCard = ({
                 </Button>
               </>
             )}
-            {hasApartments && (
+            {!hideApartments && hasApartments && (
               <Button
                 className={css.apartmentListButton}
                 onClick={toggleList}
@@ -179,7 +179,7 @@ const ProjectCard = ({
           </div>
         </div>
       </div>
-      {hasApartments && listOpen && (
+      {!hideApartments && hasApartments && listOpen && (
         <ApartmentTable
           apartments={filteredApartments}
           applications={getUserApplications(user, id)}

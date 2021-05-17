@@ -11,11 +11,18 @@ import css from './MapProjectPopupCard.module.scss';
 type Props = {
   project: Project;
   currentLang: string;
+  hideApartments?: boolean;
   onCloseBtnClick: () => void;
   onApartmentsBtnClick: () => void;
 };
 
-const MapProjectPopupCard = ({ project, currentLang, onCloseBtnClick, onApartmentsBtnClick }: Props) => {
+const MapProjectPopupCard = ({
+  project,
+  currentLang,
+  hideApartments = false,
+  onCloseBtnClick,
+  onApartmentsBtnClick,
+}: Props) => {
   const { t } = useTranslation();
   const { apartments, housing_company, main_image_url, ownership_type, url, state_of_sale } = project;
   const filteredApartments = getLanguageFilteredApartments(apartments, currentLang);
@@ -46,7 +53,7 @@ const MapProjectPopupCard = ({ project, currentLang, onCloseBtnClick, onApartmen
             {t('SEARCH:learn-more')}
           </a>
         )}
-        {hasApartments && (
+        {!hideApartments && hasApartments && (
           <Button
             className={css.apartmentListButton}
             onClick={() => onApartmentsBtnClick()}
