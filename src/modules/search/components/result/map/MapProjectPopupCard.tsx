@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Project } from '../../../../../types/common';
 import { getLanguageFilteredApartments } from '../../../utils/getLanguageFilteredApartments';
 import { fullURL } from '../../../utils/fullURL';
+import Label from '../../../../../common/label/Label';
 
 import css from './MapProjectPopupCard.module.scss';
 
@@ -38,7 +39,9 @@ const MapProjectPopupCard = ({
       <button className={css.closeIcon} onClick={() => onCloseBtnClick()} aria-label={t('SEARCH:hide-project')}>
         <IconCross aria-hidden="true" />
       </button>
-      <span className={css.label}>{ownership_type}</span>
+      <div className={css.labelWrap}>
+        <Label type={ownership_type}>{ownership_type}</Label>
+      </div>
       <div className={css.projectDetails}>
         {t(`ES:${state_of_sale}`)}
         <h3>{housing_company}</h3>

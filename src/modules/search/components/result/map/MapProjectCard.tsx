@@ -9,6 +9,7 @@ import { fullURL } from '../../../utils/fullURL';
 import SortApartments from '../../../utils/sortApartments';
 import MapApartmentRow from './MapApartmentRow';
 import ProjectInfo from '../ProjectInfo';
+import Label from '../../../../../common/label/Label';
 
 import css from './MapProjectCard.module.scss';
 
@@ -71,7 +72,9 @@ const MapProjectCard = ({ config, project, currentLang }: Props) => {
         <p>
           <b>{district},</b> {street_address}
         </p>
-        <span className={css.label}>{ownership_type}</span>
+        <div className={css.labelWrap}>
+          <Label type={ownership_type}>{ownership_type}</Label>
+        </div>
       </div>
     </div>
   );

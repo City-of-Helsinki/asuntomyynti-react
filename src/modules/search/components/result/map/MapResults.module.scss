@@ -72,16 +72,6 @@
   margin-top: var(--spacing-2-xs);
 }
 
-.label {
-  padding: 3px 8px;
-  color: var(--color-black-90);
-  font-size: var(--fontsize-body-s);
-  font-family: var(--font-default);
-  font-weight: normal;
-  line-height: var(--lineheight-xl);
-  background-color: var(--color-engel);
-}
-
 .titles {
   margin-bottom: 20px;
 }
@@ -157,6 +147,7 @@
       font-size: 1rem;
       width: 285px;
       color: var(--color-black);
+      padding: 0;
     }
 
     .leaflet-popup-content {

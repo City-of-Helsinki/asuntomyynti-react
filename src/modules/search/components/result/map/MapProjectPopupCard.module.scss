@@ -1,16 +1,3 @@
-.label {
-  padding: 1px 9px;
-  color: var(--color-black-90);
-  font-size: var(--fontsize-body-s);
-  font-family: var(--font-default);
-  font-weight: normal;
-  line-height: var(--lineheight-xl);
-  background-color: var(--color-engel);
-  position: absolute;
-  top: var(--spacing-2-xs);
-  left: var(--spacing-2-xs);
-}
-
 .closeIcon {
   position: absolute;
   top: 0;
@@ -37,6 +24,12 @@
     width: 100%;
     height: auto;
   }
+}
+
+.labelWrap {
+  position: absolute;
+  top: var(--spacing-2-xs);
+  left: var(--spacing-2-xs);
 }
 
 .projectDetails {

@@ -12,6 +12,7 @@ import ApartmentTable from './ApartmentTable';
 import useModal from '../../../../../hooks/useModal';
 import SubscriptionForm from '../SubscriptionForm';
 import ProjectInfo from '../ProjectInfo';
+import Label from '../../../../../common/label/Label';
 import css from './ProjectCard.module.scss';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 
@@ -140,10 +141,10 @@ const ProjectCard = ({
           <div className={css.details}>
             <div className={css.titles}>
               <h3 style={{ marginBottom: 5 }}>{housing_company}</h3>
-              <div style={{ marginBottom: 5 }}>
+              <div style={{ marginBottom: 8 }}>
                 <b>{district},</b> {street_address}
               </div>
-              <span className={css.label}>{ownership_type}</span>
+              <Label type={ownership_type}>{ownership_type}</Label>
             </div>
             <ProjectInfo project={project} userHasApplications={userHasApplications(user, id)} />
           </div>
