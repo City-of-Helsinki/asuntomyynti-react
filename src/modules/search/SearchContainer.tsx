@@ -47,8 +47,12 @@ const SearchContainer = () => {
   // Filter HITAS/HASO apartments by selected ownership type
   const filteredSearchResults = filterProjectsByOwnershipType(searchResults, projectOwnershipType);
 
-  // Set FOR_SALE and PRE_MARKETING apartments from HITAS/HASO filtered lists
-  const { FOR_SALE: forSale = [], PRE_MARKETING: preMarketing = [] } = groupProjectsByState(filteredSearchResults);
+  // Set READY, FOR_SALE and PRE_MARKETING apartments from HITAS/HASO filtered lists
+  const { READY: ready = [], FOR_SALE: forSale = [], PRE_MARKETING: preMarketing = [] } = groupProjectsByState(
+    filteredSearchResults
+  );
+
+  const hasFreeApartments = !!ready.length;
 
   const openMap = () => {
     setShowMap(true);
@@ -117,13 +121,31 @@ const SearchContainer = () => {
         />
       ) : (
         <>
-          <SearchResults
-            config={config}
-            header={t('SEARCH:for-sale')}
-            searchResults={forSale}
-            openMap={openMap}
-            currentLang={currentLang}
-          />
+          {hasFreeApartments ? (
+            <>
+              <SearchResults
+                config={config}
+                header={t('SEARCH:free-apartments')}
+                searchResults={ready}
+                openMap={openMap}
+                currentLang={currentLang}
+              />
+              <SearchResults
+                config={config}
+                header={t('SEARCH:for-sale')}
+                searchResults={forSale}
+                currentLang={currentLang}
+              />
+            </>
+          ) : (
+            <SearchResults
+              config={config}
+              header={t('SEARCH:for-sale')}
+              searchResults={forSale}
+              openMap={openMap}
+              currentLang={currentLang}
+            />
+          )}
           <SearchResults
             config={config}
             header={t('SEARCH:pre-marketing')}

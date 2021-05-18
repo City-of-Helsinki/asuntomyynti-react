@@ -140,6 +140,7 @@
       "water_fee": "Water fee",
       "water_fee_explanation": "Water fee explanation",
       "PRE_MARKETING": "Pre-marketing",
+      "READY": "Free apartments",
       "FOR_SALE": "For sale",
       "UPCOMING": "Upcoming"
     }
@@ -285,6 +286,7 @@
       "water_fee": "Vesimaksu",
       "water_fee_explanation": "Vesimaksun lisätiedot",
       "PRE_MARKETING": "Ennakkomarkkinoinnissa",
+      "READY": "Vapaat asunnot",
       "FOR_SALE": "Nyt haettavana",
       "UPCOMING": "Tuleva kohde"
     }
