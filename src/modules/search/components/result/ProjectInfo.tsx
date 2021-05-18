@@ -15,7 +15,34 @@ type Props = {
 
 const ProjectInfo = ({ project, userHasApplications, dense = false }: Props) => {
   const { t } = useTranslation();
-  const { estimated_completion, estimated_completion_date, application_end_time, possession_transfer_date } = project;
+  const {
+    estimated_completion,
+    estimated_completion_date,
+    application_end_time,
+    application_start_time,
+    possession_transfer_date,
+  } = project;
+
+  const renderApplicationPeriodText = () => {
+    const applicationPeriodHasStarted = new Date().getTime() > new Date(application_start_time).getTime();
+    const applicationPeriodHasEnded = new Date().getTime() > new Date(application_end_time).getTime();
+
+    // Show when the application period starts
+    if (!applicationPeriodHasStarted) {
+      return `${t('SEARCH:application-period-starts')} ${format(
+        new Date(application_start_time),
+        'dd.MM.yyyy, hh:mm'
+      )}`;
+    }
+
+    // Show when the application period has ended
+    if (applicationPeriodHasEnded) {
+      return `${t('SEARCH:application-period-ended')} ${format(new Date(application_end_time), 'dd.MM.yyyy, hh:mm')}`;
+    }
+
+    // Show when the currently active application period ends
+    return `${t('SEARCH:application-period-ends')} ${format(new Date(application_end_time), 'dd.MM.yyyy, hh:mm')}`;
+  };
 
   return (
     <div className={css.deadlines}>
@@ -27,13 +54,10 @@ const ProjectInfo = ({ project, userHasApplications, dense = false }: Props) => 
           </span>
         </div>
       )}
-      {application_end_time && (
+      {application_start_time && application_end_time && (
         <div className={dense ? cx(css.applicationTime, css.dense) : css.applicationTime}>
           <IconClock style={{ marginRight: 10 }} aria-hidden="true" />
-          <span>
-            {t('SEARCH:application-open')} {format(new Date(application_end_time), "dd.MM.yyyy 'klo' hh.mm")}{' '}
-            {t('SEARCH:until')}
-          </span>
+          <span>{renderApplicationPeriodText()}</span>
         </div>
       )}
       {userHasApplications && (
@@ -48,7 +72,7 @@ const ProjectInfo = ({ project, userHasApplications, dense = false }: Props) => 
         <div className={dense ? cx(css.moveInTime, css.dense) : css.moveInTime}>
           <IconClock style={{ marginRight: 10 }} aria-hidden="true" />
           <span>
-            {t('SEARCH:move-in-date')} {format(new Date(possession_transfer_date), "dd.MM.yyyy 'klo' hh.mm")}
+            {t('SEARCH:move-in-date')} {format(new Date(possession_transfer_date), 'dd.MM.yyyy')}
           </span>
         </div>
       )}
