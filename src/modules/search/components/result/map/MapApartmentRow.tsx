@@ -29,11 +29,13 @@ const MapApartmentRow = ({ apartment, userApplications, applicationStatus, isMob
 
   const {
     apartment_number,
+    apartment_state_of_sale,
     apartment_structure,
     application_url,
     floor,
     floor_max,
     nid,
+    project_application_start_time,
     project_application_end_time,
     living_area,
     debt_free_sales_price,
@@ -52,7 +54,14 @@ const MapApartmentRow = ({ apartment, userApplications, applicationStatus, isMob
 
   const formattedLivingArea = `${living_area.toLocaleString('fi-FI')} m\u00b2`;
 
-  const canApply = new Date().getTime() < new Date(project_application_end_time).getTime();
+  const isApartmentFree = apartment_state_of_sale === 'FREE_FOR_RESERVATIONS';
+  const isApartmentOpenForApplications = apartment_state_of_sale === 'OPEN_FOR_APPLICATIONS';
+
+  const applicationPeriodHasStarted = new Date().getTime() > new Date(project_application_start_time).getTime();
+  const applicationPeriodHasEnded = new Date().getTime() > new Date(project_application_end_time).getTime();
+
+  const canCreateApplication =
+    isApartmentOpenForApplications && applicationPeriodHasStarted && !applicationPeriodHasEnded;
 
   const apartmentRowBaseDetails = (
     <>
@@ -82,7 +91,7 @@ const MapApartmentRow = ({ apartment, userApplications, applicationStatus, isMob
       <span className="sr-only">{t('SEARCH:apartment')}</span>
       <strong>{apartment_number}</strong>
       <span className={css.apartmentAvailabilityMobile}>
-        <RenderAvailabilityInfo status={applicationStatus} dotOnly={true} />
+        <RenderAvailabilityInfo status={isApartmentFree ? 'FREE' : applicationStatus} dotOnly={true} />
       </span>
       <span>{apartment_structure}</span>
       {rowOpen ? (
@@ -112,7 +121,7 @@ const MapApartmentRow = ({ apartment, userApplications, applicationStatus, isMob
       <div className={css.mobileCell}>
         <span className={css.cellMobileTitle}>{t('SEARCH:applications')}</span>
         <span>
-          <RenderAvailabilityInfo status={applicationStatus} />
+          <RenderAvailabilityInfo status={isApartmentFree ? 'FREE' : applicationStatus} />
         </span>
       </div>
     </div>
@@ -147,7 +156,7 @@ const MapApartmentRow = ({ apartment, userApplications, applicationStatus, isMob
               <span className="hds-button__label">{t('SEARCH:learn-more-apartments')}</span>
             </a>
           )}
-          {canApply && (
+          {canCreateApplication && (
             <a
               href={fullURL(application_url)}
               className={`${css.createApplicationButton} hds-button hds-button--primary hds-button--small`}
@@ -155,6 +164,18 @@ const MapApartmentRow = ({ apartment, userApplications, applicationStatus, isMob
               <span className="hds-button__label">{t('SEARCH:apply')}</span>
             </a>
           )}
+          {/* TODO: Form URL for free apartments
+          {isApartmentFree && (
+            <a
+              href={'#'}
+              className={`${css.createApplicationButton} hds-button hds-button--${
+                isDesktopSize ? 'secondary' : 'primary'
+              } hds-button--small`}
+            >
+              <span className="hds-button__label">{t('SEARCH:contact-us')}</span>
+            </a>
+          )}
+          */}
         </>
       )}
     </div>
@@ -179,7 +200,7 @@ const MapApartmentRow = ({ apartment, userApplications, applicationStatus, isMob
           <>
             <div className={css.apartmentDetails}>{apartmentRowBaseDetails}</div>
             <div className={css.apartmentAvailability}>
-              <RenderAvailabilityInfo status={applicationStatus} dotOnly={false} />
+              <RenderAvailabilityInfo status={isApartmentFree ? 'FREE' : applicationStatus} dotOnly={false} />
             </div>
             {apartmentRowActions}
           </>

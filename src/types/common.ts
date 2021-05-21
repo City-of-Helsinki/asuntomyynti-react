@@ -6,6 +6,7 @@ export type Apartment = {
   apartment_address: string;
   apartment_holding_type: string;
   apartment_number: string;
+  apartment_state_of_sale: string;
   apartment_structure: string;
   application_url: string;
   balcony_description: string;
