@@ -1,6 +1,8 @@
 {
   "en": {
     "SEARCH": {
+      "aria-label-list-results": "Search results as a list",
+      "aria-label-map-results": "Search results on a map",
       "all-apartments": "All apartments",
       "add-search-alert": "Add search alert",
       "apartment": "Apartment",
@@ -149,6 +151,8 @@
   },
   "fi": {
     "SEARCH": {
+      "aria-label-list-results": "Hakutulokset listana",
+      "aria-label-map-results": "Hakutulokset kartalla",
       "add-search-alert": "Lisää hakuvahti",
       "all-apartments": "Kaikki asunnot",
       "apartment": "Huoneisto",
