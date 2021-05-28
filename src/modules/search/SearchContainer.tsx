@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import SearchResults from './components/result/list/SearchResults';
@@ -21,6 +21,7 @@ const projectOwnershipType = process.env.REACT_APP_PROJECT_OWNERSHIP_TYPE || 'hi
 
 const SearchContainer = () => {
   const [showMap, setShowMap] = useState<boolean>(false);
+  const mapFocusRef = useRef<HTMLDivElement>(null);
   const { t, i18n } = useTranslation();
 
   // Get current language from url parameters
@@ -56,27 +57,38 @@ const SearchContainer = () => {
 
   const openMap = () => {
     setShowMap(true);
+
+    if (mapFocusRef.current) {
+      mapFocusRef.current.focus();
+    }
   };
 
   const closeMap = () => {
     setShowMap(false);
+
+    if (mapFocusRef.current) {
+      mapFocusRef.current.focus();
+    }
   };
 
   if (showUpcomingOnly === 'true') {
     return (
       <div>
+        <div ref={mapFocusRef} tabIndex={-1} />
         {showMap ? (
-          <MapContainer
-            config={config}
-            header={t('SEARCH:upcoming')}
-            searchResults={upcoming}
-            closeMap={closeMap}
-            currentLang={currentLang}
-            resultCountByProjects
-            hideApartments
-          />
+          <section aria-label={t('SEARCH:aria-label-map-results')}>
+            <MapContainer
+              config={config}
+              header={t('SEARCH:upcoming')}
+              searchResults={upcoming}
+              closeMap={closeMap}
+              currentLang={currentLang}
+              resultCountByProjects
+              hideApartments
+            />
+          </section>
         ) : (
-          <>
+          <section aria-label={t('SEARCH:aria-label-list-results')}>
             <SearchResults
               config={config}
               header={t('SEARCH:upcoming')}
@@ -87,7 +99,7 @@ const SearchContainer = () => {
               resultCountByProjects
               hideApartments
             />
-          </>
+          </section>
         )}
         {isSearchQueryError && <ErrorToast />}
       </div>
@@ -111,16 +123,19 @@ const SearchContainer = () => {
         onSubmit={updateQuery}
       />
       {config && !isError && <InfoBlock config={config} />}
+      <div ref={mapFocusRef} tabIndex={-1} />
       {showMap ? (
-        <MapContainer
-          config={config}
-          header={t('SEARCH:all-apartments')}
-          searchResults={filteredSearchResults}
-          closeMap={closeMap}
-          currentLang={currentLang}
-        />
+        <section aria-label={t('SEARCH:aria-label-map-results')}>
+          <MapContainer
+            config={config}
+            header={t('SEARCH:all-apartments')}
+            searchResults={filteredSearchResults}
+            closeMap={closeMap}
+            currentLang={currentLang}
+          />
+        </section>
       ) : (
-        <>
+        <section aria-label={t('SEARCH:aria-label-list-results')}>
           {hasFreeApartments ? (
             <>
               <SearchResults
@@ -152,7 +167,7 @@ const SearchContainer = () => {
             searchResults={preMarketing}
             currentLang={currentLang}
           />
-        </>
+        </section>
       )}
       {isSearchQueryError && <ErrorToast />}
     </div>

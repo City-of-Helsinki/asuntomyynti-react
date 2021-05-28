@@ -98,28 +98,32 @@ const ProjectCard = ({
         touchEnabled
         dragEnabled={false}
       >
-        <Slider aria-label="carousel">
+        <Slider
+          role=""
+          trayProps={{ role: 'listbox', 'aria-label': t('SEARCH:aria-project-carousel-title') }}
+          trayTag={'div'}
+        >
           {main_image_url.length >= 1 && (
-            <Slide index={0}>
-              <img src={fullURL(main_image_url)} alt={`${housing_company}, ${t('SEARCH:project-main-image')}`} />
+            <Slide index={0} tag={'div'}>
+              <img src={fullURL(main_image_url)} alt={`${housing_company}, ${t('SEARCH:aria-project-main-image')}`} />
             </Slide>
           )}
           {otherImageCount > 0 &&
             image_urls.map((item, idx) => (
-              <Slide index={idx + 1} key={idx}>
-                <img src={fullURL(item)} alt={`${housing_company}, ${t('SEARCH:project-image')} ${idx + 1}`} />
+              <Slide index={idx + 1} key={idx} tag={'div'}>
+                <img src={fullURL(item)} alt={`${housing_company}, ${t('SEARCH:aria-project-image')} ${idx + 2}`} />
               </Slide>
             ))}
         </Slider>
         {totalImageCount > 1 && (
           <>
             <div className={css.carouselPrevBtn}>
-              <ButtonBack>
+              <ButtonBack aria-label={t('SEARCH:aria-prev-slide')}>
                 <IconAngleLeft aria-hidden="true" />
               </ButtonBack>
             </div>
             <div className={css.carouselNextBtn}>
-              <ButtonNext>
+              <ButtonNext aria-label={t('SEARCH:aria-next-slide')}>
                 <IconAngleRight aria-hidden="true" />
               </ButtonNext>
             </div>
@@ -144,7 +148,11 @@ const ProjectCard = ({
               <div style={{ marginBottom: 8 }}>
                 <b>{district},</b> {street_address}
               </div>
-              <Label type={ownership_type}>{ownership_type}</Label>
+              <Label type={ownership_type}>
+                <>
+                  <span className="sr-only">{t('SEARCH:aria-ownership-type')}</span> {ownership_type}
+                </>
+              </Label>
             </div>
             <ProjectInfo project={project} userHasApplications={userHasApplications(user, id)} />
           </div>
@@ -155,6 +163,7 @@ const ProjectCard = ({
                 className={`${css.detailsButton} hds-button hds-button--secondary hds-button--small`}
               >
                 <span className="hds-button__label">{t('SEARCH:learn-more')}</span>
+                <span className="sr-only">, {housing_company}</span>
               </a>
             )}
             {showSearchAlert && (
@@ -173,6 +182,9 @@ const ProjectCard = ({
                 onClick={toggleList}
                 variant="supplementary"
                 iconRight={listOpen ? <IconArrowUp aria-hidden="true" /> : <IconArrowDown aria-hidden="true" />}
+                aria-expanded={listOpen ? 'true' : 'false'}
+                aria-controls={`apartments-for-${id}`}
+                id={`toggle-apartment-list-${id}`}
               >
                 {filteredApartments.length} {t('SEARCH:apartments-available')}
               </Button>
@@ -180,12 +192,17 @@ const ProjectCard = ({
           </div>
         </div>
       </div>
-      {!hideApartments && hasApartments && listOpen && (
-        <ApartmentTable
-          apartments={filteredApartments}
-          applications={getUserApplications(user, id)}
-          applicationStatus={getProjectApplicationStatus(apartment_application_status, id)}
-        />
+      {!hideApartments && hasApartments && (
+        <div id={`apartments-for-${id}`} role="region" aria-labelledby={`toggle-apartment-list-${id}`}>
+          {listOpen && (
+            <ApartmentTable
+              apartments={filteredApartments}
+              applications={getUserApplications(user, id)}
+              applicationStatus={getProjectApplicationStatus(apartment_application_status, id)}
+              housingCompany={housing_company}
+            />
+          )}
+        </div>
       )}
     </div>
   );

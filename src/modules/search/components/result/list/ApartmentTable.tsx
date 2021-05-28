@@ -13,9 +13,10 @@ type Props = {
   apartments: Apartment[];
   applications: number[] | undefined;
   applicationStatus: ApartmentApplicationStatusConfig | undefined;
+  housingCompany: string | undefined;
 };
 
-const ApartmentTable = ({ apartments, applications, applicationStatus }: Props) => {
+const ApartmentTable = ({ apartments, applications, applicationStatus, housingCompany }: Props) => {
   const { t } = useTranslation();
   const [page, setPage] = useState(1);
   const paginationScrollRef = useRef<HTMLDivElement>(null);
@@ -27,6 +28,10 @@ const ApartmentTable = ({ apartments, applications, applicationStatus }: Props) 
     setPage(1);
   };
 
+  const isCurrentlyActiveSort = (key: string) => {
+    return sortConfig ? sortConfig.key === key : false;
+  };
+
   const getSortDirectionFor = (name: string) => {
     if (!sortConfig) {
       return;
@@ -36,7 +41,7 @@ const ApartmentTable = ({ apartments, applications, applicationStatus }: Props) 
 
   const apartmentSortClasses = (key: string) => {
     return cx(css.sortButton, {
-      [css.activeSort]: sortConfig ? sortConfig.key === key : false,
+      [css.activeSort]: isCurrentlyActiveSort(key),
       [css.ascending]: getSortDirectionFor(key) === 'ascending',
       [css.descending]: getSortDirectionFor(key) === 'descending',
     });
@@ -47,15 +52,15 @@ const ApartmentTable = ({ apartments, applications, applicationStatus }: Props) 
       return;
     }
     if (getSortDirectionFor(key) === 'descending') {
-      return <IconSortDescending aria-hidden="true" className={css.sortArrow} />;
+      return <IconSortDescending aria-label={t('SEARCH:aria-descending')} className={css.sortArrow} />;
     }
-    return <IconSortAscending aria-hidden="true" className={css.sortArrow} />;
+    return <IconSortAscending aria-label={t('SEARCH:aria-ascending')} className={css.sortArrow} />;
   };
 
-  const showPagination = apartments.length > 10;
+  const showPagination = items.length > 10;
+  const noOfPages = Math.ceil(items.length / 10);
 
   const renderPaginationButtons = () => {
-    const noOfPages = Math.ceil(apartments.length / 10);
     const buttons = [];
 
     buttons.push(
@@ -75,12 +80,15 @@ const ApartmentTable = ({ apartments, applications, applicationStatus }: Props) 
       buttons.push(
         <button
           key={i}
-          className={css.paginationButton}
+          className={cx(css.paginationButton, i === page && css.active)}
           onClick={() => handlePageClick(i)}
-          style={i === page ? { border: '2px solid #1a1a1a' } : {}}
           value={i}
+          aria-current={i === page ? true : false}
         >
+          <span className="sr-only">{i === page && <>({t('SEARCH:aria-is-current-page')})</>}&nbsp;</span>
+          <span className="sr-only">{t('SEARCH:aria-page')}&nbsp;</span>
           {i}
+          <span className="sr-only">/{noOfPages}</span>
         </button>
       );
     }
@@ -103,7 +111,7 @@ const ApartmentTable = ({ apartments, applications, applicationStatus }: Props) 
 
   const paginationScroll = () => {
     if (paginationScrollRef.current) {
-      paginationScrollRef.current.scrollIntoView({ behavior: 'smooth' });
+      paginationScrollRef.current.focus();
     }
   };
 
@@ -115,21 +123,37 @@ const ApartmentTable = ({ apartments, applications, applicationStatus }: Props) 
   };
 
   return (
-    <div className={css.apartmentList} ref={paginationScrollRef}>
-      <div className={css.apartmentListTable}>
-        <div className={css.apartmentListHeaders}>
+    <div
+      className={css.apartmentList}
+      ref={paginationScrollRef}
+      tabIndex={-1}
+      aria-label={`${t('SEARCH:aria-apartment-list-for-project')}: ${housingCompany}, ${
+        showPagination && t('SEARCH:aria-page') + page + '/' + noOfPages
+      }`}
+    >
+      <ul className={css.apartmentListTable}>
+        <li className={css.apartmentListHeaders} aria-label={t('SEARCH:aria-sort-apartments')}>
           <div className={cx(css.headerCell, css.headerCellSortable, css.headerCellApartment)}>
             <button
               type="button"
               onClick={() => setSort('apartment_number', true)}
               className={apartmentSortClasses('apartment_number')}
             >
+              <span className="sr-only">
+                {isCurrentlyActiveSort('apartment_number')
+                  ? t('SEARCH:aria-is-active-sort')
+                  : t('SEARCH:aria-set-sort')}
+                ,&nbsp;
+              </span>
               <span>{t('SEARCH:apartment')}</span>
               {getSortIcon('apartment_number')}
             </button>
           </div>
           <div className={cx(css.headerCell, css.headerCellSortable, css.headerCellNarrow)}>
             <button type="button" onClick={() => setSort('floor', false)} className={apartmentSortClasses('floor')}>
+              <span className="sr-only">
+                {isCurrentlyActiveSort('floor') ? t('SEARCH:aria-is-active-sort') : t('SEARCH:aria-set-sort')},&nbsp;
+              </span>
               <span>{t('SEARCH:floor')}</span>
               {getSortIcon('floor')}
             </button>
@@ -140,6 +164,10 @@ const ApartmentTable = ({ apartments, applications, applicationStatus }: Props) 
               onClick={() => setSort('living_area', false)}
               className={apartmentSortClasses('living_area')}
             >
+              <span className="sr-only">
+                {isCurrentlyActiveSort('living_area') ? t('SEARCH:aria-is-active-sort') : t('SEARCH:aria-set-sort')}
+                ,&nbsp;
+              </span>
               <span>{t('SEARCH:area')}</span>
               {getSortIcon('living_area')}
             </button>
@@ -150,15 +178,21 @@ const ApartmentTable = ({ apartments, applications, applicationStatus }: Props) 
               onClick={() => setSort('debt_free_sales_price', false)}
               className={apartmentSortClasses('debt_free_sales_price')}
             >
+              <span className="sr-only">
+                {isCurrentlyActiveSort('debt_free_sales_price')
+                  ? t('SEARCH:aria-is-active-sort')
+                  : t('SEARCH:aria-set-sort')}
+                ,&nbsp;
+              </span>
               <span>{t('SEARCH:free-of-debt-price')}</span>
               {getSortIcon('debt_free_sales_price')}
             </button>
           </div>
-          <div className={cx(css.headerCell, css.headerCellNarrow, css.headerCellSpan)}>
+          <div className={cx(css.headerCell, css.headerCellNarrow, css.headerCellSpan)} aria-hidden="true">
             <span>{t('SEARCH:applications')}</span>
           </div>
           <div className={cx(css.headerCell, css.headerCellSpacer)} />
-        </div>
+        </li>
         {displayedApartments.map((x) => (
           <ApartmentRow
             key={x.uuid}
@@ -167,8 +201,12 @@ const ApartmentTable = ({ apartments, applications, applicationStatus }: Props) 
             applicationStatus={getApartmentApplicationStatus(applicationStatus, x.nid)}
           />
         ))}
-      </div>
-      {showPagination && <div className={css.pagination}>{renderPaginationButtons()}</div>}
+      </ul>
+      {showPagination && (
+        <div role="navigation" aria-label={t('SEARCH:aria-pagination')} className={css.pagination}>
+          {renderPaginationButtons()}
+        </div>
+      )}
     </div>
   );
 };

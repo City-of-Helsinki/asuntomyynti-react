@@ -1,11 +1,6 @@
 .container {
   background: white;
   max-width: 1200px;
-  margin-bottom: var(--spacing-l);
-
-  &:last-of-type {
-    margin-bottom: 0;
-  }
 }
 
 .content {

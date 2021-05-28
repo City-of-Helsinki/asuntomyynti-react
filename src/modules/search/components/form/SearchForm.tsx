@@ -38,7 +38,10 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, onSubmit }: Props) 
   }
 
   return (
-    <div className={`${styles.container} ${isOptionsOpen ? styles.expand : ''} ${isLoading ? styles.isLoading : ''}`}>
+    <section
+      className={`${styles.container} ${isOptionsOpen ? styles.expand : ''} ${isLoading ? styles.isLoading : ''}`}
+      aria-label={t('SEARCH:aria-filters-title')}
+    >
       <div className={styles.form}>
         <h1>{pageTitle}</h1>
         <div className={cx(styles.row, styles.hasBottomPadding)}>
@@ -131,7 +134,7 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, onSubmit }: Props) 
           )}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

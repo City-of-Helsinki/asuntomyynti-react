@@ -67,7 +67,10 @@ const MapApartmentRow = ({ apartment, userApplications, applicationStatus, isMob
     <>
       <div>
         <strong style={{ marginRight: 15 }}>{apartment_number}</strong>
-        <span>{apartment_structure}</span>
+        <span>
+          <span className="sr-only">{t('SEARCH:aria-apartment-structure')}: </span>
+          {apartment_structure}
+        </span>
       </div>
       <div>
         <span className="sr-only">{t('SEARCH:floor')}</span>
@@ -93,7 +96,10 @@ const MapApartmentRow = ({ apartment, userApplications, applicationStatus, isMob
       <span className={css.apartmentAvailabilityMobile}>
         <RenderAvailabilityInfo status={isApartmentFree ? 'FREE' : applicationStatus} dotOnly={true} />
       </span>
-      <span>{apartment_structure}</span>
+      <span>
+        <span className="sr-only">{t('SEARCH:aria-apartment-structure')}: </span>
+        {apartment_structure}
+      </span>
       {rowOpen ? (
         <IconAngleUp style={{ marginLeft: 'auto' }} size={'m'} aria-hidden="true" />
       ) : (
@@ -141,7 +147,12 @@ const MapApartmentRow = ({ apartment, userApplications, applicationStatus, isMob
               isDesktopSize ? 'secondary' : 'primary'
             } hds-button--small`}
           >
-            <span className="hds-button__label">{t('SEARCH:open-apartment-page')}</span>
+            <span className="hds-button__label">
+              {t('SEARCH:open-apartment-page')}
+              <span className="sr-only">
+                , {t('SEARCH:apartment')} {apartment_number}
+              </span>
+            </span>
           </a>
         </>
       ) : (
@@ -153,7 +164,12 @@ const MapApartmentRow = ({ apartment, userApplications, applicationStatus, isMob
                 isDesktopSize ? 'supplementary' : 'secondary'
               } hds-button--small`}
             >
-              <span className="hds-button__label">{t('SEARCH:learn-more-apartments')}</span>
+              <span className="hds-button__label">
+                {t('SEARCH:learn-more-apartments')}
+                <span className="sr-only">
+                  , {t('SEARCH:apartment')} {apartment_number}
+                </span>
+              </span>
             </a>
           )}
           {canCreateApplication && (
@@ -161,7 +177,12 @@ const MapApartmentRow = ({ apartment, userApplications, applicationStatus, isMob
               href={fullURL(application_url)}
               className={`${css.createApplicationButton} hds-button hds-button--primary hds-button--small`}
             >
-              <span className="hds-button__label">{t('SEARCH:apply')}</span>
+              <span className="hds-button__label">
+                {t('SEARCH:apply')}
+                <span className="sr-only">
+                  , {t('SEARCH:apartment')} {apartment_number}
+                </span>
+              </span>
             </a>
           )}
           {/* TODO: Form URL for free apartments
@@ -172,7 +193,12 @@ const MapApartmentRow = ({ apartment, userApplications, applicationStatus, isMob
                 isDesktopSize ? 'secondary' : 'primary'
               } hds-button--small`}
             >
-              <span className="hds-button__label">{t('SEARCH:contact-us')}</span>
+              <span className="hds-button__label">
+                {t('SEARCH:contact-us')}
+                <span className="sr-only">
+                  , {t('SEARCH:apartment')} {apartment_number}
+                </span>
+              </span>
             </a>
           )}
           */}
@@ -182,24 +208,32 @@ const MapApartmentRow = ({ apartment, userApplications, applicationStatus, isMob
   );
 
   return (
-    <div className={css.apartmentRow}>
+    <div className={css.apartmentRow} role="listitem">
       <div className={css.apartmentRowContent}>
         {isMobileSize ? (
           <>
-            <button className={css.apartmentDetailsMobile} onClick={toggleRow}>
+            <button
+              className={css.apartmentDetailsMobile}
+              onClick={toggleRow}
+              aria-controls={`map-apartment-row-details-${nid}`}
+              aria-expanded={rowOpen ? true : false}
+            >
               {apartmentRowBaseDetailsMobile}
             </button>
-            {rowOpen && (
-              <>
-                {apartMentRowOtherDetailsMobile}
-                {apartmentRowActions}
-              </>
-            )}
+            <div id={`map-apartment-row-details-${nid}`}>
+              {rowOpen && (
+                <>
+                  {apartMentRowOtherDetailsMobile}
+                  {apartmentRowActions}
+                </>
+              )}
+            </div>
           </>
         ) : (
           <>
             <div className={css.apartmentDetails}>{apartmentRowBaseDetails}</div>
             <div className={css.apartmentAvailability}>
+              <span className="sr-only">{t('SEARCH:applications')}, </span>
               <RenderAvailabilityInfo status={isApartmentFree ? 'FREE' : applicationStatus} dotOnly={false} />
             </div>
             {apartmentRowActions}

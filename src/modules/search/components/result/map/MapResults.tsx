@@ -35,6 +35,7 @@ const MapResults = ({
   const { t } = useTranslation();
   const [activeProject, setActiveProject] = useState<Project | undefined>(undefined);
   const popupRef = useRef<any>([]);
+  const activeProjectRef = useRef<HTMLDivElement>(null);
   popupRef.current = searchResults.map((element, i) => popupRef.current[i] ?? createRef());
 
   const closePopups = (ref: any) => {
@@ -46,6 +47,10 @@ const MapResults = ({
   const handleMarkerPopupClick = (targetProject: Project, ref: any) => {
     closePopups(ref);
     setActiveProject(targetProject);
+
+    if (activeProjectRef.current) {
+      activeProjectRef.current.focus();
+    }
   };
 
   const hideProject = () => {
@@ -81,7 +86,7 @@ const MapResults = ({
           alignItems: 'center',
         }}
       >
-        <IconLocation size={'m'} color={isActive ? 'white' : color} />
+        <IconLocation size={'m'} color={isActive ? 'white' : color} aria-label={t('SEARCH:aria-map-marker')} />
       </div>
     );
 
@@ -127,7 +132,7 @@ const MapResults = ({
   };
 
   return (
-    <div className={css.container}>
+    <section className={css.container} aria-label={header}>
       <header>
         <div className={css.titleContainer}>
           <h2>{header}</h2>
@@ -141,7 +146,7 @@ const MapResults = ({
         <div>
           <Button className={css.showButton} variant="secondary" onClick={closeMap}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <IconMenuHamburger style={{ marginRight: 20 }} /> {t('SEARCH:show-as-list')}
+              <IconMenuHamburger style={{ marginRight: 20 }} aria-hidden="true" /> {t('SEARCH:show-as-list')}
             </div>
           </Button>
         </div>
@@ -167,7 +172,12 @@ const MapResults = ({
             />
             {searchResults.map((x, i) =>
               x.coordinate_lat && x.coordinate_lon ? (
-                <Marker key={x.uuid} icon={getMarkerIcon(x)} position={[x.coordinate_lat, x.coordinate_lon]}>
+                <Marker
+                  key={x.uuid}
+                  icon={getMarkerIcon(x)}
+                  position={[x.coordinate_lat, x.coordinate_lon]}
+                  title={x.housing_company}
+                >
                   <Popup
                     ref={popupRef.current[i]}
                     closeButton={false}
@@ -180,25 +190,36 @@ const MapResults = ({
                       onCloseBtnClick={() => closePopups(popupRef.current[i])}
                       onApartmentsBtnClick={() => handleMarkerPopupClick(x, popupRef.current[i])}
                       hideApartments={hideApartments}
+                      activeProject={activeProject}
                     />
                   </Popup>
                 </Marker>
               ) : null
             )}
           </MapContainer>
-          {!hideApartments && activeProject && (
-            <div className={css.activeProjectWrapper}>
-              <button className={css.closeIcon} onClick={() => hideProject()} aria-label={t('SEARCH:hide-project')}>
-                <IconCross aria-hidden="true" />
-              </button>
-              <div className={css.activeProjectDetails}>
-                <MapProjectCard config={config} project={activeProject} currentLang={currentLang} />
+          <div ref={activeProjectRef} tabIndex={-1}>
+            {!hideApartments && activeProject && (
+              <div
+                className={css.activeProjectWrapper}
+                id={`map-project-popup-${activeProject.id}`}
+                aria-label={activeProject.housing_company}
+              >
+                <button
+                  className={css.closeIcon}
+                  onClick={() => hideProject()}
+                  aria-label={t('SEARCH:aria-hide-project-popup')}
+                >
+                  <IconCross aria-hidden="true" />
+                </button>
+                <div className={css.activeProjectDetails}>
+                  <MapProjectCard config={config} project={activeProject} currentLang={currentLang} />
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -22,6 +22,8 @@
   border-top: 1px solid var(--color-black-20);
   display: flex;
   flex-direction: column;
+  padding: 0;
+  list-style: none;
 
   @media (min-width: 1100px) {
     display: table;
@@ -143,9 +145,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 10px;
+  margin: 0 5px;
   font-weight: bold;
   font-size: var(--fontsize-body-s);
+
+  &.active {
+    border: 2px solid var(--color-black-90);
+  }
+
+  &:focus {
+    outline: 2px solid var(--color-coat-of-arms);
+  }
 }
 
 .paginationButton:hover:not([disabled]) {

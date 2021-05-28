@@ -64,7 +64,7 @@ const MapProjectCard = ({ config, project, currentLang }: Props) => {
     <div className={css.mapProjectDetailsContent}>
       {main_image_url && (
         <div className={css.mapProjectDetailImage}>
-          <img src={fullURL(main_image_url)} alt={`${housing_company}, ${t('SEARCH:project-main-image')}`} />
+          <img src={fullURL(main_image_url)} alt="" />
         </div>
       )}
       <div className={css.mapProjectDetailText}>
@@ -73,7 +73,11 @@ const MapProjectCard = ({ config, project, currentLang }: Props) => {
           <b>{district},</b> {street_address}
         </p>
         <div className={css.labelWrap}>
-          <Label type={ownership_type}>{ownership_type}</Label>
+          <Label type={ownership_type}>
+            <>
+              <span className="sr-only">{t('SEARCH:aria-ownership-type')}</span> {ownership_type}
+            </>
+          </Label>
         </div>
       </div>
     </div>
@@ -88,7 +92,12 @@ const MapProjectCard = ({ config, project, currentLang }: Props) => {
         <ProjectInfo project={project} userHasApplications={userHasApplications(user, id)} dense />
       </div>
       {hasApartments && (
-        <div className={css.mapApartments} style={{ top: topPosition }}>
+        <div
+          className={css.mapApartments}
+          style={{ top: topPosition }}
+          aria-label={`${t('SEARCH:aria-apartment-list-for-project')}: ${housing_company}`}
+          role="list"
+        >
           {filteredApartments.map((x) => (
             <MapApartmentRow
               key={x.uuid}
