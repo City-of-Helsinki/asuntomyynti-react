@@ -79,41 +79,52 @@ const ApartmentRow = ({ apartment, userApplications, applicationStatus }: Props)
 
   const apartmentRowBaseDetails = (
     <>
-      {isMobileSize && <span className="sr-only">{t('SEARCH:apartment')}</span>}
-      <strong>{apartment_number}</strong>
-      {isMobileSize && (
-        <span className={css.apartmentAvailabilityMobile}>
-          <RenderAvailabilityInfo status={isApartmentFree ? 'FREE' : applicationStatus} dotOnly={true} />
+      <strong>
+        <span className="sr-only">{t('SEARCH:apartment')}: </span>
+        {apartment_number}
+      </strong>
+      {isMobileSize ? (
+        <>
+          <span className={css.apartmentAvailabilityMobile}>
+            <RenderAvailabilityInfo status={isApartmentFree ? 'FREE' : applicationStatus} dotOnly={true} />
+          </span>
+          <span>
+            <span className="sr-only">{t('SEARCH:aria-apartment-structure')}: </span>
+            {apartment_structure}
+          </span>
+          {rowOpen ? (
+            <IconAngleUp style={{ marginLeft: 'auto' }} size={'m'} aria-hidden="true" />
+          ) : (
+            <IconAngleDown style={{ marginLeft: 'auto' }} size={'m'} aria-hidden="true" />
+          )}
+        </>
+      ) : (
+        <span>
+          <span className="sr-only">{t('SEARCH:aria-apartment-structure')}: </span>
+          {apartment_structure}
         </span>
       )}
-      <span>{apartment_structure}</span>
-      {isMobileSize &&
-        (rowOpen ? (
-          <IconAngleUp style={{ marginLeft: 'auto' }} size={'m'} aria-hidden="true" />
-        ) : (
-          <IconAngleDown style={{ marginLeft: 'auto' }} size={'m'} aria-hidden="true" />
-        ))}
     </>
   );
 
   const apartMentRowOtherDetails = (
     <>
       <div className={css.cell}>
-        <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>{t('SEARCH:floor')}</span>
+        <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>{t('SEARCH:floor')}&nbsp; </span>
         <span>
           {floor} {floor_max && ` / ${floor_max}`}
         </span>
       </div>
       <div className={css.cell}>
-        <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>{t('SEARCH:area')}</span>
+        <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>{t('SEARCH:area')}&nbsp; </span>
         <span>{formattedLivingArea}</span>
       </div>
       <div className={css.cell}>
-        <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>{t('SEARCH:free-of-debt-price')}</span>
+        <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>{t('SEARCH:free-of-debt-price')}&nbsp; </span>
         <span>{formattedDebtFreeSalesPrice}</span>
       </div>
       <div className={css.cell}>
-        <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>{t('SEARCH:applications')}</span>
+        <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>{t('SEARCH:applications')}&nbsp; </span>
         <span>
           <RenderAvailabilityInfo status={isApartmentFree ? 'FREE' : applicationStatus} />
         </span>
@@ -135,7 +146,12 @@ const ApartmentRow = ({ apartment, userApplications, applicationStatus }: Props)
               isDesktopSize ? 'secondary' : 'primary'
             } hds-button--small`}
           >
-            <span className="hds-button__label">{t('SEARCH:open-apartment-page')}</span>
+            <span className="hds-button__label">
+              {t('SEARCH:open-apartment-page')}
+              <span className="sr-only">
+                , {t('SEARCH:apartment')} {apartment_number}
+              </span>
+            </span>
           </a>
         </div>
       ) : (
@@ -147,7 +163,12 @@ const ApartmentRow = ({ apartment, userApplications, applicationStatus }: Props)
                 isDesktopSize ? 'supplementary' : 'secondary'
               } hds-button--small`}
             >
-              <span className="hds-button__label">{t('SEARCH:info')}</span>
+              <span className="hds-button__label">
+                {t('SEARCH:view')}
+                <span className="sr-only">
+                  , {t('SEARCH:apartment')} {apartment_number}
+                </span>
+              </span>
             </a>
           )}
           {canCreateApplication && (
@@ -157,7 +178,12 @@ const ApartmentRow = ({ apartment, userApplications, applicationStatus }: Props)
                 isDesktopSize ? 'secondary' : 'primary'
               } hds-button--small`}
             >
-              <span className="hds-button__label">{t('SEARCH:apply')}</span>
+              <span className="hds-button__label">
+                {t('SEARCH:apply')}
+                <span className="sr-only">
+                  , {t('SEARCH:apartment')} {apartment_number}
+                </span>
+              </span>
             </a>
           )}
           {/* TODO: Form URL for free apartments
@@ -168,7 +194,9 @@ const ApartmentRow = ({ apartment, userApplications, applicationStatus }: Props)
                 isDesktopSize ? 'secondary' : 'primary'
               } hds-button--small`}
             >
-              <span className="hds-button__label">{t('SEARCH:contact-us')}</span>
+              <span className="hds-button__label">
+                {t('SEARCH:contact-us')}<span className="sr-only">, {t('SEARCH:apartment')} {apartment_number}</span>
+              </span>
             </a>
           )}
           */}
@@ -178,13 +206,21 @@ const ApartmentRow = ({ apartment, userApplications, applicationStatus }: Props)
   );
 
   return (
-    <div className={css.apartmentTableRow}>
+    <li className={css.apartmentTableRow}>
       {isMobileSize ? (
         <>
-          <button className={css.apartmentCellMobile} onClick={toggleRow}>
+          <button
+            className={css.apartmentCellMobile}
+            onClick={toggleRow}
+            aria-controls={`apartment-row-details-${nid}`}
+            aria-expanded={rowOpen ? true : false}
+          >
             {apartmentRowBaseDetails}
           </button>
-          <div className={rowOpen ? cx(css.mobileCells, css.open) : css.mobileCells}>
+          <div
+            className={rowOpen ? cx(css.mobileCells, css.open) : css.mobileCells}
+            id={`apartment-row-details-${nid}`}
+          >
             {apartMentRowOtherDetails}
             {apartmentRowActions}
           </div>
@@ -196,7 +232,7 @@ const ApartmentRow = ({ apartment, userApplications, applicationStatus }: Props)
           {apartmentRowActions}
         </>
       )}
-    </div>
+    </li>
   );
 };
 

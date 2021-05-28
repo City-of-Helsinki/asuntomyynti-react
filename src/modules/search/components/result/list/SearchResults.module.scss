@@ -51,6 +51,9 @@
 .resultWrapper {
   padding: var(--spacing-2-xl);
   background: #f2f2f2;
+  display: block;
+  margin: 0;
+  list-style: none;
 
   @media (max-width: 1099px) {
     padding: var(--spacing-l);
@@ -58,5 +61,13 @@
 
   @media (max-width: 768px) {
     padding: var(--spacing-s);
+  }
+
+  > li {
+    margin-bottom: var(--spacing-l);
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
   }
 }

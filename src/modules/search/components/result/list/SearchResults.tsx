@@ -30,7 +30,7 @@ const SearchResults = ({
   const { t } = useTranslation();
 
   return (
-    <div className={css.container}>
+    <section className={css.container} aria-label={header}>
       <header>
         <div className={css.titleContainer}>
           <h2>{header}</h2>
@@ -45,25 +45,26 @@ const SearchResults = ({
           <div>
             <Button className={css.showButton} variant="secondary" onClick={openMap}>
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <IconMap style={{ marginRight: 20 }} /> {t('SEARCH:show-on-map')}
+                <IconMap style={{ marginRight: 20 }} aria-hidden="true" /> {t('SEARCH:show-on-map')}
               </div>
             </Button>
           </div>
         )}
       </header>
-      <div className={css.resultWrapper}>
+      <ul className={css.resultWrapper}>
         {searchResults.map((x) => (
-          <ProjectCard
-            config={config}
-            key={x.id}
-            project={x}
-            showSearchAlert={showSearchAlert}
-            currentLang={currentLang}
-            hideApartments={hideApartments}
-          />
+          <li key={x.id}>
+            <ProjectCard
+              config={config}
+              project={x}
+              showSearchAlert={showSearchAlert}
+              currentLang={currentLang}
+              hideApartments={hideApartments}
+            />
+          </li>
         ))}
-      </div>
-    </div>
+      </ul>
+    </section>
   );
 };
 
