@@ -16,6 +16,7 @@ const InfoBlock = ({ config }: Props) => {
   const [isHidden, setHidden] = React.useState(sessionStorage.getItem('infoBlockHidden') || 'false');
   const [isMinified, setIsMinified] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const infoBlockRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
   const isMobileSize = width <= BREAK_POINT;
 
@@ -50,6 +51,10 @@ const InfoBlock = ({ config }: Props) => {
 
   const hideInfoBlock = () => {
     setHidden('true');
+
+    if (infoBlockRef.current) {
+      infoBlockRef.current.focus();
+    }
   };
 
   const renderIcon = () => (
@@ -106,7 +111,7 @@ const InfoBlock = ({ config }: Props) => {
 
   if (isMobileSize) {
     return (
-      <div className={css.container}>
+      <div className={css.container} role="complementary">
         <div className={css.wrapper}>
           <div className={css.content}>{renderMobileContent()}</div>
         </div>
@@ -115,25 +120,31 @@ const InfoBlock = ({ config }: Props) => {
   }
 
   if (isHidden !== null && JSON.parse(isHidden)) {
-    return null;
+    return <div ref={infoBlockRef} tabIndex={-1} />;
   }
 
   return (
-    <>
+    <div role="complementary">
       {isMinified && (
-        <a href={hitas_instruction_url} className={css.minifiedContainer}>
-          {renderMinifiedContent()}
-        </a>
+        <div>
+          <a href={hitas_instruction_url} className={css.minifiedContainer}>
+            {renderMinifiedContent()}
+          </a>
+        </div>
       )}
       <div className={css.container} ref={scrollRef}>
         <div className={css.wrapper}>
           <div className={css.content}>{renderFullContent()}</div>
-          <button className={css.closeIcon} onClick={() => hideInfoBlock()} aria-label={t('SEARCH:hide-info-block')}>
+          <button
+            className={css.closeIcon}
+            onClick={() => hideInfoBlock()}
+            aria-label={t('SEARCH:aria-hide-info-block')}
+          >
             <IconCross aria-hidden="true" />
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
