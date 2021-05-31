@@ -13,6 +13,8 @@ import useModal from '../../../../../hooks/useModal';
 import SubscriptionForm from '../SubscriptionForm';
 import ProjectInfo from '../ProjectInfo';
 import Label from '../../../../../common/label/Label';
+import useSessionStorageState from '../../../../../hooks/useSessionStorageState';
+
 import css from './ProjectCard.module.scss';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 
@@ -33,8 +35,20 @@ const ProjectCard = ({
   currentLang,
   hideApartments = false,
 }: Props) => {
+  const {
+    apartments,
+    street_address,
+    district,
+    housing_company,
+    image_urls,
+    main_image_url,
+    id,
+    ownership_type,
+    url,
+  } = project;
+
   const { t } = useTranslation();
-  const [listOpen, setListOpen] = useState(false);
+  const [listOpen, setListOpen] = useSessionStorageState({ defaultValue: false, key: `apartmentRowOpen-${id}` });
   const { openModal, closeModal, Modal } = useModal();
   const [width, setWidth] = useState(window.innerWidth);
 
@@ -55,18 +69,6 @@ const ProjectCard = ({
   };
 
   const { apartment_application_status, user } = config || {};
-
-  const {
-    apartments,
-    street_address,
-    district,
-    housing_company,
-    image_urls,
-    main_image_url,
-    id,
-    ownership_type,
-    url,
-  } = project;
 
   const filteredApartments = getLanguageFilteredApartments(apartments, currentLang);
   const hasApartments = !!filteredApartments.length;
@@ -200,6 +202,7 @@ const ProjectCard = ({
               applications={getUserApplications(user, id)}
               applicationStatus={getProjectApplicationStatus(apartment_application_status, id)}
               housingCompany={housing_company}
+              projectID={id}
             />
           )}
         </div>

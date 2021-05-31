@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import SearchResults from './components/result/list/SearchResults';
@@ -12,6 +12,7 @@ import { groupProjectsByState } from './utils/groupProjectsByState';
 import useSearchParams from '../../hooks/useSearchParams';
 import { DataContext } from './DataContext';
 import { filterProjectsByOwnershipType } from './utils/filterProjectsByOwnershipType';
+import useSessionStorageState from '../../hooks/useSessionStorageState';
 
 // "boolean" as a string because env variables are also treated as strings
 const showUpcomingOnly = process.env.REACT_APP_SHOW_UPCOMING_ONLY || 'false';
@@ -20,7 +21,7 @@ const showUpcomingOnly = process.env.REACT_APP_SHOW_UPCOMING_ONLY || 'false';
 const projectOwnershipType = process.env.REACT_APP_PROJECT_OWNERSHIP_TYPE || 'hitas';
 
 const SearchContainer = () => {
-  const [showMap, setShowMap] = useState<boolean>(false);
+  const [showMap, setShowMap] = useSessionStorageState({ defaultValue: false, key: 'showMap' });
   const mapFocusRef = useRef<HTMLDivElement>(null);
   const { t, i18n } = useTranslation();
 

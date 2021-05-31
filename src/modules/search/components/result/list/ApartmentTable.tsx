@@ -1,12 +1,14 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import cx from 'classnames';
 import { IconAngleLeft, IconAngleRight, IconSortAscending, IconSortDescending } from 'hds-react';
 import { useTranslation } from 'react-i18next';
 
-import { Apartment, ApartmentApplicationStatusConfig } from '../../../../../types/common';
+import { Apartment, ApartmentApplicationStatusConfig, Project } from '../../../../../types/common';
 import { getApartmentApplicationStatus } from '../../../utils/getApplicationStatus';
 import SortApartments from '../../../utils/sortApartments';
 import ApartmentRow from './ApartmentRow';
+import useSessionStorageState from '../../../../../hooks/useSessionStorageState';
+
 import css from './ApartmentTable.module.scss';
 
 type Props = {
@@ -14,13 +16,14 @@ type Props = {
   applications: number[] | undefined;
   applicationStatus: ApartmentApplicationStatusConfig | undefined;
   housingCompany: string | undefined;
+  projectID: Project['id'];
 };
 
-const ApartmentTable = ({ apartments, applications, applicationStatus, housingCompany }: Props) => {
+const ApartmentTable = ({ apartments, applications, applicationStatus, housingCompany, projectID }: Props) => {
   const { t } = useTranslation();
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useSessionStorageState({ defaultValue: 1, key: `apartmentTablePaginationPage-${projectID}` });
   const paginationScrollRef = useRef<HTMLDivElement>(null);
-  const { items, requestSort, sortConfig } = SortApartments(apartments);
+  const { items, requestSort, sortConfig } = SortApartments(apartments, `project-${projectID}`);
   const displayedApartments = items.slice(page * 10 - 10, page * 10);
 
   const setSort = (key: string, alphaNumeric: boolean) => {

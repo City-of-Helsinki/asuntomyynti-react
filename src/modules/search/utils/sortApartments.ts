@@ -1,18 +1,16 @@
 import React from 'react';
+import useSessionStorageState from '../../../hooks/useSessionStorageState';
 
-type SortProps = {
-  key: string;
-  direction: string;
-  alphaNumeric: boolean;
-};
-
-const SortApartments = (items: any) => {
+const SortApartments = (items: any, sessionStorageID: string) => {
   const sortDefaultProps = {
     key: 'apartment_number',
     direction: 'ascending',
     alphaNumeric: true,
   };
-  const [sortConfig, setSortConfig] = React.useState<SortProps | null>(sortDefaultProps);
+  const [sortConfig, setSortConfig] = useSessionStorageState({
+    defaultValue: sortDefaultProps,
+    key: `sortConfig-${sessionStorageID}`,
+  });
 
   const sortedApartments = React.useMemo(() => {
     let sortableApartments = [...items];

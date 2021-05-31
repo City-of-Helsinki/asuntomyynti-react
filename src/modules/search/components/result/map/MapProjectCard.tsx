@@ -52,7 +52,7 @@ const MapProjectCard = ({ config, project, currentLang }: Props) => {
   const { apartment_application_status, user } = config || {};
 
   const { apartments, street_address, district, housing_company, main_image_url, id, ownership_type, url } = project;
-  const { items } = SortApartments(apartments);
+  const { items } = SortApartments(apartments, `mapProject-${id}`);
 
   const filteredApartments = getLanguageFilteredApartments(items, currentLang);
   const hasApartments = !!filteredApartments.length;

@@ -1,13 +1,16 @@
-import React, { createRef, useRef, useState } from 'react';
+import React, { createRef, useRef } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { useTranslation } from 'react-i18next';
 import { MapContainer, Marker, Popup, TileLayer, ZoomControl } from 'react-leaflet';
 import { Button, IconCross, IconLocation, IconMenuHamburger } from 'hds-react';
 import L from 'leaflet';
+
 import { DataConfig, Project, StateOfSale } from '../../../../../types/common';
 import { calculateApartmentCount } from '../../../utils/calculateApartmentCount';
 import MapProjectCard from './MapProjectCard';
 import MapProjectPopupCard from './MapProjectPopupCard';
+import useSessionStorageState from '../../../../../hooks/useSessionStorageState';
+
 import css from './MapResults.module.scss';
 
 type Props = {
@@ -33,7 +36,10 @@ const MapResults = ({
   hideApartments = false,
 }: Props) => {
   const { t } = useTranslation();
-  const [activeProject, setActiveProject] = useState<Project | undefined>(undefined);
+  const [activeProject, setActiveProject] = useSessionStorageState({
+    defaultValue: null,
+    key: 'MapResultsActiveProject',
+  });
   const popupRef = useRef<any>([]);
   const activeProjectRef = useRef<HTMLDivElement>(null);
   popupRef.current = searchResults.map((element, i) => popupRef.current[i] ?? createRef());
@@ -54,7 +60,7 @@ const MapResults = ({
   };
 
   const hideProject = () => {
-    setActiveProject(undefined);
+    setActiveProject(null);
   };
 
   const getMarkerColor = (state?: StateOfSale) => {

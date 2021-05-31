@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { IconAngleRight, IconCross } from 'hds-react';
 import { useTranslation } from 'react-i18next';
 import { DataConfig } from '../../types/common';
+import useSessionStorageState from '../../hooks/useSessionStorageState';
 
 import css from './InfoBlock.module.scss';
 
@@ -13,7 +14,7 @@ type Props = {
 
 const InfoBlock = ({ config }: Props) => {
   const [width, setWidth] = useState(window.innerWidth);
-  const [isHidden, setHidden] = React.useState(sessionStorage.getItem('infoBlockHidden') || 'false');
+  const [isHidden, setHidden] = useSessionStorageState({ defaultValue: false, key: 'infoBlockHidden' });
   const [isMinified, setIsMinified] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const infoBlockRef = useRef<HTMLDivElement>(null);
@@ -45,12 +46,8 @@ const InfoBlock = ({ config }: Props) => {
     };
   }, []);
 
-  useEffect(() => {
-    sessionStorage.setItem('infoBlockHidden', isHidden);
-  }, [isHidden]);
-
   const hideInfoBlock = () => {
-    setHidden('true');
+    setHidden(true);
 
     if (infoBlockRef.current) {
       infoBlockRef.current.focus();
@@ -119,7 +116,7 @@ const InfoBlock = ({ config }: Props) => {
     );
   }
 
-  if (isHidden !== null && JSON.parse(isHidden)) {
+  if (isHidden) {
     return <div ref={infoBlockRef} tabIndex={-1} />;
   }
 
