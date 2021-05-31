@@ -43,16 +43,16 @@ const SearchContainer = () => {
   // Fetch results with current search query
   const { data: searchResults, isError: isSearchQueryError } = useSearchResults(query);
 
-  // Set upcoming projects that inculde both HITAS and HASO apartments
-  const { UPCOMING: upcoming = [] } = groupProjectsByState(searchResults);
-
   // Filter HITAS/HASO apartments by selected ownership type
   const filteredSearchResults = filterProjectsByOwnershipType(searchResults, projectOwnershipType);
 
-  // Set READY, FOR_SALE and PRE_MARKETING apartments from HITAS/HASO filtered lists
-  const { READY: ready = [], FOR_SALE: forSale = [], PRE_MARKETING: preMarketing = [] } = groupProjectsByState(
-    filteredSearchResults
-  );
+  // Set READY, FOR_SALE, PRE_MARKETING and UPCOMING apartments from HITAS/HASO filtered lists
+  const {
+    READY: ready = [],
+    FOR_SALE: forSale = [],
+    PRE_MARKETING: preMarketing = [],
+    UPCOMING: upcoming = [],
+  } = groupProjectsByState(filteredSearchResults);
 
   const hasFreeApartments = !!ready.length;
 
