@@ -16,6 +16,9 @@ const useSearchResults = (query: { query?: QueryParams }) => {
           name: 'project_id',
         },
       },
+      auth: {
+        apikey: process.env.REACT_APP_ELASTIC_APIKEY,
+      },
     });
     return data?.hits?.hits.map(mapSearchResults) || [];
   };
