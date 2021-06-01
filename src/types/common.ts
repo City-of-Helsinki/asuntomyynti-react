@@ -325,6 +325,10 @@ export type DefaultFilterConfigs = {
 export type ParamList = Array<[FilterName, string] | [FilterName, string, string]>;
 
 export type StaticContent = {
+  haso_instruction_text: string;
+  haso_instruction_text_mobile: string;
+  haso_instruction_icon_text: string;
+  haso_instruction_url: string;
   hitas_instruction_text: string;
   hitas_instruction_text_mobile: string;
   hitas_instruction_icon_text: string;

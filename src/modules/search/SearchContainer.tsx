@@ -123,7 +123,7 @@ const SearchContainer = () => {
         pageTitle={pageTitle}
         onSubmit={updateQuery}
       />
-      {config && !isError && <InfoBlock config={config} />}
+      {config && !isError && <InfoBlock config={config} type={projectOwnershipType} />}
       <div ref={mapFocusRef} tabIndex={-1} />
       {showMap ? (
         <section aria-label={t('SEARCH:aria-label-map-results')}>

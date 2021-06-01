@@ -10,11 +10,12 @@ const BREAK_POINT = 768;
 
 type Props = {
   config: DataConfig | undefined;
+  type: string;
 };
 
-const InfoBlock = ({ config }: Props) => {
+const InfoBlock = ({ config, type }: Props) => {
   const [width, setWidth] = useState(window.innerWidth);
-  const [isHidden, setHidden] = useSessionStorageState({ defaultValue: false, key: 'infoBlockHidden' });
+  const [isHidden, setHidden] = useSessionStorageState({ defaultValue: false, key: `infoBlockHidden-${type}` });
   const [isMinified, setIsMinified] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const infoBlockRef = useRef<HTMLDivElement>(null);
@@ -22,8 +23,28 @@ const InfoBlock = ({ config }: Props) => {
   const isMobileSize = width <= BREAK_POINT;
 
   const { static_content } = config || {};
-  const { hitas_instruction_text, hitas_instruction_text_mobile, hitas_instruction_icon_text, hitas_instruction_url } =
-    static_content || {};
+  const {
+    haso_instruction_text,
+    haso_instruction_text_mobile,
+    haso_instruction_icon_text,
+    haso_instruction_url,
+    hitas_instruction_text,
+    hitas_instruction_text_mobile,
+    hitas_instruction_icon_text,
+    hitas_instruction_url,
+  } = static_content || {};
+
+  let icon_text = hitas_instruction_icon_text;
+  let instruction_text = hitas_instruction_text;
+  let instruction_text_mobile = hitas_instruction_text_mobile;
+  let url = hitas_instruction_url;
+
+  if (type.toLowerCase() === 'haso') {
+    icon_text = haso_instruction_icon_text;
+    instruction_text = haso_instruction_text;
+    instruction_text_mobile = haso_instruction_text_mobile;
+    url = haso_instruction_url;
+  }
 
   const handleResize = () => {
     setWidth(window.innerWidth);
@@ -72,7 +93,7 @@ const InfoBlock = ({ config }: Props) => {
   );
 
   const renderUrl = () => (
-    <a href={hitas_instruction_url}>
+    <a href={url}>
       <span>{t('SEARCH:read-more')}</span> <IconAngleRight aria-hidden="true" />
     </a>
   );
@@ -81,7 +102,7 @@ const InfoBlock = ({ config }: Props) => {
     <>
       {renderIcon()}
       <div className={css.message}>
-        {hitas_instruction_text} {renderUrl()}
+        {instruction_text} {renderUrl()}
       </div>
     </>
   );
@@ -89,7 +110,7 @@ const InfoBlock = ({ config }: Props) => {
   const renderMinifiedContent = () => (
     <>
       {renderIcon()}
-      <div>{hitas_instruction_icon_text}</div>
+      <div>{icon_text}</div>
     </>
   );
 
@@ -97,7 +118,7 @@ const InfoBlock = ({ config }: Props) => {
     <>
       {renderIcon()}
       <div className={css.message}>
-        {hitas_instruction_text_mobile} {renderUrl()}
+        {instruction_text_mobile} {renderUrl()}
       </div>
     </>
   );
@@ -124,7 +145,7 @@ const InfoBlock = ({ config }: Props) => {
     <div role="complementary">
       {isMinified && (
         <div>
-          <a href={hitas_instruction_url} className={css.minifiedContainer}>
+          <a href={url} className={css.minifiedContainer}>
             {renderMinifiedContent()}
           </a>
         </div>
