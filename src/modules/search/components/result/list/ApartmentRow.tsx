@@ -6,6 +6,7 @@ import { IconAngleDown, IconAngleUp, IconPenLine } from 'hds-react';
 import { Apartment } from '../../../../../types/common';
 import { fullURL } from '../../../utils/fullURL';
 import RenderAvailabilityInfo from '../ApplicationStatus';
+import useSessionStorageState from '../../../../../hooks/useSessionStorageState';
 
 import css from './ApartmentRow.module.scss';
 
@@ -18,9 +19,24 @@ type Props = {
 };
 
 const ApartmentRow = ({ apartment, userApplications, applicationStatus }: Props) => {
+  const {
+    apartment_number,
+    apartment_state_of_sale,
+    apartment_structure,
+    application_url,
+    floor,
+    floor_max,
+    nid,
+    project_application_start_time,
+    project_application_end_time,
+    living_area,
+    debt_free_sales_price,
+    url,
+  } = apartment;
+
   const { t } = useTranslation();
   const [width, setWidth] = useState(window.innerWidth);
-  const [rowOpen, setRowOpen] = useState(false);
+  const [rowOpen, setRowOpen] = useSessionStorageState({ defaultValue: false, key: `apartmentRowOpen-${nid}` });
 
   const isDesktopSize = width > BREAK_POINT;
   const isMobileSize = width <= BREAK_POINT;
@@ -40,21 +56,6 @@ const ApartmentRow = ({ apartment, userApplications, applicationStatus }: Props)
 
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  const {
-    apartment_number,
-    apartment_state_of_sale,
-    apartment_structure,
-    application_url,
-    floor,
-    floor_max,
-    nid,
-    project_application_start_time,
-    project_application_end_time,
-    living_area,
-    debt_free_sales_price,
-    url,
-  } = apartment;
 
   const hasApplication = () => {
     if (!userApplications) {

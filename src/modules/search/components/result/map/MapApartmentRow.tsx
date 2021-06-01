@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconAngleDown, IconAngleUp, IconPenLine } from 'hds-react';
 
 import { Apartment } from '../../../../../types/common';
 import { fullURL } from '../../../utils/fullURL';
 import RenderAvailabilityInfo from '../ApplicationStatus';
+import useSessionStorageState from '../../../../../hooks/useSessionStorageState';
 
 import css from './MapApartmentRow.module.scss';
 
@@ -16,17 +17,6 @@ type Props = {
 };
 
 const MapApartmentRow = ({ apartment, userApplications, applicationStatus, isMobileSize }: Props) => {
-  const { t } = useTranslation();
-  const [rowOpen, setRowOpen] = useState(false);
-
-  const isDesktopSize = !isMobileSize;
-
-  const toggleRow = () => {
-    if (isMobileSize) {
-      setRowOpen(!rowOpen);
-    }
-  };
-
   const {
     apartment_number,
     apartment_state_of_sale,
@@ -41,6 +31,17 @@ const MapApartmentRow = ({ apartment, userApplications, applicationStatus, isMob
     debt_free_sales_price,
     url,
   } = apartment;
+
+  const { t } = useTranslation();
+  const [rowOpen, setRowOpen] = useSessionStorageState({ defaultValue: false, key: `MapApartmentRowOpen-${nid}` });
+
+  const isDesktopSize = !isMobileSize;
+
+  const toggleRow = () => {
+    if (isMobileSize) {
+      setRowOpen(!rowOpen);
+    }
+  };
 
   const hasApplication = () => {
     if (!userApplications) {

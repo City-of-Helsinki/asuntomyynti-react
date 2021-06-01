@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './SearchForm.module.scss';
 import { Button, IconSearch, IconMinus, IconPlus, IconCross } from 'hds-react';
 import cx from 'classnames';
@@ -9,6 +9,7 @@ import { DataConfig, FilterName, FilterConfigs } from '../../../../types/common'
 import TagList from './tag/TagList';
 import { useTranslation } from 'react-i18next';
 import useFilters from '../../../../hooks/useFilters';
+import useSessionStorageState from '../../../../hooks/useSessionStorageState';
 
 type Props = {
   config: DataConfig | undefined;
@@ -20,8 +21,11 @@ type Props = {
 
 const SearchForm = ({ config, isLoading, isError, pageTitle, onSubmit }: Props) => {
   const { clearAllFilters, hasFilters } = useFilters();
-  const [isOptionsOpen, setOptionsOpen] = useState(false);
-  const [isOptionsVisible, setOptionsVisible] = useState(false);
+  const [isOptionsOpen, setOptionsOpen] = useSessionStorageState({ defaultValue: false, key: 'searchFormOptionsOpen' });
+  const [isOptionsVisible, setOptionsVisible] = useSessionStorageState({
+    defaultValue: false,
+    key: 'searchFormOptionsVisible',
+  });
   const { t } = useTranslation();
   const { filters } = config || {};
   const { project_district, room_count, living_area, debt_free_sales_price, ...additionalFilters } = filters || {};
@@ -70,6 +74,7 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, onSubmit }: Props) 
           </div>
         </div>
         <Collapsible
+          id={'optionsCollapse'}
           expand={isOptionsOpen}
           onCollapse={() => {
             setOptionsVisible(false);
