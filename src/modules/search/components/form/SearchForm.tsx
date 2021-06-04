@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './SearchForm.module.scss';
-import { Button, IconSearch, IconMinus, IconPlus, IconCross } from 'hds-react';
+import { Button, IconSearch, IconMinus, IconPlus, IconCross, Notification } from 'hds-react';
 import cx from 'classnames';
 import QueryFilter from './filter/QueryFilter';
 import Dropdown from './filter/Dropdown';
@@ -45,9 +45,17 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipTyp
     </Button>
   );
 
-  // TODO: Add a notification to indicate something went wrong
   if (!isLoading && isError) {
-    return null;
+    return (
+      <section className={styles.container} aria-label={t('SEARCH:aria-filters-title')}>
+        <div className={styles.form}>
+          <h1>{pageTitle}</h1>
+          <Notification label={t('SEARCH:error')} type="error">
+            {t('SEARCH:filters-error-text')}
+          </Notification>
+        </div>
+      </section>
+    );
   }
 
   return (
