@@ -122,6 +122,7 @@ const SearchContainer = () => {
         isError={isError}
         pageTitle={pageTitle}
         onSubmit={updateQuery}
+        projectOwnershipType={projectOwnershipType}
       />
       {config && !isError && <InfoBlock config={config} type={projectOwnershipType} />}
       <div ref={mapFocusRef} tabIndex={-1} />

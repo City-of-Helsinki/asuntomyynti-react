@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './SearchForm.module.scss';
-import { Button, IconSearch, IconMinus, IconPlus, IconCross } from 'hds-react';
+import { Button, IconSearch, IconMinus, IconPlus, IconCross, Notification } from 'hds-react';
 import cx from 'classnames';
 import QueryFilter from './filter/QueryFilter';
 import Dropdown from './filter/Dropdown';
@@ -16,10 +16,11 @@ type Props = {
   isLoading: boolean | undefined;
   isError: boolean | undefined;
   pageTitle: string;
+  projectOwnershipType: string;
   onSubmit: () => void;
 };
 
-const SearchForm = ({ config, isLoading, isError, pageTitle, onSubmit }: Props) => {
+const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipType, onSubmit }: Props) => {
   const { clearAllFilters, hasFilters } = useFilters();
   const [isOptionsOpen, setOptionsOpen] = useSessionStorageState({ defaultValue: false, key: 'searchFormOptionsOpen' });
   const [isOptionsVisible, setOptionsVisible] = useSessionStorageState({
@@ -28,7 +29,15 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, onSubmit }: Props) 
   });
   const { t } = useTranslation();
   const { filters } = config || {};
-  const { project_district, room_count, living_area, debt_free_sales_price, ...additionalFilters } = filters || {};
+  const {
+    project_district,
+    project_district_hitas,
+    project_district_haso,
+    room_count,
+    living_area,
+    debt_free_sales_price,
+    ...additionalFilters
+  } = filters || {};
 
   const searchButton = () => (
     <Button className={styles.submitButton} onClick={() => onSubmit()} iconLeft={<IconSearch aria-hidden="true" />}>
@@ -36,9 +45,17 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, onSubmit }: Props) 
     </Button>
   );
 
-  // TODO: Add a notification to indicate something went wrong
   if (!isLoading && isError) {
-    return null;
+    return (
+      <section className={styles.container} aria-label={t('SEARCH:aria-filters-title')}>
+        <div className={styles.form}>
+          <h1>{pageTitle}</h1>
+          <Notification label={t('SEARCH:error')} type="error">
+            {t('SEARCH:filters-error-text')}
+          </Notification>
+        </div>
+      </section>
+    );
   }
 
   return (
@@ -51,7 +68,9 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, onSubmit }: Props) 
         <div className={cx(styles.row, styles.hasBottomPadding)}>
           <div className={cx(styles.column, styles.columnWide, styles.dropdownColumn, styles.canShimmer)}>
             <div className={styles.dropdownWrapper}>
-              {project_district && <Dropdown name={FilterName.ProjectDistrict} {...project_district} />}
+              {projectOwnershipType.toLowerCase() === 'haso'
+                ? project_district_haso && <Dropdown name={FilterName.ProjectDistrict} {...project_district_haso} />
+                : project_district_hitas && <Dropdown name={FilterName.ProjectDistrict} {...project_district_hitas} />}
             </div>
           </div>
           <div className={cx(styles.column, styles.columnWide, styles.dropdownColumn, styles.canShimmer)}>

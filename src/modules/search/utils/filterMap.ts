@@ -22,6 +22,32 @@ const filterMap: FilterMap = {
     },
   }),
 
+  project_district_haso: (config) => ({
+    ...config,
+    type: FilterType.MultiSelect,
+    icon: 'location',
+    getLabel: (values: string[]) => {
+      const [firstItem] = values;
+      if (!firstItem) {
+        return '';
+      }
+      return firstItem + (values.length > 1 ? ` +${values.length - 1}` : '');
+    },
+  }),
+
+  project_district_hitas: (config) => ({
+    ...config,
+    type: FilterType.MultiSelect,
+    icon: 'location',
+    getLabel: (values: string[]) => {
+      const [firstItem] = values;
+      if (!firstItem) {
+        return '';
+      }
+      return firstItem + (values.length > 1 ? ` +${values.length - 1}` : '');
+    },
+  }),
+
   room_count: ({ suffix = '', items, ...rest }) => ({
     ...rest,
     items: items.map((item) => `${item}${suffix}`),
