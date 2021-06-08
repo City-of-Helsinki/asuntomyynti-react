@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import cx from 'classnames';
 import { IconAngleLeft, IconAngleRight, IconSortAscending, IconSortDescending } from 'hds-react';
 import { useTranslation } from 'react-i18next';
@@ -22,9 +22,20 @@ type Props = {
 const ApartmentTable = ({ apartments, applications, applicationStatus, housingCompany, projectID }: Props) => {
   const { t } = useTranslation();
   const [page, setPage] = useSessionStorageState({ defaultValue: 1, key: `apartmentTablePaginationPage-${projectID}` });
+  const [staleApartments, setStaleapartments] = useState(apartments);
   const paginationScrollRef = useRef<HTMLDivElement>(null);
   const { items, requestSort, sortConfig } = SortApartments(apartments, `project-${projectID}`);
   const displayedApartments = items.slice(page * 10 - 10, page * 10);
+  const showPagination = items.length > 10;
+  const noOfPages = Math.ceil(items.length / 10);
+
+  useEffect(() => {
+    // when apartments change, always jump to page 1
+    if (staleApartments === apartments) {
+      setPage(1);
+      setStaleapartments(apartments);
+    }
+  }, [setPage, staleApartments, apartments]);
 
   const setSort = (key: string, alphaNumeric: boolean) => {
     requestSort(key, alphaNumeric);
@@ -59,9 +70,6 @@ const ApartmentTable = ({ apartments, applications, applicationStatus, housingCo
     }
     return <IconSortAscending aria-label={t('SEARCH:aria-ascending')} className={css.sortArrow} />;
   };
-
-  const showPagination = items.length > 10;
-  const noOfPages = Math.ceil(items.length / 10);
 
   const renderPaginationButtons = () => {
     const buttons = [];
@@ -133,6 +141,7 @@ const ApartmentTable = ({ apartments, applications, applicationStatus, housingCo
       aria-label={`${t('SEARCH:aria-apartment-list-for-project')}: ${housingCompany}, ${
         showPagination && t('SEARCH:aria-page') + page + '/' + noOfPages
       }`}
+      role="group"
     >
       <ul className={css.apartmentListTable}>
         <li className={css.apartmentListHeaders} aria-label={t('SEARCH:aria-sort-apartments')}>
@@ -206,7 +215,11 @@ const ApartmentTable = ({ apartments, applications, applicationStatus, housingCo
         ))}
       </ul>
       {showPagination && (
-        <div role="navigation" aria-label={t('SEARCH:aria-pagination')} className={css.pagination}>
+        <div
+          role="navigation"
+          aria-label={`${t('SEARCH:aria-pagination')}, ${housingCompany}`}
+          className={css.pagination}
+        >
           {renderPaginationButtons()}
         </div>
       )}
