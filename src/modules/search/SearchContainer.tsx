@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import SearchResults from './components/result/list/SearchResults';
@@ -22,6 +22,8 @@ const projectOwnershipType = process.env.REACT_APP_PROJECT_OWNERSHIP_TYPE || 'hi
 
 const SearchContainer = () => {
   const [showMap, setShowMap] = useSessionStorageState({ defaultValue: false, key: 'showMap' });
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [announce, setAnnounce] = useState(false);
   const mapFocusRef = useRef<HTMLDivElement>(null);
   const { t, i18n } = useTranslation();
 
@@ -56,21 +58,37 @@ const SearchContainer = () => {
 
   const hasFreeApartments = !!ready.length;
 
+  // Define page h1 based on project_ownership_type
+  const pageTitle = projectOwnershipType.toLowerCase() === 'haso' ? t('SEARCH:haso-title') : t('SEARCH:hitas-title');
+
   const openMap = () => {
     setShowMap(true);
-
-    if (mapFocusRef.current) {
-      mapFocusRef.current.focus();
-    }
+    mapFocusRef.current?.focus();
   };
 
   const closeMap = () => {
     setShowMap(false);
-
-    if (mapFocusRef.current) {
-      mapFocusRef.current.focus();
-    }
+    mapFocusRef.current?.focus();
   };
+
+  const submitQuery = () => {
+    updateQuery();
+    // When the first time submit button is clicked, set this to true
+    setHasSubmitted(true);
+    // Clear old screen reader announcement messages
+    setAnnounce(false);
+  };
+
+  useEffect(() => {
+    if (hasSubmitted) {
+      // Show screen reader announcement for search results
+      setAnnounce(true);
+      setTimeout(() => {
+        // Clear screen reader announcements after 5 seconds
+        setAnnounce(false);
+      }, 5000);
+    }
+  }, [hasSubmitted, query]);
 
   if (showUpcomingOnly === 'true') {
     return (
@@ -107,22 +125,27 @@ const SearchContainer = () => {
     );
   }
 
-  // Define page h1 based on project_ownership_type
-  let pageTitle = t('SEARCH:hitas-title');
-
-  if (projectOwnershipType.toLowerCase() === 'haso') {
-    pageTitle = t('SEARCH:haso-title');
-  }
-
   return (
     <div>
+      {announce && (
+        <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+          {filteredSearchResults.length === 1
+            ? `${t('SEARCH:aria-search-complete')}, ${filteredSearchResults.length} ${t(
+                'SEARCH:aria-projects-result-count'
+              )}`
+            : `${t('SEARCH:aria-search-complete')}, ${filteredSearchResults.length} ${t(
+                'SEARCH:aria-projects-result-count-plural'
+              )}`}
+        </div>
+      )}
       <SearchForm
         config={config}
         isLoading={isLoading}
         isError={isError}
         pageTitle={pageTitle}
-        onSubmit={updateQuery}
+        onSubmit={submitQuery}
         projectOwnershipType={projectOwnershipType}
+        focusRef={mapFocusRef}
       />
       {config && !isError && <InfoBlock config={config} type={projectOwnershipType} />}
       <div ref={mapFocusRef} tabIndex={-1} />
