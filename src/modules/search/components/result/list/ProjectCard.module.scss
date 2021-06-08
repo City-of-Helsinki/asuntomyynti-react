@@ -63,7 +63,7 @@
 .info {
   display: flex;
   flex: 2;
-  padding: var(--spacing-m);
+  padding: var(--spacing-l) var(--spacing-l) var(--spacing-l) var(--spacing-m);
 
   @media (max-width: 991px) {
     padding: var(--spacing-m) var(--spacing-s);

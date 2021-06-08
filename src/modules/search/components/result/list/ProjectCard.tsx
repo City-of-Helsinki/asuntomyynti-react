@@ -195,7 +195,7 @@ const ProjectCard = ({
         </div>
       </div>
       {!hideApartments && hasApartments && (
-        <div id={`apartments-for-${id}`} role="region" aria-labelledby={`toggle-apartment-list-${id}`}>
+        <div id={`apartments-for-${id}`}>
           {listOpen && (
             <ApartmentTable
               apartments={filteredApartments}
