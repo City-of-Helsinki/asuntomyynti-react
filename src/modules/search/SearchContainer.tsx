@@ -168,6 +168,7 @@ const SearchContainer = () => {
             header={t('SEARCH:pre-marketing')}
             searchResults={preMarketing}
             currentLang={currentLang}
+            showSearchAlert
           />
         </section>
       )}
