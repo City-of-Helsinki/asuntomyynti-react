@@ -58,6 +58,7 @@ const Dropdown = ({ name, icon, ...rest }: Props) => {
       <div className={styles.footer}>
         <button onClick={handleClearSelection} disabled={!hasSelections} className={styles.clearButton}>
           {t('SEARCH:clear-selection')}
+          <span className="sr-only">, {t(`ES:${name}`)}</span>
         </button>
       </div>
     </div>
