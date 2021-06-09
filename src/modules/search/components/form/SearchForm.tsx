@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { RefObject, useRef } from 'react';
 import styles from './SearchForm.module.scss';
 import { Button, IconSearch, IconMinus, IconPlus, IconCross, Notification } from 'hds-react';
 import cx from 'classnames';
@@ -17,16 +17,18 @@ type Props = {
   isError: boolean | undefined;
   pageTitle: string;
   projectOwnershipType: string;
+  focusRef: RefObject<HTMLDivElement>;
   onSubmit: () => void;
 };
 
-const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipType, onSubmit }: Props) => {
+const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipType, focusRef, onSubmit }: Props) => {
   const { clearAllFilters, hasFilters } = useFilters();
   const [isOptionsOpen, setOptionsOpen] = useSessionStorageState({ defaultValue: false, key: 'searchFormOptionsOpen' });
   const [isOptionsVisible, setOptionsVisible] = useSessionStorageState({
     defaultValue: false,
     key: 'searchFormOptionsVisible',
   });
+  const collapsedFiltersRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
   const { filters } = config || {};
   const {
@@ -60,7 +62,7 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipTyp
 
   return (
     <section
-      className={`${styles.container} ${isOptionsOpen ? styles.expand : ''} ${isLoading ? styles.isLoading : ''}`}
+      className={`${styles.container} ${isLoading ? styles.isLoading : ''}`}
       aria-label={t('SEARCH:aria-filters-title')}
     >
       <div className={styles.form}>
@@ -91,6 +93,11 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipTyp
           <div className={cx(styles.column, styles.columnNarrow, styles.canShimmer, styles.searchButtonDesktop)}>
             {!isLoading && searchButton()}
           </div>
+          <div className="sr-only">
+            <button type="button" onClick={() => focusRef.current?.focus()}>
+              {t('SEARCH:aria-jump-to-results')}
+            </button>
+          </div>
         </div>
         <Collapsible
           id={'optionsCollapse'}
@@ -102,7 +109,12 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipTyp
           <div className={styles.row}>
             <div className={styles.divider} />
           </div>
-          <div className={cx(styles.row, styles.hasTopPadding, styles.hasBottomPadding)}>
+          <div
+            className={cx(styles.row, styles.hasTopPadding, styles.hasBottomPadding)}
+            ref={collapsedFiltersRef}
+            tabIndex={-1}
+            role="region"
+          >
             {isOptionsVisible &&
               (Object.keys(additionalFilters) as FilterName[]).map<JSX.Element>((name, index) => (
                 <div className={styles.column} key={index}>
@@ -113,9 +125,13 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipTyp
               ))}
           </div>
         </Collapsible>
-        <div className={styles.row}>
-          <div className={styles.column}>{filters && <TagList filters={filters} />}</div>
-        </div>
+        {filters && (
+          <div className={styles.row}>
+            <div className={styles.column} role="region" aria-label={t('SEARCH:aria-active-filters')}>
+              <TagList filters={filters} />
+            </div>
+          </div>
+        )}
         <div className={styles.searchButtonMobile}>{!isLoading && searchButton()}</div>
         <div className={styles.row}>
           <div>
@@ -132,8 +148,11 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipTyp
                 } else {
                   setOptionsOpen(true);
                   setOptionsVisible(true);
+                  collapsedFiltersRef.current?.focus();
                 }
               }}
+              aria-controls="optionsCollapse"
+              aria-expanded={isOptionsOpen ? true : false}
             >
               {isOptionsOpen ? (
                 <>
@@ -157,6 +176,11 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipTyp
             </div>
           )}
         </div>
+      </div>
+      <div className="sr-only">
+        <button type="button" onClick={() => onSubmit()}>
+          {t('SEARCH:search')}
+        </button>
       </div>
     </section>
   );

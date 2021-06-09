@@ -58,7 +58,7 @@ const Collapsible: React.FunctionComponent<Props> = ({ id, expand, children, onC
   }, [expand, children, updateHeight]);
 
   return (
-    <div {...rest}>
+    <div {...rest} id={id}>
       <div className={styles.collapsible} style={{ height }}>
         <div ref={ref}>{children}</div>
       </div>
