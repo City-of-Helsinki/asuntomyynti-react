@@ -42,8 +42,9 @@ const SearchContainer = () => {
   // Query, as in elasticsearch query params
   const { query, updateQuery } = useElasticsearchQuery();
 
+  const queryHeaders = { token: config?.token };
   // Fetch results with current search query
-  const { data: searchResults, isError: isSearchQueryError } = useSearchResults(query);
+  const { data: searchResults, isError: isSearchQueryError } = useSearchResults(query, queryHeaders);
 
   // Filter HITAS/HASO apartments by selected ownership type
   const filteredSearchResults = filterProjectsByOwnershipType(searchResults, projectOwnershipType);

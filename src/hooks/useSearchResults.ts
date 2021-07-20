@@ -5,18 +5,26 @@ import mapSearchResults from '../modules/search/utils/mapSearchResults';
 
 const searchUrl = process.env.REACT_APP_ELASTIC_BASE_URL || 'http://dev.asuntomyynti-elastic.druidfi.wod.by/_search';
 
-const useSearchResults = (query: { query?: QueryParams }) => {
+const useSearchResults = (query: { query?: QueryParams }, queryHeaders: { token?: string }) => {
   const fetchProjects = async () => {
-    const { data } = await axios.post(searchUrl, {
-      ...query,
-      collapse: {
-        field: 'project_id',
-        inner_hits: {
-          size: 666,
-          name: 'project_id',
+    const { data } = await axios.post(
+      searchUrl,
+      {
+        ...query,
+        collapse: {
+          field: 'project_id',
+          inner_hits: {
+            size: 666,
+            name: 'project_id',
+          },
         },
       },
-    });
+      {
+        headers: {
+          'X-CSRF-TOKEN': queryHeaders.token,
+        },
+      }
+    );
     return data?.hits?.hits.map(mapSearchResults) || [];
   };
 

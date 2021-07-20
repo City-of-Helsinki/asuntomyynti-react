@@ -357,4 +357,5 @@ export type DataConfig = {
   static_content: StaticContent;
   user: UserConfig;
   apartment_application_status: ProjectApplicationStatusConfig | undefined;
+  token: string;
 };
