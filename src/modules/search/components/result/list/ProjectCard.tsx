@@ -105,7 +105,7 @@ const ProjectCard = ({
           trayProps={{ role: 'listbox', 'aria-label': t('SEARCH:aria-project-carousel-title') }}
           trayTag={'div'}
         >
-          {main_image_url.length >= 1 && (
+          {main_image_url?.length >= 1 && (
             <Slide index={0} tag={'div'}>
               <img src={fullURL(main_image_url)} alt={`${housing_company}, ${t('SEARCH:aria-project-main-image')}`} />
             </Slide>
