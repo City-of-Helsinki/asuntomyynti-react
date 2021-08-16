@@ -15,13 +15,7 @@ type Props = {
 
 const ProjectInfo = ({ project, userHasApplications, dense = false }: Props) => {
   const { t } = useTranslation();
-  const {
-    estimated_completion,
-    estimated_completion_date,
-    application_end_time,
-    application_start_time,
-    possession_transfer_date,
-  } = project;
+  const { estimated_completion, application_end_time, application_start_time, possession_transfer_date } = project;
 
   const renderApplicationPeriodText = () => {
     const applicationPeriodHasStarted = new Date().getTime() > new Date(application_start_time).getTime();
@@ -46,12 +40,10 @@ const ProjectInfo = ({ project, userHasApplications, dense = false }: Props) => 
 
   return (
     <div className={css.deadlines}>
-      {estimated_completion_date && (
+      {estimated_completion && (
         <div className={dense ? cx(css.completionTime, css.dense) : css.completionTime}>
           <IconCogwheel style={{ marginRight: 10 }} aria-hidden="true" />
-          <span>
-            {estimated_completion} {format(new Date(estimated_completion_date), 'MM/yyyy')}
-          </span>
+          <span>{estimated_completion}</span>
         </div>
       )}
       {application_start_time && application_end_time && (
