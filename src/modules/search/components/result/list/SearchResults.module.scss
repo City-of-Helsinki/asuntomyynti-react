@@ -71,3 +71,9 @@
     }
   }
 }
+
+.inlineTooltip {
+  display: inline-flex;
+  margin-left: var(--spacing-xs);
+  vertical-align: middle;
+}

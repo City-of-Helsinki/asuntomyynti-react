@@ -2,7 +2,7 @@ import React, { createRef, useRef } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { useTranslation } from 'react-i18next';
 import { MapContainer, Marker, Popup, TileLayer, ZoomControl } from 'react-leaflet';
-import { Button, IconCross, IconLocation, IconMenuHamburger } from 'hds-react';
+import { Button, IconCross, IconLocation, IconMenuHamburger, Tooltip } from 'hds-react';
 import L from 'leaflet';
 
 import { DataConfig, Project, StateOfSale } from '../../../../../types/common';
@@ -21,6 +21,7 @@ type Props = {
   currentLang: string;
   resultCountByProjects?: boolean;
   hideApartments?: boolean;
+  tooltipText?: string;
 };
 
 const MAP_TILES_URL =
@@ -34,6 +35,7 @@ const MapResults = ({
   currentLang,
   resultCountByProjects = false,
   hideApartments = false,
+  tooltipText = '',
 }: Props) => {
   const { t } = useTranslation();
   const [activeProject, setActiveProject] = useSessionStorageState({
@@ -141,7 +143,10 @@ const MapResults = ({
     <section className={css.container} aria-label={header}>
       <header>
         <div className={css.titleContainer}>
-          <h2>{header}</h2>
+          <h2>
+            {header}
+            {tooltipText && <Tooltip className={css.inlineTooltip}>{tooltipText}</Tooltip>}
+          </h2>
           <div className={css.resultsCount}>
             {t('SEARCH:total')}{' '}
             {resultCountByProjects

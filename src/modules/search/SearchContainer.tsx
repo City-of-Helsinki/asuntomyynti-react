@@ -158,6 +158,11 @@ const SearchContainer = () => {
             searchResults={filteredSearchResults}
             closeMap={closeMap}
             currentLang={currentLang}
+            tooltipText={
+              projectOwnershipType.toLowerCase() === 'haso'
+                ? t('SEARCH:haso-all-apartments-tooltip')
+                : t('SEARCH:hitas-all-apartments-tooltip')
+            }
           />
         </section>
       ) : (
@@ -170,12 +175,20 @@ const SearchContainer = () => {
                 searchResults={ready}
                 openMap={openMap}
                 currentLang={currentLang}
+                tooltipText={
+                  projectOwnershipType.toLowerCase() === 'haso' ? '' : t('SEARCH:hitas-free-apartments-tooltip')
+                }
               />
               <SearchResults
                 config={config}
                 header={t('SEARCH:for-sale')}
                 searchResults={forSale}
                 currentLang={currentLang}
+                tooltipText={
+                  projectOwnershipType.toLowerCase() === 'haso'
+                    ? t('SEARCH:haso-for-sale-apartments-tooltip')
+                    : t('SEARCH:hitas-for-sale-apartments-tooltip')
+                }
               />
             </>
           ) : (
@@ -185,6 +198,11 @@ const SearchContainer = () => {
               searchResults={forSale}
               openMap={openMap}
               currentLang={currentLang}
+              tooltipText={
+                projectOwnershipType.toLowerCase() === 'haso'
+                  ? t('SEARCH:haso-for-sale-apartments-tooltip')
+                  : t('SEARCH:hitas-for-sale-apartments-tooltip')
+              }
             />
           )}
           <SearchResults
@@ -193,6 +211,11 @@ const SearchContainer = () => {
             searchResults={preMarketing}
             currentLang={currentLang}
             showSearchAlert
+            tooltipText={
+              projectOwnershipType.toLowerCase() === 'haso'
+                ? t('SEARCH:haso-pre-marketing-apartments-tooltip')
+                : t('SEARCH:hitas-pre-marketing-apartments-tooltip')
+            }
           />
         </section>
       )}

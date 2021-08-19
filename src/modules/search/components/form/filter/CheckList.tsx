@@ -25,24 +25,26 @@ const CheckList = ({ name, items, label, isWrapped }: Props) => {
     }
   };
 
+  if (!Array.isArray(items)) {
+    return null;
+  }
+
   return (
     <div className={`${styles.container} ${isWrapped ? styles.isWrapped : ''}`}>
-      {items.length && (
-        <SelectionGroup label={!isWrapped && label ? label : ''}>
-          {items.map((item, index) => {
-            return (
-              <Checkbox
-                key={`${item}-${index}`}
-                className={styles.item}
-                id={`${label}-${item}-${index}`}
-                onChange={handleChange(item)}
-                label={t(`ES:${item}`)}
-                checked={selected.includes(item)}
-              />
-            );
-          })}
-        </SelectionGroup>
-      )}
+      <SelectionGroup label={!isWrapped && label ? label : ''}>
+        {items.map((item, index) => {
+          return (
+            <Checkbox
+              key={`${item}-${index}`}
+              className={styles.item}
+              id={`${label}-${item}-${index}`}
+              onChange={handleChange(item)}
+              label={t(`ES:${item}`)}
+              checked={selected.includes(item)}
+            />
+          );
+        })}
+      </SelectionGroup>
     </div>
   );
 };

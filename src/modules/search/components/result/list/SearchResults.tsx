@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, IconMap } from 'hds-react';
+import { Button, IconMap, Tooltip } from 'hds-react';
 import ProjectCard from './ProjectCard';
 import { DataConfig, Project } from '../../../../../types/common';
 import { calculateApartmentCount } from '../../../utils/calculateApartmentCount';
@@ -15,6 +15,7 @@ type Props = {
   currentLang: string;
   resultCountByProjects?: boolean;
   hideApartments?: boolean;
+  tooltipText?: string;
 };
 
 const SearchResults = ({
@@ -26,6 +27,7 @@ const SearchResults = ({
   currentLang,
   resultCountByProjects = false,
   hideApartments = false,
+  tooltipText = '',
 }: Props) => {
   const { t } = useTranslation();
 
@@ -33,7 +35,14 @@ const SearchResults = ({
     <section className={css.container} aria-label={header}>
       <header>
         <div className={css.titleContainer}>
-          <h2>{header}</h2>
+          <h2>
+            {header}
+            {tooltipText && (
+              <Tooltip className={css.inlineTooltip} placement={'auto'}>
+                {tooltipText}
+              </Tooltip>
+            )}
+          </h2>
           <div className={css.resultsCount}>
             {t('SEARCH:total')}{' '}
             {resultCountByProjects
