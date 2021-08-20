@@ -52,6 +52,7 @@ const MapProjectCard = ({ config, project, currentLang }: Props) => {
   const { apartment_application_status, user } = config || {};
 
   const { apartments, street_address, district, housing_company, main_image_url, id, ownership_type, url } = project;
+
   const { items } = SortApartments(apartments, `mapProject-${id}`);
 
   const filteredApartments = getLanguageFilteredApartments(items, currentLang);
@@ -62,11 +63,7 @@ const MapProjectCard = ({ config, project, currentLang }: Props) => {
 
   const renderBasicDetails = () => (
     <div className={css.mapProjectDetailsContent}>
-      {main_image_url && (
-        <div className={css.mapProjectDetailImage}>
-          <img src={fullURL(main_image_url)} alt="" />
-        </div>
-      )}
+      <div className={css.mapProjectDetailImage}>{main_image_url && <img src={fullURL(main_image_url)} alt="" />}</div>
       <div className={css.mapProjectDetailText}>
         <h3>{housing_company}</h3>
         <p>
