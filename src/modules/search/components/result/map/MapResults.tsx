@@ -113,7 +113,11 @@ const MapResults = ({
         <div className={css.titleContainer}>
           <h2>
             {header}
-            {tooltipText && <Tooltip className={css.inlineTooltip}>{tooltipText}</Tooltip>}
+            {tooltipText && (
+              <Tooltip className={css.inlineTooltip} buttonLabel={t('SEARCH:aria-info-tooltip')} placement={'auto'}>
+                {tooltipText}
+              </Tooltip>
+            )}
           </h2>
           <div className={css.resultsCount}>
             {t('SEARCH:total')}{' '}

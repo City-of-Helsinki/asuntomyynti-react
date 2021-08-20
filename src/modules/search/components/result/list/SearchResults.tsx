@@ -38,7 +38,7 @@ const SearchResults = ({
           <h2>
             {header}
             {tooltipText && (
-              <Tooltip className={css.inlineTooltip} placement={'auto'}>
+              <Tooltip className={css.inlineTooltip} placement={'auto'} buttonLabel={t('SEARCH:aria-info-tooltip')}>
                 {tooltipText}
               </Tooltip>
             )}
