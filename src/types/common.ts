@@ -1,7 +1,5 @@
 export type Apartment = {
   _language: string;
-  acc_financeofficer: string;
-  acc_salesperson: string;
   additional_information: string;
   apartment_address: string;
   apartment_holding_type: string;
@@ -30,6 +28,8 @@ export type Apartment = {
   parking_fee: number;
   parking_fee_explanation: string;
   price_m2: number;
+  project_acc_financeofficer: string;
+  project_acc_salesperson: string;
   project_apartment_count: number;
   project_application_end_time: string;
   project_application_start_time: string;
@@ -80,6 +80,7 @@ export type Apartment = {
   project_zoning_status: string;
   room_count: number;
   sales_price: number;
+  services: string[];
   services_description: string;
   showing_times: string[];
   site_owner: string;
@@ -93,6 +94,8 @@ export type Apartment = {
 };
 
 export type Project = {
+  acc_financeofficer: string;
+  acc_salesperson: string;
   apartments: Apartment[];
   apartment_count: number;
   application_end_time: string;
@@ -149,8 +152,6 @@ export type Project = {
 
 export type SearchResult = {
   _language: string;
-  acc_financeofficer: string;
-  acc_salesperson: string;
   additional_information: string;
   apartment_address: string;
   apartment_holding_type: string;
@@ -172,10 +173,13 @@ export type SearchResult = {
   living_area: number;
   loan_share: number;
   maintenance_fee: number;
+  nid: number;
   other_fees: number;
   parking_fee: number;
   parking_fee_explanation: string;
   price_m2: number;
+  project_acc_financeofficer: string;
+  project_acc_salesperson: string;
   project_apartment_count: number;
   project_application_end_time: string;
   project_application_start_time: string;
@@ -227,11 +231,13 @@ export type SearchResult = {
   project_zoning_status: string;
   room_count: number;
   sales_price: number;
+  services: string[];
   services_description: string;
   showing_times: string[];
   site_owner: string;
   storage_description: string;
   title: string;
+  url: string;
   uuid: string;
   view_description: string;
   water_fee: number;
