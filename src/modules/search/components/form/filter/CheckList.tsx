@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 type Props = {
   name: string;
   items: string[];
-  label?: string;
+  label: string;
   isWrapped?: boolean;
 };
 
