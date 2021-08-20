@@ -186,10 +186,9 @@ const MapApartmentRow = ({ apartment, userApplications, applicationStatus, isMob
               </span>
             </a>
           )}
-          {/* TODO: Form URL for free apartments
           {isApartmentFree && (
             <a
-              href={'#'}
+              href={fullURL(application_url)}
               className={`${css.createApplicationButton} hds-button hds-button--${
                 isDesktopSize ? 'secondary' : 'primary'
               } hds-button--small`}
@@ -202,7 +201,6 @@ const MapApartmentRow = ({ apartment, userApplications, applicationStatus, isMob
               </span>
             </a>
           )}
-          */}
         </>
       )}
     </div>
