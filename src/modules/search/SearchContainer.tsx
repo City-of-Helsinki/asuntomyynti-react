@@ -57,6 +57,8 @@ const SearchContainer = () => {
     UPCOMING: upcoming = [],
   } = groupProjectsByState(filteredSearchResults);
 
+  const searchResultsWithoutUpcoming = ready.concat(forSale, preMarketing);
+
   const hasFreeApartments = !!ready.length;
 
   // Define page h1 based on project_ownership_type
@@ -155,7 +157,7 @@ const SearchContainer = () => {
           <MapContainer
             config={config}
             header={t('SEARCH:all-apartments')}
-            searchResults={filteredSearchResults}
+            searchResults={searchResultsWithoutUpcoming}
             closeMap={closeMap}
             currentLang={currentLang}
             tooltipText={
