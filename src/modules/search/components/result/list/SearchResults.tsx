@@ -11,7 +11,7 @@ type Props = {
   searchResults: Project[];
   header: string;
   openMap?: () => void;
-  showSearchAlert?: boolean;
+  showSubscribeButton?: boolean;
   currentLang: string;
   resultCountByProjects?: boolean;
   hideApartments?: boolean;
@@ -23,7 +23,7 @@ const SearchResults = ({
   searchResults,
   header,
   openMap,
-  showSearchAlert = false,
+  showSubscribeButton = false,
   currentLang,
   resultCountByProjects = false,
   hideApartments = false,
@@ -66,7 +66,7 @@ const SearchResults = ({
             <ProjectCard
               config={config}
               project={x}
-              showSearchAlert={showSearchAlert}
+              showSubscribeButton={showSubscribeButton}
               currentLang={currentLang}
               hideApartments={hideApartments}
             />

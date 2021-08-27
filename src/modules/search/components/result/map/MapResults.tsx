@@ -23,6 +23,7 @@ type Props = {
   resultCountByProjects?: boolean;
   hideApartments?: boolean;
   tooltipText?: string;
+  showSubscribeButton?: boolean;
 };
 
 const MAP_TILES_URL =
@@ -37,6 +38,7 @@ const MapResults = ({
   resultCountByProjects = false,
   hideApartments = false,
   tooltipText = '',
+  showSubscribeButton = false,
 }: Props) => {
   const { t } = useTranslation();
   const [activeProject, setActiveProject] = useSessionStorageState({
@@ -168,12 +170,14 @@ const MapResults = ({
                     onOpen={() => hideProject()}
                   >
                     <MapProjectPopupCard
+                      config={config}
                       project={x}
                       currentLang={currentLang}
                       onCloseBtnClick={() => closePopups(popupRef.current[i])}
                       onApartmentsBtnClick={() => handleMarkerPopupClick(x, popupRef.current[i])}
                       hideApartments={hideApartments}
                       activeProject={activeProject}
+                      showSubscribeButton={showSubscribeButton}
                     />
                   </Popup>
                 </Marker>

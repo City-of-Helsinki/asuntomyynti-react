@@ -104,6 +104,7 @@ const SearchContainer = () => {
               header={t('SEARCH:upcoming')}
               searchResults={upcoming}
               closeMap={closeMap}
+              showSubscribeButton
               currentLang={currentLang}
               resultCountByProjects
               hideApartments
@@ -116,7 +117,7 @@ const SearchContainer = () => {
               header={t('SEARCH:upcoming')}
               searchResults={upcoming}
               openMap={openMap}
-              showSearchAlert
+              showSubscribeButton
               currentLang={currentLang}
               resultCountByProjects
               hideApartments
@@ -212,7 +213,6 @@ const SearchContainer = () => {
             header={t('SEARCH:pre-marketing')}
             searchResults={preMarketing}
             currentLang={currentLang}
-            showSearchAlert
             tooltipText={
               projectOwnershipType.toLowerCase() === 'haso'
                 ? t('SEARCH:haso-pre-marketing-apartments-tooltip')

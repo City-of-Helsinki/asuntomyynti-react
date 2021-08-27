@@ -2,27 +2,32 @@ import React from 'react';
 import { IconArrowDown, IconCross, Button } from 'hds-react';
 import { useTranslation } from 'react-i18next';
 
-import { Project } from '../../../../../types/common';
+import { DataConfig, Project } from '../../../../../types/common';
 import { getLanguageFilteredApartments } from '../../../utils/getLanguageFilteredApartments';
 import { fullURL } from '../../../utils/fullURL';
 import Label from '../../../../../common/label/Label';
+import SubscribeToProjectMailinglist from '../SubscribeToProjectMailinglist';
 
 import css from './MapProjectPopupCard.module.scss';
 
 type Props = {
+  config: DataConfig | undefined;
   project: Project;
   currentLang: string;
   hideApartments?: boolean;
   activeProject: Project | undefined;
+  showSubscribeButton?: boolean;
   onCloseBtnClick: () => void;
   onApartmentsBtnClick: () => void;
 };
 
 const MapProjectPopupCard = ({
+  config,
   project,
   currentLang,
   hideApartments = false,
   activeProject,
+  showSubscribeButton = false,
   onCloseBtnClick,
   onApartmentsBtnClick,
 }: Props) => {
@@ -65,6 +70,11 @@ const MapProjectPopupCard = ({
             {t('SEARCH:learn-more')}
             <span className="sr-only">, {housing_company}</span>
           </a>
+        )}
+        {showSubscribeButton && config && (
+          <div className={css.subscribeButtonWrapper}>
+            <SubscribeToProjectMailinglist project={project} config={config} />
+          </div>
         )}
         {!hideApartments && hasApartments && (
           <Button
