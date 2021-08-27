@@ -73,5 +73,5 @@
       "prettier --write"
     ]
   },
-  "proxy": "https://nginx-asuntotuotanto-public-test.agw.arodevtest.hel.fi"
+  "proxy": "https://nginx-asuntotuotanto-test.agw.arodevtest.hel.fi"
 }
