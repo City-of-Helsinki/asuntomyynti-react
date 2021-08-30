@@ -63,7 +63,11 @@ const MapProjectCard = ({ config, project, currentLang }: Props) => {
 
   const renderBasicDetails = () => (
     <div className={css.mapProjectDetailsContent}>
-      <div className={css.mapProjectDetailImage}>{main_image_url && <img src={fullURL(main_image_url)} alt="" />}</div>
+      {main_image_url && (
+        <div className={css.mapProjectDetailImage}>
+          <img src={fullURL(main_image_url)} alt="" />
+        </div>
+      )}
       <div className={css.mapProjectDetailText}>
         <h3>{housing_company}</h3>
         <p>

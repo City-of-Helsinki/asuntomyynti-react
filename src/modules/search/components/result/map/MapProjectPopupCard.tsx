@@ -33,11 +33,9 @@ const MapProjectPopupCard = ({
 
   return (
     <>
-      {main_image_url && (
-        <div className={css.mapProjectDetailImage} aria-hidden="true">
-          <img src={fullURL(main_image_url)} alt="" />
-        </div>
-      )}
+      <div className={css.mapProjectDetailImage} aria-hidden="true">
+        {main_image_url && <img src={fullURL(main_image_url)} alt="" />}
+      </div>
       <button
         className={css.closeIcon}
         onClick={() => onCloseBtnClick()}
