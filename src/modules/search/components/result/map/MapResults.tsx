@@ -1,5 +1,6 @@
 import React, { createRef, useRef } from 'react';
 import ReactDOMServer from 'react-dom/server';
+import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { MapContainer, Marker, Popup, TileLayer, ZoomControl } from 'react-leaflet';
 import { Button, IconCross, IconLocation, IconMenuHamburger, Tooltip } from 'hds-react';
@@ -24,6 +25,7 @@ type Props = {
   hideApartments?: boolean;
   tooltipText?: string;
   showSubscribeButton?: boolean;
+  description?: string;
 };
 
 const MAP_TILES_URL =
@@ -39,6 +41,7 @@ const MapResults = ({
   hideApartments = false,
   tooltipText = '',
   showSubscribeButton = false,
+  description = '',
 }: Props) => {
   const { t } = useTranslation();
   const [activeProject, setActiveProject] = useSessionStorageState({
@@ -127,8 +130,9 @@ const MapResults = ({
               ? `${searchResults.length} ${t('SEARCH:projects')}`
               : `${calculateApartmentCount(searchResults, currentLang)} ${t('SEARCH:apartments')}`}
           </div>
+          {description && <div className={css.description}>{description}</div>}
         </div>
-        <div>
+        <div className={cx(css.headerButtonWrapper, description && css.hasDescription)}>
           <Button className={css.showButton} variant="secondary" onClick={closeMap}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <IconMenuHamburger style={{ marginRight: 20 }} aria-hidden="true" /> {t('SEARCH:show-as-list')}

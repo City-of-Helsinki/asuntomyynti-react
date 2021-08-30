@@ -1,9 +1,12 @@
 import React from 'react';
+import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Button, IconMap, Tooltip } from 'hds-react';
+
 import ProjectCard from './ProjectCard';
 import { DataConfig, Project } from '../../../../../types/common';
 import { calculateApartmentCount } from '../../../utils/calculateApartmentCount';
+
 import css from './SearchResults.module.scss';
 
 type Props = {
@@ -16,6 +19,7 @@ type Props = {
   resultCountByProjects?: boolean;
   hideApartments?: boolean;
   tooltipText?: string;
+  description?: string;
 };
 
 const SearchResults = ({
@@ -28,6 +32,7 @@ const SearchResults = ({
   resultCountByProjects = false,
   hideApartments = false,
   tooltipText = '',
+  description = '',
 }: Props) => {
   const { t } = useTranslation();
 
@@ -49,9 +54,10 @@ const SearchResults = ({
               ? `${searchResults.length} ${t('SEARCH:projects')}`
               : `${calculateApartmentCount(searchResults, currentLang)} ${t('SEARCH:apartments')}`}
           </div>
+          {description && <div className={css.description}>{description}</div>}
         </div>
         {openMap && (
-          <div>
+          <div className={cx(css.headerButtonWrapper, description && css.hasDescription)}>
             <Button className={css.showButton} variant="secondary" onClick={openMap}>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <IconMap style={{ marginRight: 20 }} aria-hidden="true" /> {t('SEARCH:show-on-map')}

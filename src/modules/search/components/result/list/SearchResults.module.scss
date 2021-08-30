@@ -7,7 +7,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
     padding: var(--spacing-3-xl) var(--spacing-2-xl) var(--spacing-l);
 
     @media (max-width: 1099px) {
@@ -17,6 +16,7 @@
     @media (max-width: 576px) {
       flex-direction: column;
       align-items: stretch;
+      flex-wrap: wrap;
     }
   }
 }
@@ -32,6 +32,7 @@
 
 .titleContainer {
   text-align: left;
+  flex-grow: 0;
 }
 
 .titleContainer h2 {
@@ -46,6 +47,26 @@
 .resultsCount {
   display: block;
   margin-top: var(--spacing-2-xs);
+  line-height: var(--lineheight-l);
+}
+
+.description {
+  display: block;
+  margin-top: var(--spacing-2-xs);
+  line-height: var(--lineheight-l);
+}
+
+.headerButtonWrapper {
+  @media (min-width: 577px) {
+    margin-left: var(--spacing-l);
+    flex-shrink: 0;
+  }
+
+  &.hasDescription {
+    @media (min-width: 577px) {
+      align-self: flex-end;
+    }
+  }
 }
 
 .resultWrapper {

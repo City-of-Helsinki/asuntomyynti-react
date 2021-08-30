@@ -108,6 +108,7 @@ const SearchContainer = () => {
               currentLang={currentLang}
               resultCountByProjects
               hideApartments
+              description={t('SEARCH:upcoming-projects-description')}
             />
           </section>
         ) : (
@@ -121,6 +122,7 @@ const SearchContainer = () => {
               currentLang={currentLang}
               resultCountByProjects
               hideApartments
+              description={t('SEARCH:upcoming-projects-description')}
             />
           </section>
         )}
