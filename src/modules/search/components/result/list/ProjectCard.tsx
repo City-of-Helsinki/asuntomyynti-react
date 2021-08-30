@@ -194,6 +194,7 @@ const ProjectCard = ({
               apartments={filteredApartments}
               applications={getUserApplications(user, id)}
               applicationStatus={getProjectApplicationStatus(apartment_application_status, id)}
+              userHasApplicationForProject={userHasApplications(user, id)}
               housingCompany={housing_company}
               projectID={id}
             />

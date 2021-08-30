@@ -105,6 +105,7 @@ const MapProjectCard = ({ config, project, currentLang }: Props) => {
               apartment={x}
               userApplications={projectUserApplications}
               applicationStatus={getApartmentApplicationStatus(projectApplicationStatus, x.nid)}
+              userHasApplicationForProject={userHasApplications(user, id)}
               isMobileSize={isMobileSize}
             />
           ))}
