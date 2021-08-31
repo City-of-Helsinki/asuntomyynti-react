@@ -29,15 +29,3 @@ test('Apartment list toggle button is shown', () => {
 
   expect(screen.queryByText('1 SEARCH:apartments-available')).not.toBeNull();
 });
-
-test('Subscription form button is hidden', () => {
-  render(<ProjectCard project={mockProject} showSearchAlert={false} />);
-
-  expect(screen.queryByText('SEARCH:subscribe-for-upcoming-sales')).toBeNull();
-});
-
-test('Subscription form button is shown', () => {
-  render(<ProjectCard project={mockProject} showSearchAlert={true} />);
-
-  expect(screen.queryByText('SEARCH:subscribe-for-upcoming-sales')).not.toBeNull();
-});

@@ -9,8 +9,7 @@ import { getProjectApplicationStatus } from '../../../utils/getApplicationStatus
 import { userHasApplications, getUserApplications } from '../../../utils/userApplications';
 import { fullURL } from '../../../utils/fullURL';
 import ApartmentTable from './ApartmentTable';
-import useModal from '../../../../../hooks/useModal';
-import SubscriptionForm from '../SubscriptionForm';
+import SubscribeToProjectMailinglist from '../SubscribeToProjectMailinglist';
 import ProjectInfo from '../ProjectInfo';
 import Label from '../../../../../common/label/Label';
 import useSessionStorageState from '../../../../../hooks/useSessionStorageState';
@@ -22,7 +21,7 @@ type Props = {
   config: DataConfig | undefined;
   project: Project;
   hideImgOnSmallScreen?: boolean;
-  showSearchAlert?: boolean;
+  showSubscribeButton?: boolean;
   currentLang: string;
   hideApartments?: boolean;
 };
@@ -31,7 +30,7 @@ const ProjectCard = ({
   config,
   project,
   hideImgOnSmallScreen = false,
-  showSearchAlert = false,
+  showSubscribeButton = false,
   currentLang,
   hideApartments = false,
 }: Props) => {
@@ -49,7 +48,6 @@ const ProjectCard = ({
 
   const { t } = useTranslation();
   const [listOpen, setListOpen] = useSessionStorageState({ defaultValue: false, key: `apartmentRowOpen-${id}` });
-  const { openModal, closeModal, Modal } = useModal();
   const [width, setWidth] = useState(window.innerWidth);
 
   const handleOnResize = () => {
@@ -168,15 +166,10 @@ const ProjectCard = ({
                 <span className="sr-only">, {housing_company}</span>
               </a>
             )}
-            {showSearchAlert && (
-              <>
-                <Modal>
-                  <SubscriptionForm onClose={closeModal} project={project} />
-                </Modal>
-                <Button className={css.detailsButton} onClick={openModal} variant="secondary" size="small">
-                  {t('SEARCH:subscribe-for-upcoming-sales')}
-                </Button>
-              </>
+            {showSubscribeButton && config && (
+              <div className={css.subscribeButtonWrapper}>
+                <SubscribeToProjectMailinglist project={project} config={config} />
+              </div>
             )}
             {!hideApartments && hasApartments && (
               <Button
@@ -201,6 +194,7 @@ const ProjectCard = ({
               apartments={filteredApartments}
               applications={getUserApplications(user, id)}
               applicationStatus={getProjectApplicationStatus(apartment_application_status, id)}
+              userHasApplicationForProject={userHasApplications(user, id)}
               housingCompany={housing_company}
               projectID={id}
             />

@@ -16,9 +16,10 @@ type Props = {
   apartment: Apartment;
   userApplications: number[] | undefined;
   applicationStatus: string | undefined;
+  userHasApplicationForProject: boolean;
 };
 
-const ApartmentRow = ({ apartment, userApplications, applicationStatus }: Props) => {
+const ApartmentRow = ({ apartment, userApplications, applicationStatus, userHasApplicationForProject }: Props) => {
   const {
     apartment_number,
     apartment_state_of_sale,
@@ -27,8 +28,6 @@ const ApartmentRow = ({ apartment, userApplications, applicationStatus }: Props)
     floor,
     floor_max,
     nid,
-    project_application_start_time,
-    project_application_end_time,
     living_area,
     debt_free_sales_price,
     url,
@@ -57,7 +56,7 @@ const ApartmentRow = ({ apartment, userApplications, applicationStatus }: Props)
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const hasApplication = () => {
+  const userHasApplicationForApartment = () => {
     if (!userApplications) {
       return false;
     }
@@ -72,11 +71,7 @@ const ApartmentRow = ({ apartment, userApplications, applicationStatus }: Props)
   const isApartmentFree = apartment_state_of_sale === 'FREE_FOR_RESERVATIONS';
   const isApartmentOpenForApplications = apartment_state_of_sale === 'OPEN_FOR_APPLICATIONS';
 
-  const applicationPeriodHasStarted = new Date().getTime() > new Date(project_application_start_time).getTime();
-  const applicationPeriodHasEnded = new Date().getTime() > new Date(project_application_end_time).getTime();
-
-  const canCreateApplication =
-    isApartmentOpenForApplications && applicationPeriodHasStarted && !applicationPeriodHasEnded;
+  const canCreateApplication = isApartmentOpenForApplications && !userHasApplicationForProject;
 
   const apartmentRowBaseDetails = (
     <>
@@ -135,25 +130,27 @@ const ApartmentRow = ({ apartment, userApplications, applicationStatus }: Props)
 
   const apartmentRowActions = (
     <div className={css.cellButtons}>
-      {hasApplication() ? (
+      {userHasApplicationForApartment() ? (
         <div className={css.verticalContent}>
           <div className={css.applicationSent}>
             <IconPenLine style={{ marginRight: 10 }} aria-hidden="true" />
             <span>{t('SEARCH:user-application-apartment')}</span>
           </div>
-          <a
-            href={fullURL(url)}
-            className={`${css.openApartmentDetailsButton} hds-button hds-button--${
-              isDesktopSize ? 'secondary' : 'primary'
-            } hds-button--small`}
-          >
-            <span className="hds-button__label">
-              {t('SEARCH:open-apartment-page')}
-              <span className="sr-only">
-                , {t('SEARCH:apartment')} {apartment_number}
+          {url && (
+            <a
+              href={fullURL(url)}
+              className={`${css.openApartmentDetailsButton} hds-button hds-button--${
+                isDesktopSize ? 'secondary' : 'primary'
+              } hds-button--small`}
+            >
+              <span className="hds-button__label">
+                {t('SEARCH:open-apartment-page')}
+                <span className="sr-only">
+                  , {t('SEARCH:apartment')} {apartment_number}
+                </span>
               </span>
-            </span>
-          </a>
+            </a>
+          )}
         </div>
       ) : (
         <div className={css.buttons}>

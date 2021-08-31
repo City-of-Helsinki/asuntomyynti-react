@@ -114,7 +114,7 @@
   },
   "token": "abc",
   "user": {
-    "user_id": "0",
+    "user_id": 0,
     "email_address": null,
     "username": "",
     "applications": []

@@ -149,3 +149,18 @@
     }
   }
 }
+
+.subscribeButtonWrapper {
+  @media (max-width: 576px) {
+    margin-top: var(--spacing-xs);
+  }
+
+  :global {
+    .subscribe-button {
+      @media (max-width: 576px) {
+        height: 56px;
+        width: 100%;
+      }
+    }
+  }
+}

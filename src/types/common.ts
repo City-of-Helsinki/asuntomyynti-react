@@ -341,13 +341,15 @@ export type StaticContent = {
   hitas_instruction_text_mobile: string;
   hitas_instruction_icon_text: string;
   hitas_instruction_url: string;
+  followed_projects_page_url: string;
 };
 
 export type UserConfig = {
-  user_id: string;
+  user_id: number | string;
   email_address: string | null;
   username: string;
   applications: number[][];
+  followed_projects: number[];
 };
 
 export type ProjectApplicationStatusConfig = {
