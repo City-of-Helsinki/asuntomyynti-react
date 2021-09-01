@@ -177,11 +177,13 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipTyp
           )}
         </div>
       </div>
-      <div className="sr-only">
-        <button type="button" onClick={() => onSubmit()}>
-          {t('SEARCH:search')}
-        </button>
-      </div>
+      {!isLoading && (
+        <div className="sr-only">
+          <button type="button" onClick={() => onSubmit()}>
+            {t('SEARCH:search')}
+          </button>
+        </div>
+      )}
     </section>
   );
 };
