@@ -35,7 +35,11 @@ const useSearchResults = (query: { query?: QueryParams }, queryHeaders: { token?
   };
 
   // Fetch when query or queryHeaders update
-  return useQuery(['searchResults', query, queryHeaders], fetchProjects, { initialStale: true, initialData: [] });
+  return useQuery(['searchResults', query, queryHeaders], fetchProjects, {
+    initialStale: true,
+    initialData: [],
+    refetchOnWindowFocus: false,
+  });
 };
 
 export default useSearchResults;
