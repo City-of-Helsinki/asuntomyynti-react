@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { LoadingSpinner } from 'hds-react';
 
 import SearchResults from './components/result/list/SearchResults';
 import SearchForm from './components/form/SearchForm';
@@ -13,6 +14,8 @@ import useSearchParams from '../../hooks/useSearchParams';
 import { DataContext } from './DataContext';
 import { filterProjectsByOwnershipType } from './utils/filterProjectsByOwnershipType';
 import useSessionStorageState from '../../hooks/useSessionStorageState';
+
+import styles from './SearchContainer.module.scss';
 
 // "boolean" as a string because env variables are also treated as strings
 const showUpcomingOnly = process.env.REACT_APP_SHOW_UPCOMING_ONLY || 'false';
@@ -37,14 +40,17 @@ const SearchContainer = () => {
   }, [currentLang, i18n]);
 
   // Get Config data from the initialize API
-  const { data: config, isLoading, isError } = useContext(DataContext) || {};
+  const { data: config, isLoading: isConfigLoading, isError: isConfigError } = useContext(DataContext) || {};
 
   // Query, as in elasticsearch query params
   const { query, updateQuery } = useElasticsearchQuery();
 
   const queryHeaders = { token: config?.token };
   // Fetch results with current search query
-  const { data: searchResults, isError: isSearchQueryError } = useSearchResults(query, queryHeaders);
+  const { data: searchResults, isFetching: isSearchQueryFetching, isError: isSearchQueryError } = useSearchResults(
+    query,
+    queryHeaders
+  );
 
   // Filter HITAS/HASO apartments by selected ownership type
   const filteredSearchResults = filterProjectsByOwnershipType(searchResults, projectOwnershipType);
@@ -93,137 +99,175 @@ const SearchContainer = () => {
     }
   }, [hasSubmitted, query]);
 
-  if (showUpcomingOnly === 'true') {
+  const spinner = () => (
+    <div className={styles.loadingSpinnerWrapper}>
+      <LoadingSpinner />
+    </div>
+  );
+
+  const errorMessage = () => (
+    <div className={styles.errorToastWrapper}>
+      <ErrorToast autoClose={false} showInline errorMessage={t('SEARCH:error-while-loading-results')} />
+    </div>
+  );
+
+  const renderUpcomingMapResults = () => (
+    <section aria-label={t('SEARCH:aria-label-map-results')}>
+      <MapContainer
+        config={config}
+        header={t('SEARCH:upcoming')}
+        searchResults={upcoming}
+        closeMap={closeMap}
+        showSubscribeButton
+        currentLang={currentLang}
+        resultCountByProjects
+        hideApartments
+        description={t('SEARCH:upcoming-projects-description')}
+      />
+    </section>
+  );
+
+  const renderUpcomingListResults = () => (
+    <section aria-label={t('SEARCH:aria-label-list-results')}>
+      <SearchResults
+        config={config}
+        header={t('SEARCH:upcoming')}
+        searchResults={upcoming}
+        openMap={openMap}
+        showSubscribeButton
+        currentLang={currentLang}
+        resultCountByProjects
+        hideApartments
+        description={t('SEARCH:upcoming-projects-description')}
+      />
+    </section>
+  );
+
+  const renderMapResults = () => (
+    <section aria-label={t('SEARCH:aria-label-map-results')}>
+      <MapContainer
+        config={config}
+        header={t('SEARCH:all-apartments')}
+        searchResults={searchResultsWithoutUpcoming}
+        closeMap={closeMap}
+        currentLang={currentLang}
+        tooltipText={
+          projectOwnershipType.toLowerCase() === 'haso'
+            ? t('SEARCH:haso-all-apartments-tooltip')
+            : t('SEARCH:hitas-all-apartments-tooltip')
+        }
+      />
+    </section>
+  );
+
+  const renderFreeApartmentListResults = () => {
+    if (!hasFreeApartments) {
+      return null;
+    }
+
     return (
-      <div>
-        <div ref={mapFocusRef} tabIndex={-1} />
-        {showMap ? (
-          <section aria-label={t('SEARCH:aria-label-map-results')}>
-            <MapContainer
-              config={config}
-              header={t('SEARCH:upcoming')}
-              searchResults={upcoming}
-              closeMap={closeMap}
-              showSubscribeButton
-              currentLang={currentLang}
-              resultCountByProjects
-              hideApartments
-              description={t('SEARCH:upcoming-projects-description')}
-            />
-          </section>
-        ) : (
-          <section aria-label={t('SEARCH:aria-label-list-results')}>
-            <SearchResults
-              config={config}
-              header={t('SEARCH:upcoming')}
-              searchResults={upcoming}
-              openMap={openMap}
-              showSubscribeButton
-              currentLang={currentLang}
-              resultCountByProjects
-              hideApartments
-              description={t('SEARCH:upcoming-projects-description')}
-            />
-          </section>
-        )}
-        {isSearchQueryError && <ErrorToast />}
-      </div>
+      <SearchResults
+        config={config}
+        header={t('SEARCH:free-apartments')}
+        searchResults={ready}
+        openMap={openMap}
+        currentLang={currentLang}
+        tooltipText={projectOwnershipType.toLowerCase() === 'haso' ? '' : t('SEARCH:hitas-free-apartments-tooltip')}
+      />
     );
-  }
+  };
+
+  const renderForSaleListResults = () => (
+    <SearchResults
+      config={config}
+      header={t('SEARCH:for-sale')}
+      searchResults={forSale}
+      openMap={hasFreeApartments ? undefined : openMap}
+      currentLang={currentLang}
+      tooltipText={
+        projectOwnershipType.toLowerCase() === 'haso'
+          ? t('SEARCH:haso-for-sale-apartments-tooltip')
+          : t('SEARCH:hitas-for-sale-apartments-tooltip')
+      }
+    />
+  );
+
+  const renderPreMarketingListResults = () => (
+    <SearchResults
+      config={config}
+      header={t('SEARCH:pre-marketing')}
+      searchResults={preMarketing}
+      currentLang={currentLang}
+      tooltipText={
+        projectOwnershipType.toLowerCase() === 'haso'
+          ? t('SEARCH:haso-pre-marketing-apartments-tooltip')
+          : t('SEARCH:hitas-pre-marketing-apartments-tooltip')
+      }
+    />
+  );
+
+  const renderListResults = () => (
+    <section aria-label={t('SEARCH:aria-label-list-results')}>
+      {renderFreeApartmentListResults()}
+      {renderForSaleListResults()}
+      {renderPreMarketingListResults()}
+    </section>
+  );
 
   return (
     <div>
-      {announce && (
-        <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
-          {filteredSearchResults.length === 1
-            ? `${t('SEARCH:aria-search-complete')}, ${filteredSearchResults.length} ${t(
-                'SEARCH:aria-projects-result-count'
-              )}`
-            : `${t('SEARCH:aria-search-complete')}, ${filteredSearchResults.length} ${t(
-                'SEARCH:aria-projects-result-count-plural'
-              )}`}
-        </div>
-      )}
-      <SearchForm
-        config={config}
-        isLoading={isLoading}
-        isError={isError}
-        pageTitle={pageTitle}
-        onSubmit={submitQuery}
-        projectOwnershipType={projectOwnershipType}
-        focusRef={mapFocusRef}
-      />
-      {config && !isError && <InfoBlock config={config} type={projectOwnershipType} />}
-      <div ref={mapFocusRef} tabIndex={-1} />
-      {showMap ? (
-        <section aria-label={t('SEARCH:aria-label-map-results')}>
-          <MapContainer
+      {showUpcomingOnly === 'false' && ( // Hide search filters from upcoming projects
+        <>
+          <SearchForm
             config={config}
-            header={t('SEARCH:all-apartments')}
-            searchResults={searchResultsWithoutUpcoming}
-            closeMap={closeMap}
-            currentLang={currentLang}
-            tooltipText={
-              projectOwnershipType.toLowerCase() === 'haso'
-                ? t('SEARCH:haso-all-apartments-tooltip')
-                : t('SEARCH:hitas-all-apartments-tooltip')
-            }
+            isLoading={isConfigLoading}
+            isError={isConfigError}
+            pageTitle={pageTitle}
+            onSubmit={submitQuery}
+            projectOwnershipType={projectOwnershipType}
+            focusRef={mapFocusRef}
           />
-        </section>
-      ) : (
-        <section aria-label={t('SEARCH:aria-label-list-results')}>
-          {hasFreeApartments ? (
-            <>
-              <SearchResults
-                config={config}
-                header={t('SEARCH:free-apartments')}
-                searchResults={ready}
-                openMap={openMap}
-                currentLang={currentLang}
-                tooltipText={
-                  projectOwnershipType.toLowerCase() === 'haso' ? '' : t('SEARCH:hitas-free-apartments-tooltip')
-                }
-              />
-              <SearchResults
-                config={config}
-                header={t('SEARCH:for-sale')}
-                searchResults={forSale}
-                currentLang={currentLang}
-                tooltipText={
-                  projectOwnershipType.toLowerCase() === 'haso'
-                    ? t('SEARCH:haso-for-sale-apartments-tooltip')
-                    : t('SEARCH:hitas-for-sale-apartments-tooltip')
-                }
-              />
-            </>
-          ) : (
-            <SearchResults
-              config={config}
-              header={t('SEARCH:for-sale')}
-              searchResults={forSale}
-              openMap={openMap}
-              currentLang={currentLang}
-              tooltipText={
-                projectOwnershipType.toLowerCase() === 'haso'
-                  ? t('SEARCH:haso-for-sale-apartments-tooltip')
-                  : t('SEARCH:hitas-for-sale-apartments-tooltip')
-              }
-            />
+
+          {announce && ( // Announce search changes to screen reader
+            <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+              {filteredSearchResults.length === 1
+                ? `${t('SEARCH:aria-search-complete')}, ${filteredSearchResults.length} ${t(
+                    'SEARCH:aria-projects-result-count'
+                  )}`
+                : `${t('SEARCH:aria-search-complete')}, ${filteredSearchResults.length} ${t(
+                    'SEARCH:aria-projects-result-count-plural'
+                  )}`}
+            </div>
           )}
-          <SearchResults
-            config={config}
-            header={t('SEARCH:pre-marketing')}
-            searchResults={preMarketing}
-            currentLang={currentLang}
-            tooltipText={
-              projectOwnershipType.toLowerCase() === 'haso'
-                ? t('SEARCH:haso-pre-marketing-apartments-tooltip')
-                : t('SEARCH:hitas-pre-marketing-apartments-tooltip')
-            }
-          />
-        </section>
+
+          {!isConfigError && <InfoBlock config={config} type={projectOwnershipType} />}
+        </>
       )}
-      {isSearchQueryError && <ErrorToast />}
+
+      {!config ? ( // See if the config exists
+        isConfigError ? (
+          errorMessage() // show error message if config has error
+        ) : (
+          spinner() // Show the spinner while loading the config
+        )
+      ) : // Config exists
+      isSearchQueryFetching ? (
+        spinner() // show a spinner while fetching the projects
+      ) : isSearchQueryError ? (
+        errorMessage() // show error message if search query has error
+      ) : (
+        // Show results if there's no error from the search query
+        <>
+          <div ref={mapFocusRef} tabIndex={-1} />
+          {showUpcomingOnly === 'true'
+            ? showMap
+              ? renderUpcomingMapResults()
+              : renderUpcomingListResults()
+            : showMap
+            ? renderMapResults()
+            : renderListResults()}
+        </>
+      )}
     </div>
   );
 };
