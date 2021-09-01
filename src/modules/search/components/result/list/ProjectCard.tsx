@@ -9,7 +9,7 @@ import { getProjectApplicationStatus } from '../../../utils/getApplicationStatus
 import { userHasApplications, getUserApplications } from '../../../utils/userApplications';
 import { fullURL } from '../../../utils/fullURL';
 import ApartmentTable from './ApartmentTable';
-import SubscribeToProjectMailinglist from '../SubscribeToProjectMailinglist';
+// import SubscribeToProjectMailinglist from '../SubscribeToProjectMailinglist';
 import ProjectInfo from '../ProjectInfo';
 import Label from '../../../../../common/label/Label';
 import useSessionStorageState from '../../../../../hooks/useSessionStorageState';
@@ -166,11 +166,12 @@ const ProjectCard = ({
                 <span className="sr-only">, {housing_company}</span>
               </a>
             )}
-            {showSubscribeButton && config && (
+            {/* Subscribing to project mailing list is commented out until we get the backend implementation */}
+            {/* {showSubscribeButton && config && (
               <div className={css.subscribeButtonWrapper}>
                 <SubscribeToProjectMailinglist project={project} config={config} />
               </div>
-            )}
+            )} */}
             {!hideApartments && hasApartments && (
               <Button
                 className={css.apartmentListButton}

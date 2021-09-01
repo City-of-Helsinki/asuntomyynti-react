@@ -54,7 +54,9 @@ const SearchResults = ({
               ? `${searchResults.length} ${t('SEARCH:projects')}`
               : `${calculateApartmentCount(searchResults, currentLang)} ${t('SEARCH:apartments')}`}
           </div>
+          {/* Subscribing to project mailing list is commented out until we get the backend implementation
           {description && <div className={css.description}>{description}</div>}
+          */}
         </div>
         {openMap && (
           <div className={cx(css.headerButtonWrapper, description && css.hasDescription)}>

@@ -130,7 +130,9 @@ const MapResults = ({
               ? `${searchResults.length} ${t('SEARCH:projects')}`
               : `${calculateApartmentCount(searchResults, currentLang)} ${t('SEARCH:apartments')}`}
           </div>
+          {/* Subscribing to project mailing list is commented out until we get the backend implementation
           {description && <div className={css.description}>{description}</div>}
+          */}
         </div>
         <div className={cx(css.headerButtonWrapper, description && css.hasDescription)}>
           <Button className={css.showButton} variant="secondary" onClick={closeMap}>

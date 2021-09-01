@@ -6,7 +6,7 @@ import { DataConfig, Project } from '../../../../../types/common';
 import { getLanguageFilteredApartments } from '../../../utils/getLanguageFilteredApartments';
 import { fullURL } from '../../../utils/fullURL';
 import Label from '../../../../../common/label/Label';
-import SubscribeToProjectMailinglist from '../SubscribeToProjectMailinglist';
+// import SubscribeToProjectMailinglist from '../SubscribeToProjectMailinglist';
 
 import css from './MapProjectPopupCard.module.scss';
 
@@ -71,11 +71,12 @@ const MapProjectPopupCard = ({
             <span className="sr-only">, {housing_company}</span>
           </a>
         )}
-        {showSubscribeButton && config && (
+        {/* Subscribing to project mailing list is commented out until we get the backend implementation */}
+        {/* {showSubscribeButton && config && (
           <div className={css.subscribeButtonWrapper}>
             <SubscribeToProjectMailinglist project={project} config={config} />
           </div>
-        )}
+        )} */}
         {!hideApartments && hasApartments && (
           <Button
             className={css.apartmentListButton}
