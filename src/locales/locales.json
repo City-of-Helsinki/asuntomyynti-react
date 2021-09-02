@@ -191,7 +191,18 @@
       "PRE_MARKETING": "Pre-marketing",
       "READY": "Free apartments",
       "FOR_SALE": "For sale",
-      "UPCOMING": "Upcoming"
+      "UPCOMING": "Upcoming",
+      "for_sale": "For sale",
+      "pre_marketing": "Pre-marketing",
+      "processing": "Processing",
+      "ready": "Ready",
+      "upcoming": "Upcoming",
+      "under_planning": "Under planning",
+      "under_construction": "Under construction",
+      "ready_to_move": "Move-in ready",
+      "block_of_flats": "Block of flats",
+      "row_house": "Row house",
+      "house": "House"
     }
   },
   "fi": {
@@ -387,7 +398,18 @@
       "PRE_MARKETING": "Ennakkomarkkinoinnissa",
       "READY": "Vapaat asunnot",
       "FOR_SALE": "Nyt haettavana",
-      "UPCOMING": "Tuleva kohde"
+      "UPCOMING": "Tuleva kohde",
+      "for_sale": "Nyt haettavana",
+      "pre_marketing": "Ennakkomarkkinoinnissa",
+      "processing": "Käsittelyssä",
+      "ready": "Vapaa",
+      "upcoming": "Tuleva kohde",
+      "under_planning": "Suunnittelussa",
+      "under_construction": "Rakenteilla",
+      "ready_to_move": "Muuttovalmis",
+      "block_of_flats": "Kerrostalo",
+      "row_house": "Rivitalo",
+      "house": "Pientalo"
     }
   },
   "sv": {
@@ -582,7 +604,18 @@
       "PRE_MARKETING": "Pre-marketing",
       "READY": "Free apartments",
       "FOR_SALE": "For sale",
-      "UPCOMING": "Upcoming"
+      "UPCOMING": "Upcoming",
+      "for_sale": "For sale",
+      "pre_marketing": "Pre-marketing",
+      "processing": "Processing",
+      "ready": "Ready",
+      "upcoming": "Upcoming",
+      "under_planning": "Under planning",
+      "under_construction": "Under construction",
+      "ready_to_move": "Move-in ready",
+      "block_of_flats": "Block of flats",
+      "row_house": "Row house",
+      "house": "House"
     }
   }
 }
