@@ -32,11 +32,15 @@ Your app is ready to be deployed!
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 
-### `yarn build:dist`
+### `yarn dist`
 
-**_Custom Script_**
+**_A custom script that builds four different versions of the application and creates a .zip file for creating releases._**
 
-Builds the app with `yarn build` and after that, it copies files under `dist` folder.<br />
+Before creating the dist package, make sure that you have your `.env` variables set. _Note: (`REACT_APP_SHOW_UPCOMING_ONLY` and `REACT_APP_PROJECT_OWNERSHIP_TYPE` values don't need to be changed in the dist build, they are altered automatically)_
+
+This script goes through each of the four application variations and runs `yarn build` with the pre-set environment variables.
+After building each variation, it copies the files under the `dist/react/` folder according to the variation type.
+
 These copied files will always have the same filename, so that it's easier to embed them into other web applications without the need of worrying hashes in filenames. (This will also copy `.map` files and it keeps their original filename, as they are referenced in this way in the generated files.)
 
 We are using `asu_react_` as a prefix in the filenames to avoid naming collisions.
@@ -44,13 +48,35 @@ We are using `asu_react_` as a prefix in the filenames to avoid naming collision
 Generated files are:
 
 ```
-/dist
-    asu_react_main.js
-    asu_react_runtime-main.js
-    asu_react_vendors.js
-    asu_react_main.css
-    asu_react_vendors.css
-    *.map
+/dist/react/
+    hitas/
+        asu_react_main.js
+        asu_react_runtime-main.js
+        asu_react_vendors.js
+        asu_react_main.css
+        asu_react_vendors.css
+        *.map
+    hitas_upcoming/
+        asu_react_main.js
+        asu_react_runtime-main.js
+        asu_react_vendors.js
+        asu_react_main.css
+        asu_react_vendors.css
+        *.map
+    haso/
+        asu_react_main.js
+        asu_react_runtime-main.js
+        asu_react_vendors.js
+        asu_react_main.css
+        asu_react_vendors.css
+        *.map
+    haso_upcoming/
+        asu_react_main.js
+        asu_react_runtime-main.js
+        asu_react_vendors.js
+        asu_react_main.css
+        asu_react_vendors.css
+        *.map
 ```
 
 **The order of running these files does matter.** Example usage of the application:
