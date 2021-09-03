@@ -1,6 +1,6 @@
 {
   "name": "asuntomyynti-react",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "homepage": ".",
   "dependencies": {
@@ -38,8 +38,18 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build:dist": "yarn build && yarn build:dist_files",
-    "build:dist_files": "mkdir -p dist && cp build/static/js/main.*.chunk.js dist/asu_react_main.js && cp build/static/js/runtime-main.*.js dist/asu_react_runtime-main.js && cp build/static/js/[0-9]*.*.chunk.js dist/asu_react_vendors.js && cp build/static/js/*.map dist/ && cp build/static/css/main.*.css dist/asu_react_main.css && cp build/static/css/[0-9].*.css dist/asu_react_vendors.css && cp build/static/css/*.map dist/"
+    "rimraf": "rimraf",
+    "create-dist-package-folder": "mkdir -p dist/react",
+    "create-hitas": "REACT_APP_PROJECT_OWNERSHIP_TYPE=hitas REACT_APP_SHOW_UPCOMING_ONLY=false yarn build",
+    "create-hitas-upcoming": "REACT_APP_PROJECT_OWNERSHIP_TYPE=hitas REACT_APP_SHOW_UPCOMING_ONLY=true yarn build",
+    "create-haso": "REACT_APP_PROJECT_OWNERSHIP_TYPE=haso REACT_APP_SHOW_UPCOMING_ONLY=false yarn build",
+    "create-haso-upcoming": "REACT_APP_PROJECT_OWNERSHIP_TYPE=haso REACT_APP_SHOW_UPCOMING_ONLY=true yarn build",
+    "copy-files:hitas": "mkdir -p dist/react/hitas && cp build/static/js/main.*.chunk.js dist/react/hitas/asu_react_main.js && cp build/static/js/runtime-main.*.js dist/react/hitas/asu_react_runtime-main.js && cp build/static/js/[0-9]*.*.chunk.js dist/react/hitas/asu_react_vendors.js && cp build/static/js/*.map dist/react/hitas && cp build/static/css/main.*.css dist/react/hitas/asu_react_main.css && cp build/static/css/[0-9].*.css dist/react/hitas/asu_react_vendors.css && cp build/static/css/*.map dist/react/hitas",
+    "copy-files:hitas-upcoming": "mkdir -p dist/react/hitas_upcoming && cp build/static/js/main.*.chunk.js dist/react/hitas_upcoming/asu_react_main.js && cp build/static/js/runtime-main.*.js dist/react/hitas_upcoming/asu_react_runtime-main.js && cp build/static/js/[0-9]*.*.chunk.js dist/react/hitas_upcoming/asu_react_vendors.js && cp build/static/js/*.map dist/react/hitas_upcoming && cp build/static/css/main.*.css dist/react/hitas_upcoming/asu_react_main.css && cp build/static/css/[0-9].*.css dist/react/hitas_upcoming/asu_react_vendors.css && cp build/static/css/*.map dist/react/hitas_upcoming",
+    "copy-files:haso": "mkdir -p dist/react/haso && cp build/static/js/main.*.chunk.js dist/react/haso/asu_react_main.js && cp build/static/js/runtime-main.*.js dist/react/haso/asu_react_runtime-main.js && cp build/static/js/[0-9]*.*.chunk.js dist/react/haso/asu_react_vendors.js && cp build/static/js/*.map dist/react/haso && cp build/static/css/main.*.css dist/react/haso/asu_react_main.css && cp build/static/css/[0-9].*.css dist/react/haso/asu_react_vendors.css && cp build/static/css/*.map dist/react/haso",
+    "copy-files:haso-upcoming": "mkdir -p dist/react/haso_upcoming && cp build/static/js/main.*.chunk.js dist/react/haso_upcoming/asu_react_main.js && cp build/static/js/runtime-main.*.js dist/react/haso_upcoming/asu_react_runtime-main.js && cp build/static/js/[0-9]*.*.chunk.js dist/react/haso_upcoming/asu_react_vendors.js && cp build/static/js/*.map dist/react/haso_upcoming && cp build/static/css/main.*.css dist/react/haso_upcoming/asu_react_main.css && cp build/static/css/[0-9].*.css dist/react/haso_upcoming/asu_react_vendors.css && cp build/static/css/*.map dist/react/haso_upcoming",
+    "create-zip": "cd dist && zip -r $npm_package_name-$npm_package_version.zip react && cd ..",
+    "dist": "rimraf dist && yarn create-dist-package-folder && yarn create-hitas && yarn copy-files:hitas && yarn create-hitas-upcoming && yarn copy-files:hitas-upcoming && yarn create-haso && yarn copy-files:haso && yarn create-haso-upcoming && yarn copy-files:haso-upcoming && yarn create-zip"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -62,7 +72,8 @@
     "husky": ">=4",
     "lint-staged": ">=10",
     "prettier": "^2.1.2",
-    "react-test-renderer": "^16.13.1"
+    "react-test-renderer": "^16.13.1",
+    "rimraf": "^3.0.2"
   },
   "husky": {
     "hooks": {

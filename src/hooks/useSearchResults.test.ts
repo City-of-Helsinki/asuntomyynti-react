@@ -13,9 +13,11 @@ const emptyQuery = { query: {} };
 const emptyToken = { token: undefined };
 const dummyToken = { token: 'xyz' };
 
+const lang = 'fi';
+
 describe('useSearchResult', () => {
   it('should return empty array on first render', async () => {
-    const { result, waitForNextUpdate } = renderHook(() => useSearchResults(emptyQuery, emptyToken));
+    const { result, waitForNextUpdate } = renderHook(() => useSearchResults(emptyQuery, emptyToken, lang));
 
     await waitForNextUpdate();
 
@@ -25,7 +27,7 @@ describe('useSearchResult', () => {
   it('should return empty array on malformed response', async () => {
     mockedAxios.post.mockResolvedValue(malformedResponse);
 
-    const { result, waitForNextUpdate } = renderHook(() => useSearchResults(emptyQuery, dummyToken));
+    const { result, waitForNextUpdate } = renderHook(() => useSearchResults(emptyQuery, dummyToken, lang));
 
     await waitForNextUpdate();
 
@@ -35,7 +37,7 @@ describe('useSearchResult', () => {
   it('should return array of three projects', async () => {
     mockedAxios.post.mockResolvedValue({ data: searchResponse });
 
-    const { result, waitForNextUpdate } = renderHook(() => useSearchResults(emptyQuery, dummyToken));
+    const { result, waitForNextUpdate } = renderHook(() => useSearchResults(emptyQuery, dummyToken, lang));
 
     await waitForNextUpdate();
 

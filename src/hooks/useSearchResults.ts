@@ -3,9 +3,9 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 import mapSearchResults from '../modules/search/utils/mapSearchResults';
 
-const searchUrl = process.env.REACT_APP_ELASTIC_BASE_URL || '';
+const searchPath = process.env.REACT_APP_ELASTICSEARCH_PATH || 'elasticproxy';
 
-const useSearchResults = (query: { query?: QueryParams }, queryHeaders: { token?: string }) => {
+const useSearchResults = (query: { query?: QueryParams }, queryHeaders: { token?: string }, currentLang: string) => {
   const fetchProjects = async () => {
     // Wait for token before trying to fetch data
     if (!queryHeaders.token) {
@@ -13,7 +13,7 @@ const useSearchResults = (query: { query?: QueryParams }, queryHeaders: { token?
     }
 
     const { data } = await axios.post(
-      searchUrl,
+      `/${currentLang}/${searchPath}`,
       {
         ...query,
         collapse: {
