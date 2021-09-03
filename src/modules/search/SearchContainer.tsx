@@ -49,7 +49,8 @@ const SearchContainer = () => {
   // Fetch results with current search query
   const { data: searchResults, isFetching: isSearchQueryFetching, isError: isSearchQueryError } = useSearchResults(
     query,
-    queryHeaders
+    queryHeaders,
+    currentLang
   );
 
   // Filter HITAS/HASO apartments by selected ownership type
