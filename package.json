@@ -1,25 +1,55 @@
 {
   "name": "asuntomyynti-react",
-  "version": "0.1.0",
+  "version": "0.4.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
+    "@sentry/react": "^6.11.0",
+    "@sentry/tracing": "^6.11.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "@types/classnames": "^2.2.11",
     "@types/jest": "^24.0.0",
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
+    "@types/react-router-dom": "^5.1.5",
+    "axios": "^0.21.1",
+    "classnames": "^2.2.6",
+    "date-fns": "^2.16.1",
+    "hds-design-tokens": "1.1.0",
+    "hds-react": "1.1.0",
+    "i18next": "^19.7.0",
+    "leaflet": "^1.7.1",
+    "node-sass": "^4.14.1",
+    "pure-react-carousel": "^1.27.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.3",
-    "typescript": "~3.7.2"
+    "react-i18next": "^11.7.3",
+    "react-leaflet": "^3.0.0",
+    "react-query": "^2.23.1",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.0",
+    "typescript": "~4.0.5"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "rimraf": "rimraf",
+    "create-dist-package-folder": "mkdir -p dist/react",
+    "create-hitas": "REACT_APP_PROJECT_OWNERSHIP_TYPE=hitas REACT_APP_SHOW_UPCOMING_ONLY=false yarn build",
+    "create-hitas-upcoming": "REACT_APP_PROJECT_OWNERSHIP_TYPE=hitas REACT_APP_SHOW_UPCOMING_ONLY=true yarn build",
+    "create-haso": "REACT_APP_PROJECT_OWNERSHIP_TYPE=haso REACT_APP_SHOW_UPCOMING_ONLY=false yarn build",
+    "create-haso-upcoming": "REACT_APP_PROJECT_OWNERSHIP_TYPE=haso REACT_APP_SHOW_UPCOMING_ONLY=true yarn build",
+    "copy-files:hitas": "mkdir -p dist/react/hitas && cp build/static/js/main.*.chunk.js dist/react/hitas/asu_react_main.js && cp build/static/js/runtime-main.*.js dist/react/hitas/asu_react_runtime-main.js && cp build/static/js/[0-9]*.*.chunk.js dist/react/hitas/asu_react_vendors.js && cp build/static/js/*.map dist/react/hitas && cp build/static/css/main.*.css dist/react/hitas/asu_react_main.css && cp build/static/css/[0-9].*.css dist/react/hitas/asu_react_vendors.css && cp build/static/css/*.map dist/react/hitas",
+    "copy-files:hitas-upcoming": "mkdir -p dist/react/hitas_upcoming && cp build/static/js/main.*.chunk.js dist/react/hitas_upcoming/asu_react_main.js && cp build/static/js/runtime-main.*.js dist/react/hitas_upcoming/asu_react_runtime-main.js && cp build/static/js/[0-9]*.*.chunk.js dist/react/hitas_upcoming/asu_react_vendors.js && cp build/static/js/*.map dist/react/hitas_upcoming && cp build/static/css/main.*.css dist/react/hitas_upcoming/asu_react_main.css && cp build/static/css/[0-9].*.css dist/react/hitas_upcoming/asu_react_vendors.css && cp build/static/css/*.map dist/react/hitas_upcoming",
+    "copy-files:haso": "mkdir -p dist/react/haso && cp build/static/js/main.*.chunk.js dist/react/haso/asu_react_main.js && cp build/static/js/runtime-main.*.js dist/react/haso/asu_react_runtime-main.js && cp build/static/js/[0-9]*.*.chunk.js dist/react/haso/asu_react_vendors.js && cp build/static/js/*.map dist/react/haso && cp build/static/css/main.*.css dist/react/haso/asu_react_main.css && cp build/static/css/[0-9].*.css dist/react/haso/asu_react_vendors.css && cp build/static/css/*.map dist/react/haso",
+    "copy-files:haso-upcoming": "mkdir -p dist/react/haso_upcoming && cp build/static/js/main.*.chunk.js dist/react/haso_upcoming/asu_react_main.js && cp build/static/js/runtime-main.*.js dist/react/haso_upcoming/asu_react_runtime-main.js && cp build/static/js/[0-9]*.*.chunk.js dist/react/haso_upcoming/asu_react_vendors.js && cp build/static/js/*.map dist/react/haso_upcoming && cp build/static/css/main.*.css dist/react/haso_upcoming/asu_react_main.css && cp build/static/css/[0-9].*.css dist/react/haso_upcoming/asu_react_vendors.css && cp build/static/css/*.map dist/react/haso_upcoming",
+    "create-zip": "cd dist && zip -r $npm_package_name-$npm_package_version.zip react && cd ..",
+    "dist": "rimraf dist && yarn create-dist-package-folder && yarn create-hitas && yarn copy-files:hitas && yarn create-hitas-upcoming && yarn copy-files:hitas-upcoming && yarn create-haso && yarn copy-files:haso && yarn create-haso-upcoming && yarn copy-files:haso-upcoming && yarn create-zip"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -35,5 +65,26 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {
+    "@testing-library/react-hooks": "^3.4.2",
+    "@types/leaflet": "^1.5.19",
+    "husky": ">=4",
+    "lint-staged": ">=10",
+    "prettier": "^2.1.2",
+    "react-test-renderer": "^16.13.1",
+    "rimraf": "^3.0.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,css}": [
+      "eslint",
+      "prettier --write"
+    ]
+  },
+  "proxy": "https://nginx-asuntotuotanto-test.agw.arodevtest.hel.fi"
 }
