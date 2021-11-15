@@ -247,19 +247,7 @@ export type SearchResult = {
 };
 
 export type QueryParams = {
-  terms?: {
-    [key in FilterName]?: (number | string)[];
-  };
-  term?: {
-    [key in FilterName]?: number | string | boolean;
-  };
-  range?: {
-    [key in FilterName]?: {
-      gte?: number;
-      lte?: number;
-      boost?: number;
-    };
-  };
+  [key in FilterName]?: number | string | boolean | (number | string)[];
 };
 
 export type FilterItem = {
@@ -284,7 +272,7 @@ export type PartialFilterConfig = {
 };
 
 export type DefaultFilterConfig = PartialFilterConfig & {
-  getQuery: (values: string[]) => QueryParams[];
+  getQuery: (values: string[]) => QueryParams;
   getLabel: (values: string[]) => string;
   getTagLabel: (serializedValue: string) => ParamList;
 };
@@ -298,6 +286,7 @@ export type FilterConfig = Omit<DefaultFilterConfig, 'items' | 'suffix'> & {
 export enum StateOfSale {
   ForSale = 'FOR_SALE',
   PreMarketing = 'PRE_MARKETING',
+  Upcoming = 'UPCOMING',
 }
 
 export enum ApplicationStatus {

@@ -2,8 +2,6 @@ import { DefaultFilterConfig, FilterConfig, FilterName, FilterType, QueryParams 
 import { formatRange } from './formatRange';
 import { groupConsecutiveNumbers, listGroupedNumbers } from '../../../utils/groupConsecutiveNumbers';
 
-const fiveOrMoreRooms = '5+';
-
 type FilterMap = {
   [key in FilterName]: (config: DefaultFilterConfig) => FilterConfig;
 };
@@ -50,32 +48,19 @@ const filterMap: FilterMap = {
 
   room_count: ({ suffix = '', items, ...rest }) => ({
     ...rest,
-    items: items.map((item) => `${item}${suffix}`),
+    items: items.map((item) => `${item} ${suffix}`),
     type: FilterType.MultiSelect,
     icon: 'home',
     getQuery: (values) => {
-      const filters: QueryParams[] = [
-        {
-          terms: {
-            [FilterName.RoomCount]: values.map((x) => parseInt(x)),
-          },
-        },
-      ];
-      if (values.includes(fiveOrMoreRooms)) {
-        filters.push({
-          range: {
-            [FilterName.RoomCount]: {
-              gte: 4,
-            },
-          },
-        });
-      }
+      const filters: QueryParams = {
+        [FilterName.RoomCount]: values.map((x) => parseInt(x)),
+      };
       return filters;
     },
     getLabel: (values) => {
       const groupedNumbers = groupConsecutiveNumbers(values.map((x) => parseInt(x)));
       return listGroupedNumbers(groupedNumbers, (first, last) =>
-        last === 5 ? `${suffix}, 5+${suffix}` : suffix || ''
+        last === 5 ? ` ${suffix}, 5+ ${suffix}` : ` ${suffix}` || ''
       );
     },
   }),
@@ -87,20 +72,6 @@ const filterMap: FilterMap = {
       { label: from || '', placeholder: suffix || '' },
       { label: to || '', placeholder: suffix || '' },
     ],
-    getQuery: (values) => {
-      const [gte, lte] = values.map((x) => parseInt(x));
-      return [
-        {
-          range: {
-            [FilterName.LivingArea]: {
-              // Add key and value only if has value
-              ...(gte ? { gte } : {}),
-              ...(lte ? { lte } : {}),
-            },
-          },
-        },
-      ];
-    },
     getLabel: (values) => {
       return formatRange(values);
     },
@@ -119,15 +90,9 @@ const filterMap: FilterMap = {
         placeholder: suffix || '',
       },
     ],
-    getQuery: ([value]) => [
-      {
-        range: {
-          [FilterName.DebtFreeSalesPrice]: {
-            lte: parseInt(value) * 100000,
-          },
-        },
-      },
-    ],
+    getQuery: ([value]) => {
+      return { [FilterName.DebtFreeSalesPrice]: parseInt(value) * 100000 };
+    },
     getLabel: ([value]) => {
       return `max. ${value} 000 ${suffix}`;
     },
@@ -142,7 +107,6 @@ const filterMap: FilterMap = {
   properties: (config) => ({
     ...config,
     type: FilterType.MultiSelect,
-    getQuery: (values: string[]) => values.map((value) => ({ term: { [value]: true } })),
   }),
 
   project_state_of_sale: (config) => ({
