@@ -12,26 +12,18 @@ const useSearchResults = (query: { query?: QueryParams }, queryHeaders: { token?
       return [];
     }
 
-    const { data } = await axios.post(
-      `/${currentLang}/${searchPath}`,
-      {
-        ...query,
-        collapse: {
-          field: 'project_id',
-          inner_hits: {
-            size: 666,
-            name: 'project_id',
-          },
-        },
-      },
-      {
-        headers: {
-          'X-CSRF-TOKEN': queryHeaders.token,
-        },
-      }
-    );
+    const queryAsJSON = JSON.stringify(query);
 
-    return data?.hits?.hits.map(mapSearchResults) || [];
+    const { data } = await axios.post(`/${currentLang}/${searchPath}`, queryAsJSON, {
+      headers: {
+        'X-CSRF-TOKEN': queryHeaders.token,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const dataAsArray: any = Object.values(data);
+
+    return dataAsArray?.map(mapSearchResults) || [];
   };
 
   // Fetch when query or queryHeaders update

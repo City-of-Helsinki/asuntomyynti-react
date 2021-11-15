@@ -1,7 +1,5 @@
 const mapSearchResults = (result: any) => {
-  const hits = result.inner_hits.project_id.hits.hits;
-  const firstHit = hits[0]._source;
-
+  const firstHit = result[0];
   const project: any = {};
 
   // Maps the Project entity
@@ -12,7 +10,7 @@ const mapSearchResults = (result: any) => {
     }
   });
 
-  project.apartments = hits.map((x: any) => x._source);
+  project.apartments = result;
   return project;
 };
 
