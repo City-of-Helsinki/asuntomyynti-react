@@ -145,11 +145,6 @@ const filterMap: FilterMap = {
     getQuery: (values: string[]) => values.map((value) => ({ term: { [value]: true } })),
   }),
 
-  project_new_development_status: (config) => ({
-    ...config,
-    type: FilterType.MultiSelect,
-  }),
-
   project_state_of_sale: (config) => ({
     ...config,
     type: FilterType.MultiSelect,
