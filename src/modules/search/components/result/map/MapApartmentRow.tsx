@@ -4,8 +4,11 @@ import { IconAngleDown, IconAngleUp, IconPenLine } from 'hds-react';
 
 import { Apartment } from '../../../../../types/common';
 import { fullURL } from '../../../utils/fullURL';
+import { userHasApplicationForApartment } from '../../../utils/userApplications';
 import RenderAvailabilityInfo from '../ApplicationStatus';
 import useSessionStorageState from '../../../../../hooks/useSessionStorageState';
+import formattedLivingArea from '../../../utils/formatLivingArea';
+import formattedPrice from '../../../utils/formatPrice';
 
 import css from './MapApartmentRow.module.scss';
 
@@ -51,21 +54,6 @@ const MapApartmentRow = ({
     }
   };
 
-  const userHasApplicationForApartment = () => {
-    if (!userApplications) {
-      return false;
-    }
-    return userApplications.includes(nid);
-  };
-
-  const calculatedDebtFreeSalesPrice = debt_free_sales_price / 100;
-  const formattedDebtFreeSalesPrice = `${calculatedDebtFreeSalesPrice.toLocaleString('fi-FI')} \u20AC`;
-
-  const calculatedRightOfOccupancyPayment = right_of_occupancy_payment / 100;
-  const formattedRightOfOccupancyPayment = `${calculatedRightOfOccupancyPayment.toLocaleString('fi-FI')} \u20AC`;
-
-  const formattedLivingArea = `${living_area.toLocaleString('fi-FI')} m\u00b2`;
-
   const isApartmentFree = apartment_state_of_sale === 'FREE_FOR_RESERVATIONS';
   const isApartmentOpenForApplications = apartment_state_of_sale === 'OPEN_FOR_APPLICATIONS';
 
@@ -88,17 +76,17 @@ const MapApartmentRow = ({
       </div>
       <div>
         <span className="sr-only">{t('SEARCH:area')}</span>
-        <span>{formattedLivingArea}</span>
+        <span>{formattedLivingArea(living_area)}</span>
       </div>
       {projectOwnershipIsHaso ? (
         <div>
           <span className="sr-only">{t('SEARCH:right-of-occupancy-payment')}</span>
-          <span>{formattedRightOfOccupancyPayment}</span>
+          <span>{formattedPrice(right_of_occupancy_payment)}</span>
         </div>
       ) : (
         <div>
           <span className="sr-only">{t('SEARCH:free-of-debt-price')}</span>
-          <span>{formattedDebtFreeSalesPrice}</span>
+          <span>{formattedPrice(debt_free_sales_price)}</span>
         </div>
       )}
     </>
@@ -133,17 +121,17 @@ const MapApartmentRow = ({
       </div>
       <div className={css.mobileCell}>
         <span className={css.cellMobileTitle}>{t('SEARCH:area')}</span>
-        <span>{formattedLivingArea}</span>
+        <span>{formattedLivingArea(living_area)}</span>
       </div>
       {projectOwnershipIsHaso ? (
         <div className={css.mobileCell}>
           <span className={css.cellMobileTitle}>{t('SEARCH:right-of-occupancy-payment')}</span>
-          <span>{formattedRightOfOccupancyPayment}</span>
+          <span>{formattedPrice(right_of_occupancy_payment)}</span>
         </div>
       ) : (
         <div className={css.mobileCell}>
           <span className={css.cellMobileTitle}>{t('SEARCH:free-of-debt-price')}</span>
-          <span>{formattedDebtFreeSalesPrice}</span>
+          <span>{formattedPrice(debt_free_sales_price)}</span>
         </div>
       )}
       <div className={css.mobileCell}>
@@ -157,7 +145,7 @@ const MapApartmentRow = ({
 
   const apartmentRowActions = (
     <div className={css.apartmentActions}>
-      {userHasApplicationForApartment() ? (
+      {userHasApplicationForApartment(userApplications, nid) ? (
         <>
           <div className={css.applicationSent}>
             <IconPenLine style={{ marginRight: 8 }} aria-hidden="true" />
