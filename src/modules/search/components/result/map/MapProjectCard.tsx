@@ -107,6 +107,7 @@ const MapProjectCard = ({ config, project, currentLang }: Props) => {
               applicationStatus={getApartmentApplicationStatus(projectApplicationStatus, x.nid)}
               userHasApplicationForProject={userHasApplications(user, id)}
               isMobileSize={isMobileSize}
+              projectOwnershipIsHaso={ownership_type.toLowerCase() === 'haso'}
             />
           ))}
         </div>

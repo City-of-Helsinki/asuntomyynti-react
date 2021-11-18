@@ -15,6 +15,7 @@ type Props = {
   applicationStatus: string | undefined;
   userHasApplicationForProject: boolean;
   isMobileSize: boolean;
+  projectOwnershipIsHaso: boolean;
 };
 
 const MapApartmentRow = ({
@@ -23,6 +24,7 @@ const MapApartmentRow = ({
   applicationStatus,
   userHasApplicationForProject,
   isMobileSize,
+  projectOwnershipIsHaso,
 }: Props) => {
   const {
     apartment_number,
@@ -34,6 +36,7 @@ const MapApartmentRow = ({
     nid,
     living_area,
     debt_free_sales_price,
+    right_of_occupancy_payment,
     url,
   } = apartment;
 
@@ -57,6 +60,9 @@ const MapApartmentRow = ({
 
   const calculatedDebtFreeSalesPrice = debt_free_sales_price / 100;
   const formattedDebtFreeSalesPrice = `${calculatedDebtFreeSalesPrice.toLocaleString('fi-FI')} \u20AC`;
+
+  const calculatedRightOfOccupancyPayment = right_of_occupancy_payment / 100;
+  const formattedRightOfOccupancyPayment = `${calculatedRightOfOccupancyPayment.toLocaleString('fi-FI')} \u20AC`;
 
   const formattedLivingArea = `${living_area.toLocaleString('fi-FI')} m\u00b2`;
 
@@ -84,10 +90,17 @@ const MapApartmentRow = ({
         <span className="sr-only">{t('SEARCH:area')}</span>
         <span>{formattedLivingArea}</span>
       </div>
-      <div>
-        <span className="sr-only">{t('SEARCH:free-of-debt-price')}</span>
-        <span>{formattedDebtFreeSalesPrice}</span>
-      </div>
+      {projectOwnershipIsHaso ? (
+        <div>
+          <span className="sr-only">{t('SEARCH:right-of-occupancy-payment')}</span>
+          <span>{formattedRightOfOccupancyPayment}</span>
+        </div>
+      ) : (
+        <div>
+          <span className="sr-only">{t('SEARCH:free-of-debt-price')}</span>
+          <span>{formattedDebtFreeSalesPrice}</span>
+        </div>
+      )}
     </>
   );
 
@@ -122,10 +135,17 @@ const MapApartmentRow = ({
         <span className={css.cellMobileTitle}>{t('SEARCH:area')}</span>
         <span>{formattedLivingArea}</span>
       </div>
-      <div className={css.mobileCell}>
-        <span className={css.cellMobileTitle}>{t('SEARCH:free-of-debt-price')}</span>
-        <span>{formattedDebtFreeSalesPrice}</span>
-      </div>
+      {projectOwnershipIsHaso ? (
+        <div className={css.mobileCell}>
+          <span className={css.cellMobileTitle}>{t('SEARCH:right-of-occupancy-payment')}</span>
+          <span>{formattedRightOfOccupancyPayment}</span>
+        </div>
+      ) : (
+        <div className={css.mobileCell}>
+          <span className={css.cellMobileTitle}>{t('SEARCH:free-of-debt-price')}</span>
+          <span>{formattedDebtFreeSalesPrice}</span>
+        </div>
+      )}
       <div className={css.mobileCell}>
         <span className={css.cellMobileTitle}>{t('SEARCH:applications')}</span>
         <span>

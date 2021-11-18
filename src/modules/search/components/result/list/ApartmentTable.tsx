@@ -17,6 +17,7 @@ type Props = {
   applicationStatus: ApartmentApplicationStatusConfig | undefined;
   housingCompany: string | undefined;
   projectID: Project['id'];
+  projectOwnershipIsHaso: boolean;
   userHasApplicationForProject: boolean;
 };
 
@@ -26,6 +27,7 @@ const ApartmentTable = ({
   applicationStatus,
   housingCompany,
   projectID,
+  projectOwnershipIsHaso,
   userHasApplicationForProject,
 }: Props) => {
   const { t } = useTranslation();
@@ -193,20 +195,37 @@ const ApartmentTable = ({
             </button>
           </div>
           <div className={cx(css.headerCell, css.headerCellSortable, css.headerCellNarrow)}>
-            <button
-              type="button"
-              onClick={() => setSort('debt_free_sales_price', false)}
-              className={apartmentSortClasses('debt_free_sales_price')}
-            >
-              <span className="sr-only">
-                {isCurrentlyActiveSort('debt_free_sales_price')
-                  ? t('SEARCH:aria-is-active-sort')
-                  : t('SEARCH:aria-set-sort')}
-                ,&nbsp;
-              </span>
-              <span>{t('SEARCH:free-of-debt-price')}</span>
-              {getSortIcon('debt_free_sales_price')}
-            </button>
+            {projectOwnershipIsHaso ? (
+              <button
+                type="button"
+                onClick={() => setSort('right_of_occupancy_payment', false)}
+                className={apartmentSortClasses('right_of_occupancy_payment')}
+              >
+                <span className="sr-only">
+                  {isCurrentlyActiveSort('right_of_occupancy_payment')
+                    ? t('SEARCH:aria-is-active-sort')
+                    : t('SEARCH:aria-set-sort')}
+                  ,&nbsp;
+                </span>
+                <span>{t('SEARCH:right-of-occupancy-payment')}</span>
+                {getSortIcon('right_of_occupancy_payment')}
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setSort('debt_free_sales_price', false)}
+                className={apartmentSortClasses('debt_free_sales_price')}
+              >
+                <span className="sr-only">
+                  {isCurrentlyActiveSort('debt_free_sales_price')
+                    ? t('SEARCH:aria-is-active-sort')
+                    : t('SEARCH:aria-set-sort')}
+                  ,&nbsp;
+                </span>
+                <span>{t('SEARCH:free-of-debt-price')}</span>
+                {getSortIcon('debt_free_sales_price')}
+              </button>
+            )}
           </div>
           <div className={cx(css.headerCell, css.headerCellNarrow, css.headerCellSpan)} aria-hidden="true">
             <span>{t('SEARCH:applications')}</span>
@@ -220,6 +239,7 @@ const ApartmentTable = ({
             userApplications={applications}
             applicationStatus={getApartmentApplicationStatus(applicationStatus, x.nid)}
             userHasApplicationForProject={userHasApplicationForProject}
+            projectOwnershipIsHaso={projectOwnershipIsHaso}
           />
         ))}
       </ul>

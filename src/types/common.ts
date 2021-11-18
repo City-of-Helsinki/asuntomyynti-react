@@ -78,6 +78,7 @@ export type Apartment = {
   project_virtual_presentation_url: string;
   project_zoning_info: string;
   project_zoning_status: string;
+  right_of_occupancy_payment: number;
   room_count: number;
   sales_price: number;
   services: string[];
@@ -229,6 +230,7 @@ export type SearchResult = {
   project_virtual_presentation_url: string;
   project_zoning_info: string;
   project_zoning_status: string;
+  right_of_occupancy_payment: number;
   room_count: number;
   sales_price: number;
   services: string[];

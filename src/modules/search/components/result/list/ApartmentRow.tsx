@@ -17,9 +17,16 @@ type Props = {
   userApplications: number[] | undefined;
   applicationStatus: string | undefined;
   userHasApplicationForProject: boolean;
+  projectOwnershipIsHaso: boolean;
 };
 
-const ApartmentRow = ({ apartment, userApplications, applicationStatus, userHasApplicationForProject }: Props) => {
+const ApartmentRow = ({
+  apartment,
+  userApplications,
+  applicationStatus,
+  userHasApplicationForProject,
+  projectOwnershipIsHaso,
+}: Props) => {
   const {
     apartment_number,
     apartment_state_of_sale,
@@ -30,6 +37,7 @@ const ApartmentRow = ({ apartment, userApplications, applicationStatus, userHasA
     nid,
     living_area,
     debt_free_sales_price,
+    right_of_occupancy_payment,
     url,
   } = apartment;
 
@@ -65,6 +73,9 @@ const ApartmentRow = ({ apartment, userApplications, applicationStatus, userHasA
 
   const calculatedDebtFreeSalesPrice = debt_free_sales_price / 100;
   const formattedDebtFreeSalesPrice = `${calculatedDebtFreeSalesPrice.toLocaleString('fi-FI')} \u20AC`;
+
+  const calculatedRightOfOccupancyPayment = right_of_occupancy_payment / 100;
+  const formattedRightOfOccupancyPayment = `${calculatedRightOfOccupancyPayment.toLocaleString('fi-FI')} \u20AC`;
 
   const formattedLivingArea = `${living_area.toLocaleString('fi-FI')} m\u00b2`;
 
@@ -115,10 +126,21 @@ const ApartmentRow = ({ apartment, userApplications, applicationStatus, userHasA
         <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>{t('SEARCH:area')}&nbsp; </span>
         <span>{formattedLivingArea}</span>
       </div>
-      <div className={css.cell}>
-        <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>{t('SEARCH:free-of-debt-price')}&nbsp; </span>
-        <span>{formattedDebtFreeSalesPrice}</span>
-      </div>
+      {projectOwnershipIsHaso ? (
+        <div className={css.cell}>
+          <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>
+            {t('SEARCH:right-of-occupancy-payment')}&nbsp;{' '}
+          </span>
+          <span>{formattedRightOfOccupancyPayment}</span>
+        </div>
+      ) : (
+        <div className={css.cell}>
+          <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>
+            {t('SEARCH:free-of-debt-price')}&nbsp;{' '}
+          </span>
+          <span>{formattedDebtFreeSalesPrice}</span>
+        </div>
+      )}
       <div className={css.cell}>
         <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>{t('SEARCH:applications')}&nbsp; </span>
         <span>
