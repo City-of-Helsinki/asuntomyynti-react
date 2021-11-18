@@ -5,7 +5,7 @@ import { LoadingSpinner } from 'hds-react';
 import SearchResults from './components/result/list/SearchResults';
 import SearchForm from './components/form/SearchForm';
 import InfoBlock from '../../common/infoblock/InfoBlock';
-import useElasticsearchQuery from '../../hooks/useElasticsearchQuery';
+import useSearchQuery from '../../hooks/useSearchQuery';
 import useSearchResults from '../../hooks/useSearchResults';
 import ErrorToast from '../../common/errorToast/ErrorToast';
 import MapContainer from './components/result/map/MapResults';
@@ -43,9 +43,11 @@ const SearchContainer = () => {
   const { data: config, isLoading: isConfigLoading, isError: isConfigError } = useContext(DataContext) || {};
 
   // Query, as in elasticsearch query params
-  const { query, updateQuery } = useElasticsearchQuery();
+  const { query, updateQuery } = useSearchQuery(projectOwnershipType, showUpcomingOnly);
 
+  // Set query headers
   const queryHeaders = { token: config?.token };
+
   // Fetch results with current search query
   const { data: searchResults, isFetching: isSearchQueryFetching, isError: isSearchQueryError } = useSearchResults(
     query,

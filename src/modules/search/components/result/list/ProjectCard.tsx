@@ -198,6 +198,7 @@ const ProjectCard = ({
               userHasApplicationForProject={userHasApplications(user, id)}
               housingCompany={housing_company}
               projectID={id}
+              projectOwnershipIsHaso={ownership_type.toLowerCase() === 'haso'}
             />
           )}
         </div>

@@ -37,7 +37,7 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipTyp
     project_district_haso,
     room_count,
     living_area,
-    debt_free_sales_price,
+    price,
     ...additionalFilters
   } = filters || {};
 
@@ -86,9 +86,7 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipTyp
             </div>
           </div>
           <div className={cx(styles.column, styles.columnNarrow, styles.dropdownColumn, styles.canShimmer)}>
-            <div className={styles.dropdownWrapper}>
-              {debt_free_sales_price && <Dropdown name={FilterName.DebtFreeSalesPrice} {...debt_free_sales_price} />}
-            </div>
+            <div className={styles.dropdownWrapper}>{price && <Dropdown name={FilterName.Price} {...price} />}</div>
           </div>
           <div className={cx(styles.column, styles.columnNarrow, styles.canShimmer, styles.searchButtonDesktop)}>
             {!isLoading && searchButton()}
@@ -123,6 +121,7 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipTyp
                   )}
                 </div>
               ))}
+            <div className={styles.column} />
           </div>
         </Collapsible>
         {filters && (

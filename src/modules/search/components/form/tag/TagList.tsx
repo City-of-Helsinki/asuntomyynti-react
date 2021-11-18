@@ -31,10 +31,10 @@ const TagList = ({ filters }: Props) => {
           key={index}
           className={styles.tag}
           onClick={handleClick(name, value)}
-          aria-label={`${t('SEARCH:remove-tag')} ${t(`ES:${label || value}`)}`}
+          aria-label={`${t('SEARCH:remove-tag')} ${t(`ES:${label || value.toLowerCase()}`)}`}
         >
           <IconCross className={styles.icon} />
-          <span className={styles.label}>{t(`ES:${label || value}`)}</span>
+          <span className={styles.label}>{t(`ES:${label || value.toLowerCase()}`)}</span>
         </button>
       ))}
     </div>
