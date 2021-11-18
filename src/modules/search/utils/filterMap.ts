@@ -81,7 +81,7 @@ const filterMap: FilterMap = {
     },
   }),
 
-  debt_free_sales_price: ({ items: [label], suffix, ...rest }) => ({
+  price: ({ items: [label], suffix, ...rest }) => ({
     ...rest,
     type: FilterType.Input,
     items: [
@@ -91,12 +91,12 @@ const filterMap: FilterMap = {
       },
     ],
     getQuery: ([value]) => {
-      return { [FilterName.DebtFreeSalesPrice]: parseInt(value) * 100000 };
+      return { [FilterName.Price]: parseInt(value) * 100000 };
     },
     getLabel: ([value]) => {
       return `max. ${value} 000 ${suffix}`;
     },
-    getTagLabel: (value) => [[FilterName.DebtFreeSalesPrice, value, `max. ${value} 000 ${suffix}`]],
+    getTagLabel: (value) => [[FilterName.Price, value, `max. ${value} 000 ${suffix}`]],
   }),
 
   project_building_type: (config) => ({

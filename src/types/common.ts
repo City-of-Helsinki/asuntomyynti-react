@@ -297,7 +297,7 @@ export enum ApplicationStatus {
 }
 
 export enum FilterName {
-  DebtFreeSalesPrice = 'debt_free_sales_price',
+  Price = 'price',
   LivingArea = 'living_area',
   ProjectBuildingType = 'project_building_type',
   ProjectDistrictHaso = 'project_district_haso',
