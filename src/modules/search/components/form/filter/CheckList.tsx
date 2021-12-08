@@ -39,7 +39,7 @@ const CheckList = ({ name, items, label, isWrapped }: Props) => {
               className={styles.item}
               id={`${label}-${item}-${index}`}
               onChange={handleChange(item)}
-              label={t(`ES:${item.toLowerCase()}`)}
+              label={t(`ES:${item}`)}
               checked={selected.includes(item)}
             />
           );
