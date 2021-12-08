@@ -15,3 +15,10 @@ export const getUserApplications = (user: UserConfig | undefined, id: number) =>
   const applicationsById = user.applications[id];
   return applicationsById;
 };
+
+export const userHasApplicationForApartment = (applications: number[] | undefined, id: number) => {
+  if (!applications) {
+    return false;
+  }
+  return applications.includes(id);
+};

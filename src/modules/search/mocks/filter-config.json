@@ -79,7 +79,7 @@
       "label": "area, m2",
       "suffix": "m2"
     },
-    "debt_free_sales_price": {
+    "price": {
       "items": [
         "Price at most"
       ],

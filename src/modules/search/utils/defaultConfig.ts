@@ -4,13 +4,9 @@ export const defaultConfig = (name: FilterName): DefaultFilterConfig => ({
   label: name,
   suffix: null,
   items: [],
-  getQuery: (values: string[]) => [
-    {
-      terms: {
-        [`${name}.keyword`]: values,
-      },
-    },
-  ],
+  getQuery: (values: string[]) => {
+    return {};
+  },
   getLabel: (values: string[]) => {
     return values.join(', ');
   },

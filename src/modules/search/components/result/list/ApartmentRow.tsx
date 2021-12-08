@@ -5,8 +5,11 @@ import { IconAngleDown, IconAngleUp, IconPenLine } from 'hds-react';
 
 import { Apartment } from '../../../../../types/common';
 import { fullURL } from '../../../utils/fullURL';
+import { userHasApplicationForApartment } from '../../../utils/userApplications';
 import RenderAvailabilityInfo from '../ApplicationStatus';
 import useSessionStorageState from '../../../../../hooks/useSessionStorageState';
+import formattedLivingArea from '../../../utils/formatLivingArea';
+import formattedPrice from '../../../utils/formatPrice';
 
 import css from './ApartmentRow.module.scss';
 
@@ -17,9 +20,16 @@ type Props = {
   userApplications: number[] | undefined;
   applicationStatus: string | undefined;
   userHasApplicationForProject: boolean;
+  projectOwnershipIsHaso: boolean;
 };
 
-const ApartmentRow = ({ apartment, userApplications, applicationStatus, userHasApplicationForProject }: Props) => {
+const ApartmentRow = ({
+  apartment,
+  userApplications,
+  applicationStatus,
+  userHasApplicationForProject,
+  projectOwnershipIsHaso,
+}: Props) => {
   const {
     apartment_number,
     apartment_state_of_sale,
@@ -30,6 +40,7 @@ const ApartmentRow = ({ apartment, userApplications, applicationStatus, userHasA
     nid,
     living_area,
     debt_free_sales_price,
+    right_of_occupancy_payment,
     url,
   } = apartment;
 
@@ -55,18 +66,6 @@ const ApartmentRow = ({ apartment, userApplications, applicationStatus, userHasA
 
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  const userHasApplicationForApartment = () => {
-    if (!userApplications) {
-      return false;
-    }
-    return userApplications.includes(nid);
-  };
-
-  const calculatedDebtFreeSalesPrice = debt_free_sales_price / 100;
-  const formattedDebtFreeSalesPrice = `${calculatedDebtFreeSalesPrice.toLocaleString('fi-FI')} \u20AC`;
-
-  const formattedLivingArea = `${living_area.toLocaleString('fi-FI')} m\u00b2`;
 
   const isApartmentFree = apartment_state_of_sale === 'FREE_FOR_RESERVATIONS';
   const isApartmentOpenForApplications = apartment_state_of_sale === 'OPEN_FOR_APPLICATIONS';
@@ -113,12 +112,23 @@ const ApartmentRow = ({ apartment, userApplications, applicationStatus, userHasA
       </div>
       <div className={css.cell}>
         <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>{t('SEARCH:area')}&nbsp; </span>
-        <span>{formattedLivingArea}</span>
+        <span>{formattedLivingArea(living_area)}</span>
       </div>
-      <div className={css.cell}>
-        <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>{t('SEARCH:free-of-debt-price')}&nbsp; </span>
-        <span>{formattedDebtFreeSalesPrice}</span>
-      </div>
+      {projectOwnershipIsHaso ? (
+        <div className={css.cell}>
+          <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>
+            {t('SEARCH:right-of-occupancy-payment')}&nbsp;{' '}
+          </span>
+          <span>{formattedPrice(right_of_occupancy_payment)}</span>
+        </div>
+      ) : (
+        <div className={css.cell}>
+          <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>
+            {t('SEARCH:free-of-debt-price')}&nbsp;{' '}
+          </span>
+          <span>{formattedPrice(debt_free_sales_price)}</span>
+        </div>
+      )}
       <div className={css.cell}>
         <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>{t('SEARCH:applications')}&nbsp; </span>
         <span>
@@ -130,7 +140,7 @@ const ApartmentRow = ({ apartment, userApplications, applicationStatus, userHasA
 
   const apartmentRowActions = (
     <div className={css.cellButtons}>
-      {userHasApplicationForApartment() ? (
+      {userHasApplicationForApartment(userApplications, nid) ? (
         <div className={css.verticalContent}>
           <div className={css.applicationSent}>
             <IconPenLine style={{ marginRight: 10 }} aria-hidden="true" />
