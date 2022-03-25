@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { LoadingSpinner } from 'hds-react';
+import { IconAlertCircle, LoadingSpinner } from 'hds-react';
 
 import SearchResults from './components/result/list/SearchResults';
 import SearchForm from './components/form/SearchForm';
@@ -194,7 +194,6 @@ const SearchContainer = () => {
       }
     />
   );
-
   const renderPreMarketingListResults = () => (
     <SearchResults
       config={config}
@@ -209,13 +208,29 @@ const SearchContainer = () => {
     />
   );
 
-  const renderListResults = () => (
-    <section aria-label={t('SEARCH:aria-label-list-results')}>
-      {renderFreeApartmentListResults()}
-      {renderForSaleListResults()}
-      {renderPreMarketingListResults()}
-    </section>
-  );
+  const renderListResults = () => {
+    if (!searchResultsWithoutUpcoming.length) {
+      return (
+        <section className={styles.container} aria-label={t('SEARCH:aria-label-list-results')}>
+          <header>
+            <h2 className={styles.noResultsText}>
+              <IconAlertCircle className={styles.alertIcon} />
+              {t('SEARCH:no-results')}
+            </h2>
+            <p>{t('SEARCH:no-results-help-text')}</p>
+          </header>
+        </section>
+      );
+    }
+
+    return (
+      <section aria-label={t('SEARCH:aria-label-list-results')}>
+        {renderFreeApartmentListResults()}
+        {renderForSaleListResults()}
+        {renderPreMarketingListResults()}
+      </section>
+    );
+  };
 
   return (
     <div>
