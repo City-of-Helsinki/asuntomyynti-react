@@ -1,10 +1,20 @@
 .completionTime,
 .applicationTime,
 .applicationSent,
-.moveInTime {
+.moveInTime,
+.upcomingDescription {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: var(--spacing-xs);
+
+  svg {
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
+  span {
+    line-height: 24px;
+  }
 
   &.dense {
     margin-bottom: var(--spacing-2-xs);

@@ -40,4 +40,14 @@ describe('ProjectInfo', () => {
     render(<ProjectInfo project={{ ...mockProject, possession_transfer_date: '' }} />);
     expect(screen.queryByText('SEARCH:move-in-date', { exact: false })).toBeNull();
   });
+
+  it('does have upcoming description', () => {
+    render(<ProjectInfo project={mockProject} />);
+    expect(screen.getByText('Kohde on suunnitteilla ja tulossa hakuun')).toBeDefined();
+  });
+
+  it('does not have upcoming description', () => {
+    render(<ProjectInfo project={{ ...mockProject, upcoming_description: '' }} />);
+    expect(screen.queryByText('Kohde on suunnitteilla ja tulossa hakuun')).toBeNull();
+  });
 });

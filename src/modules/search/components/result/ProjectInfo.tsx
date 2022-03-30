@@ -1,10 +1,10 @@
 import React from 'react';
 import cx from 'classnames';
-import { IconCogwheel, IconClock, IconPenLine } from 'hds-react';
+import { IconCogwheel, IconClock, IconPenLine, IconInfoCircle } from 'hds-react';
 import { format } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 
-import { Project } from '../../../../types/common';
+import { Project, StateOfSale } from '../../../../types/common';
 import css from './ProjectInfo.module.scss';
 
 type Props = {
@@ -15,7 +15,14 @@ type Props = {
 
 const ProjectInfo = ({ project, userHasApplications, dense = false }: Props) => {
   const { t } = useTranslation();
-  const { estimated_completion, application_end_time, application_start_time, possession_transfer_date } = project;
+  const {
+    application_end_time,
+    application_start_time,
+    estimated_completion,
+    possession_transfer_date,
+    state_of_sale,
+    upcoming_description,
+  } = project;
 
   const renderApplicationPeriodText = () => {
     const applicationPeriodHasStarted = new Date().getTime() > new Date(application_start_time).getTime();
@@ -66,6 +73,12 @@ const ProjectInfo = ({ project, userHasApplications, dense = false }: Props) => 
           <span>
             {t('SEARCH:move-in-date')} {format(new Date(possession_transfer_date), 'dd.MM.yyyy')}
           </span>
+        </div>
+      )}
+      {state_of_sale === StateOfSale.Upcoming && !!upcoming_description && (
+        <div className={dense ? cx(css.upcomingDescription, css.dense) : css.upcomingDescription}>
+          <IconInfoCircle style={{ marginRight: 10 }} aria-hidden="true" />
+          <span>{upcoming_description}</span>
         </div>
       )}
     </div>
