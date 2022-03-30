@@ -153,6 +153,7 @@
   "site_renter": "Helsingin kaupunki",
   "state_of_sale": "UPCOMING",
   "street_address": "Pellervontie 24",
+  "upcoming_description": "Kohde on suunnitteilla ja tulossa hakuun",
   "url": "https://nginx-asuntotuotanto-public-test.agw.arodevtest.hel.fi/project/84",
   "uuid": "bdb19b55-5cb8-4f36-816a-81545fd5f966",
   "zoning_status": "Vahvistettu asemakaava"

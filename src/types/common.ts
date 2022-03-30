@@ -145,6 +145,7 @@ export type Project = {
   site_renter: string;
   state_of_sale: StateOfSale;
   street_address: string;
+  upcoming_description: string;
   url: string;
   uuid: string;
   virtual_presentation_url: string;
