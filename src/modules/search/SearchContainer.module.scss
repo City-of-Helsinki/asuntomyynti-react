@@ -34,6 +34,12 @@
   vertical-align: baseline;
   position: relative;
   padding-left: var(--spacing-l);
+  font-size: var(--fontsize-heading-s);
+  margin: var(--spacing-s) 0;
+
+  @media (min-width: 577px) {
+    font-size: var(--fontsize-heading-m);
+  }
 }
 
 .alertIcon {
