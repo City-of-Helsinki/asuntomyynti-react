@@ -182,7 +182,7 @@ const ProjectCard = ({
                 aria-controls={`apartments-for-${id}`}
                 id={`toggle-apartment-list-${id}`}
               >
-                {filteredApartments.length} {t('SEARCH:apartments-available')}
+                {filteredApartments.length} {t('SEARCH:apartments')}
               </Button>
             )}
           </div>
