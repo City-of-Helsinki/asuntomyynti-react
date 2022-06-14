@@ -34,4 +34,9 @@
     background-color: var(--color-metro-dark);
     border-color: var(--color-metro-dark);
   }
+
+  &.statusCircleReserved {
+    background-color: transparent;
+    border-color: var(--color-alert-dark);
+  }
 }
