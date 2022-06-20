@@ -14,11 +14,18 @@ const RenderAvailabilityInfo = ({ status, dotOnly = false }: Props) => {
   const { t } = useTranslation();
 
   switch (status) {
-    case ApplicationStatus.Free:
+    case ApplicationStatus.Vacant:
       return (
         <>
           <span className={cx(css.statusCircle, css.statusCircleFree)} aria-hidden="true" />
           <span className={dotOnly ? 'sr-only' : ''}>{t('SEARCH:apartment-free')}</span>
+        </>
+      );
+    case ApplicationStatus.Reserved:
+      return (
+        <>
+          <span className={cx(css.statusCircle, css.statusCircleReserved)} aria-hidden="true" />
+          <span className={dotOnly ? 'sr-only' : ''}>{t('SEARCH:apartment-reserved')}</span>
         </>
       );
     case ApplicationStatus.Low:

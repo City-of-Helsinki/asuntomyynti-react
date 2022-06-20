@@ -13,9 +13,14 @@ test('renders ApplicationStatus component', () => {
   expect(element).toBeDefined();
 });
 
-test('renders ApplicationStatus as free', () => {
-  render(<ApplicationStatus status="FREE" />);
+test('renders ApplicationStatus as Vacant', () => {
+  render(<ApplicationStatus status="VACANT" />);
   expect(screen.getByText('SEARCH:apartment-free')).toBeDefined();
+});
+
+test('renders ApplicationStatus as Reserved', () => {
+  render(<ApplicationStatus status="RESERVED" />);
+  expect(screen.getByText('SEARCH:apartment-reserved')).toBeDefined();
 });
 
 test('renders ApplicationStatus as low', () => {

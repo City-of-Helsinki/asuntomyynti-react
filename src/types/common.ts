@@ -197,7 +197,8 @@ export enum StateOfSale {
 }
 
 export enum ApplicationStatus {
-  Free = 'FREE',
+  Vacant = 'VACANT',
+  Reserved = 'RESERVED',
   Low = 'LOW',
   Medium = 'MEDIUM',
   High = 'HIGH',

@@ -81,7 +81,7 @@ const ApartmentRow = ({
       {isMobileSize ? (
         <>
           <span className={css.apartmentAvailabilityMobile}>
-            <RenderAvailabilityInfo status={isApartmentFree ? 'FREE' : applicationStatus} dotOnly={true} />
+            <RenderAvailabilityInfo status={isApartmentFree ? 'VACANT' : applicationStatus} dotOnly={true} />
           </span>
           <span>
             <span className="sr-only">{t('SEARCH:aria-apartment-structure')}: </span>
@@ -132,7 +132,7 @@ const ApartmentRow = ({
       <div className={css.cell}>
         <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>{t('SEARCH:applications')}&nbsp; </span>
         <span>
-          <RenderAvailabilityInfo status={isApartmentFree ? 'FREE' : applicationStatus} />
+          <RenderAvailabilityInfo status={isApartmentFree ? 'VACANT' : applicationStatus} />
         </span>
       </div>
     </>
