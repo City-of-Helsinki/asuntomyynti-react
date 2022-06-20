@@ -63,10 +63,13 @@ const SearchContainer = () => {
     READY: ready = [],
     FOR_SALE: forSale = [],
     PRE_MARKETING: preMarketing = [],
+    PROCESSING: processing = [],
     UPCOMING: upcoming = [],
   } = groupProjectsByState(filteredSearchResults);
 
-  const searchResultsWithoutUpcoming = ready.concat(forSale, preMarketing);
+  const forSaleAndProcessing = forSale.concat(processing);
+
+  const searchResultsWithoutUpcoming = ready.concat(forSaleAndProcessing, preMarketing);
 
   const hasFreeApartments = !!ready.length;
 
@@ -180,11 +183,11 @@ const SearchContainer = () => {
     );
   };
 
-  const renderForSaleListResults = () => (
+  const renderForSaleAndProcessingListResults = () => (
     <SearchResults
       config={config}
       header={t('SEARCH:for-sale')}
-      searchResults={forSale}
+      searchResults={forSaleAndProcessing}
       openMap={hasFreeApartments ? undefined : openMap}
       currentLang={currentLang}
       tooltipText={
@@ -226,7 +229,7 @@ const SearchContainer = () => {
     return (
       <section aria-label={t('SEARCH:aria-label-list-results')}>
         {renderFreeApartmentListResults()}
-        {renderForSaleListResults()}
+        {renderForSaleAndProcessingListResults()}
         {renderPreMarketingListResults()}
       </section>
     );

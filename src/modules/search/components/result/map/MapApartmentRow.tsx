@@ -97,7 +97,7 @@ const MapApartmentRow = ({
       <span className="sr-only">{t('SEARCH:apartment')}</span>
       <strong>{apartment_number}</strong>
       <span className={css.apartmentAvailabilityMobile}>
-        <RenderAvailabilityInfo status={isApartmentFree ? 'FREE' : applicationStatus} dotOnly={true} />
+        <RenderAvailabilityInfo status={isApartmentFree ? 'VACANT' : applicationStatus} dotOnly={true} />
       </span>
       <span>
         <span className="sr-only">{t('SEARCH:aria-apartment-structure')}: </span>
@@ -137,7 +137,7 @@ const MapApartmentRow = ({
       <div className={css.mobileCell}>
         <span className={css.cellMobileTitle}>{t('SEARCH:applications')}</span>
         <span>
-          <RenderAvailabilityInfo status={isApartmentFree ? 'FREE' : applicationStatus} />
+          <RenderAvailabilityInfo status={isApartmentFree ? 'VACANT' : applicationStatus} />
         </span>
       </div>
     </div>
@@ -244,7 +244,7 @@ const MapApartmentRow = ({
             <div className={css.apartmentDetails}>{apartmentRowBaseDetails}</div>
             <div className={css.apartmentAvailability}>
               <span className="sr-only">{t('SEARCH:applications')}, </span>
-              <RenderAvailabilityInfo status={isApartmentFree ? 'FREE' : applicationStatus} dotOnly={false} />
+              <RenderAvailabilityInfo status={isApartmentFree ? 'VACANT' : applicationStatus} dotOnly={false} />
             </div>
             {apartmentRowActions}
           </>

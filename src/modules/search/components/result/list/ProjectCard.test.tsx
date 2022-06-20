@@ -21,11 +21,11 @@ test('renders ProjectCard component with proper data', () => {
 test('Apartment list toggle button is hidden', () => {
   render(<ProjectCard project={mockProject} hideApartments={true} />);
 
-  expect(screen.queryByText('SEARCH:apartments-available')).toBeNull();
+  expect(screen.queryByText('SEARCH:apartments')).toBeNull();
 });
 
 test('Apartment list toggle button is shown', () => {
   render(<ProjectCard project={mockProject} hideApartments={false} />);
 
-  expect(screen.queryByText('1 SEARCH:apartments-available')).not.toBeNull();
+  expect(screen.queryByText('1 SEARCH:apartments')).not.toBeNull();
 });
