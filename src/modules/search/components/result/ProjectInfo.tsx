@@ -38,11 +38,11 @@ const ProjectInfo = ({ project, userHasApplications, dense = false }: Props) => 
 
     // Show when the application period has ended
     if (applicationPeriodHasEnded) {
-      return `${t('SEARCH:application-period-ended')} ${format(new Date(application_end_time), 'dd.MM.yyyy, hh:mm')}`;
+      return `${t('SEARCH:application-period-ended')} ${format(new Date(application_end_time), 'dd.MM.yyyy, HH:mm')}`;
     }
 
     // Show when the currently active application period ends
-    return `${t('SEARCH:application-period-ends')} ${format(new Date(application_end_time), 'dd.MM.yyyy, hh:mm')}`;
+    return `${t('SEARCH:application-period-ends')} ${format(new Date(application_end_time), 'dd.MM.yyyy, HH:mm')}`;
   };
 
   return (
