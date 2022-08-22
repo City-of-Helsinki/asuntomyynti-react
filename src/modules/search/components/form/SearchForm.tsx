@@ -1,15 +1,12 @@
-import React, { RefObject, useRef } from 'react';
+import React, { RefObject } from 'react';
 import styles from './SearchForm.module.scss';
-import { Button, IconSearch, IconMinus, IconPlus, IconCross, Notification } from 'hds-react';
+import { Button, IconSearch, IconCross, Notification } from 'hds-react';
 import cx from 'classnames';
-import QueryFilter from './filter/QueryFilter';
 import Dropdown from './filter/Dropdown';
-import Collapsible from '../../../../common/collapsible/Collapsible';
-import { DataConfig, FilterName, FilterConfigs } from '../../../../types/common';
+import { DataConfig, FilterName } from '../../../../types/common';
 import TagList from './tag/TagList';
 import { useTranslation } from 'react-i18next';
 import useFilters from '../../../../hooks/useFilters';
-import useSessionStorageState from '../../../../hooks/useSessionStorageState';
 
 type Props = {
   config: DataConfig | undefined;
@@ -23,23 +20,9 @@ type Props = {
 
 const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipType, focusRef, onSubmit }: Props) => {
   const { clearAllFilters, hasFilters } = useFilters();
-  const [isOptionsOpen, setOptionsOpen] = useSessionStorageState({ defaultValue: false, key: 'searchFormOptionsOpen' });
-  const [isOptionsVisible, setOptionsVisible] = useSessionStorageState({
-    defaultValue: false,
-    key: 'searchFormOptionsVisible',
-  });
-  const collapsedFiltersRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
   const { filters } = config || {};
-  const {
-    project_district,
-    project_district_hitas,
-    project_district_haso,
-    room_count,
-    living_area,
-    price,
-    ...additionalFilters
-  } = filters || {};
+  const { project_district_hitas, project_district_haso, room_count, living_area, price } = filters || {};
 
   const searchButton = () => (
     <Button className={styles.submitButton} onClick={() => onSubmit()} iconLeft={<IconSearch aria-hidden="true" />}>
@@ -97,33 +80,6 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipTyp
             </button>
           </div>
         </div>
-        <Collapsible
-          id={'optionsCollapse'}
-          expand={isOptionsOpen}
-          onCollapse={() => {
-            setOptionsVisible(false);
-          }}
-        >
-          <div className={styles.row}>
-            <div className={styles.divider} />
-          </div>
-          <div
-            className={cx(styles.row, styles.hasTopPadding, styles.hasBottomPadding)}
-            ref={collapsedFiltersRef}
-            tabIndex={-1}
-            role="region"
-          >
-            {isOptionsVisible &&
-              (Object.keys(additionalFilters) as FilterName[]).map<JSX.Element>((name, index) => (
-                <div className={styles.column} key={index}>
-                  {(additionalFilters as FilterConfigs)[name] && (
-                    <QueryFilter name={name} {...(additionalFilters as FilterConfigs)[name]} />
-                  )}
-                </div>
-              ))}
-            <div className={styles.column} />
-          </div>
-        </Collapsible>
         {filters && (
           <div className={styles.row}>
             <div className={styles.column} role="region" aria-label={t('SEARCH:aria-active-filters')}>
@@ -132,40 +88,7 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipTyp
           </div>
         )}
         <div className={styles.searchButtonMobile}>{!isLoading && searchButton()}</div>
-        <div className={styles.row}>
-          <div>
-            <div className={styles.divider} />
-          </div>
-        </div>
         <div className={cx(styles.row, styles.hasTopPadding)}>
-          <div className={cx(styles.column, styles.textCenterMobile)}>
-            <button
-              className={styles.showMoreButton}
-              onClick={() => {
-                if (isOptionsOpen) {
-                  setOptionsOpen(false);
-                } else {
-                  setOptionsOpen(true);
-                  setOptionsVisible(true);
-                  collapsedFiltersRef.current?.focus();
-                }
-              }}
-              aria-controls="optionsCollapse"
-              aria-expanded={isOptionsOpen ? true : false}
-            >
-              {isOptionsOpen ? (
-                <>
-                  <IconMinus aria-hidden="true" />
-                  <span>{t('SEARCH:show-less-options')}</span>
-                </>
-              ) : (
-                <>
-                  <IconPlus aria-hidden="true" />
-                  <span>{t('SEARCH:show-more-options')}</span>
-                </>
-              )}
-            </button>
-          </div>
           {filters && hasFilters(filters) && (
             <div className={cx(styles.column, styles.textCenterMobile)}>
               <button onClick={() => clearAllFilters(filters)} className={styles.clearFilters}>
