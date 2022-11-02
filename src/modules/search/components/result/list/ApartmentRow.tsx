@@ -36,6 +36,7 @@ const ApartmentRow = ({
     apartment_structure,
     application_url,
     floor,
+    floor_max,
     nid,
     living_area,
     debt_free_sales_price,
@@ -106,7 +107,7 @@ const ApartmentRow = ({
       <div className={css.cell}>
         <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>{t('SEARCH:floor')}&nbsp; </span>
         <span>
-          {floor}
+          {floor} {(floor_max && floor_max > 1) && ` / ${floor_max}`}
         </span>
       </div>
       <div className={css.cell}>
