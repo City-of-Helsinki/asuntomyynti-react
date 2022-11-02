@@ -71,7 +71,7 @@ const MapApartmentRow = ({
       <div>
         <span className="sr-only">{t('SEARCH:floor')}</span>
         <span>
-          {floor} {floor_max && ` / ${floor_max}`}
+          {floor} {(floor_max && floor_max > 1) && ` / ${floor_max}`}
         </span>
       </div>
       <div>
@@ -116,7 +116,7 @@ const MapApartmentRow = ({
       <div className={css.mobileCell}>
         <span className={css.cellMobileTitle}>{t('SEARCH:floor')}</span>
         <span>
-          {floor} {floor_max && ` / ${floor_max}`}
+          {floor} {(floor_max && floor_max > 1) && ` / ${floor_max}`}
         </span>
       </div>
       <div className={css.mobileCell}>
