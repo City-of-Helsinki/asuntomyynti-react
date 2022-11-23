@@ -49,14 +49,14 @@ const SearchContainer = () => {
   const queryHeaders = { token: config?.token };
 
   // Fetch results with current search query
-  const { data: searchResults, isFetching: isSearchQueryFetching, isError: isSearchQueryError } = useSearchResults(
-    query,
-    queryHeaders,
-    currentLang
-  );
+  const {
+    data: searchResults,
+    isFetching: isSearchQueryFetching,
+    isError: isSearchQueryError,
+  } = useSearchResults(query, queryHeaders, currentLang);
 
   // Filter HITAS/HASO apartments by selected ownership type
-  const filteredSearchResults = filterProjectsByOwnershipType(searchResults, projectOwnershipType);
+  const filteredSearchResults = filterProjectsByOwnershipType(searchResults ?? [], projectOwnershipType);
 
   // Set READY, FOR_SALE, PRE_MARKETING and UPCOMING apartments from HITAS/HASO filtered lists
   const {
