@@ -110,7 +110,7 @@ const ApartmentRow = ({
       <div className={css.cell}>
         <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>{t('SEARCH:floor')}&nbsp; </span>
         <span>
-          {floor} {floor_max && floor_max > 1 && ` / ${floor_max}`}
+          {floor} {(floor_max && floor_max > 1) && ` / ${floor_max}`}
         </span>
       </div>
       <div className={css.cell}>
