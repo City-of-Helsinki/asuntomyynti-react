@@ -42,6 +42,7 @@ const ApartmentRow = ({
     debt_free_sales_price,
     right_of_occupancy_payment,
     url,
+    release_payment,
   } = apartment;
 
   const { t } = useTranslation();
@@ -50,6 +51,8 @@ const ApartmentRow = ({
 
   const isDesktopSize = width > BREAK_POINT;
   const isMobileSize = width <= BREAK_POINT;
+
+  const hasoVariablePrice = release_payment && release_payment > 0 ? release_payment : right_of_occupancy_payment;
 
   const handleResize = () => {
     setWidth(window.innerWidth);
@@ -119,7 +122,7 @@ const ApartmentRow = ({
           <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>
             {t('SEARCH:right-of-occupancy-payment')}&nbsp;{' '}
           </span>
-          <span>{formattedPrice(right_of_occupancy_payment)}</span>
+          <span>{formattedPrice(hasoVariablePrice)}</span>
         </div>
       ) : (
         <div className={css.cell}>
