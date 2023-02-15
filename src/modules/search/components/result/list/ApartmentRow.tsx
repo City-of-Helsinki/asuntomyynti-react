@@ -5,11 +5,11 @@ import { IconAngleDown, IconAngleUp, IconPenLine } from 'hds-react';
 
 import { Apartment } from '../../../../../types/common';
 import { fullURL } from '../../../utils/fullURL';
+import { getApartmentPrice } from '../../../utils/getApartmentPrice';
 import { userHasApplicationForApartment } from '../../../utils/userApplications';
 import RenderAvailabilityInfo from '../ApplicationStatus';
 import useSessionStorageState from '../../../../../hooks/useSessionStorageState';
 import formattedLivingArea from '../../../utils/formatLivingArea';
-import formattedPrice from '../../../utils/formatPrice';
 
 import css from './ApartmentRow.module.scss';
 
@@ -39,10 +39,7 @@ const ApartmentRow = ({
     floor_max,
     nid,
     living_area,
-    debt_free_sales_price,
-    right_of_occupancy_payment,
     url,
-    release_payment,
   } = apartment;
 
   const { t } = useTranslation();
@@ -51,8 +48,6 @@ const ApartmentRow = ({
 
   const isDesktopSize = width > BREAK_POINT;
   const isMobileSize = width <= BREAK_POINT;
-
-  const hasoVariablePrice = release_payment && release_payment > 0 ? release_payment : right_of_occupancy_payment;
 
   const handleResize = () => {
     setWidth(window.innerWidth);
@@ -110,28 +105,19 @@ const ApartmentRow = ({
       <div className={css.cell}>
         <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>{t('SEARCH:floor')}&nbsp; </span>
         <span>
-          {floor} {(floor_max && floor_max > 1) && ` / ${floor_max}`}
+          {floor} {!!floor_max && floor_max > 1 && ` / ${floor_max}`}
         </span>
       </div>
       <div className={css.cell}>
         <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>{t('SEARCH:area')}&nbsp; </span>
         <span>{formattedLivingArea(living_area)}</span>
       </div>
-      {projectOwnershipIsHaso ? (
-        <div className={css.cell}>
-          <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>
-            {t('SEARCH:right-of-occupancy-payment')}&nbsp;{' '}
-          </span>
-          <span>{formattedPrice(hasoVariablePrice)}</span>
-        </div>
-      ) : (
-        <div className={css.cell}>
-          <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>
-            {t('SEARCH:free-of-debt-price')}&nbsp;{' '}
-          </span>
-          <span>{formattedPrice(debt_free_sales_price)}</span>
-        </div>
-      )}
+      <div className={css.cell}>
+        <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>
+          {projectOwnershipIsHaso ? t('SEARCH:right-of-occupancy-payment') : t('SEARCH:free-of-debt-price')}&nbsp;{' '}
+        </span>
+        <span>{getApartmentPrice(apartment)}</span>
+      </div>
       <div className={css.cell}>
         <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>{t('SEARCH:applications')}&nbsp; </span>
         <span>
