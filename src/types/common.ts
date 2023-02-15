@@ -80,6 +80,7 @@ export type Apartment = {
   project_zoning_info: string;
   project_zoning_status: string;
   right_of_occupancy_payment: number;
+  release_payment: number;
   room_count: number;
   sales_price: number;
   services: string[];
