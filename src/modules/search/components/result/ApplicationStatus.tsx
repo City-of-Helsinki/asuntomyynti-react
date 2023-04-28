@@ -28,6 +28,13 @@ const RenderAvailabilityInfo = ({ status, dotOnly = false }: Props) => {
           <span className={dotOnly ? 'sr-only' : ''}>{t('SEARCH:apartment-reserved')}</span>
         </>
       );
+    case ApplicationStatus.Sold:
+      return (
+        <>
+          <span className={cx(css.statusCircle, css.statusCircleSold)} aria-hidden="true" />
+          <span className={dotOnly ? 'sr-only' : ''}>{t('SEARCH:apartment-sold')}</span>
+        </>
+      );
     case ApplicationStatus.Low:
       return (
         <>
