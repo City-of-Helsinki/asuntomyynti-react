@@ -32,7 +32,7 @@ const ProjectInfo = ({ project, userHasApplications, dense = false }: Props) => 
     if (!applicationPeriodHasStarted) {
       return `${t('SEARCH:application-period-starts')} ${format(
         new Date(application_start_time),
-        'dd.MM.yyyy, hh:mm'
+        'dd.MM.yyyy, HH:mm'
       )}`;
     }
 
