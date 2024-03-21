@@ -200,6 +200,7 @@ export enum StateOfSale {
 export enum ApplicationStatus {
   Vacant = 'VACANT',
   Reserved = 'RESERVED',
+  ReservedHaso = 'RESERVED_HASO',
   Sold = 'SOLD',
   Low = 'LOW',
   Medium = 'MEDIUM',

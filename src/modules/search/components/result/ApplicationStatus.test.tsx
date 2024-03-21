@@ -23,6 +23,11 @@ test('renders ApplicationStatus as Reserved', () => {
   expect(screen.getByText('SEARCH:apartment-reserved')).toBeDefined();
 });
 
+test('renders ApplicationStatus as Reserved', () => {
+  render(<ApplicationStatus status="RESERVED_HASO" />);
+  expect(screen.getByText('SEARCH:apartment-reserved')).toBeDefined();
+});
+
 test('renders ApplicationStatus as Sold', () => {
   render(<ApplicationStatus status="SOLD" />);
   expect(screen.getByText('SEARCH:apartment-sold')).toBeDefined();

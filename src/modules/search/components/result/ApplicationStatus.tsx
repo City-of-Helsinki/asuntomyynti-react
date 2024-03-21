@@ -21,6 +21,7 @@ const RenderAvailabilityInfo = ({ status, dotOnly = false }: Props) => {
           <span className={dotOnly ? 'sr-only' : ''}>{t('SEARCH:apartment-free')}</span>
         </>
       );
+    case ApplicationStatus.ReservedHaso:
     case ApplicationStatus.Reserved:
       return (
         <>
