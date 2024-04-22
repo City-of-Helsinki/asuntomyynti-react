@@ -36,12 +36,12 @@
   }
 
   &.statusCircleReserved {
-    background-color: transparent;
-    border-color: var(--color-alert-dark);
+    background-color: var(--color-metro);
+    border-color: var(--color-metro);
   }
 
   &.statusCircleSold {
-    background-color: transparent;
-    border-color: var(--color-alert-dark);
+    background-color: var(--color-metro);
+    border-color: var(--color-metro);
   }
 }
