@@ -11,6 +11,7 @@ const SortApartments = (items: any, sessionStorageID: string) => {
     defaultValue: sortDefaultProps,
     key: `sortConfig-${sessionStorageID}`,
   });
+
   const sortedApartments = React.useMemo(() => {
     let sortableApartments = [...items];
 
