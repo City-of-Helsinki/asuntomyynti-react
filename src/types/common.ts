@@ -18,7 +18,6 @@ export type Apartment = {
   has_balcony: boolean;
   has_terrace: boolean;
   has_yard: boolean;
-  haso_fee: number;
   housing_company_fee: number;
   kitchen_appliances: string;
   living_area: number;
@@ -80,6 +79,7 @@ export type Apartment = {
   project_virtual_presentation_url: string;
   project_zoning_info: string;
   project_zoning_status: string;
+  right_of_occupancy_payment: number;
   release_payment: number;
   room_count: number;
   sales_price: number;

@@ -198,11 +198,13 @@ const ApartmentTable = ({
             {projectOwnershipIsHaso ? (
               <button
                 type="button"
-                onClick={() => setSort('haso_fee', false)}
+                onClick={() => setSort('right_of_occupancy_payment', false)}
                 className={apartmentSortClasses('right_of_occupancy_payment')}
               >
                 <span className="sr-only">
-                  {isCurrentlyActiveSort('haso_fee') ? t('SEARCH:aria-is-active-sort') : t('SEARCH:aria-set-sort')}
+                  {isCurrentlyActiveSort('right_of_occupancy_payment')
+                    ? t('SEARCH:aria-is-active-sort')
+                    : t('SEARCH:aria-set-sort')}
                   ,&nbsp;
                 </span>
                 <span>{t('SEARCH:right-of-occupancy-payment')}</span>
