@@ -53,12 +53,14 @@ const ProjectInfo = ({ project, userHasApplications, dense = false }: Props) => 
           <span>{estimated_completion}</span>
         </div>
       )}
-      {application_start_time && application_end_time && (
-        <div className={dense ? cx(css.applicationTime, css.dense) : css.applicationTime}>
-          <IconClock style={{ marginRight: 10 }} aria-hidden="true" />
-          <span>{renderApplicationPeriodText()}</span>
-        </div>
-      )}
+      {application_start_time &&
+        application_end_time &&
+        new Date(application_end_time).getTime() > new Date().getTime() && (
+          <div className={dense ? cx(css.applicationTime, css.dense) : css.applicationTime}>
+            <IconClock style={{ marginRight: 10 }} aria-hidden="true" />
+            <span>{renderApplicationPeriodText()}</span>
+          </div>
+        )}
       {userHasApplications && (
         <>
           <div className={dense ? cx(css.applicationSent, css.dense) : css.applicationSent}>
