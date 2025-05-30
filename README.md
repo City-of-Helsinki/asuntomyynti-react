@@ -16,6 +16,18 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
+
+#### ⚠️ Newer node versions ⚠️
+You might run into an error such as
+
+`Package subpath './lib/tokenize' is not defined by "exports" in ...`
+
+when using a newer version of Node. To fix this, run the following command
+
+```$ nvm install 16.0```
+
+and then run `yarn start` normally
+
 ### `yarn test`
 
 Launches the test runner in the interactive watch mode.<br />
