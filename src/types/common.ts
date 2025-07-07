@@ -233,6 +233,11 @@ export type DefaultFilterConfigs = {
 
 export type ParamList = Array<[FilterName, string] | [FilterName, string, string]>;
 
+export type ApplicationProjectPair = {
+  project_id: number;
+  application_id: number;
+};
+
 export type StaticContent = {
   haso_instruction_text: string;
   haso_instruction_text_mobile: string;
@@ -250,6 +255,7 @@ export type UserConfig = {
   email_address: string | null;
   username: string;
   applications: number[][];
+  application_project_pairs?: ApplicationProjectPair[];
   followed_projects: number[];
 };
 
