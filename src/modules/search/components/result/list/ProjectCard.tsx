@@ -1,21 +1,21 @@
+import { Button, IconAngleLeft, IconAngleRight, IconArrowDown, IconArrowUp } from 'hds-react';
+import { ButtonBack, ButtonNext, CarouselProvider, Slide, Slider } from 'pure-react-carousel';
 import React, { useEffect, useState } from 'react';
-import { IconAngleLeft, IconAngleRight, IconArrowDown, IconArrowUp, Button } from 'hds-react';
-import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel';
 import { useTranslation } from 'react-i18next';
 
 import { DataConfig, Project } from '../../../../../types/common';
-import { getLanguageFilteredApartments } from '../../../utils/getLanguageFilteredApartments';
-import { getProjectApplicationStatus } from '../../../utils/getApplicationStatus';
-import { userHasApplications, getUserApplications } from '../../../utils/userApplications';
 import { fullURL } from '../../../utils/fullURL';
+import { getProjectApplicationStatus } from '../../../utils/getApplicationStatus';
+import { getLanguageFilteredApartments } from '../../../utils/getLanguageFilteredApartments';
+import { getUserApplications, userHasApplications } from '../../../utils/userApplications';
 import ApartmentTable from './ApartmentTable';
 // import SubscribeToProjectMailinglist from '../SubscribeToProjectMailinglist';
-import ProjectInfo from '../ProjectInfo';
 import Label from '../../../../../common/label/Label';
 import useSessionStorageState from '../../../../../hooks/useSessionStorageState';
+import ProjectInfo from '../ProjectInfo';
 
-import css from './ProjectCard.module.scss';
 import 'pure-react-carousel/dist/react-carousel.es.css';
+import css from './ProjectCard.module.scss';
 
 type Props = {
   config: DataConfig | undefined;
@@ -70,6 +70,9 @@ const ProjectCard = ({
 
   const filteredApartments = getLanguageFilteredApartments(apartments, currentLang);
   const hasApartments = !!filteredApartments.length;
+  const applicationPair = config?.user?.application_project_pairs?.find((pair) => pair.project_id === id);
+  const applicationId = applicationPair ? applicationPair.application_id : undefined;
+  const applicationUrl = applicationId ? `/${currentLang}/application/${applicationId}` : undefined;
 
   const renderImageCarousel = () => {
     let totalImageCount = 0;
@@ -134,7 +137,6 @@ const ProjectCard = ({
   };
 
   const isSmallScreen = width < 993;
-
   return (
     <div className={css.container}>
       <div className={css.content}>
@@ -154,7 +156,11 @@ const ProjectCard = ({
                 </>
               </Label>
             </div>
-            <ProjectInfo project={project} userHasApplications={userHasApplications(user, id)} />
+            <ProjectInfo
+              applicationUrl={applicationUrl}
+              project={project}
+              userHasApplications={userHasApplications(user, id)}
+            />
           </div>
           <div className={css.controls}>
             {url && (

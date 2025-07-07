@@ -1,19 +1,20 @@
-import React from 'react';
 import cx from 'classnames';
-import { IconCogwheel, IconClock, IconPenLine, IconInfoCircle } from 'hds-react';
 import { format } from 'date-fns';
+import { IconClock, IconCogwheel, IconInfoCircle, IconPenLine } from 'hds-react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Project, StateOfSale } from '../../../../types/common';
 import css from './ProjectInfo.module.scss';
 
 type Props = {
+  applicationUrl?: string;
   project: Project;
   userHasApplications: boolean;
   dense?: boolean;
 };
 
-const ProjectInfo = ({ project, userHasApplications, dense = false }: Props) => {
+const ProjectInfo = ({ applicationUrl, project, userHasApplications, dense = false }: Props) => {
   const { t } = useTranslation();
   const {
     application_end_time,
@@ -61,13 +62,13 @@ const ProjectInfo = ({ project, userHasApplications, dense = false }: Props) => 
             <span>{renderApplicationPeriodText()}</span>
           </div>
         )}
-      {userHasApplications && (
-        <>
-          <div className={dense ? cx(css.applicationSent, css.dense) : css.applicationSent}>
-            <IconPenLine style={{ marginRight: 10 }} aria-hidden="true" />
-            <span>{t('SEARCH:user-application-project')}</span>
-          </div>
-        </>
+      {userHasApplications && applicationUrl && (
+        <div className={dense ? cx(css.applicationSent, css.dense) : css.applicationSent}>
+          <IconPenLine style={{ marginRight: 10 }} aria-hidden="true" />
+          <a href={applicationUrl} className={css.applicationLink}>
+            {t('SEARCH:user-application-project')}
+          </a>
+        </div>
       )}
       {possession_transfer_date && (
         <div className={dense ? cx(css.moveInTime, css.dense) : css.moveInTime}>
