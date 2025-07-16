@@ -1,10 +1,10 @@
-import { QueryParams } from '../types/common';
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import mapSearchResults from '../modules/search/utils/mapSearchResults';
 import filterApartmentA0 from '../modules/search/utils/filterApartmentA0';
+import mapSearchResults from '../modules/search/utils/mapSearchResults';
+import { QueryParams } from '../types/common';
 
-const searchPath = process.env.REACT_APP_ELASTICSEARCH_PATH || 'elasticsearch';
+const searchPath = import.meta.env.VITE_ELASTICSEARCH_PATH || 'elasticsearch';
 
 const useSearchResults = (
   query: { query?: QueryParams },

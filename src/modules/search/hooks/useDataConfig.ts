@@ -1,10 +1,10 @@
-import { useQuery } from 'react-query';
 import axios from 'axios';
+import { useQuery } from 'react-query';
 import { enhanceFilterConfig } from '../../../utils/enhanceFilterConfig';
 
 const DAY_IN_SECONDS = 86400;
 
-const initializePath = process.env.REACT_APP_INIT_PATH || 'initialize';
+const initializePath = import.meta.env.VITE_INIT_PATH || 'initialize';
 
 const useDataConfig = (language: string) => {
   const fetchDataConfig = async () => {

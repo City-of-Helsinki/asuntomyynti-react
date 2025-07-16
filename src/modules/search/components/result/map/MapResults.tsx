@@ -1,17 +1,17 @@
-import React, { createRef, useRef } from 'react';
-import ReactDOMServer from 'react-dom/server';
 import cx from 'classnames';
-import { useTranslation } from 'react-i18next';
-import { MapContainer, Marker, Popup, TileLayer, ZoomControl } from 'react-leaflet';
 import { Button, IconCross, IconLocation, IconMenuHamburger, Tooltip } from 'hds-react';
 import L from 'leaflet';
+import React, { createRef, useRef } from 'react';
+import ReactDOMServer from 'react-dom/server';
+import { useTranslation } from 'react-i18next';
+import { MapContainer, Marker, Popup, TileLayer, ZoomControl } from 'react-leaflet';
 
+import useSessionStorageState from '../../../../../hooks/useSessionStorageState';
 import { DataConfig, Project, StateOfSale } from '../../../../../types/common';
 import { calculateApartmentCount } from '../../../utils/calculateApartmentCount';
+import getInitialMapPosition from '../../../utils/getInitialMapPosition';
 import MapProjectCard from './MapProjectCard';
 import MapProjectPopupCard from './MapProjectPopupCard';
-import useSessionStorageState from '../../../../../hooks/useSessionStorageState';
-import getInitialMapPosition from '../../../utils/getInitialMapPosition';
 
 import css from './MapResults.module.scss';
 
@@ -29,7 +29,7 @@ type Props = {
 };
 
 const MAP_TILES_URL =
-  process.env.REACT_APP_MAP_TILES_URL || 'https://tiles.hel.ninja/styles/hel-osm-bright/{z}/{x}/{y}.png';
+  import.meta.env.VITE_MAP_TILES_URL || 'https://tiles.hel.ninja/styles/hel-osm-bright/{z}/{x}/{y}.png';
 
 const MapResults = ({
   config,

@@ -1,27 +1,27 @@
+import { IconAlertCircle, LoadingSpinner } from 'hds-react';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { IconAlertCircle, LoadingSpinner } from 'hds-react';
 
-import SearchResults from './components/result/list/SearchResults';
-import SearchForm from './components/form/SearchForm';
+import ErrorToast from '../../common/errorToast/ErrorToast';
 import InfoBlock from '../../common/infoblock/InfoBlock';
+import useSearchParams from '../../hooks/useSearchParams';
 import useSearchQuery from '../../hooks/useSearchQuery';
 import useSearchResults from '../../hooks/useSearchResults';
-import ErrorToast from '../../common/errorToast/ErrorToast';
+import useSessionStorageState from '../../hooks/useSessionStorageState';
+import SearchForm from './components/form/SearchForm';
+import SearchResults from './components/result/list/SearchResults';
 import MapContainer from './components/result/map/MapResults';
-import { groupProjectsByState } from './utils/groupProjectsByState';
-import useSearchParams from '../../hooks/useSearchParams';
 import { DataContext } from './DataContext';
 import { filterProjectsByOwnershipType } from './utils/filterProjectsByOwnershipType';
-import useSessionStorageState from '../../hooks/useSessionStorageState';
+import { groupProjectsByState } from './utils/groupProjectsByState';
 
 import styles from './SearchContainer.module.scss';
 
 // "boolean" as a string because env variables are also treated as strings
-const showUpcomingOnly = process.env.REACT_APP_SHOW_UPCOMING_ONLY || 'false';
+const showUpcomingOnly = import.meta.env.VITE_SHOW_UPCOMING_ONLY || 'false';
 
 // Read project_ownership_type from env variables, defaults to hitas (includes puolihitas)
-const projectOwnershipType = process.env.REACT_APP_PROJECT_OWNERSHIP_TYPE || 'hitas';
+const projectOwnershipType = import.meta.env.VITE_PROJECT_OWNERSHIP_TYPE || 'hitas';
 
 const SearchContainer = () => {
   const [showMap, setShowMap] = useSessionStorageState({ defaultValue: false, key: 'showMap' });
@@ -49,11 +49,11 @@ const SearchContainer = () => {
   const queryHeaders = { token: config?.token };
 
   // Fetch results with current search query
-  const {
-    data: searchResults,
-    isFetching: isSearchQueryFetching,
-    isError: isSearchQueryError,
-  } = useSearchResults(query, queryHeaders, currentLang);
+  const { data: searchResults, isFetching: isSearchQueryFetching, isError: isSearchQueryError } = useSearchResults(
+    query,
+    queryHeaders,
+    currentLang
+  );
 
   // Filter HITAS/HASO apartments by selected ownership type
   const filteredSearchResults = filterProjectsByOwnershipType(searchResults ?? [], projectOwnershipType);
