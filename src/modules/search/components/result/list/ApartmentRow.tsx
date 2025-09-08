@@ -3,7 +3,7 @@ import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { IconAngleDown, IconAngleUp, IconPenLine } from 'hds-react';
 
-import { Apartment } from '../../../../../types/common';
+import { Apartment, ApartmentStateOfSale } from '../../../../../types/common';
 import { fullURL } from '../../../utils/fullURL';
 import { getApartmentPrice } from '../../../utils/getApartmentPrice';
 import { userHasApplicationForApartment } from '../../../utils/userApplications';
@@ -65,8 +65,8 @@ const ApartmentRow = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const isApartmentFree = apartment_state_of_sale === 'FREE_FOR_RESERVATIONS';
-  const isApartmentOpenForApplications = apartment_state_of_sale === 'OPEN_FOR_APPLICATIONS';
+  const isApartmentFree = apartment_state_of_sale === ApartmentStateOfSale.FREE_FOR_RESERVATIONS.valueOf();
+  const isApartmentOpenForApplications = apartment_state_of_sale === ApartmentStateOfSale.OPEN_FOR_APPLICATIONS.valueOf();
 
   const canCreateApplication = isApartmentOpenForApplications && !userHasApplicationForProject;
 
