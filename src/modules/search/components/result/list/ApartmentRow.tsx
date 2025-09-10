@@ -45,7 +45,6 @@ const ApartmentRow = ({
   const { t } = useTranslation();
   const [width, setWidth] = useState(window.innerWidth);
   const [rowOpen, setRowOpen] = useSessionStorageState({ defaultValue: false, key: `apartmentRowOpen-${nid}` });
-
   const isDesktopSize = width > BREAK_POINT;
   const isMobileSize = width <= BREAK_POINT;
 
@@ -66,9 +65,11 @@ const ApartmentRow = ({
   }, []);
 
   const isApartmentFree = apartment_state_of_sale === ApartmentStateOfSale.FREE_FOR_RESERVATIONS.valueOf();
-  const isApartmentOpenForApplications = apartment_state_of_sale === ApartmentStateOfSale.OPEN_FOR_APPLICATIONS.valueOf();
+  const isApartmentOpenForApplications =
+    apartment_state_of_sale === ApartmentStateOfSale.OPEN_FOR_APPLICATIONS.valueOf();
+  const canApplyAfterwards = apartment.project_can_apply_afterwards && projectOwnershipIsHaso;
 
-  const canCreateApplication = isApartmentOpenForApplications && !userHasApplicationForProject;
+  const canCreateApplication = (isApartmentOpenForApplications || canApplyAfterwards) && !userHasApplicationForProject;
 
   const apartmentRowBaseDetails = (
     <>
@@ -168,6 +169,7 @@ const ApartmentRow = ({
               </span>
             </a>
           )}
+
           {canCreateApplication && (
             <a
               href={fullURL(application_url)}
@@ -176,14 +178,15 @@ const ApartmentRow = ({
               } hds-button--small`}
             >
               <span className="hds-button__label">
-                {t('SEARCH:apply')}
+                {apartment.project_can_apply_afterwards ? t('SEARCH:after-apply') : t('SEARCH:apply')}
                 <span className="sr-only">
                   , {t('SEARCH:apartment')} {apartment_number}
                 </span>
               </span>
             </a>
           )}
-          {isApartmentFree && (
+
+          {isApartmentFree && !canApplyAfterwards && (
             <a
               href={fullURL(application_url)}
               className={`${css.createApplicationButton} hds-button hds-button--${
