@@ -18,8 +18,16 @@ const SortApartments = (items: any, sessionStorageID: string) => {
     if (sortConfig !== null) {
       if (sortConfig.alphaNumeric) {
         sortableApartments.sort((a, b) => {
-          const firstValue = a[sortConfig.key].split(' ').join('');
-          const secondValue = b[sortConfig.key].split(' ').join('');
+
+          // handle edge case where apartment has no `apartment_number` attribute
+          let firstValue: string = a['nid'].toString();
+          let secondValue: string = a['nid'].toString();
+
+          if(a[sortConfig.key] !== undefined && b[sortConfig.key] !== undefined) {
+            firstValue = a[sortConfig.key].split(' ').join('');
+            secondValue = b[sortConfig.key].split(' ').join('');
+          }
+
           if (sortConfig.direction === 'ascending') {
             return firstValue.localeCompare(secondValue, 'fi', { numeric: true });
           }
