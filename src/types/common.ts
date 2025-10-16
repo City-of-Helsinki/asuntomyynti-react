@@ -10,6 +10,7 @@ export type Apartment = {
   balcony_description: string;
   bathroom_appliances: string;
   condition: number;
+  can_apply_afterwards: boolean;
   debt_free_sales_price: number;
   financing_fee: number;
   floor: number;
@@ -31,6 +32,7 @@ export type Apartment = {
   project_acc_financeofficer: string;
   project_acc_salesperson: string;
   project_apartment_count: number;
+  project_can_apply_afterwards: boolean;
   project_application_end_time: string;
   project_application_start_time: string;
   project_attachment_urls: string[];
@@ -105,6 +107,7 @@ export type Project = {
   application_start_time: string;
   attachment_urls: string[];
   building_type: string;
+  can_apply_afterwards: boolean;
   city: string;
   construction_materials: string[];
   constructor: string;
@@ -190,6 +193,15 @@ export type FilterConfig = Omit<DefaultFilterConfig, 'items' | 'suffix'> & {
   icon?: string;
   items: (FilterItem | string)[];
 };
+
+export enum ApartmentStateOfSale {
+  FOR_SALE = 'FOR_SALE',
+  FREE_FOR_RESERVATIONS = 'FREE_FOR_RESERVATIONS',
+  OPEN_FOR_APPLICATIONS = 'OPEN_FOR_APPLICATIONS',
+  RESERVED = 'RESERVED',
+  RESERVED_HASO = 'RESERVED_HASO',
+  SOLD = 'SOLD'
+}
 
 export enum StateOfSale {
   ForSale = 'FOR_SALE',

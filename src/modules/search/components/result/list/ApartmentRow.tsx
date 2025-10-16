@@ -3,7 +3,7 @@ import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { IconAngleDown, IconAngleUp, IconPenLine } from 'hds-react';
 
-import { Apartment } from '../../../../../types/common';
+import { Apartment, ApartmentStateOfSale } from '../../../../../types/common';
 import { fullURL } from '../../../utils/fullURL';
 import { getApartmentPrice } from '../../../utils/getApartmentPrice';
 import { userHasApplicationForApartment } from '../../../utils/userApplications';
@@ -45,7 +45,6 @@ const ApartmentRow = ({
   const { t } = useTranslation();
   const [width, setWidth] = useState(window.innerWidth);
   const [rowOpen, setRowOpen] = useSessionStorageState({ defaultValue: false, key: `apartmentRowOpen-${nid}` });
-
   const isDesktopSize = width > BREAK_POINT;
   const isMobileSize = width <= BREAK_POINT;
 
@@ -65,10 +64,12 @@ const ApartmentRow = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const isApartmentFree = apartment_state_of_sale === 'FREE_FOR_RESERVATIONS';
-  const isApartmentOpenForApplications = apartment_state_of_sale === 'OPEN_FOR_APPLICATIONS';
+  const isApartmentFree = apartment_state_of_sale === ApartmentStateOfSale.FREE_FOR_RESERVATIONS.valueOf();
+  const isApartmentOpenForApplications =
+    apartment_state_of_sale === ApartmentStateOfSale.OPEN_FOR_APPLICATIONS.valueOf();
+  const canApplyAfterwards = apartment.project_can_apply_afterwards && projectOwnershipIsHaso;
 
-  const canCreateApplication = isApartmentOpenForApplications && !userHasApplicationForProject;
+  const canCreateApplication = (isApartmentOpenForApplications || canApplyAfterwards) && !userHasApplicationForProject;
 
   const apartmentRowBaseDetails = (
     <>
@@ -168,6 +169,7 @@ const ApartmentRow = ({
               </span>
             </a>
           )}
+
           {canCreateApplication && (
             <a
               href={fullURL(application_url)}
@@ -176,14 +178,15 @@ const ApartmentRow = ({
               } hds-button--small`}
             >
               <span className="hds-button__label">
-                {t('SEARCH:apply')}
+                {apartment.project_can_apply_afterwards ? t('SEARCH:after-apply') : t('SEARCH:apply')}
                 <span className="sr-only">
                   , {t('SEARCH:apartment')} {apartment_number}
                 </span>
               </span>
             </a>
           )}
-          {isApartmentFree && (
+
+          {isApartmentFree && !canApplyAfterwards && (
             <a
               href={fullURL(application_url)}
               className={`${css.createApplicationButton} hds-button hds-button--${

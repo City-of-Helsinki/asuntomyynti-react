@@ -28,7 +28,6 @@ const useSearchResults = (
     });
 
     const dataAsArray: any = Object.values(data);
-
     const mappedSearchResults = dataAsArray?.map(mapSearchResults) || [];
     if (keepA0) {
       return mappedSearchResults;
