@@ -69,6 +69,8 @@ const ApartmentRow = ({
     apartment_state_of_sale === ApartmentStateOfSale.OPEN_FOR_APPLICATIONS.valueOf();
   const canApplyAfterwards = apartment.project_can_apply_afterwards && projectOwnershipIsHaso;
 
+  const contactUrl = `${window.location.origin}/contact/apply_for_free_apartment?apartment=${apartment.apartment_number}&project=${apartment.project_id}`
+
   const canCreateApplication = (isApartmentOpenForApplications || canApplyAfterwards) && !userHasApplicationForProject;
 
   const apartmentRowBaseDetails = (
@@ -188,7 +190,7 @@ const ApartmentRow = ({
 
           {isApartmentFree && !canApplyAfterwards && (
             <a
-              href={fullURL(application_url)}
+              href={fullURL(contactUrl)}
               className={`${css.createApplicationButton} hds-button hds-button--${
                 isDesktopSize ? 'secondary' : 'primary'
               } hds-button--small`}
