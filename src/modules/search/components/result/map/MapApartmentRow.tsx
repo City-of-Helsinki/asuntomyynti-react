@@ -185,7 +185,7 @@ const MapApartmentRow = ({
               </span>
             </a>
           )}
-          {isApartmentFree && (
+          {/* {isApartmentFree && (
             <a
               href={fullURL(application_url)}
               className={`${css.createApplicationButton} hds-button hds-button--${
@@ -199,7 +199,7 @@ const MapApartmentRow = ({
                 </span>
               </span>
             </a>
-          )}
+          )} */}
         </>
       )}
     </div>

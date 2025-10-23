@@ -188,7 +188,7 @@ const ApartmentRow = ({
             </a>
           )}
 
-          {isApartmentFree && !canApplyAfterwards && (
+          {/* {isApartmentFree && !canApplyAfterwards && (
             <a
               href={fullURL(contactUrl)}
               className={`${css.createApplicationButton} hds-button hds-button--${
@@ -202,7 +202,7 @@ const ApartmentRow = ({
                 </span>
               </span>
             </a>
-          )}
+          )} */}
         </div>
       )}
     </div>
