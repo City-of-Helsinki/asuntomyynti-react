@@ -11,6 +11,9 @@ import useSessionStorageState from '../../../../../hooks/useSessionStorageState'
 import formattedLivingArea from '../../../utils/formatLivingArea';
 
 import css from './MapApartmentRow.module.scss';
+import GetToKnowButton from '../list/GetToKnowButton';
+import CreateApplicationButton from '../list/CreateApplicationButton';
+import ContactUsButton from '../list/ContactUsButton';
 
 type Props = {
   apartment: Apartment;
@@ -159,48 +162,23 @@ const MapApartmentRow = ({
         </>
       ) : (
         <>
-          {url && (
-            <a
-              href={fullURL(url)}
-              className={`${css.getToKnowButton} hds-button hds-button--${
-                isDesktopSize ? 'supplementary' : 'secondary'
-              } hds-button--small`}
-            >
-              <span className="hds-button__label">
-                {t('SEARCH:learn-more-apartments')}
-                <span className="sr-only">
-                  , {t('SEARCH:apartment')} {apartment_number}
-                </span>
-              </span>
-            </a>
-          )}
+          {url && (<GetToKnowButton
+            href={fullURL(url)}
+            apartment={apartment}
+            isDesktopSize={isDesktopSize}
+          />)}
           {canCreateApplication && (
-            <a
-              href={fullURL(application_url)}
-              className={`${css.createApplicationButton} hds-button hds-button--primary hds-button--small`}
-            >
-              <span className="hds-button__label">
-                {apartment.project_can_apply_afterwards ? t('SEARCH:after-apply') : t('SEARCH:apply')}
-                <span className="sr-only">
-                  , {t('SEARCH:apartment')} {apartment_number}
-                </span>
-              </span>
-            </a>
-          )}
+              <CreateApplicationButton
+                href={fullURL(application_url)}
+                apartment={apartment}
+              />
+            )}
           {isApartmentFree && !canApplyAfterwards && (
-            <a
+            <ContactUsButton
               href={fullURL(contactUrl)}
-              className={`${css.createApplicationButton} hds-button hds-button--${
-                isDesktopSize ? 'secondary' : 'primary'
-              } hds-button--small`}
-            >
-              <span className="hds-button__label">
-                {t('SEARCH:contact-us')}
-                <span className="sr-only">
-                  , {t('SEARCH:apartment')} {apartment_number}
-                </span>
-              </span>
-            </a>
+              apartment={apartment}
+              isDesktopSize={isDesktopSize}
+            />
           )}
         </>
       )}
