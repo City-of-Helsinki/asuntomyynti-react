@@ -68,7 +68,6 @@ const SearchContainer = () => {
   } = groupProjectsByState(filteredSearchResults);
 
   const forSaleAndProcessing = forSale.concat(processing);
-
   const searchResultsWithoutUpcoming = ready.concat(forSaleAndProcessing, preMarketing);
 
   const hasFreeApartments = !!ready.length;

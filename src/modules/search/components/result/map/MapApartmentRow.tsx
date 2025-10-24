@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconAngleDown, IconAngleUp, IconPenLine } from 'hds-react';
 
-import { Apartment } from '../../../../../types/common';
+import { Apartment, ApartmentStateOfSale } from '../../../../../types/common';
 import { fullURL } from '../../../utils/fullURL';
 import { getApartmentPrice } from '../../../utils/getApartmentPrice';
 import { userHasApplicationForApartment } from '../../../utils/userApplications';
@@ -11,6 +11,9 @@ import useSessionStorageState from '../../../../../hooks/useSessionStorageState'
 import formattedLivingArea from '../../../utils/formatLivingArea';
 
 import css from './MapApartmentRow.module.scss';
+import GetToKnowButton from '../list/GetToKnowButton';
+import CreateApplicationButton from '../list/CreateApplicationButton';
+import ContactUsButton from '../list/ContactUsButton';
 
 type Props = {
   apartment: Apartment;
@@ -52,10 +55,12 @@ const MapApartmentRow = ({
     }
   };
 
-  const isApartmentFree = apartment_state_of_sale === 'FREE_FOR_RESERVATIONS';
-  const isApartmentOpenForApplications = apartment_state_of_sale === 'OPEN_FOR_APPLICATIONS';
-
-  const canCreateApplication = isApartmentOpenForApplications && !userHasApplicationForProject;
+  const isApartmentFree = apartment_state_of_sale === ApartmentStateOfSale.FREE_FOR_RESERVATIONS.valueOf();
+  const isApartmentOpenForApplications =
+    apartment_state_of_sale === ApartmentStateOfSale.OPEN_FOR_APPLICATIONS.valueOf();
+  const canApplyAfterwards = apartment.project_can_apply_afterwards && projectOwnershipIsHaso;
+  const canCreateApplication = (isApartmentOpenForApplications || canApplyAfterwards) && !userHasApplicationForProject;
+  const contactUrl = `${window.location.origin}/contact/apply_for_free_apartment?apartment=${apartment.apartment_number}&project=${apartment.project_id}`;
 
   const apartmentRowBaseDetails = (
     <>
@@ -157,35 +162,24 @@ const MapApartmentRow = ({
         </>
       ) : (
         <>
-          {url && (
-            <a
-              href={fullURL(url)}
-              className={`${css.getToKnowButton} hds-button hds-button--${
-                isDesktopSize ? 'supplementary' : 'secondary'
-              } hds-button--small`}
-            >
-              <span className="hds-button__label">
-                {t('SEARCH:learn-more-apartments')}
-                <span className="sr-only">
-                  , {t('SEARCH:apartment')} {apartment_number}
-                </span>
-              </span>
-            </a>
-          )}
+          {url && (<GetToKnowButton
+            href={fullURL(url)}
+            apartment={apartment}
+            isDesktopSize={isDesktopSize}
+          />)}
           {canCreateApplication && (
-            <a
-              href={fullURL(application_url)}
-              className={`${css.createApplicationButton} hds-button hds-button--primary hds-button--small`}
-            >
-              <span className="hds-button__label">
-                {t('SEARCH:apply')}
-                <span className="sr-only">
-                  , {t('SEARCH:apartment')} {apartment_number}
-                </span>
-              </span>
-            </a>
+              <CreateApplicationButton
+                href={fullURL(application_url)}
+                apartment={apartment}
+              />
+            )}
+          {isApartmentFree && !canApplyAfterwards && (
+            <ContactUsButton
+              href={fullURL(contactUrl)}
+              apartment={apartment}
+              isDesktopSize={isDesktopSize}
+            />
           )}
-
         </>
       )}
     </div>
