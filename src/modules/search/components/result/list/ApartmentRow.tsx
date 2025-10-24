@@ -188,6 +188,21 @@ const ApartmentRow = ({
             </a>
           )}
 
+          {isApartmentFree && !canApplyAfterwards && (
+            <a
+              href={fullURL(contactUrl)}
+              className={`${css.createApplicationButton} hds-button hds-button--${
+                isDesktopSize ? 'secondary' : 'primary'
+              } hds-button--small`}
+            >
+              <span className="hds-button__label">
+                {t('SEARCH:contact-us')}
+                <span className="sr-only">
+                  , {t('SEARCH:apartment')} {apartment_number}
+                </span>
+              </span>
+            </a>
+          )}
         </div>
       )}
     </div>

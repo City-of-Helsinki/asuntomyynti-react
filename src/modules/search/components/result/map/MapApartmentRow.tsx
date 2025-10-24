@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconAngleDown, IconAngleUp, IconPenLine } from 'hds-react';
 
-import { Apartment } from '../../../../../types/common';
+import { Apartment, ApartmentStateOfSale } from '../../../../../types/common';
 import { fullURL } from '../../../utils/fullURL';
 import { getApartmentPrice } from '../../../utils/getApartmentPrice';
 import { userHasApplicationForApartment } from '../../../utils/userApplications';
@@ -52,10 +52,12 @@ const MapApartmentRow = ({
     }
   };
 
-  const isApartmentFree = apartment_state_of_sale === 'FREE_FOR_RESERVATIONS';
-  const isApartmentOpenForApplications = apartment_state_of_sale === 'OPEN_FOR_APPLICATIONS';
-
-  const canCreateApplication = isApartmentOpenForApplications && !userHasApplicationForProject;
+  const isApartmentFree = apartment_state_of_sale === ApartmentStateOfSale.FREE_FOR_RESERVATIONS.valueOf();
+  const isApartmentOpenForApplications =
+    apartment_state_of_sale === ApartmentStateOfSale.OPEN_FOR_APPLICATIONS.valueOf();
+  const canApplyAfterwards = apartment.project_can_apply_afterwards && projectOwnershipIsHaso;
+  const canCreateApplication = (isApartmentOpenForApplications || canApplyAfterwards) && !userHasApplicationForProject;
+  const contactUrl = `${window.location.origin}/contact/apply_for_free_apartment?apartment=${apartment.apartment_number}&project=${apartment.project_id}`;
 
   const apartmentRowBaseDetails = (
     <>
@@ -178,14 +180,28 @@ const MapApartmentRow = ({
               className={`${css.createApplicationButton} hds-button hds-button--primary hds-button--small`}
             >
               <span className="hds-button__label">
-                {t('SEARCH:apply')}
+                {apartment.project_can_apply_afterwards ? t('SEARCH:after-apply') : t('SEARCH:apply')}
                 <span className="sr-only">
                   , {t('SEARCH:apartment')} {apartment_number}
                 </span>
               </span>
             </a>
           )}
-
+          {isApartmentFree && !canApplyAfterwards && (
+            <a
+              href={fullURL(contactUrl)}
+              className={`${css.createApplicationButton} hds-button hds-button--${
+                isDesktopSize ? 'secondary' : 'primary'
+              } hds-button--small`}
+            >
+              <span className="hds-button__label">
+                {t('SEARCH:contact-us')}
+                <span className="sr-only">
+                  , {t('SEARCH:apartment')} {apartment_number}
+                </span>
+              </span>
+            </a>
+          )}
         </>
       )}
     </div>
