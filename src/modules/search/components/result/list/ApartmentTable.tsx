@@ -19,6 +19,7 @@ type Props = {
   projectID: Project['id'];
   projectOwnershipIsHaso: boolean;
   userHasApplicationForProject: boolean;
+  userHasReservedOrSoldApartmentInProject: boolean;
 };
 
 const ApartmentTable = ({
@@ -29,6 +30,7 @@ const ApartmentTable = ({
   projectID,
   projectOwnershipIsHaso,
   userHasApplicationForProject,
+  userHasReservedOrSoldApartmentInProject,
 }: Props) => {
   const { t } = useTranslation();
   const [page, setPage] = useSessionStorageState({ defaultValue: 1, key: `apartmentTablePaginationPage-${projectID}` });
@@ -239,6 +241,7 @@ const ApartmentTable = ({
             userApplications={applications}
             applicationStatus={getApartmentApplicationStatus(applicationStatus, x.nid)}
             userHasApplicationForProject={userHasApplicationForProject}
+            userHasReservedOrSoldApartmentInProject={userHasReservedOrSoldApartmentInProject}
             projectOwnershipIsHaso={projectOwnershipIsHaso}
           />
         ))}

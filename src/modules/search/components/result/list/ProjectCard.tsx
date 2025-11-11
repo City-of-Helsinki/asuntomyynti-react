@@ -7,7 +7,7 @@ import { DataConfig, Project } from '../../../../../types/common';
 import { fullURL } from '../../../utils/fullURL';
 import { getProjectApplicationStatus } from '../../../utils/getApplicationStatus';
 import { getLanguageFilteredApartments } from '../../../utils/getLanguageFilteredApartments';
-import { getUserApplications, userHasApplications } from '../../../utils/userApplications';
+import { getUserApplications, userHasApplications, userHasReservedOrSoldApartment } from '../../../utils/userApplications';
 import ApartmentTable from './ApartmentTable';
 // import SubscribeToProjectMailinglist from '../SubscribeToProjectMailinglist';
 import Label from '../../../../../common/label/Label';
@@ -202,6 +202,7 @@ const ProjectCard = ({
               applications={getUserApplications(user, id)}
               applicationStatus={getProjectApplicationStatus(apartment_application_status, id)}
               userHasApplicationForProject={userHasApplications(user, id)}
+              userHasReservedOrSoldApartmentInProject={userHasReservedOrSoldApartment(config, id)}
               housingCompany={housing_company}
               projectID={id}
               projectOwnershipIsHaso={ownership_type.toLowerCase() === 'haso'}
