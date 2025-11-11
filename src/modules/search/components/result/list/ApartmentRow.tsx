@@ -6,7 +6,7 @@ import { IconAngleDown, IconAngleUp, IconPenLine } from 'hds-react';
 import { Apartment, ApartmentStateOfSale } from '../../../../../types/common';
 import { fullURL } from '../../../utils/fullURL';
 import { getApartmentPrice } from '../../../utils/getApartmentPrice';
-import { userHasApplicationForApartment } from '../../../utils/userApplications';
+import { userHasApplicationForApartment, userHasReservedOrSoldApartment } from '../../../utils/userApplications';
 import RenderAvailabilityInfo from '../ApplicationStatus';
 import useSessionStorageState from '../../../../../hooks/useSessionStorageState';
 import formattedLivingArea from '../../../utils/formatLivingArea';
@@ -23,6 +23,7 @@ type Props = {
   userApplications: number[] | undefined;
   applicationStatus: string | undefined;
   userHasApplicationForProject: boolean;
+  userHasReservedOrSoldApartmentInProject: boolean;
   projectOwnershipIsHaso: boolean;
 };
 
@@ -31,6 +32,7 @@ const ApartmentRow = ({
   userApplications,
   applicationStatus,
   userHasApplicationForProject,
+  userHasReservedOrSoldApartmentInProject,
   projectOwnershipIsHaso,
 }: Props) => {
   const {
@@ -74,7 +76,7 @@ const ApartmentRow = ({
 
   const contactUrl = `${window.location.origin}/contact/apply_for_free_apartment?apartment=${apartment.apartment_number}&project=${apartment.project_id}`
 
-  const canCreateApplication = (isApartmentOpenForApplications || canApplyAfterwards) && !userHasApplicationForProject;
+  const canCreateApplication = (isApartmentOpenForApplications || canApplyAfterwards) && !userHasApplicationForProject && !userHasReservedOrSoldApartmentInProject;
 
   const apartmentRowBaseDetails = (
     <>
