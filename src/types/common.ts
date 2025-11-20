@@ -170,6 +170,12 @@ export type FilterItem = {
   helperText?: string;
 };
 
+export enum OwnershipType {
+  haso='haso',
+  hitas='hitas',
+  puolihitas='puolihitas'
+}
+
 export enum FilterType {
   MultiSelect,
   Input,

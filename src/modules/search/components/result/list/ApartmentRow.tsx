@@ -3,7 +3,7 @@ import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { IconAngleDown, IconAngleUp, IconPenLine } from 'hds-react';
 
-import { Apartment, ApartmentStateOfSale } from '../../../../../types/common';
+import { Apartment, ApartmentStateOfSale, OwnershipType } from '../../../../../types/common';
 import { fullURL } from '../../../utils/fullURL';
 import { getApartmentPrice } from '../../../utils/getApartmentPrice';
 import { userHasApplicationForApartment, userHasReservedOrSoldApartment } from '../../../utils/userApplications';
@@ -39,7 +39,6 @@ const ApartmentRow = ({
     apartment_number,
     apartment_state_of_sale,
     apartment_structure,
-    application_url,
     floor,
     floor_max,
     nid,
@@ -74,7 +73,12 @@ const ApartmentRow = ({
     apartment_state_of_sale === ApartmentStateOfSale.OPEN_FOR_APPLICATIONS.valueOf();
   const canApplyAfterwards = apartment.project_can_apply_afterwards && projectOwnershipIsHaso;
 
+  const ownershipType = projectOwnershipIsHaso ? OwnershipType.haso : OwnershipType.hitas;
   const contactUrl = `${window.location.origin}/contact/apply_for_free_apartment?apartment=${apartment.apartment_number}&project=${apartment.project_id}`
+
+  // dont depend on the application_url set in Drupal, but allow using it in case an override is needed
+  const applicationUrl = apartment.application_url || `${window.location.origin}/application/add/${ownershipType}/${apartment.project_id}`
+  
 
   const canCreateApplication = (isApartmentOpenForApplications || canApplyAfterwards) && !userHasApplicationForProject && !userHasReservedOrSoldApartmentInProject;
 
@@ -170,7 +174,7 @@ const ApartmentRow = ({
           {
             canCreateApplication && (
               <CreateApplicationButton
-                href={fullURL(application_url)}
+                href={fullURL(applicationUrl)}
                 apartment={apartment}
               />
             )
