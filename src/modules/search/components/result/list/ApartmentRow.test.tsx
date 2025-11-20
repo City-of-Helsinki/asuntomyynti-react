@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
@@ -29,21 +28,24 @@ test.each<string>(['haso', 'hitas'])(
     const apt = {
       ...mockApartment,
       apartment_state_of_sale: 'OPEN_FOR_APPLICATIONS',
+      application_url: '',
     }
     let { container } = render(<ApartmentRow apartment={apt} projectOwnershipIsHaso={ownership_type === 'haso'} />);
-    const expectedApplicationLink = `${window.location.origin}/application/add/${ownership_type}/${mockApartment.project_id}`;    
-    const applicationLink = container.querySelector(`a[href="${expectedApplicationLink}"]`);
+    const expectedApplicationLink = `${window.location.origin}/application/add/${ownership_type}/${mockApartment.project_id}`;
 
+    const applicationLink = container.querySelector(`a[href="${expectedApplicationLink}"]`);
+    
     expect(applicationLink).toBeInTheDocument();
   });
   
-  test('renders "contact us" links correctly for apartments',() => { 
-      const apt = {
-        ...mockApartment,
-        apartment_state_of_sale: 'FREE_FOR_RESERVATIONS'
-      }
-      let { container } = render(<ApartmentRow apartment={apt}/>);
-      const expectedContactUsLink = `${window.location.origin}/contact/apply_for_free_apartment?apartment=${mockApartment.apartment_number}&project=${mockApartment.project_id}`
-      const contactUsLink = container.querySelector(`a[href="${expectedContactUsLink}"]`);
-      expect(contactUsLink).toBeInTheDocument();
-    });
+  test('renders "contact us" links correctly for apartments', () => {
+    const apt = {
+      ...mockApartment,
+      apartment_state_of_sale: 'FREE_FOR_RESERVATIONS'
+    }
+    let { container } = render(<ApartmentRow apartment={apt} />);
+    const expectedContactUsLink = `${window.location.origin}/contact/apply_for_free_apartment?apartment=${mockApartment.apartment_number}&project=${mockApartment.project_id}`
+
+    const contactUsLink = container.querySelector(`a[href="${expectedContactUsLink}"]`);
+  expect(contactUsLink).toBeInTheDocument();
+});

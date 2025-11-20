@@ -12,7 +12,7 @@ describe('ProjectInfo', () => {
   });
 
   it('has user applications', () => {
-    render(<ProjectInfo project={mockProject} userHasApplications />);
+    render(<ProjectInfo applicationUrl={'https://foo.bar'} project={mockProject} userHasApplications />);
     expect(screen.getByText('SEARCH:user-application-project')).toBeDefined();
   });
 
