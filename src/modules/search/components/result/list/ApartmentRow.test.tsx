@@ -37,7 +37,41 @@ test.each<string>(['haso', 'hitas'])(
     
     expect(applicationLink).toBeInTheDocument();
   });
-  
+
+
+  test.each<[string, string,boolean, string, boolean]>([
+      ['haso', 'OPEN_FOR_APPLICATIONS',true, 'SEARCH:after-apply', true],
+      ['haso', 'OPEN_FOR_APPLICATIONS',false, 'SEARCH:apply', true],
+      ['haso', 'FREE_FOR_RESERVATIONS',false, 'SEARCH:apply', false],
+      ['hitas','OPEN_FOR_APPLICATIONS', false, 'SEARCH:apply', true],
+    ]
+  )(
+  'renders after-application links correctly',
+  (
+    ownership_type,
+    apartment_state_of_sale,
+    project_can_apply_afterwards,
+    expected_text,
+    expected_to_have_apply_link
+  ) => {
+    const apt = {
+      ...mockApartment,
+      apartment_state_of_sale: apartment_state_of_sale,
+      application_url: '',
+      project_application_end_time: '2025-08-31T12:00:00+03:00',
+      project_can_apply_afterwards: project_can_apply_afterwards,
+    }
+    let { container } = render(<ApartmentRow apartment={apt} projectOwnershipIsHaso={ownership_type === 'haso'} />);
+    
+    if (expected_to_have_apply_link) {
+      expect(screen.queryByText(expected_text)).not.toBeNull();
+    }
+    else {
+      expect(screen.queryByText(expected_text)).toBeNull();
+    }
+  });
+
+
   test('renders "contact us" links correctly for apartments', () => {
     const apt = {
       ...mockApartment,

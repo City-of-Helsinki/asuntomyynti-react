@@ -71,7 +71,8 @@ const ApartmentRow = ({
   const isApartmentFree = apartment_state_of_sale === ApartmentStateOfSale.FREE_FOR_RESERVATIONS.valueOf();
   const isApartmentOpenForApplications =
     apartment_state_of_sale === ApartmentStateOfSale.OPEN_FOR_APPLICATIONS.valueOf();
-  const canApplyAfterwards = apartment.project_can_apply_afterwards && projectOwnershipIsHaso;
+  const applicationEndTimeHasPassed = new Date().getTime() > new Date(apartment.project_application_end_time).getTime();
+  const canApplyAfterwards = apartment.project_can_apply_afterwards && applicationEndTimeHasPassed && projectOwnershipIsHaso;
 
   const ownershipType = projectOwnershipIsHaso ? OwnershipType.haso : OwnershipType.hitas;
   const contactUrl = `${window.location.origin}/contact/apply_for_free_apartment?apartment=${apartment.apartment_number}&project=${apartment.project_id}`
@@ -79,7 +80,8 @@ const ApartmentRow = ({
   // dont depend on the application_url set in Drupal, but allow using it in case an override is needed
   const applicationUrl = apartment.application_url || `${window.location.origin}/application/add/${ownershipType}/${apartment.project_id}`
   
-
+  // apartment status is OPEN_FOR_APPLICATIONS or apartment fulfills criteria for after-application
+  // user has no applications, reservations or hasn't been sold an apartment in the project
   const canCreateApplication = (isApartmentOpenForApplications || canApplyAfterwards) && !userHasApplicationForProject && !userHasReservedOrSoldApartmentInProject;
 
   const apartmentRowBaseDetails = (
