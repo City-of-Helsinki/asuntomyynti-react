@@ -7,7 +7,11 @@ import { DataConfig, Project } from '../../../../../types/common';
 import { fullURL } from '../../../utils/fullURL';
 import { getProjectApplicationStatus } from '../../../utils/getApplicationStatus';
 import { getLanguageFilteredApartments } from '../../../utils/getLanguageFilteredApartments';
-import { getUserApplications, userHasApplications, userHasReservedOrSoldApartment } from '../../../utils/userApplications';
+import {
+  getUserApplications,
+  userHasApplications,
+  userHasReservedOrSoldApartment,
+} from '../../../utils/userApplications';
 import ApartmentTable from './ApartmentTable';
 // import SubscribeToProjectMailinglist from '../SubscribeToProjectMailinglist';
 import Label from '../../../../../common/label/Label';
@@ -156,6 +160,11 @@ const ProjectCard = ({
                 </>
               </Label>
             </div>
+            {url && (
+              <a href={`${fullURL(url)}#yksityiskohdat`} className={`${css.controlsButton} `}>
+                {t('SEARCH:subscribe-for-upcoming-sales')}
+              </a>
+            )}
             <ProjectInfo
               applicationUrl={applicationUrl}
               project={project}
