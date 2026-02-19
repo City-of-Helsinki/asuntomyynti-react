@@ -1,4 +1,3 @@
-import React from 'react';
 import { Notification } from 'hds-react';
 import { useTranslation } from 'react-i18next';
 

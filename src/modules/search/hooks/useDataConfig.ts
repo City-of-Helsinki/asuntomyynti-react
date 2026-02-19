@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { enhanceFilterConfig } from '../../../utils/enhanceFilterConfig';
 
 const DAY_IN_SECONDS = 86400;
@@ -13,9 +13,10 @@ const useDataConfig = (language: string) => {
     return data;
   };
 
-  return useQuery(['dataConfig', language], fetchDataConfig, {
-    staleTime: DAY_IN_SECONDS,
-    initialStale: true,
+  return useQuery({
+    queryKey: ['dataConfig', language],
+    queryFn: fetchDataConfig,
+    staleTime: DAY_IN_SECONDS * 1000, // Convert to milliseconds
   });
 };
 

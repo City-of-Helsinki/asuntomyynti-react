@@ -1,7 +1,8 @@
 import cx from 'classnames';
-import { Button, IconCross, IconLocation, IconMenuHamburger, Tooltip } from 'hds-react';
+import { Button, ButtonVariant, IconCross, IconLocation, IconMenuHamburger, IconSize, Tooltip } from 'hds-react';
 import L from 'leaflet';
-import React, { createRef, useRef } from 'react';
+import type { Popup as LeafletPopup } from 'leaflet';
+import { createRef, useRef, type RefObject } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { useTranslation } from 'react-i18next';
 import { MapContainer, Marker, Popup, TileLayer, ZoomControl } from 'react-leaflet';
@@ -44,21 +45,21 @@ const MapResults = ({
   description = '',
 }: Props) => {
   const { t } = useTranslation();
-  const [activeProject, setActiveProject] = useSessionStorageState({
+  const [activeProject, setActiveProject] = useSessionStorageState<Project | null>({
     defaultValue: null,
     key: 'MapResultsActiveProject',
   });
-  const popupRef = useRef<any>([]);
+  const popupRef = useRef<Array<RefObject<LeafletPopup>>>([]);
   const activeProjectRef = useRef<HTMLDivElement>(null);
-  popupRef.current = searchResults.map((element, i) => popupRef.current[i] ?? createRef());
+  popupRef.current = searchResults.map((_, i) => popupRef.current[i] ?? createRef<LeafletPopup>());
 
-  const closePopups = (ref: any) => {
+  const closePopups = (ref: RefObject<LeafletPopup>) => {
     if (ref.current) {
       ref.current.remove();
     }
   };
 
-  const handleMarkerPopupClick = (targetProject: Project, ref: any) => {
+  const handleMarkerPopupClick = (targetProject: Project, ref: RefObject<LeafletPopup>) => {
     closePopups(ref);
     setActiveProject(targetProject);
 
@@ -100,7 +101,11 @@ const MapResults = ({
           alignItems: 'center',
         }}
       >
-        <IconLocation size={'m'} color={isActive ? 'white' : color} aria-label={t('SEARCH:aria-map-marker')} />
+        <IconLocation
+          size={IconSize.Medium}
+          color={isActive ? 'white' : color}
+          aria-label={t('SEARCH:aria-map-marker')}
+        />
       </div>
     );
 
@@ -135,10 +140,13 @@ const MapResults = ({
           */}
         </div>
         <div className={cx(css.headerButtonWrapper, description && css.hasDescription)}>
-          <Button className={css.showButton} variant="secondary" onClick={closeMap}>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <IconMenuHamburger style={{ marginRight: 20 }} aria-hidden="true" /> {t('SEARCH:show-as-list')}
-            </div>
+          <Button
+            className={css.showButton}
+            variant={ButtonVariant.Secondary}
+            iconStart={<IconMenuHamburger aria-hidden="true" />}
+            onClick={closeMap}
+          >
+            {t('SEARCH:show-as-list')}
           </Button>
         </div>
       </header>
@@ -153,7 +161,6 @@ const MapResults = ({
               [61.5, 25.8],
             ]}
             dragging={!L.Browser.mobile}
-            tap={!L.Browser.mobile}
             zoomControl={false}
           >
             {!L.Browser.mobile && <ZoomControl position="bottomright" />}
@@ -173,7 +180,9 @@ const MapResults = ({
                     ref={popupRef.current[i]}
                     closeButton={false}
                     className={css.popup}
-                    onOpen={() => hideProject()}
+                    eventHandlers={{
+                      popupopen: () => hideProject()
+                    }}
                   >
                     <MapProjectPopupCard
                       config={config}

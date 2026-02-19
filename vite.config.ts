@@ -6,6 +6,20 @@ export default defineConfig({
   plugins: [react()],
   build: {
     outDir: 'build',
+    cssCodeSplit: false,
+    rollupOptions: {
+      output: {
+        format: 'iife',
+        name: 'AsuReactApp',
+        entryFileNames: 'assets/js/main.[hash].chunk.js',
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name?.endsWith('.css')) {
+            return 'assets/css/main.[hash].css';
+          }
+          return 'assets/[name].[hash].[ext]';
+        },
+      },
+    },
   },
   server: {
     proxy: { '/fi': 'https://nginx-asuntotuotanto-test.agw.arodevtest.hel.fi' },

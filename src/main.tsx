@@ -1,8 +1,8 @@
 import * as Sentry from '@sentry/react';
-import { Integrations } from '@sentry/tracing';
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import './i18n';
 
 import DataContextProvider from './modules/search/DataContext';
@@ -13,7 +13,7 @@ import './index.scss';
 
 Sentry.init({
   dsn: import.meta.env.VITE_SENTRY_DSN,
-  integrations: [new Integrations.BrowserTracing()],
+  integrations: [Sentry.browserTracingIntegration()],
 
   // Set tracesSampleRate to 1.0 to capture 100%
   // of transactions for performance monitoring.
@@ -21,13 +21,27 @@ Sentry.init({
   tracesSampleRate: 0.25,
 });
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Router>
-      <DataContextProvider>
-        <SearchContainer />
-      </DataContextProvider>
-    </Router>
-  </React.StrictMode>,
-  document.getElementById('asu_react_search')
-);
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
+
+const container = document.getElementById('asu_react_search');
+if (container) {
+  const root = createRoot(container);
+  root.render(
+    <StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <DataContextProvider>
+            <SearchContainer />
+          </DataContextProvider>
+        </Router>
+      </QueryClientProvider>
+    </StrictMode>
+  );
+}

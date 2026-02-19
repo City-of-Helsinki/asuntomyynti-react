@@ -1,5 +1,5 @@
 import { IconAlertCircle, LoadingSpinner } from 'hds-react';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import ErrorToast from '../../common/errorToast/ErrorToast';

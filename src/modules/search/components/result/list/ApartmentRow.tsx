@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { IconAngleDown, IconAngleUp, IconPenLine } from 'hds-react';
+import { IconAngleDown, IconAngleUp, IconPenLine, IconSize } from 'hds-react';
 
 import { Apartment } from '../../../../../types/common';
 import { fullURL } from '../../../utils/fullURL';
@@ -86,9 +86,9 @@ const ApartmentRow = ({
             {apartment_structure}
           </span>
           {rowOpen ? (
-            <IconAngleUp style={{ marginLeft: 'auto' }} size={'m'} aria-hidden="true" />
+            <IconAngleUp style={{ marginLeft: 'auto' }} size={IconSize.Small} aria-hidden="true" />
           ) : (
-            <IconAngleDown style={{ marginLeft: 'auto' }} size={'m'} aria-hidden="true" />
+            <IconAngleDown style={{ marginLeft: 'auto' }} size={IconSize.Small} aria-hidden="true" />
           )}
         </>
       ) : (

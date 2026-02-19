@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './CheckList.module.scss';
 import { Checkbox, SelectionGroup } from 'hds-react';
 import useFilters from '../../../../../hooks/useFilters';
@@ -9,9 +8,10 @@ type Props = {
   items: string[];
   label: string;
   isWrapped?: boolean;
+  translateItems?: boolean;
 };
 
-const CheckList = ({ name, items, label, isWrapped }: Props) => {
+const CheckList = ({ name, items, label, isWrapped, translateItems = true }: Props) => {
   const { addFilter, removeFilter, getFilters } = useFilters();
   const { t } = useTranslation();
 
@@ -33,13 +33,14 @@ const CheckList = ({ name, items, label, isWrapped }: Props) => {
     <div className={`${styles.container} ${isWrapped ? styles.isWrapped : ''}`}>
       <SelectionGroup label={!isWrapped && label ? label : ''}>
         {items.map((item, index) => {
+          const labelText = translateItems ? t(`ES:${item}`) : item;
           return (
             <Checkbox
               key={`${item}-${index}`}
               className={styles.item}
               id={`${label}-${item}-${index}`}
               onChange={handleChange(item)}
-              label={t(`ES:${item}`)}
+              label={labelText}
               checked={selected.includes(item)}
             />
           );

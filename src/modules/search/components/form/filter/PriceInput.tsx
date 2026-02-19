@@ -1,4 +1,3 @@
-import React from 'react';
 import { TextInput } from 'hds-react';
 import { FilterItem, FilterName } from '../../../../../types/common';
 import useFilters from '../../../../../hooks/useFilters';
@@ -11,7 +10,7 @@ type Props = {
   items: FilterItem[];
 };
 
-const PriceInput = ({ name, label, isWrapped }: Props) => {
+const PriceInput = ({ name, label }: Props) => {
   const { getFilter, setFilter } = useFilters();
 
   const value = getFilter(name) || '';

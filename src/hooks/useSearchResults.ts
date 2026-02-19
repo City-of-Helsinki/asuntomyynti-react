@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import filterApartmentA0 from '../modules/search/utils/filterApartmentA0';
 import mapSearchResults from '../modules/search/utils/mapSearchResults';
 import { QueryParams } from '../types/common';
@@ -27,7 +27,9 @@ const useSearchResults = (
       },
     });
 
-    const dataAsArray: any = Object.values(data);
+    const dataAsArray = (Array.isArray(data) ? data : Object.values(data)) as Array<
+      Array<Record<string, unknown>>
+    >;
 
     const mappedSearchResults = dataAsArray?.map(mapSearchResults) || [];
     if (keepA0) {
@@ -38,9 +40,10 @@ const useSearchResults = (
   };
 
   // Fetch when query or queryHeaders update
-  return useQuery(['searchResults', query, queryHeaders], fetchProjects, {
-    initialStale: true,
-    initialData: [],
+  return useQuery({
+    queryKey: ['searchResults', query, queryHeaders],
+    queryFn: fetchProjects,
+    placeholderData: [],
     refetchOnWindowFocus: false,
   });
 };

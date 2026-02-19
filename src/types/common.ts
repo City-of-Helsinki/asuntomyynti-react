@@ -188,6 +188,7 @@ export type DefaultFilterConfig = PartialFilterConfig & {
 export type FilterConfig = Omit<DefaultFilterConfig, 'items' | 'suffix'> & {
   type: FilterType;
   icon?: string;
+  translateItems?: boolean;
   items: (FilterItem | string)[];
 };
 

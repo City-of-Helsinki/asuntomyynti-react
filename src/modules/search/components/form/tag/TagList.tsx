@@ -1,4 +1,3 @@
-import React from 'react';
 import { IconCross } from 'hds-react';
 import styles from './TagList.module.scss';
 import useFilters from '../../../../../hooks/useFilters';
@@ -31,10 +30,14 @@ const TagList = ({ filters }: Props) => {
           key={index}
           className={styles.tag}
           onClick={handleClick(name, value)}
-          aria-label={`${t('SEARCH:remove-tag')} ${t(`ES:${label || value}`)}`}
+          aria-label={`${t('SEARCH:remove-tag')} ${
+            filters[name]?.translateItems === false ? label || value : t(`ES:${label || value}`)
+          }`}
         >
           <IconCross className={styles.icon} />
-          <span className={styles.label}>{t(`ES:${label || value}`)}</span>
+          <span className={styles.label}>
+            {filters[name]?.translateItems === false ? label || value : t(`ES:${label || value}`)}
+          </span>
         </button>
       ))}
     </div>

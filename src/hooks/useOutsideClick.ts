@@ -1,11 +1,11 @@
 import { MutableRefObject, useEffect } from 'react';
 
 // Make any element listen ourside clicks
-const useOutsideClick = (ref: MutableRefObject<any>, callback: Function) => {
+const useOutsideClick = (ref: MutableRefObject<HTMLElement | null>, callback: () => void) => {
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
       // Is the click outside this component
-      if (ref.current && !ref.current.contains(event.target as Node)) {
+      if (ref.current && event.target instanceof Node && !ref.current.contains(event.target)) {
         callback();
       }
     };
@@ -15,7 +15,7 @@ const useOutsideClick = (ref: MutableRefObject<any>, callback: Function) => {
     return () => {
       document.removeEventListener('click', handleClick);
     };
-  });
+  }, [callback, ref]);
 };
 
 export default useOutsideClick;

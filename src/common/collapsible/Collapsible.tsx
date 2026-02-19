@@ -1,4 +1,4 @@
-import React, { HTMLProps, useCallback } from 'react';
+import { HTMLProps, useCallback } from 'react';
 import { useEffect, useRef } from 'react';
 import styles from './Collapsible.module.scss';
 import useSessionStorageState from '../../hooks/useSessionStorageState';
@@ -13,7 +13,7 @@ const Collapsible: React.FunctionComponent<Props> = ({ id, expand, children, onC
   const [height, setHeight] = useSessionStorageState({ defaultValue: 0, key: `collapsible-${id}` });
 
   const ref = useRef<HTMLDivElement>(null);
-  let timer = useRef<NodeJS.Timeout | null>(null);
+  const timer = useRef<NodeJS.Timeout | null>(null);
 
   const updateHeight = useCallback(() => {
     if (expand) {

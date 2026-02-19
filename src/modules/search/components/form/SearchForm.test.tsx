@@ -1,13 +1,43 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { createRef } from 'react';
 import SearchForm from './SearchForm';
-import config from '../../mocks/filter-config.json';
 import { BrowserRouter } from 'react-router-dom';
+import { FilterName, DataConfig } from '../../../../types/common';
+import { defaultConfig } from '../../utils/defaultConfig';
+import styles from './SearchForm.module.scss';
+
+const mockConfig: DataConfig = {
+  filters: {
+    [FilterName.Price]: defaultConfig(FilterName.Price),
+    [FilterName.LivingArea]: defaultConfig(FilterName.LivingArea),
+    [FilterName.ProjectBuildingType]: defaultConfig(FilterName.ProjectBuildingType),
+    [FilterName.ProjectDistrictHaso]: defaultConfig(FilterName.ProjectDistrictHaso),
+    [FilterName.ProjectDistrictHitas]: defaultConfig(FilterName.ProjectDistrictHitas),
+    [FilterName.ProjectDistrict]: defaultConfig(FilterName.ProjectDistrict),
+    [FilterName.Properties]: defaultConfig(FilterName.Properties),
+    [FilterName.RoomCount]: defaultConfig(FilterName.RoomCount),
+    [FilterName.StateOfSale]: defaultConfig(FilterName.StateOfSale),
+  },
+  static_content: {},
+  apartment_application_status: {},
+  token: 'test',
+  user: { user_id: 0, email_address: null, username: '', applications: [] },
+} as any;
+
+const defaultProps = {
+  config: mockConfig,
+  pageTitle: '',
+  projectOwnershipType: 'hitas',
+  focusRef: createRef<HTMLDivElement>(),
+  onSubmit: () => {},
+  isLoading: false,
+  isError: false,
+};
 
 test('renders SearchForm component', () => {
   const { container } = render(
     <BrowserRouter>
-      <SearchForm config={config} projectOwnershipType="hitas" />
+      <SearchForm {...defaultProps} config={mockConfig} />
     </BrowserRouter>
   );
   const element = container.firstChild;
@@ -17,7 +47,7 @@ test('renders SearchForm component', () => {
 test('renders form submit button', () => {
   render(
     <BrowserRouter>
-      <SearchForm projectOwnershipType="hitas" />
+      <SearchForm {...defaultProps} />
     </BrowserRouter>
   );
   expect(screen.queryAllByText('SEARCH:search')).not.toEqual([]);
@@ -26,7 +56,7 @@ test('renders form submit button', () => {
 test('renders given pagetitle', () => {
   render(
     <BrowserRouter>
-      <SearchForm pageTitle={'testTitle'} projectOwnershipType="hitas" />
+      <SearchForm {...defaultProps} pageTitle={'testTitle'} />
     </BrowserRouter>
   );
   expect(screen.queryByText('testTitle')).not.toBeNull();
@@ -35,7 +65,7 @@ test('renders given pagetitle', () => {
 test('renders error message', () => {
   render(
     <BrowserRouter>
-      <SearchForm isError projectOwnershipType="hitas" />
+      <SearchForm {...defaultProps} isError />
     </BrowserRouter>
   );
   expect(screen.queryByText('SEARCH:filters-error-text')).not.toBeNull();
@@ -44,7 +74,7 @@ test('renders error message', () => {
 test('renders without an error', () => {
   render(
     <BrowserRouter>
-      <SearchForm isError={false} projectOwnershipType="hitas" />
+      <SearchForm {...defaultProps} isError={false} />
     </BrowserRouter>
   );
   expect(screen.queryByText('SEARCH:filters-error-text')).toBeNull();
@@ -53,23 +83,24 @@ test('renders without an error', () => {
 test('loading animation is shown when isLoading is true', () => {
   render(
     <BrowserRouter>
-      <SearchForm isLoading projectOwnershipType="hitas" />
+      <SearchForm {...defaultProps} isLoading />
     </BrowserRouter>
   );
 
   const elem = screen.getByLabelText('SEARCH:aria-filters-title');
 
-  expect(elem.classList.contains('isLoading')).toBe(true);
+  expect(elem.classList.contains(styles.isLoading)).toBe(true);
 });
 
 test('loading animation is hidden when isLoading is false', () => {
   render(
     <BrowserRouter>
-      <SearchForm isLoading={false} projectOwnershipType="hitas" />
+      <SearchForm {...defaultProps} isLoading={false} />
     </BrowserRouter>
   );
 
   const elem = screen.getByLabelText('SEARCH:aria-filters-title');
 
-  expect(elem.classList.contains('isLoading')).toBe(false);
+  expect(elem.classList.contains(styles.isLoading)).toBe(false);
 });
+
