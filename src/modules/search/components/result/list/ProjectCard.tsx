@@ -26,6 +26,7 @@ type Props = {
   project: Project;
   hideImgOnSmallScreen?: boolean;
   showSubscribeButton?: boolean;
+  showUpcomingSalesLink?: boolean;
   currentLang: string;
   hideApartments?: boolean;
 };
@@ -35,6 +36,7 @@ const ProjectCard = ({
   project,
   hideImgOnSmallScreen = false,
   showSubscribeButton = false,
+  showUpcomingSalesLink = false,
   currentLang,
   hideApartments = false,
 }: Props) => {
@@ -160,7 +162,7 @@ const ProjectCard = ({
                 </>
               </Label>
             </div>
-            {url && (
+            {showUpcomingSalesLink && url && (
               <a href={`${fullURL(url)}#yksityiskohdat`} className={`${css.controlsButton} `}>
                 {t('SEARCH:subscribe-for-upcoming-sales')}
               </a>
