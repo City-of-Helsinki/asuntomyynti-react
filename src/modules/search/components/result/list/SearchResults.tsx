@@ -15,6 +15,7 @@ type Props = {
   header: string;
   openMap?: () => void;
   showSubscribeButton?: boolean;
+  showUpcomingSalesLink?: boolean;
   currentLang: string;
   resultCountByProjects?: boolean;
   hideApartments?: boolean;
@@ -28,6 +29,7 @@ const SearchResults = ({
   header,
   openMap,
   showSubscribeButton = false,
+  showUpcomingSalesLink = false,
   currentLang,
   resultCountByProjects = false,
   hideApartments = false,
@@ -75,6 +77,7 @@ const SearchResults = ({
               config={config}
               project={x}
               showSubscribeButton={showSubscribeButton}
+              showUpcomingSalesLink={showUpcomingSalesLink}
               currentLang={currentLang}
               hideApartments={hideApartments}
             />
