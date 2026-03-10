@@ -6,7 +6,7 @@ import { IconAngleDown, IconAngleUp, IconPenLine } from 'hds-react';
 import { Apartment, ApartmentStateOfSale, OwnershipType } from '../../../../../types/common';
 import { fullURL } from '../../../utils/fullURL';
 import { getApartmentPrice } from '../../../utils/getApartmentPrice';
-import { userHasApplicationForApartment, userHasReservedOrSoldApartment } from '../../../utils/userApplications';
+import { userHasApplicationForApartment } from '../../../utils/userApplications';
 import RenderAvailabilityInfo from '../ApplicationStatus';
 import useSessionStorageState from '../../../../../hooks/useSessionStorageState';
 import formattedLivingArea from '../../../utils/formatLivingArea';
