@@ -28,6 +28,15 @@ const searchContainer = document.getElementById('asu_react_search');
 const projectSettings =
   (window as any).drupalSettings?.asu_apartment_search?.project_apartment_widget;
 
+const urlParams = new URLSearchParams(window.location.search);
+const devProjectUuid = urlParams.get('project_uuid');
+const devOwnershipType =
+  urlParams.get('project_ownership_type') ||
+  process.env.REACT_APP_PROJECT_OWNERSHIP_TYPE ||
+  'hitas';
+const devStateOfSale = urlParams.get('state_of_sale') || urlParams.get('project_state_of_sale');
+
+// Prefer Drupal-injected project widget when embedded.
 if (projectContainer && projectSettings?.project_uuid) {
   ReactDOM.render(
     <React.StrictMode>
@@ -42,6 +51,23 @@ if (projectContainer && projectSettings?.project_uuid) {
       </Router>
     </React.StrictMode>,
     projectContainer
+  );
+}
+// Dev convenience: localhost:3000?project_uuid=... renders project widget.
+else if (searchContainer && devProjectUuid) {
+  ReactDOM.render(
+    <React.StrictMode>
+      <Router>
+        <DataContextProvider>
+          <ProjectApartmentsWidget
+            projectUuid={devProjectUuid}
+            projectOwnershipType={devOwnershipType}
+            projectStateOfSale={devStateOfSale || undefined}
+          />
+        </DataContextProvider>
+      </Router>
+    </React.StrictMode>,
+    searchContainer
   );
 } else if (searchContainer) {
   ReactDOM.render(

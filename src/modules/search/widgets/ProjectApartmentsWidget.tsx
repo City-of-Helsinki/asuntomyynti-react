@@ -100,45 +100,22 @@ const ProjectApartmentsWidget = ({
     (item: Project) => item.uuid === projectUuid
   );
 
-  if (isConfigError || isSearchQueryError) {
-    return (
-      <div className={styles.errorToastWrapper}>
-        <IconAlertCircle className={styles.alertIcon} />
-        {t('SEARCH:error-while-loading-results')}
-      </div>
-    );
-  }
+  const hasError = isConfigError || isSearchQueryError;
+  const isLoading = !config || isConfigLoading || isSearchQueryFetching;
 
-  if (!config || isConfigLoading || isSearchQueryFetching) {
-    return (
-      <div className={styles.loadingSpinnerWrapper}>
-        <LoadingSpinner />
-      </div>
-    );
-  }
-
-  if (!project) {
-    return (
-      <div className={styles.noResults}>
-        <IconAlertCircle className={styles.alertIcon} />
-        {t('SEARCH:no-results')}
-      </div>
-    );
-  }
-
-  const filteredApartments = getLanguageFilteredApartments(
-    project.apartments,
-    currentLang
-  );
+  const filteredApartments = project
+    ? getLanguageFilteredApartments(project.apartments, currentLang)
+    : [];
 
   const { filters } = config || {};
   const { room_count, living_area, price } = filters || {};
+  const showFilterPlaceholders = !filters;
 
   return (
     <section className={styles.container} aria-label={t('SEARCH:apartments')}>
       <div className={styles.headerWrapper}>
         <header className={styles.header}>
-          <h2>{t('SEARCH:apartments')}</h2>
+          <h2>{t('SEARCH:project-apartments')}</h2>
           <h3 className={styles.resultsCount}>
             {t('SEARCH:total')} {filteredApartments.length} {t('SEARCH:apartments')}
           </h3>
@@ -146,41 +123,76 @@ const ProjectApartmentsWidget = ({
       </div>
 
       <div className={styles.content}>
-        {filters && (
-          <form
-            className={styles.filterBar}
-            onSubmit={(event) => {
-              event.preventDefault();
-              updateQuery();
-            }}
-          >
-            <div className={styles.filterItem}>{room_count && <Dropdown name={FilterName.RoomCount} {...room_count} />}</div>
-            <div className={styles.filterItem}>{living_area && <Dropdown name={FilterName.LivingArea} {...living_area} />}</div>
-            <div className={styles.filterItem}>{price && <Dropdown name={FilterName.Price} {...price} />}</div>
-            <div className={styles.filterItemSubmit}>
-              <Button type="submit" iconLeft={<IconSearch aria-hidden="true" />}>
-                {t('SEARCH:search')}
-              </Button>
-            </div>
-          </form>
-        )}
+        <form
+          className={styles.filterBar}
+          onSubmit={(event) => {
+            event.preventDefault();
+            updateQuery();
+          }}
+        >
+          {showFilterPlaceholders ? (
+            <>
+              <div className={styles.filterPlaceholder} aria-hidden="true" />
+              <div className={styles.filterPlaceholder} aria-hidden="true" />
+              <div className={styles.filterPlaceholder} aria-hidden="true" />
+              <div className={styles.filterItemSubmit}>
+                <Button type="submit" iconLeft={<IconSearch aria-hidden="true" />} disabled>
+                  {t('SEARCH:search')}
+                </Button>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className={styles.filterItem}>
+                {room_count && <Dropdown name={FilterName.RoomCount} {...room_count} />}
+              </div>
+              <div className={styles.filterItem}>
+                {living_area && <Dropdown name={FilterName.LivingArea} {...living_area} />}
+              </div>
+              <div className={styles.filterItem}>
+                {price && <Dropdown name={FilterName.Price} {...price} />}
+              </div>
+              <div className={styles.filterItemSubmit}>
+                <Button type="submit" iconLeft={<IconSearch aria-hidden="true" />}>
+                  {t('SEARCH:search')}
+                </Button>
+              </div>
+            </>
+          )}
+        </form>
 
-        <ApartmentTable
-          apartments={filteredApartments}
-          applications={getUserApplications(config.user, project.id)}
-          applicationStatus={getProjectApplicationStatus(
-            config.apartment_application_status,
-            project.id
-          )}
-          userHasApplicationForProject={userHasApplications(config.user, project.id)}
-          userHasReservedOrSoldApartmentInProject={userHasReservedOrSoldApartment(
-            config,
-            project.id
-          )}
-          housingCompany={project.housing_company}
-          projectID={project.id}
-          projectOwnershipIsHaso={projectOwnershipType.toLowerCase() === 'haso'}
-        />
+        {hasError ? (
+          <div className={styles.errorToastWrapper}>
+            <IconAlertCircle className={styles.alertIcon} />
+            {t('SEARCH:error-while-loading-results')}
+          </div>
+        ) : isLoading ? (
+          <div className={styles.loadingSpinnerWrapper}>
+            <LoadingSpinner />
+          </div>
+        ) : project ? (
+          <ApartmentTable
+            apartments={filteredApartments}
+            applications={getUserApplications(config?.user, project.id)}
+            applicationStatus={getProjectApplicationStatus(
+              config?.apartment_application_status,
+              project.id
+            )}
+            userHasApplicationForProject={userHasApplications(config?.user, project.id)}
+            userHasReservedOrSoldApartmentInProject={userHasReservedOrSoldApartment(
+              config,
+              project.id
+            )}
+            housingCompany={project.housing_company}
+            projectID={project.id}
+            projectOwnershipIsHaso={projectOwnershipType.toLowerCase() === 'haso'}
+          />
+        ) : (
+          <div className={styles.noResults}>
+            <IconAlertCircle className={styles.alertIcon} />
+            {t('SEARCH:no-results')}
+          </div>
+        )}
       </div>
     </section>
   );
