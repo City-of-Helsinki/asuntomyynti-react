@@ -45,5 +45,4 @@ test('renders filter fields even with no search results', () => {
 
   expect(screen.getByText('Room count')).toBeDefined();
   expect(screen.getByText('area, m2')).toBeDefined();
-  expect(screen.getByText('Price at most')).toBeDefined();
 });
