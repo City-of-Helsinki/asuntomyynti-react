@@ -24,6 +24,94 @@ type Props = {
   projectOwnershipIsHaso: boolean;
 };
 
+type TranslationFn = (key: string) => string;
+
+type ApplicationFlags = {
+  isApartmentFree: boolean;
+  isApplicationPeriodActive: boolean;
+  canApplyAfterwards: boolean;
+  canCreateApplication: boolean;
+  contactUrl: string;
+};
+
+type StatusPresentation = {
+  reservedOrSoldLabel: string;
+  statusForDot: string;
+};
+
+const computeApplicationFlags = (
+  apartment: Apartment,
+  userHasReservedOrSoldApartmentInProject: boolean
+): ApplicationFlags => {
+  const isApartmentFree =
+    apartment.apartment_state_of_sale === ApartmentStateOfSale.FREE_FOR_RESERVATIONS.valueOf();
+
+  const now = new Date().getTime();
+  const applicationStartTime = apartment.project_application_start_time
+    ? new Date(apartment.project_application_start_time).getTime()
+    : undefined;
+  const applicationEndTime = apartment.project_application_end_time
+    ? new Date(apartment.project_application_end_time).getTime()
+    : undefined;
+
+  const isApplicationPeriodActive =
+    applicationStartTime !== undefined &&
+    applicationEndTime !== undefined &&
+    now >= applicationStartTime &&
+    now <= applicationEndTime;
+
+  const canApplyAfterwards = apartment.project_can_apply_afterwards;
+
+  const canCreateApplication =
+    !isApartmentFree &&
+    (isApplicationPeriodActive || canApplyAfterwards) &&
+    !userHasReservedOrSoldApartmentInProject;
+
+  const contactUrl = `${window.location.origin}/contact/apply_for_free_apartment?apartment=${apartment.apartment_number}&project=${apartment.project_id}`;
+
+  return {
+    isApartmentFree,
+    isApplicationPeriodActive,
+    canApplyAfterwards,
+    canCreateApplication,
+    contactUrl,
+  };
+};
+
+const computeStatusPresentation = (
+  apartmentStateOfSale: string,
+  isApartmentFree: boolean,
+  isApplicationPeriodActive: boolean,
+  applicationStatus: string | undefined,
+  t: TranslationFn
+): StatusPresentation => {
+  const isApartmentReserved =
+    apartmentStateOfSale === ApartmentStateOfSale.RESERVED.valueOf() ||
+    apartmentStateOfSale === ApartmentStateOfSale.RESERVED_HASO.valueOf();
+  const isApartmentSold = apartmentStateOfSale === ApartmentStateOfSale.SOLD.valueOf();
+
+  let reservedOrSoldLabel = '';
+  if (isApartmentSold) {
+    reservedOrSoldLabel = t('SEARCH:apartment-sold');
+  } else if (isApartmentReserved) {
+    reservedOrSoldLabel = t('SEARCH:apartment-reserved');
+  } else if (!isApplicationPeriodActive && isApartmentFree) {
+    // Outside application period, show "free" instead of application count.
+    reservedOrSoldLabel = t('SEARCH:apartment-free');
+  }
+
+  let statusForDot: string;
+  if (isApartmentReserved) {
+    statusForDot = ApplicationStatus.Reserved;
+  } else if (isApartmentSold) {
+    statusForDot = ApplicationStatus.Sold;
+  } else {
+    statusForDot = applicationStatus || ApplicationStatus.Low;
+  }
+
+  return { reservedOrSoldLabel, statusForDot };
+};
+
 const MapApartmentRow = ({
   apartment,
   userApplications,
@@ -55,56 +143,21 @@ const MapApartmentRow = ({
     }
   };
 
-  const isApartmentFree =
-    apartment_state_of_sale === ApartmentStateOfSale.FREE_FOR_RESERVATIONS.valueOf();
+  const {
+    isApartmentFree,
+    isApplicationPeriodActive,
+    canApplyAfterwards,
+    canCreateApplication,
+    contactUrl,
+  } = computeApplicationFlags(apartment, userHasReservedOrSoldApartmentInProject);
 
-  const now = new Date().getTime();
-  const applicationStartTime = apartment.project_application_start_time
-    ? new Date(apartment.project_application_start_time).getTime()
-    : undefined;
-  const applicationEndTime = apartment.project_application_end_time
-    ? new Date(apartment.project_application_end_time).getTime()
-    : undefined;
-
-  const isApplicationPeriodActive =
-    applicationStartTime !== undefined &&
-    applicationEndTime !== undefined &&
-    now >= applicationStartTime &&
-    now <= applicationEndTime;
-  // Align with Drupal: can_apply_afterwards comes from backend logic.
-  const canApplyAfterwards = apartment.project_can_apply_afterwards;
-  // Allow application when application period is active or after-application is allowed,
-  // as long as the user does not already have a reserved or sold apartment in the project,
-  // and the apartment is not marked as free_for_reservations (those should use the contact button).
-  const canCreateApplication =
-    !isApartmentFree &&
-    (isApplicationPeriodActive || canApplyAfterwards) &&
-    !userHasReservedOrSoldApartmentInProject;
-  const contactUrl = `${window.location.origin}/contact/apply_for_free_apartment?apartment=${apartment.apartment_number}&project=${apartment.project_id}`;
-
-  const isApartmentReserved =
-    apartment_state_of_sale === ApartmentStateOfSale.RESERVED.valueOf() ||
-    apartment_state_of_sale === ApartmentStateOfSale.RESERVED_HASO.valueOf();
-  const isApartmentSold = apartment_state_of_sale === ApartmentStateOfSale.SOLD.valueOf();
-
-  let reservedOrSoldLabel = '';
-  if (isApartmentSold) {
-    reservedOrSoldLabel = t('SEARCH:apartment-sold');
-  } else if (isApartmentReserved) {
-    reservedOrSoldLabel = t('SEARCH:apartment-reserved');
-  } else if (!isApplicationPeriodActive && isApartmentFree) {
-    // Outside application period, show "free" instead of application count.
-    reservedOrSoldLabel = t('SEARCH:apartment-free');
-  }
-
-  let statusForDot: string;
-  if (isApartmentReserved) {
-    statusForDot = ApplicationStatus.Reserved;
-  } else if (isApartmentSold) {
-    statusForDot = ApplicationStatus.Sold;
-  } else {
-    statusForDot = applicationStatus || ApplicationStatus.Low;
-  }
+  const { reservedOrSoldLabel, statusForDot } = computeStatusPresentation(
+    apartment_state_of_sale,
+    isApartmentFree,
+    isApplicationPeriodActive,
+    applicationStatus,
+    t
+  );
 
   const apartmentRowBaseDetails = (
     <>
