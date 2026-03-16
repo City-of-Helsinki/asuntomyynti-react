@@ -52,3 +52,8 @@ test('renders ApplicationStatus default status of "no applications"', () => {
   render(<ApplicationStatus status="" />);
   expect(screen.getByText('SEARCH:apartment-no-applications')).toBeDefined();
 });
+
+test('renders ApplicationStatus with labelOverride', () => {
+  render(<ApplicationStatus status="LOW" labelOverride="OVERRIDE_LABEL" />);
+  expect(screen.getByText('OVERRIDE_LABEL')).toBeDefined();
+});

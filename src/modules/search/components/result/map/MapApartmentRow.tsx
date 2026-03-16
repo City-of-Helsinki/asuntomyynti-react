@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconAngleDown, IconAngleUp, IconPenLine } from 'hds-react';
 
-import { Apartment, ApartmentStateOfSale } from '../../../../../types/common';
+import { Apartment, ApartmentStateOfSale, ApplicationStatus } from '../../../../../types/common';
 import { fullURL } from '../../../utils/fullURL';
 import { getApartmentPrice } from '../../../utils/getApartmentPrice';
 import { userHasApplicationForApartment } from '../../../utils/userApplications';
@@ -19,7 +19,7 @@ type Props = {
   apartment: Apartment;
   userApplications: number[] | undefined;
   applicationStatus: string | undefined;
-  userHasApplicationForProject: boolean;
+  userHasReservedOrSoldApartmentInProject: boolean;
   isMobileSize: boolean;
   projectOwnershipIsHaso: boolean;
 };
@@ -28,7 +28,7 @@ const MapApartmentRow = ({
   apartment,
   userApplications,
   applicationStatus,
-  userHasApplicationForProject,
+  userHasReservedOrSoldApartmentInProject,
   isMobileSize,
   projectOwnershipIsHaso,
 }: Props) => {
@@ -55,12 +55,55 @@ const MapApartmentRow = ({
     }
   };
 
-  const isApartmentFree = apartment_state_of_sale === ApartmentStateOfSale.FREE_FOR_RESERVATIONS.valueOf();
-  const isApartmentOpenForApplications =
-    apartment_state_of_sale === ApartmentStateOfSale.OPEN_FOR_APPLICATIONS.valueOf();
-  const canApplyAfterwards = apartment.project_can_apply_afterwards && projectOwnershipIsHaso;
-  const canCreateApplication = (isApartmentOpenForApplications || canApplyAfterwards) && !userHasApplicationForProject;
+  const isApartmentFree =
+    apartment_state_of_sale === ApartmentStateOfSale.FREE_FOR_RESERVATIONS.valueOf();
+
+  const now = new Date().getTime();
+  const applicationStartTime = apartment.project_application_start_time
+    ? new Date(apartment.project_application_start_time).getTime()
+    : undefined;
+  const applicationEndTime = apartment.project_application_end_time
+    ? new Date(apartment.project_application_end_time).getTime()
+    : undefined;
+
+  const isApplicationPeriodActive =
+    applicationStartTime !== undefined &&
+    applicationEndTime !== undefined &&
+    now >= applicationStartTime &&
+    now <= applicationEndTime;
+  // Align with Drupal: can_apply_afterwards comes from backend logic.
+  const canApplyAfterwards = apartment.project_can_apply_afterwards;
+  // Allow application when application period is active or after-application is allowed,
+  // as long as the user does not already have a reserved or sold apartment in the project,
+  // and the apartment is not marked as free_for_reservations (those should use the contact button).
+  const canCreateApplication =
+    !isApartmentFree &&
+    (isApplicationPeriodActive || canApplyAfterwards) &&
+    !userHasReservedOrSoldApartmentInProject;
   const contactUrl = `${window.location.origin}/contact/apply_for_free_apartment?apartment=${apartment.apartment_number}&project=${apartment.project_id}`;
+
+  const isApartmentReserved =
+    apartment_state_of_sale === ApartmentStateOfSale.RESERVED.valueOf() ||
+    apartment_state_of_sale === ApartmentStateOfSale.RESERVED_HASO.valueOf();
+  const isApartmentSold = apartment_state_of_sale === ApartmentStateOfSale.SOLD.valueOf();
+
+  let reservedOrSoldLabel = '';
+  if (isApartmentSold) {
+    reservedOrSoldLabel = t('SEARCH:apartment-sold');
+  } else if (isApartmentReserved) {
+    reservedOrSoldLabel = t('SEARCH:apartment-reserved');
+  } else if (isApartmentFree || isApplicationPeriodActive) {
+    reservedOrSoldLabel = t('SEARCH:apartment-free');
+  }
+
+  let statusForDot: string;
+  if (isApartmentReserved) {
+    statusForDot = ApplicationStatus.Reserved;
+  } else if (isApartmentSold) {
+    statusForDot = ApplicationStatus.Sold;
+  } else {
+    statusForDot = applicationStatus || ApplicationStatus.Low;
+  }
 
   const apartmentRowBaseDetails = (
     <>
@@ -95,7 +138,7 @@ const MapApartmentRow = ({
       <span className="sr-only">{t('SEARCH:apartment')}</span>
       <strong>{apartment_number}</strong>
       <span className={css.apartmentAvailabilityMobile}>
-        <RenderAvailabilityInfo status={isApartmentFree ? 'VACANT' : applicationStatus} dotOnly={true} />
+        <RenderAvailabilityInfo status={statusForDot} dotOnly={true} labelOverride={reservedOrSoldLabel || undefined} />
       </span>
       <span>
         <span className="sr-only">{t('SEARCH:aria-apartment-structure')}: </span>
@@ -130,7 +173,7 @@ const MapApartmentRow = ({
       <div className={css.mobileCell}>
         <span className={css.cellMobileTitle}>{t('SEARCH:applications')}</span>
         <span>
-          <RenderAvailabilityInfo status={isApartmentFree ? 'VACANT' : applicationStatus} />
+          <RenderAvailabilityInfo status={statusForDot} labelOverride={reservedOrSoldLabel || undefined} />
         </span>
       </div>
     </div>
@@ -171,6 +214,7 @@ const MapApartmentRow = ({
               <CreateApplicationButton
                 href={fullURL(application_url)}
                 apartment={apartment}
+                showAfterApplicationLabel={canApplyAfterwards}
               />
             )}
           {isApartmentFree && !canApplyAfterwards && (
@@ -212,7 +256,7 @@ const MapApartmentRow = ({
             <div className={css.apartmentDetails}>{apartmentRowBaseDetails}</div>
             <div className={css.apartmentAvailability}>
               <span className="sr-only">{t('SEARCH:applications')}, </span>
-              <RenderAvailabilityInfo status={isApartmentFree ? 'VACANT' : applicationStatus} dotOnly={false} />
+              <RenderAvailabilityInfo status={statusForDot} dotOnly={false} labelOverride={reservedOrSoldLabel || undefined} />
             </div>
             {apartmentRowActions}
           </>

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { DataConfig, Project } from '../../../../../types/common';
 import { getLanguageFilteredApartments } from '../../../utils/getLanguageFilteredApartments';
 import { getProjectApplicationStatus, getApartmentApplicationStatus } from '../../../utils/getApplicationStatus';
-import { userHasApplications, getUserApplications } from '../../../utils/userApplications';
+import { userHasApplications, getUserApplications, userHasReservedOrSoldApartment } from '../../../utils/userApplications';
 import { fullURL } from '../../../utils/fullURL';
 import SortApartments from '../../../utils/sortApartments';
 import MapApartmentRow from './MapApartmentRow';
@@ -60,6 +60,7 @@ const MapProjectCard = ({ config, project, currentLang }: Props) => {
 
   const projectApplicationStatus = getProjectApplicationStatus(apartment_application_status, id);
   const projectUserApplications = getUserApplications(user, id);
+  const userHasReservedOrSoldApartmentInProject = userHasReservedOrSoldApartment(config, id);
 
   const renderBasicDetails = () => (
     <div className={css.mapProjectDetailsContent}>
@@ -105,7 +106,7 @@ const MapProjectCard = ({ config, project, currentLang }: Props) => {
               apartment={x}
               userApplications={projectUserApplications}
               applicationStatus={getApartmentApplicationStatus(projectApplicationStatus, x.nid)}
-              userHasApplicationForProject={userHasApplications(user, id)}
+              userHasReservedOrSoldApartmentInProject={userHasReservedOrSoldApartmentInProject}
               isMobileSize={isMobileSize}
               projectOwnershipIsHaso={ownership_type.toLowerCase() === 'haso'}
             />
