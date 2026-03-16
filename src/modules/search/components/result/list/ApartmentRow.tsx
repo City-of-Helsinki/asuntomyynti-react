@@ -3,10 +3,10 @@ import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { IconAngleDown, IconAngleUp, IconPenLine } from 'hds-react';
 
-import { Apartment, ApartmentStateOfSale, OwnershipType } from '../../../../../types/common';
+import { Apartment, ApartmentStateOfSale, ApplicationStatus, OwnershipType } from '../../../../../types/common';
 import { fullURL } from '../../../utils/fullURL';
 import { getApartmentPrice } from '../../../utils/getApartmentPrice';
-import { userHasApplicationForApartment, userHasReservedOrSoldApartment } from '../../../utils/userApplications';
+import { userHasApplicationForApartment } from '../../../utils/userApplications';
 import RenderAvailabilityInfo from '../ApplicationStatus';
 import useSessionStorageState from '../../../../../hooks/useSessionStorageState';
 import formattedLivingArea from '../../../utils/formatLivingArea';
@@ -68,11 +68,24 @@ const ApartmentRow = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const isApartmentFree = apartment_state_of_sale === ApartmentStateOfSale.FREE_FOR_RESERVATIONS.valueOf();
-  const isApartmentOpenForApplications =
-    apartment_state_of_sale === ApartmentStateOfSale.OPEN_FOR_APPLICATIONS.valueOf();
-  const applicationEndTimeHasPassed = new Date().getTime() > new Date(apartment.project_application_end_time).getTime();
-  const canApplyAfterwards = apartment.project_can_apply_afterwards && applicationEndTimeHasPassed && projectOwnershipIsHaso;
+  const isApartmentFree =
+    apartment_state_of_sale === ApartmentStateOfSale.FREE_FOR_RESERVATIONS.valueOf();
+
+  const now = new Date().getTime();
+  const applicationStartTime = apartment.project_application_start_time
+    ? new Date(apartment.project_application_start_time).getTime()
+    : undefined;
+  const applicationEndTime = apartment.project_application_end_time
+    ? new Date(apartment.project_application_end_time).getTime()
+    : undefined;
+
+  const isApplicationPeriodActive =
+    applicationStartTime !== undefined &&
+    applicationEndTime !== undefined &&
+    now >= applicationStartTime &&
+    now <= applicationEndTime;
+  // Align with Drupal: can_apply_afterwards comes from backend logic.
+  const canApplyAfterwards = apartment.project_can_apply_afterwards;
 
   const ownershipType = projectOwnershipIsHaso ? OwnershipType.haso : OwnershipType.hitas;
   const contactUrl = `${window.location.origin}/contact/apply_for_free_apartment?apartment=${apartment.apartment_number}&project=${apartment.project_id}`
@@ -80,9 +93,37 @@ const ApartmentRow = ({
   // dont depend on the application_url set in Drupal, but allow using it in case an override is needed
   const applicationUrl = apartment.application_url || `${window.location.origin}/application/add/${ownershipType}/${apartment.project_id}`
   
-  // apartment status is OPEN_FOR_APPLICATIONS or apartment fulfills criteria for after-application
-  // user has no applications, reservations or hasn't been sold an apartment in the project
-  const canCreateApplication = (isApartmentOpenForApplications || canApplyAfterwards) && !userHasApplicationForProject && !userHasReservedOrSoldApartmentInProject;
+  // Apartment allows application when application period is active or after-application is allowed,
+  // as long as the user does not already have a reserved or sold apartment in the project,
+  // and the apartment is not marked as free_for_reservations (those should use the contact button).
+  const canCreateApplication =
+    !isApartmentFree &&
+    (isApplicationPeriodActive || canApplyAfterwards) &&
+    !userHasReservedOrSoldApartmentInProject;
+
+  const isApartmentReserved =
+    apartment_state_of_sale === ApartmentStateOfSale.RESERVED.valueOf() ||
+    apartment_state_of_sale === ApartmentStateOfSale.RESERVED_HASO.valueOf();
+  const isApartmentSold = apartment_state_of_sale === ApartmentStateOfSale.SOLD.valueOf();
+
+  let reservedOrSoldLabel = '';
+  if (isApartmentSold) {
+    reservedOrSoldLabel = t('SEARCH:apartment-sold');
+  } else if (isApartmentReserved) {
+    reservedOrSoldLabel = t('SEARCH:apartment-reserved');
+  } else if (!isApplicationPeriodActive && isApartmentFree) {
+    // Outside application period, show "free" instead of application count.
+    reservedOrSoldLabel = t('SEARCH:apartment-free');
+  }
+
+  let statusForDot: string;
+  if (isApartmentReserved) {
+    statusForDot = ApplicationStatus.Reserved;
+  } else if (isApartmentSold) {
+    statusForDot = ApplicationStatus.Sold;
+  } else {
+    statusForDot = applicationStatus || ApplicationStatus.Low;
+  }
 
   const apartmentRowBaseDetails = (
     <>
@@ -93,7 +134,7 @@ const ApartmentRow = ({
       {isMobileSize ? (
         <>
           <span className={css.apartmentAvailabilityMobile}>
-            <RenderAvailabilityInfo status={isApartmentFree ? 'VACANT' : applicationStatus} dotOnly={true} />
+            <RenderAvailabilityInfo status={statusForDot} dotOnly={true} labelOverride={reservedOrSoldLabel || undefined} />
           </span>
           <span>
             <span className="sr-only">{t('SEARCH:aria-apartment-structure')}: </span>
@@ -135,7 +176,7 @@ const ApartmentRow = ({
       <div className={css.cell}>
         <span className={isDesktopSize ? 'sr-only' : css.cellMobileTitle}>{t('SEARCH:applications')}&nbsp; </span>
         <span>
-          <RenderAvailabilityInfo status={isApartmentFree ? 'VACANT' : applicationStatus} />
+          <RenderAvailabilityInfo status={statusForDot} labelOverride={reservedOrSoldLabel || undefined} />
         </span>
       </div>
     </>
@@ -178,6 +219,7 @@ const ApartmentRow = ({
               <CreateApplicationButton
                 href={fullURL(applicationUrl)}
                 apartment={apartment}
+                showAfterApplicationLabel={canApplyAfterwards}
               />
             )
           }

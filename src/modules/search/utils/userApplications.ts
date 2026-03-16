@@ -39,10 +39,8 @@ export const userHasReservedOrSoldApartment = (data: DataConfig|undefined, proje
   const applicationId = projectApplication.application_id;
   
   const application_status = data.apartment_application_status[projectId][applicationId];
-  const reservedOrSoldStatuses = [
+  const blockingStatuses = [
     ApplicationStatus.Sold.valueOf(),
-    ApplicationStatus.Reserved.valueOf(),
-    ApplicationStatus.ReservedHaso.valueOf(),
-  ]
-  return reservedOrSoldStatuses.indexOf(application_status) !== -1
+  ];
+  return blockingStatuses.indexOf(application_status) !== -1;
 }
