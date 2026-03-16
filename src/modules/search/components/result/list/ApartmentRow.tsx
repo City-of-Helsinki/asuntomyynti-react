@@ -111,7 +111,8 @@ const ApartmentRow = ({
     reservedOrSoldLabel = t('SEARCH:apartment-sold');
   } else if (isApartmentReserved) {
     reservedOrSoldLabel = t('SEARCH:apartment-reserved');
-  } else if (isApartmentFree || isApplicationPeriodActive) {
+  } else if (!isApplicationPeriodActive && isApartmentFree) {
+    // Outside application period, show "free" instead of application count.
     reservedOrSoldLabel = t('SEARCH:apartment-free');
   }
 
