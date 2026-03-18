@@ -25,7 +25,7 @@ const useFilters = () => {
 
   const setFilter = (name: string, value: string) => {
     query.set(name, value);
-    history.push(`?${query.toString()}`);
+    history.replace(`?${query.toString()}`);
   };
 
   // Set array as value
@@ -47,7 +47,7 @@ const useFilters = () => {
 
     if (filteredValues.length === 0) {
       query.delete(name);
-      history.push(`?${query.toString()}`);
+      history.replace(`?${query.toString()}`);
       return;
     }
 
@@ -56,14 +56,14 @@ const useFilters = () => {
 
   const clearFilter = (name: string) => {
     query.delete(name);
-    history.push(`?${query.toString()}`);
+    history.replace(`?${query.toString()}`);
   };
 
   const clearAllFilters = (filterConfig: FilterConfigs) => {
     Object.keys(filterConfig).forEach((name) => {
       query.delete(name);
     });
-    history.push(`?${query.toString()}`);
+    history.replace(`?${query.toString()}`);
   };
 
   const hasFilters = (filterConfig: FilterConfigs) => {
