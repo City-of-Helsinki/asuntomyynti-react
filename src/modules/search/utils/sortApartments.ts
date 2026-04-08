@@ -1,33 +1,34 @@
 import React from 'react';
 import useSessionStorageState from '../../../hooks/useSessionStorageState';
 
-const SortApartments = (items: any, sessionStorageID: string) => {
-  const sortDefaultProps = {
+type SortConfig = {
+  key: string;
+  direction: 'ascending' | 'descending';
+  alphaNumeric: boolean;
+};
+
+const SortApartments = <T extends Record<string, unknown>>(items: T[], sessionStorageID: string) => {
+  const sortDefaultProps: SortConfig = {
     key: 'apartment_number',
     direction: 'ascending',
     alphaNumeric: true,
   };
-  const [sortConfig, setSortConfig] = useSessionStorageState({
+  const [sortConfig, setSortConfig] = useSessionStorageState<SortConfig>({
     defaultValue: sortDefaultProps,
     key: `sortConfig-${sessionStorageID}`,
   });
 
   const sortedApartments = React.useMemo(() => {
-    let sortableApartments = [...items];
+    const sortableApartments = [...items];
 
     if (sortConfig !== null) {
       if (sortConfig.alphaNumeric) {
         sortableApartments.sort((a, b) => {
-
-          // handle edge case where apartment has no `apartment_number` attribute
-          let firstValue: string = a['nid'].toString();
-          let secondValue: string = a['nid'].toString();
-
-          if(a[sortConfig.key] !== undefined && b[sortConfig.key] !== undefined) {
-            firstValue = a[sortConfig.key].split(' ').join('');
-            secondValue = b[sortConfig.key].split(' ').join('');
-          }
-
+          // Handle edge case where apartment can miss `apartment_number` by falling back to nid.
+          const firstRaw = a[sortConfig.key] ?? a['nid'] ?? '';
+          const secondRaw = b[sortConfig.key] ?? b['nid'] ?? '';
+          const firstValue = String(firstRaw).split(' ').join('');
+          const secondValue = String(secondRaw).split(' ').join('');
           if (sortConfig.direction === 'ascending') {
             return firstValue.localeCompare(secondValue, 'fi', { numeric: true });
           }
@@ -35,8 +36,8 @@ const SortApartments = (items: any, sessionStorageID: string) => {
         });
       } else {
         sortableApartments.sort((a, b) => {
-          const firstValue = a[sortConfig.key];
-          const secondValue = b[sortConfig.key];
+          const firstValue = Number(a[sortConfig.key] ?? 0);
+          const secondValue = Number(b[sortConfig.key] ?? 0);
 
           if (firstValue < secondValue) {
             return sortConfig.direction === 'ascending' ? -1 : 1;
@@ -52,7 +53,7 @@ const SortApartments = (items: any, sessionStorageID: string) => {
   }, [items, sortConfig]);
 
   const requestSort = (key: string, alphaNumeric: boolean) => {
-    let direction = 'ascending';
+    let direction: SortConfig['direction'] = 'ascending';
     if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
       direction = 'descending';
     }

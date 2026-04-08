@@ -1,5 +1,4 @@
-import React from 'react';
-import { IconArrowDown, IconCross, Button } from 'hds-react';
+import { IconArrowDown, IconCross, Button, ButtonVariant } from 'hds-react';
 import { useTranslation } from 'react-i18next';
 
 import { DataConfig, Project } from '../../../../../types/common';
@@ -15,19 +14,17 @@ type Props = {
   project: Project;
   currentLang: string;
   hideApartments?: boolean;
-  activeProject: Project | undefined;
+  activeProject: Project | null;
   showSubscribeButton?: boolean;
   onCloseBtnClick: () => void;
   onApartmentsBtnClick: () => void;
 };
 
 const MapProjectPopupCard = ({
-  config,
   project,
   currentLang,
   hideApartments = false,
   activeProject,
-  showSubscribeButton = false,
   onCloseBtnClick,
   onApartmentsBtnClick,
 }: Props) => {
@@ -81,13 +78,14 @@ const MapProjectPopupCard = ({
           <Button
             className={css.apartmentListButton}
             onClick={() => onApartmentsBtnClick()}
-            variant="supplementary"
-            iconRight={<IconArrowDown aria-hidden="true" />}
+            variant={ButtonVariant.Supplementary}
+            iconEnd={<IconArrowDown aria-hidden="true" />}
             aria-haspopup="true"
             aria-controls={`map-project-popup-${id}`}
             aria-expanded={activeProject?.id === id ? true : false}
+            aria-label={`${t('SEARCH:show-all')} ${filteredApartments.length} ${t('SEARCH:apartments')}`}
           >
-            <span className="sr-only">{t('SEARCH:show-all')}</span> {filteredApartments.length} {t('SEARCH:apartments')}
+            {`${filteredApartments.length} ${t('SEARCH:apartments')}`}
           </Button>
         )}
       </div>

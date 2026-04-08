@@ -1,7 +1,6 @@
-import React from 'react';
 import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { Button, IconMap, Tooltip } from 'hds-react';
+import { Button, ButtonVariant, IconMap, Tooltip } from 'hds-react';
 
 import ProjectCard from './ProjectCard';
 import { DataConfig, Project } from '../../../../../types/common';
@@ -62,10 +61,8 @@ const SearchResults = ({
         </div>
         {openMap && (
           <div className={cx(css.headerButtonWrapper, description && css.hasDescription)}>
-            <Button className={css.showButton} variant="secondary" onClick={openMap}>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <IconMap style={{ marginRight: 20 }} aria-hidden="true" /> {t('SEARCH:show-on-map')}
-              </div>
+            <Button className={css.showButton} variant={ButtonVariant.Secondary} onClick={openMap} iconStart={<IconMap style={{ marginRight: 10 }} aria-hidden="true" />}>
+              {t('SEARCH:show-on-map')}
             </Button>
           </div>
         )}

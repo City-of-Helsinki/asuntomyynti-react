@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import useSearchParams from '../../../../../hooks/useSearchParams';
 import RangeInput from './RangeInput';
 import CheckList from './CheckList';
@@ -14,12 +14,14 @@ type Props = {
 /**
  * Render filter depending on the configuration and query params
  */
-const QueryFilter = ({ name, onFilter, isWrapped = false, items, type, label, ...rest }: Props) => {
+const QueryFilter = ({ name, onFilter, isWrapped = false, items, type, label, translateItems, ...rest }: Props) => {
   // Get the current params
   const searchParams = useSearchParams();
 
   const filterCallback = useCallback(() => {
-    onFilter && onFilter({ label, type, items, ...rest });
+    if (onFilter) {
+      onFilter({ label, type, items, ...rest });
+    }
   }, [items, label, onFilter, type, rest]);
 
   // Update parent on mount
@@ -29,12 +31,22 @@ const QueryFilter = ({ name, onFilter, isWrapped = false, items, type, label, ..
 
   switch (type) {
     case FilterType.MultiSelect:
-      return <CheckList name={name} label={label} isWrapped={isWrapped} items={items as string[]} />;
+      return (
+        <CheckList
+          name={name}
+          label={label}
+          isWrapped={isWrapped}
+          items={items as string[]}
+          translateItems={translateItems}
+        />
+      );
 
     case FilterType.Range:
-      const [from, to] = items;
-      // Casting the types here to please the TypeScript gods
-      return <RangeInput name={name} from={from as FilterItem} to={to as FilterItem} />;
+      {
+        const [from, to] = items;
+        // Casting the types here to please the TypeScript gods
+        return <RangeInput name={name} from={from as FilterItem} to={to as FilterItem} />;
+      }
 
     case FilterType.Input:
       return <PriceInput name={name} label={label} isWrapped={isWrapped} items={items as FilterItem[]} />;

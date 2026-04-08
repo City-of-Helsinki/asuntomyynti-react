@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import IconByName from './IconByName';
@@ -6,7 +5,7 @@ import IconByName from './IconByName';
 test('renders IconByName component', () => {
   const { container } = render(
     <BrowserRouter>
-      <IconByName />
+      <IconByName name="location" />
     </BrowserRouter>
   );
   const element = container.firstChild;

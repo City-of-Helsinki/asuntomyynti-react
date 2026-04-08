@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
 
-type Props = {
-  defaultValue: any;
+type Props<T> = {
+  defaultValue: T;
   key: string;
 };
 
-const useSessionStorageState = ({ defaultValue, key }: Props) => {
-  const [value, setValue] = useState(() => {
+const useSessionStorageState = <T,>({ defaultValue, key }: Props<T>) => {
+  const [value, setValue] = useState<T>(() => {
     const storageValue = sessionStorage.getItem(key);
-    return storageValue !== null && storageValue !== undefined ? JSON.parse(storageValue) : defaultValue;
+    return storageValue !== null && storageValue !== undefined
+      ? (JSON.parse(storageValue) as T)
+      : defaultValue;
   });
 
   useEffect(() => {
@@ -19,7 +21,7 @@ const useSessionStorageState = ({ defaultValue, key }: Props) => {
     }
   }, [key, value]);
 
-  return [value, setValue];
+  return [value, setValue] as const;
 };
 
 export default useSessionStorageState;

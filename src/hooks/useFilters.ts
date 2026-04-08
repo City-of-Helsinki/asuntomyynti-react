@@ -1,15 +1,15 @@
 import useSearchParams from './useSearchParams';
 import { getParamsByName } from '../utils/getParamsByName';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FilterConfigs, FilterName } from '../types/common';
 import { useCallback } from 'react';
 
 const useFilters = () => {
   const query = useSearchParams();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const getAllFilters = () => {
-    return Array.from(query.entries()).filter(([name, value]) => value !== '') as [FilterName, string][];
+    return Array.from(query.entries()).filter(([, value]) => value !== '') as [FilterName, string][];
   };
 
   const getFilters = useCallback(
@@ -25,7 +25,7 @@ const useFilters = () => {
 
   const setFilter = (name: string, value: string) => {
     query.set(name, value);
-    history.replace(`?${query.toString()}`);
+    navigate(`?${query.toString()}`, { replace: true });
   };
 
   // Set array as value
@@ -47,7 +47,7 @@ const useFilters = () => {
 
     if (filteredValues.length === 0) {
       query.delete(name);
-      history.replace(`?${query.toString()}`);
+      navigate(`?${query.toString()}`, { replace: true });
       return;
     }
 
@@ -56,14 +56,14 @@ const useFilters = () => {
 
   const clearFilter = (name: string) => {
     query.delete(name);
-    history.replace(`?${query.toString()}`);
+    navigate(`?${query.toString()}`, { replace: true });
   };
 
   const clearAllFilters = (filterConfig: FilterConfigs) => {
     Object.keys(filterConfig).forEach((name) => {
       query.delete(name);
     });
-    history.replace(`?${query.toString()}`);
+    navigate(`?${query.toString()}`, { replace: true });
   };
 
   const hasFilters = (filterConfig: FilterConfigs) => {

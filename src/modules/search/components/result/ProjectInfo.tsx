@@ -1,7 +1,6 @@
 import cx from 'classnames';
 import { format } from 'date-fns';
 import { IconClock, IconCogwheel, IconInfoCircle, IconPenLine } from 'hds-react';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Project, StateOfSale } from '../../../../types/common';

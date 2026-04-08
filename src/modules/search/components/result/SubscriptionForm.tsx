@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Button, Checkbox, Notification, TextInput } from 'hds-react';
+import { useEffect, useRef, useState } from 'react';
+import { Button, ButtonVariant, Checkbox, Notification, TextInput } from 'hds-react';
 import { useTranslation } from 'react-i18next';
 import styles from './SubscriptionForm.module.scss';
 import axios from 'axios';
@@ -28,7 +28,9 @@ const SubscriptionForm = ({ onClose, project }: Props) => {
   const emailRef = useRef<HTMLInputElement>(null);
 
   const handleClose = () => {
-    typeof onClose === 'function' && onClose();
+    if (onClose) {
+      onClose();
+    }
   };
 
   const handleSubscribe = async () => {
@@ -40,11 +42,12 @@ const SubscriptionForm = ({ onClose, project }: Props) => {
         subscribe_mailinglist: subscribeToNewsLetter,
       });
       setFormState(FormState.Ready);
-      typeof onClose === 'function' &&
+      if (onClose) {
         setTimeout(() => {
           onClose();
         }, 1000);
-    } catch (e) {
+      }
+    } catch {
       setFormState(FormState.Error);
       emailRef.current?.select();
     }
@@ -89,7 +92,7 @@ const SubscriptionForm = ({ onClose, project }: Props) => {
         />
       </div>
       <div className={styles.buttonWrapper}>
-        <Button onClick={handleClose} variant="secondary">
+        <Button onClick={handleClose} variant={ButtonVariant.Secondary}>
           {t('SEARCH:cancel')}
         </Button>
         <Button onClick={handleSubscribe} disabled={formState !== FormState.InProgress}>

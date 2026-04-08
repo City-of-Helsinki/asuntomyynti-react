@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IconAngleRight, IconCross } from 'hds-react';
 import { useTranslation } from 'react-i18next';
 import { DataConfig } from '../../types/common';

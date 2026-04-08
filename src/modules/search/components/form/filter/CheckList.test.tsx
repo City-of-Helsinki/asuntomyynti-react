@@ -1,16 +1,15 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CheckList from './CheckList';
 import { BrowserRouter } from 'react-router-dom';
 
 const mockItems = ['for_sale', 'pre_marketing', 'processing', 'ready'];
 const mockLabel = 'State of sale';
-const mockName = 'project_state_of_sale';
+const mockName = 'project_state_of_sale' as any;
 
 test('renders CheckList component', () => {
   const { container } = render(
     <BrowserRouter>
-      <CheckList items={[]} />
+      <CheckList items={mockItems} name={mockName} label={mockLabel} />
     </BrowserRouter>
   );
   const element = container.firstChild;
@@ -20,7 +19,7 @@ test('renders CheckList component', () => {
 test('renders four checklist items', () => {
   render(
     <BrowserRouter>
-      <CheckList items={mockItems} name={mockName} />
+      <CheckList items={mockItems} name={mockName} label={mockLabel} />
     </BrowserRouter>
   );
 
@@ -33,7 +32,7 @@ test('renders four checklist items', () => {
 test('renders label', () => {
   render(
     <BrowserRouter>
-      <CheckList items={mockItems} label={mockLabel} />
+      <CheckList items={mockItems} label={mockLabel} name={mockName} />
     </BrowserRouter>
   );
 

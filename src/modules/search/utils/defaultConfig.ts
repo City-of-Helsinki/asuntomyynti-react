@@ -4,7 +4,8 @@ export const defaultConfig = (name: FilterName): DefaultFilterConfig => ({
   label: name,
   suffix: null,
   items: [],
-  getQuery: (values: string[]) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  getQuery: (_values: string[]) => {
     return {};
   },
   getLabel: (values: string[]) => {

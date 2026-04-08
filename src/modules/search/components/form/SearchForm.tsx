@@ -1,4 +1,4 @@
-import React, { RefObject } from 'react';
+import { RefObject } from 'react';
 import styles from './SearchForm.module.scss';
 import { Button, IconSearch, IconCross, Notification } from 'hds-react';
 import cx from 'classnames';
@@ -25,7 +25,7 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipTyp
   const { project_district_hitas, project_district_haso, room_count, living_area, price } = filters || {};
 
   const searchButton = () => (
-    <Button className={styles.submitButton} onClick={() => onSubmit()} iconLeft={<IconSearch aria-hidden="true" />}>
+    <Button className={styles.submitButton} onClick={() => onSubmit()} iconStart={<IconSearch aria-hidden="true" />}>
       {t('SEARCH:search')}
     </Button>
   );

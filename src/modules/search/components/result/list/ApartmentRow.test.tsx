@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import ApartmentRow from './ApartmentRow';
@@ -31,10 +30,18 @@ function buildPropsFor(
   } as React.ComponentProps<typeof ApartmentRow>;
 }
 
+const defaultProps = {
+  apartment: mockApartment as any,
+  userApplications: [],
+  applicationStatus: undefined,
+  userHasApplicationForProject: false,
+  projectOwnershipIsHaso: false,
+};
+
 test('renders ApartmentRow component', () => {
   const { container } = render(
     <BrowserRouter>
-      <ApartmentRow apartment={mockApartment} />
+      <ApartmentRow {...defaultProps} />
     </BrowserRouter>
   );
   const element = container.firstChild;
@@ -42,7 +49,7 @@ test('renders ApartmentRow component', () => {
 });
 
 test('renders apartment details', () => {
-  render(<ApartmentRow apartment={mockApartment} />);
+  render(<BrowserRouter><ApartmentRow {...defaultProps} /></BrowserRouter>);
 
   expect(screen.queryByText('A15')).not.toBeNull(); // apartment_number
   expect(screen.queryByText('1h+k+s')).not.toBeNull(); // apartment_structure

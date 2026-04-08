@@ -1,6 +1,6 @@
-import { Button, IconAngleLeft, IconAngleRight, IconArrowDown, IconArrowUp } from 'hds-react';
+import { Button, ButtonVariant, IconAngleLeft, IconAngleRight, IconArrowDown, IconArrowUp } from 'hds-react';
 import { ButtonBack, ButtonNext, CarouselProvider, Slide, Slider } from 'pure-react-carousel';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { DataConfig, Project } from '../../../../../types/common';
@@ -35,7 +35,7 @@ const ProjectCard = ({
   config,
   project,
   hideImgOnSmallScreen = false,
-  showSubscribeButton = false,
+  showSubscribeButton: _showSubscribeButton = false,
   showUpcomingSalesLink = false,
   currentLang,
   hideApartments = false,
@@ -193,13 +193,13 @@ const ProjectCard = ({
               <Button
                 className={css.apartmentListButton}
                 onClick={toggleList}
-                variant="supplementary"
-                iconRight={listOpen ? <IconArrowUp aria-hidden="true" /> : <IconArrowDown aria-hidden="true" />}
+                variant={ButtonVariant.Supplementary}
+                iconEnd={listOpen ? <IconArrowUp aria-hidden="true" /> : <IconArrowDown aria-hidden="true" />}
                 aria-expanded={listOpen ? 'true' : 'false'}
                 aria-controls={`apartments-for-${id}`}
                 id={`toggle-apartment-list-${id}`}
               >
-                {filteredApartments.length} {t('SEARCH:apartments')}
+                {String(filteredApartments.length) + ' ' + t('SEARCH:apartments')}
               </Button>
             )}
           </div>

@@ -1,10 +1,10 @@
-import React from 'react';
-import { QueryResult } from 'react-query/types/core/types';
+import { createContext } from 'react';
+import { UseQueryResult } from '@tanstack/react-query';
 import { DataConfig } from '../../types/common';
 import useDataConfig from './hooks/useDataConfig';
 import useSearchParams from '../../hooks/useSearchParams';
 
-export const DataContext = React.createContext<QueryResult<DataConfig> | undefined>(undefined);
+export const DataContext = createContext<UseQueryResult<DataConfig> | undefined>(undefined);
 
 type Props = {
   children: JSX.Element;

@@ -1,4 +1,3 @@
-import React from 'react';
 import { TextInput } from 'hds-react';
 import styles from './RangeInput.module.scss';
 import { FilterItem } from '../../../../../types/common';
