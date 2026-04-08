@@ -27,7 +27,11 @@ test('renders ApartmentTable component', () => {
 });
 
 test('renders table header elements', () => {
-  render(<BrowserRouter><ApartmentTable {...defaultProps} /></BrowserRouter>);
+  render(
+    <BrowserRouter>
+      <ApartmentTable {...defaultProps} />
+    </BrowserRouter>
+  );
   expect(screen.getAllByText('SEARCH:apartment')).toBeDefined();
   expect(screen.getAllByText('SEARCH:floor')).toBeDefined();
   expect(screen.getAllByText('SEARCH:area')).toBeDefined();
@@ -36,7 +40,11 @@ test('renders table header elements', () => {
 });
 
 test('Dont render pagination', () => {
-  render(<BrowserRouter><ApartmentTable {...defaultProps} /></BrowserRouter>);
+  render(
+    <BrowserRouter>
+      <ApartmentTable {...defaultProps} />
+    </BrowserRouter>
+  );
   expect(screen.queryByLabelText('SEARCH:previous-page')).toBeNull();
 });
 
@@ -44,9 +52,13 @@ test('Renders pagination', () => {
   const multipleApartments = new Array(15);
 
   for (let i = 0; i < multipleApartments.length; i++) {
-    multipleApartments[i] = { ...apartment, uuid: Math.random().toString(36).substr(2, 5) };
+    multipleApartments[i] = { ...apartment, uuid: `mock-${i}` };
   }
 
-  render(<BrowserRouter><ApartmentTable {...defaultProps} apartments={multipleApartments} /></BrowserRouter>);
+  render(
+    <BrowserRouter>
+      <ApartmentTable {...defaultProps} apartments={multipleApartments} />
+    </BrowserRouter>
+  );
   expect(screen.queryByLabelText('SEARCH:previous-page')).not.toBeNull();
 });

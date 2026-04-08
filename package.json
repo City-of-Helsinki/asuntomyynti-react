@@ -1,6 +1,6 @@
 {
   "name": "asuntomyynti-react",
-  "version": "1.5.4",
+  "version": "1.6.0",
   "private": true,
   "type": "module",
   "engines": {
@@ -32,16 +32,17 @@
     "test": "vitest",
     "lint": "eslint .",
     "preview": "vite preview",
+    "prepare": "husky",
     "rimraf": "rimraf",
     "create-dist-package-folder": "node -e \"require('fs').mkdirSync('dist/react', {recursive:true})\"",
     "create-hitas": "cross-env VITE_PROJECT_OWNERSHIP_TYPE=hitas VITE_SHOW_UPCOMING_ONLY=false npm run build",
     "create-hitas-upcoming": "cross-env VITE_PROJECT_OWNERSHIP_TYPE=hitas VITE_SHOW_UPCOMING_ONLY=true npm run build",
     "create-haso": "cross-env VITE_PROJECT_OWNERSHIP_TYPE=haso VITE_SHOW_UPCOMING_ONLY=false npm run build",
     "create-haso-upcoming": "cross-env VITE_PROJECT_OWNERSHIP_TYPE=haso VITE_SHOW_UPCOMING_ONLY=true npm run build",
-    "copy-files:hitas": "node -e \"require('fs').mkdirSync('dist/react/hitas', {recursive:true})\" && cp build/assets/js/main.*.chunk.js dist/react/hitas/asu_react_main.js && cp build/assets/js/vendor.temp.chunk.js dist/react/hitas/asu_react_vendors.js && cp build/assets/js/runtime-main.temp.js dist/react/hitas/asu_react_runtime-main.js && cp build/assets/css/main.*.css dist/react/hitas/asu_react_main.css",
-    "copy-files:hitas-upcoming": "node -e \"require('fs').mkdirSync('dist/react/hitas_upcoming', {recursive:true})\" && cp build/assets/js/main.*.chunk.js dist/react/hitas_upcoming/asu_react_main.js && cp build/assets/js/vendor.temp.chunk.js dist/react/hitas_upcoming/asu_react_vendors.js && cp build/assets/js/runtime-main.temp.js dist/react/hitas_upcoming/asu_react_runtime-main.js && cp build/assets/css/main.*.css dist/react/hitas_upcoming/asu_react_main.css",
-    "copy-files:haso": "node -e \"require('fs').mkdirSync('dist/react/haso', {recursive:true})\" && cp build/assets/js/main.*.chunk.js dist/react/haso/asu_react_main.js && cp build/assets/js/vendor.temp.chunk.js dist/react/haso/asu_react_vendors.js && cp build/assets/js/runtime-main.temp.js dist/react/haso/asu_react_runtime-main.js && cp build/assets/css/main.*.css dist/react/haso/asu_react_main.css",
-    "copy-files:haso-upcoming": "node -e \"require('fs').mkdirSync('dist/react/haso_upcoming', {recursive:true})\" && cp build/assets/js/main.*.chunk.js dist/react/haso_upcoming/asu_react_main.js && cp build/assets/js/vendor.temp.chunk.js dist/react/haso_upcoming/asu_react_vendors.js && cp build/assets/js/runtime-main.temp.js dist/react/haso_upcoming/asu_react_runtime-main.js && cp build/assets/css/main.*.css dist/react/haso_upcoming/asu_react_main.css",
+    "copy-files:hitas": "node scripts/copy-dist-files.cjs hitas",
+    "copy-files:hitas-upcoming": "node scripts/copy-dist-files.cjs hitas_upcoming",
+    "copy-files:haso": "node scripts/copy-dist-files.cjs haso",
+    "copy-files:haso-upcoming": "node scripts/copy-dist-files.cjs haso_upcoming",
     "create-zip": "node scripts/create-zip.cjs",
     "dist": "rimraf dist && npm run create-dist-package-folder && npm run create-hitas && npm run copy-files:hitas && npm run create-hitas-upcoming && npm run copy-files:hitas-upcoming && npm run create-haso && npm run copy-files:haso && npm run create-haso-upcoming && npm run copy-files:haso-upcoming && npm run create-zip"
   },
@@ -68,11 +69,6 @@
     "typescript-eslint": "^8.56.0",
     "vite": "^7.0.4",
     "vitest": "^3.2.4"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   },
   "lint-staged": {
     "*.{ts,tsx,js,css}": [
