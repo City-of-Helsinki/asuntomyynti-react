@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -6,12 +5,17 @@ import SubscribeToProjectMailinglist from './SubscribeToProjectMailinglist';
 
 import mockConfig from '../../mocks/filter-config.json';
 import mockProject from '../../mocks/single-project.json';
+import { DataConfig, Project } from '../../../../types/common';
+
+const project = mockProject as unknown as Project;
+const config = mockConfig as unknown as DataConfig;
 
 const mockUserConfig = {
   user_id: '123',
   email_address: null,
   username: '',
   applications: [],
+  followed_projects: [],
 };
 
 const mockUserConfigWithSubscriptions = {
@@ -25,7 +29,7 @@ const mockUserConfigWithSubscriptions = {
 test('renders SubscribeToProjectMailinglist component', () => {
   const { container } = render(
     <BrowserRouter>
-      <SubscribeToProjectMailinglist project={mockProject} config={mockConfig} />
+      <SubscribeToProjectMailinglist project={project} config={config} />
     </BrowserRouter>
   );
   const element = container.firstChild;
@@ -36,8 +40,8 @@ test('renders unsubscribe button when user is already following the project', ()
   render(
     <BrowserRouter>
       <SubscribeToProjectMailinglist
-        project={{ ...mockProject, id: 99 }}
-        config={{ ...mockConfig, user: mockUserConfigWithSubscriptions }}
+        project={{ ...project, id: 99 }}
+        config={{ ...config, user: mockUserConfigWithSubscriptions }}
       />
     </BrowserRouter>
   );
@@ -48,8 +52,8 @@ test('renders subscribe button when user does not already follow the project', (
   render(
     <BrowserRouter>
       <SubscribeToProjectMailinglist
-        project={{ ...mockProject, id: 10 }}
-        config={{ ...mockConfig, user: mockUserConfig }}
+        project={{ ...project, id: 10 }}
+        config={{ ...config, user: mockUserConfig }}
       />
     </BrowserRouter>
   );

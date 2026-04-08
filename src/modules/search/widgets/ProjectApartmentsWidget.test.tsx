@@ -1,6 +1,6 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 
 import ProjectApartmentsWidget from './ProjectApartmentsWidget';
 import { DataContext } from '../DataContext';
@@ -9,9 +9,18 @@ import filterConfig from '../mocks/filter-config.json';
 
 import useSearchResults from '../../../hooks/useSearchResults';
 
-jest.mock('../../../hooks/useSearchResults');
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key,
+    i18n: { changeLanguage: vi.fn() },
+  }),
+}));
 
-const mockedUseSearchResults = useSearchResults as jest.Mock;
+vi.mock('../../../hooks/useSearchResults', () => ({
+  default: vi.fn(),
+}));
+
+const mockedUseSearchResults = vi.mocked(useSearchResults);
 
 const configWithFilters = {
   ...filterConfig,
@@ -23,7 +32,7 @@ test('renders filter fields even with no search results', () => {
     data: [],
     isFetching: false,
     isError: false,
-  });
+  } as any);
 
   render(
     <MemoryRouter>

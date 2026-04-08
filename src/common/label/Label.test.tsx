@@ -1,6 +1,6 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Label from './Label';
+import styles from './Label.module.scss';
 
 test('renders label', () => {
   render(<Label children={'test'} />);
@@ -13,7 +13,7 @@ test('renders label for hitas', () => {
 
   const elem = screen.getByText('test');
 
-  expect(elem.classList.contains('hitas')).toBe(true);
+  expect(elem.classList.contains(styles.hitas)).toBe(true);
 });
 
 test('renders label for haso', () => {
@@ -21,7 +21,7 @@ test('renders label for haso', () => {
 
   const elem = screen.getByText('test');
 
-  expect(elem.classList.contains('haso')).toBe(true);
+  expect(elem.classList.contains(styles.haso)).toBe(true);
 });
 
 test('renders label for puolihitas', () => {
@@ -29,7 +29,7 @@ test('renders label for puolihitas', () => {
 
   const elem = screen.getByText('test');
 
-  expect(elem.classList.contains('puolihitas')).toBe(true);
+  expect(elem.classList.contains(styles.puolihitas)).toBe(true);
 });
 
 test('renders label with unknown type', () => {

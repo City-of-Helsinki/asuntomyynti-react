@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Button, IconEye, IconEyeCrossed, Notification } from 'hds-react';
+import { useState } from 'react';
+import { Button, ButtonSize, ButtonVariant, IconEye, IconEyeCrossed, Notification } from 'hds-react';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 
@@ -56,7 +56,7 @@ const SubscribeToProjectMailinglist = ({ project, config }: Props) => {
       } else {
         setPostState(PostState.Error);
       }
-    } catch (e) {
+    } catch {
       setPostState(PostState.Error);
     }
   };
@@ -66,17 +66,20 @@ const SubscribeToProjectMailinglist = ({ project, config }: Props) => {
   };
 
   const renderSubscribeButton = (onClick = () => {}, disabled = false) => {
+    const buttonLabel = isSubscribed
+      ? t('SEARCH:project-mailinglist-unsubscribe')
+      : t('SEARCH:project-mailinglist-subscribe');
     return (
       <Button
         className="subscribe-button"
-        variant="supplementary"
-        iconLeft={isSubscribed ? <IconEyeCrossed aria-hidden="true" /> : <IconEye aria-hidden="true" />}
-        size={'small'}
+        variant={ButtonVariant.Supplementary}
+        iconStart={isSubscribed ? <IconEyeCrossed aria-hidden="true" /> : <IconEye aria-hidden="true" />}
+        size={ButtonSize.Small}
         onClick={onClick}
         disabled={disabled}
+        aria-label={`${buttonLabel}, ${housing_company}`}
       >
-        {isSubscribed ? t('SEARCH:project-mailinglist-unsubscribe') : t('SEARCH:project-mailinglist-subscribe')}
-        <span className="sr-only">, {housing_company}</span>
+        {buttonLabel}
       </Button>
     );
   };

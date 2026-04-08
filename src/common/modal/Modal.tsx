@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import styles from './Modal.module.scss';
 import ReactDOM from 'react-dom';
 import useOutsideClick from '../../hooks/useOutsideClick';
@@ -13,7 +13,9 @@ const Modal = ({ isVisible = false, setVisible, children }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useOutsideClick(ref, () => {
-    setVisible && setVisible(false);
+    if (setVisible) {
+      setVisible(false);
+    }
   });
 
   if (!isVisible) {

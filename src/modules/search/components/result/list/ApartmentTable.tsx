@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import cx from 'classnames';
 import { IconAngleLeft, IconAngleRight, IconSortAscending, IconSortDescending } from 'hds-react';
 import { useTranslation } from 'react-i18next';

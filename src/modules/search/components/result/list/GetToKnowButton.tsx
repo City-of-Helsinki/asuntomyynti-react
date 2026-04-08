@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import React from "react";
 import { Apartment } from "../../../../../types/common";
 import css from './GetToKnowButton.module.scss';
 

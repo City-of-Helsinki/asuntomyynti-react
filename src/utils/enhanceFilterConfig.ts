@@ -1,4 +1,4 @@
-import { BaseFilterConfigs, FilterConfigs, FilterName, PartialFilterConfig } from '../types/common';
+import { BaseFilterConfigs, FilterConfigs, FilterName } from '../types/common';
 import filterMap from '../modules/search/utils/filterMap';
 import { defaultConfig } from '../modules/search/utils/defaultConfig';
 
@@ -7,7 +7,7 @@ export const enhanceFilterConfig = (config: BaseFilterConfigs) =>
     const filterConfig = {
       ...accumulator[filterName],
       ...defaultConfig(filterName),
-      ...((config[filterName] || {}) as PartialFilterConfig | {}),
+      ...(config[filterName] ?? {}),
     };
     return {
       ...accumulator,

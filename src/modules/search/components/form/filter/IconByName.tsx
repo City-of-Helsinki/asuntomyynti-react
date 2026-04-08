@@ -1,4 +1,3 @@
-import React from 'react';
 import { IconHome, IconLocation, IconProps } from 'hds-react';
 
 type Props = {

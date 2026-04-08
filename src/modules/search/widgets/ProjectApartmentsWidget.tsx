@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { Button, IconAlertCircle, IconSearch, LoadingSpinner } from 'hds-react';
 import { useTranslation } from 'react-i18next';
 
@@ -136,7 +136,7 @@ const ProjectApartmentsWidget = ({
               <div className={styles.filterPlaceholder} aria-hidden="true" />
               <div className={styles.filterPlaceholder} aria-hidden="true" />
               <div className={styles.filterItemSubmit}>
-                <Button type="submit" iconLeft={<IconSearch aria-hidden="true" />} disabled>
+                <Button type="submit" iconStart={<IconSearch aria-hidden="true" />} disabled>
                   {t('SEARCH:search')}
                 </Button>
               </div>
@@ -153,7 +153,7 @@ const ProjectApartmentsWidget = ({
                 {price && <Dropdown name={FilterName.Price} {...price} />}
               </div>
               <div className={styles.filterItemSubmit}>
-                <Button type="submit" iconLeft={<IconSearch aria-hidden="true" />}>
+                <Button type="submit" iconStart={<IconSearch aria-hidden="true" />}>
                   {t('SEARCH:search')}
                 </Button>
               </div>

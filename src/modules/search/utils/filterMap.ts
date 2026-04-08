@@ -51,6 +51,7 @@ const filterMap: FilterMap = {
     items: items.map((item) => `${item} ${suffix}`),
     type: FilterType.MultiSelect,
     icon: 'home',
+    translateItems: false,
     getQuery: (values) => {
       const filters: QueryParams = {
         [FilterName.RoomCount]: values.map((x) => parseInt(x)),
@@ -59,8 +60,8 @@ const filterMap: FilterMap = {
     },
     getLabel: (values) => {
       const groupedNumbers = groupConsecutiveNumbers(values.map((x) => parseInt(x)));
-      return listGroupedNumbers(groupedNumbers, (first, last) =>
-        last === 5 ? ` ${suffix}, 5+ ${suffix}` : ` ${suffix}` || ''
+      return listGroupedNumbers(groupedNumbers, (_first, last) =>
+        last === 5 ? ` ${suffix}, 5+ ${suffix}` : ` ${suffix}`
       );
     },
   }),

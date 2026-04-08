@@ -1,14 +1,25 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import ApartmentTable from './ApartmentTable';
 
 import mockApartment from '../../../mocks/single-apartment.json';
 
+const apartment = mockApartment as any;
+
+const defaultProps = {
+  apartments: [apartment],
+  applications: [],
+  applicationStatus: {},
+  housingCompany: 'Test Co',
+  projectID: 123,
+  projectOwnershipIsHaso: false,
+  userHasApplicationForProject: false,
+};
+
 test('renders ApartmentTable component', () => {
   const { container } = render(
     <BrowserRouter>
-      <ApartmentTable apartments={[mockApartment]} />
+      <ApartmentTable {...defaultProps} />
     </BrowserRouter>
   );
   const element = container.firstChild;
@@ -16,7 +27,7 @@ test('renders ApartmentTable component', () => {
 });
 
 test('renders table header elements', () => {
-  render(<ApartmentTable apartments={[mockApartment]} />);
+  render(<BrowserRouter><ApartmentTable {...defaultProps} /></BrowserRouter>);
   expect(screen.getAllByText('SEARCH:apartment')).toBeDefined();
   expect(screen.getAllByText('SEARCH:floor')).toBeDefined();
   expect(screen.getAllByText('SEARCH:area')).toBeDefined();
@@ -25,7 +36,7 @@ test('renders table header elements', () => {
 });
 
 test('Dont render pagination', () => {
-  render(<ApartmentTable apartments={[mockApartment]} />);
+  render(<BrowserRouter><ApartmentTable {...defaultProps} /></BrowserRouter>);
   expect(screen.queryByLabelText('SEARCH:previous-page')).toBeNull();
 });
 
@@ -33,9 +44,9 @@ test('Renders pagination', () => {
   const multipleApartments = new Array(15);
 
   for (let i = 0; i < multipleApartments.length; i++) {
-    multipleApartments[i] = { ...mockApartment, uuid: Math.random().toString(36).substr(2, 5) };
+    multipleApartments[i] = { ...apartment, uuid: Math.random().toString(36).substr(2, 5) };
   }
 
-  render(<ApartmentTable apartments={multipleApartments} />);
+  render(<BrowserRouter><ApartmentTable {...defaultProps} apartments={multipleApartments} /></BrowserRouter>);
   expect(screen.queryByLabelText('SEARCH:previous-page')).not.toBeNull();
 });
