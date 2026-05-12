@@ -65,7 +65,7 @@ if (projectContainer && projectSettings?.project_uuid) {
     projectContainer,
     <ProjectApartmentsWidget
       projectUuid={projectSettings.project_uuid}
-      projectOwnershipType={projectSettings.project_ownership_type || ''}
+      projectOwnershipType={projectSettings.project_ownership_type || 'hitas'}
       projectStateOfSale={projectSettings.project_state_of_sale}
     />
   );
