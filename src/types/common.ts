@@ -161,6 +161,12 @@ export type QueryParams = {
   [key in FilterName]?: number | string | boolean | (number | string)[];
 };
 
+/** POST body for the Drupal elasticsearch endpoint (filters plus required ownership). */
+export type ElasticsearchQueryBody = QueryParams & {
+  project_ownership_type: string;
+  project_uuid?: string;
+};
+
 export type FilterItem = {
   label: string;
   placeholder?: string;

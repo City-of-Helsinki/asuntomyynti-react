@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { Button, IconAlertCircle, IconSearch, LoadingSpinner } from 'hds-react';
 import { useTranslation } from 'react-i18next';
 
-import { FilterName, Project, QueryParams } from '../../../types/common';
+import { ElasticsearchQueryBody, FilterName, Project, QueryParams } from '../../../types/common';
 import { DataContext } from '../DataContext';
 import useSearchParams from '../../../hooks/useSearchParams';
 import useSearchResults from '../../../hooks/useSearchResults';
@@ -42,9 +42,12 @@ const ProjectApartmentsWidget = ({
     useContext(DataContext) || {};
 
   const { getFilters } = useFilters();
-  const [query, setQuery] = useState<
-    Record<string, string | number | boolean | (string | number)[] | undefined>
-  >({});
+  const ownershipForApi = projectOwnershipType.trim().toLowerCase() || 'hitas';
+  const [query, setQuery] = useState<ElasticsearchQueryBody>(() => ({
+    project_uuid: projectUuid,
+    project_ownership_type: ownershipForApi,
+    ...(projectStateOfSale ? { project_state_of_sale: [projectStateOfSale] } : {}),
+  }));
 
   const buildFilterQuery = useCallback((): QueryParams => {
     const { filters } = config || {};
@@ -68,11 +71,8 @@ const ProjectApartmentsWidget = ({
   }, [config, getFilters]);
 
   const updateQuery = useCallback(() => {
-    const ownershipType = projectOwnershipType.toLowerCase();
-    const localQuery: Record<
-      string,
-      string | number | boolean | (string | number)[] | undefined
-    > = {
+    const ownershipType = projectOwnershipType.trim().toLowerCase() || 'hitas';
+    const localQuery: ElasticsearchQueryBody = {
       project_uuid: projectUuid,
       project_ownership_type: ownershipType,
       ...buildFilterQuery(),

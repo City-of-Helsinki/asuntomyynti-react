@@ -1,10 +1,22 @@
-import { FilterName, StateOfSale, QueryParams } from '../types/common';
+import { ElasticsearchQueryBody, FilterName, QueryParams, StateOfSale } from '../types/common';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { DataContext } from '../modules/search/DataContext';
 import useFilters from './useFilters';
 
+const buildBaseQuery = (ownershipType: string, upcomingOnly: string): ElasticsearchQueryBody => {
+  const ownership = { project_ownership_type: ownershipType };
+  if (upcomingOnly.toLowerCase() === 'true') {
+    return { ...ownership, project_state_of_sale: [StateOfSale.Upcoming] };
+  }
+  return ownership;
+};
+
 const useSearchQuery = (projectOwnershipType: string, showUpcomingOnly: string) => {
-  const [query, setQuery] = useState({});
+  // Include ownership (and optional upcoming filter) immediately so elasticsearch is never
+  // called with `{}` on the first render after config loads (before useEffect runs).
+  const [query, setQuery] = useState<ElasticsearchQueryBody>(() =>
+    buildBaseQuery(projectOwnershipType, showUpcomingOnly)
+  );
   const { data: config } = useContext(DataContext) || {};
   const { getFilters } = useFilters();
 
@@ -34,17 +46,7 @@ const useSearchQuery = (projectOwnershipType: string, showUpcomingOnly: string) 
     const localQuery = buildQuery();
 
     // Always include project ownership type in the query
-    const ownershipType = { project_ownership_type: projectOwnershipType };
-
-    // Always use UPCOMING in the query if it's set to true
-    let upcoming = {};
-    if (showUpcomingOnly.toLowerCase() === 'true') {
-      upcoming = {
-        project_state_of_sale: [StateOfSale.Upcoming],
-      };
-    }
-
-    const combinedQuery = { ...localQuery, ...ownershipType, ...upcoming };
+    const combinedQuery = { ...localQuery, ...buildBaseQuery(projectOwnershipType, showUpcomingOnly) };
 
     setQuery(combinedQuery);
   }, [buildQuery, projectOwnershipType, showUpcomingOnly]);
