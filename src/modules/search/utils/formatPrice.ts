@@ -1,5 +1,5 @@
 export const formattedPrice = (value: number) => {
-  const calculatedPrice = value / 100;
+  const calculatedPrice = value;
   return `${calculatedPrice.toLocaleString('fi-FI')} \u20AC`;
 };
 
