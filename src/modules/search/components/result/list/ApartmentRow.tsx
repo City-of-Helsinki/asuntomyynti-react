@@ -5,6 +5,7 @@ import { IconAngleDown, IconAngleUp, IconPenLine, IconSize } from 'hds-react';
 
 import { Apartment, ApartmentStateOfSale, ApplicationStatus, OwnershipType } from '../../../../../types/common';
 import { fullURL } from '../../../utils/fullURL';
+import { withApartmentParam } from '../../../utils/withApartmentParam';
 import { getApartmentPrice } from '../../../utils/getApartmentPrice';
 import { userHasApplicationForApartment } from '../../../utils/userApplications';
 import RenderAvailabilityInfo from '../ApplicationStatus';
@@ -92,19 +93,28 @@ const ApartmentRow = ({
 
   // dont depend on the application_url set in Drupal, but allow using it in case an override is needed
   const applicationUrl = apartment.application_url || `${window.location.origin}/application/add/${ownershipType}/${apartment.project_id}`
-  
-  // Apartment allows application when application period is active or after-application is allowed,
-  // as long as the user does not already have a reserved or sold apartment in the project,
-  // and the apartment is not marked as free_for_reservations (those should use the contact button).
-  const canCreateApplication =
-    !isApartmentFree &&
-    (isApplicationPeriodActive || canApplyAfterwards) &&
-    !userHasReservedOrSoldApartmentInProject;
 
   const isApartmentReserved =
     apartment_state_of_sale === ApartmentStateOfSale.RESERVED.valueOf() ||
     apartment_state_of_sale === ApartmentStateOfSale.RESERVED_HASO.valueOf();
   const isApartmentSold = apartment_state_of_sale === ApartmentStateOfSale.SOLD.valueOf();
+
+  // HITAS post-period reservation: period ended, can_apply_afterwards, apartment still available.
+  // Never use HASO "Luo jälkihakemus" wording for HITAS.
+  const canMakeReservation =
+    !projectOwnershipIsHaso &&
+    !isApplicationPeriodActive &&
+    canApplyAfterwards &&
+    !userHasReservedOrSoldApartmentInProject &&
+    !isApartmentReserved &&
+    !isApartmentSold;
+
+  // Regular / HASO after-application path. HITAS after-period uses canMakeReservation instead.
+  const canCreateApplication =
+    !canMakeReservation &&
+    !isApartmentFree &&
+    (isApplicationPeriodActive || (canApplyAfterwards && projectOwnershipIsHaso)) &&
+    !userHasReservedOrSoldApartmentInProject;
 
   let reservedOrSoldLabel = '';
   if (isApartmentSold) {
@@ -219,12 +229,22 @@ const ApartmentRow = ({
               <CreateApplicationButton
                 href={fullURL(applicationUrl)}
                 apartment={apartment}
-                showAfterApplicationLabel={canApplyAfterwards}
+                showAfterApplicationLabel={canApplyAfterwards && !isApplicationPeriodActive}
+                showMakeReservationLabel={false}
               />
             )
           }
 
-          {isApartmentFree && !canApplyAfterwards && (
+          {canMakeReservation && (
+            <CreateApplicationButton
+              href={fullURL(withApartmentParam(applicationUrl, nid))}
+              apartment={apartment}
+              showAfterApplicationLabel={false}
+              showMakeReservationLabel={true}
+            />
+          )}
+
+          {isApartmentFree && !canApplyAfterwards && !canMakeReservation && (
             <ContactUsButton
               href={fullURL(contactUrl)}
               apartment={apartment}

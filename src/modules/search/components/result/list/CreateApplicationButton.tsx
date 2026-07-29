@@ -6,10 +6,22 @@ type Props = {
   href: string;
   apartment: Apartment;
   showAfterApplicationLabel: boolean;
+  showMakeReservationLabel?: boolean;
 };
 
-const CreateApplicationButton = ({ href, apartment, showAfterApplicationLabel }: Props) => {
+const CreateApplicationButton = ({
+  href,
+  apartment,
+  showAfterApplicationLabel,
+  showMakeReservationLabel = false,
+}: Props) => {
   const { t } = useTranslation();
+
+  const label = showMakeReservationLabel
+    ? t('SEARCH:make-reservation')
+    : showAfterApplicationLabel
+    ? t('SEARCH:after-apply')
+    : t('SEARCH:apply');
 
   return (
     <a
@@ -17,7 +29,7 @@ const CreateApplicationButton = ({ href, apartment, showAfterApplicationLabel }:
       className={`${css.createApplicationButton} hds-button hds-button--primary hds-button--small`}
     >
       <span className="hds-button__label">
-        {showAfterApplicationLabel ? t('SEARCH:after-apply') : t('SEARCH:apply')}
+        {label}
         <span className="sr-only">
           , {t('SEARCH:apartment')} {apartment.apartment_number}
         </span>

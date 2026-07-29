@@ -3,6 +3,7 @@ import { IconAngleDown, IconAngleUp, IconPenLine, IconSize } from 'hds-react';
 
 import { Apartment, ApartmentStateOfSale, ApplicationStatus } from '../../../../../types/common';
 import { fullURL } from '../../../utils/fullURL';
+import { withApartmentParam } from '../../../utils/withApartmentParam';
 import { getApartmentPrice } from '../../../utils/getApartmentPrice';
 import { userHasApplicationForApartment } from '../../../utils/userApplications';
 import RenderAvailabilityInfo from '../ApplicationStatus';
@@ -30,6 +31,7 @@ type ApplicationFlags = {
   isApplicationPeriodActive: boolean;
   canApplyAfterwards: boolean;
   canCreateApplication: boolean;
+  canMakeReservation: boolean;
   contactUrl: string;
 };
 
@@ -40,7 +42,8 @@ type StatusPresentation = {
 
 const computeApplicationFlags = (
   apartment: Apartment,
-  userHasReservedOrSoldApartmentInProject: boolean
+  userHasReservedOrSoldApartmentInProject: boolean,
+  projectOwnershipIsHaso: boolean
 ): ApplicationFlags => {
   const isApartmentFree =
     apartment.apartment_state_of_sale === ApartmentStateOfSale.FREE_FOR_RESERVATIONS.valueOf();
@@ -61,9 +64,27 @@ const computeApplicationFlags = (
 
   const canApplyAfterwards = apartment.project_can_apply_afterwards;
 
+  const isApartmentReserved =
+    apartment.apartment_state_of_sale === ApartmentStateOfSale.RESERVED.valueOf() ||
+    apartment.apartment_state_of_sale === ApartmentStateOfSale.RESERVED_HASO.valueOf();
+  const isApartmentSold =
+    apartment.apartment_state_of_sale === ApartmentStateOfSale.SOLD.valueOf();
+
+  // HITAS post-period reservation: period ended, can_apply_afterwards, apartment still available.
+  // Never use HASO "Luo jälkihakemus" wording for HITAS.
+  const canMakeReservation =
+    !projectOwnershipIsHaso &&
+    !isApplicationPeriodActive &&
+    canApplyAfterwards &&
+    !userHasReservedOrSoldApartmentInProject &&
+    !isApartmentReserved &&
+    !isApartmentSold;
+
+  // Regular / HASO after-application path. HITAS after-period uses canMakeReservation instead.
   const canCreateApplication =
+    !canMakeReservation &&
     !isApartmentFree &&
-    (isApplicationPeriodActive || canApplyAfterwards) &&
+    (isApplicationPeriodActive || (canApplyAfterwards && projectOwnershipIsHaso)) &&
     !userHasReservedOrSoldApartmentInProject;
 
   const contactUrl = `${window.location.origin}/contact/apply_for_free_apartment?apartment=${apartment.apartment_number}&project=${apartment.project_id}`;
@@ -73,6 +94,7 @@ const computeApplicationFlags = (
     isApplicationPeriodActive,
     canApplyAfterwards,
     canCreateApplication,
+    canMakeReservation,
     contactUrl,
   };
 };
@@ -147,8 +169,9 @@ const MapApartmentRow = ({
     isApplicationPeriodActive,
     canApplyAfterwards,
     canCreateApplication,
+    canMakeReservation,
     contactUrl,
-  } = computeApplicationFlags(apartment, userHasReservedOrSoldApartmentInProject);
+  } = computeApplicationFlags(apartment, userHasReservedOrSoldApartmentInProject, projectOwnershipIsHaso);
 
   const { reservedOrSoldLabel, statusForDot } = computeStatusPresentation(
     apartment_state_of_sale,
@@ -267,10 +290,24 @@ const MapApartmentRow = ({
               <CreateApplicationButton
                 href={fullURL(application_url)}
                 apartment={apartment}
-                showAfterApplicationLabel={canApplyAfterwards}
+                showAfterApplicationLabel={canApplyAfterwards && !isApplicationPeriodActive}
+                showMakeReservationLabel={false}
               />
             )}
-          {isApartmentFree && !canApplyAfterwards && (
+          {canMakeReservation && (
+            <CreateApplicationButton
+              href={fullURL(
+                withApartmentParam(
+                  application_url || `${window.location.origin}/application/add/hitas/${apartment.project_id}`,
+                  nid
+                )
+              )}
+              apartment={apartment}
+              showAfterApplicationLabel={false}
+              showMakeReservationLabel={true}
+            />
+          )}
+          {isApartmentFree && !canApplyAfterwards && !canMakeReservation && (
             <ContactUsButton
               href={fullURL(contactUrl)}
               apartment={apartment}

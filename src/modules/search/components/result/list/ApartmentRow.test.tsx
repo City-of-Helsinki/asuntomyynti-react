@@ -75,7 +75,7 @@ describe('application / after-application buttons', () => {
     expect(screen.getByText('SEARCH:apply')).toBeInTheDocument();
   });
 
-  test('shows "after-apply" button when can_apply_afterwards is true outside application period', () => {
+  test('shows "after-apply" button for HASO when can_apply_afterwards is true outside application period', () => {
     const apt = {
       ...mockApartment,
       apartment_state_of_sale: 'OPEN_FOR_APPLICATIONS',
@@ -90,6 +90,41 @@ describe('application / after-application buttons', () => {
     render(<ApartmentRow apartment={apt} projectOwnershipIsHaso={true} />);
 
     expect(screen.getByText('SEARCH:after-apply')).toBeInTheDocument();
+  });
+
+  test('shows "make-reservation" not "after-apply" for HITAS outside period with can_apply_afterwards', () => {
+    const apt = {
+      ...mockApartment,
+      apartment_state_of_sale: 'OPEN_FOR_APPLICATIONS',
+      application_url: '',
+      project_application_start_time: inThePast,
+      project_application_end_time: inThePast,
+      can_apply_afterwards: true,
+      project_can_apply_afterwards: true,
+    };
+
+    render(<ApartmentRow apartment={apt} projectOwnershipIsHaso={false} />);
+
+    expect(screen.getByText('SEARCH:make-reservation')).toBeInTheDocument();
+    expect(screen.queryByText('SEARCH:after-apply')).toBeNull();
+  });
+
+  test('shows "apply" not "after-apply" for HITAS during period even when can_apply_afterwards is true', () => {
+    const apt = {
+      ...mockApartment,
+      apartment_state_of_sale: 'OPEN_FOR_APPLICATIONS',
+      application_url: '',
+      project_application_start_time: inThePast,
+      project_application_end_time: inTheFuture,
+      can_apply_afterwards: true,
+      project_can_apply_afterwards: true,
+    };
+
+    render(<ApartmentRow apartment={apt} projectOwnershipIsHaso={false} />);
+
+    expect(screen.getByText('SEARCH:apply')).toBeInTheDocument();
+    expect(screen.queryByText('SEARCH:after-apply')).toBeNull();
+    expect(screen.queryByText('SEARCH:make-reservation')).toBeNull();
   });
 
   test('does not show apply/after-apply button when user has reserved or sold apartment in project', () => {
@@ -144,6 +179,151 @@ test('renders "contact us" links correctly for apartments', () => {
 
   const contactUsLink = container.querySelector(`a[href="${expectedContactUsLink}"]`);
   expect(contactUsLink).toBeInTheDocument();
+});
+
+describe('"Tee varaus" (make reservation) button — HITAS post-period free apartments', () => {
+  const inThePast = '2000-01-01T00:00:00.000Z';
+
+  test('shows "make-reservation" button for free HITAS apartment after period with can_apply_afterwards', () => {
+    const apt = {
+      ...mockApartment,
+      apartment_state_of_sale: 'FREE_FOR_RESERVATIONS',
+      application_url: '',
+      project_application_start_time: inThePast,
+      project_application_end_time: inThePast,
+      project_can_apply_afterwards: true,
+      can_apply_afterwards: true,
+    };
+
+    render(<ApartmentRow apartment={apt} projectOwnershipIsHaso={false} />);
+
+    expect(screen.getByText('SEARCH:make-reservation')).toBeInTheDocument();
+  });
+
+  test('does not show "make-reservation" when can_apply_afterwards is false', () => {
+    const apt = {
+      ...mockApartment,
+      apartment_state_of_sale: 'FREE_FOR_RESERVATIONS',
+      application_url: '',
+      project_application_start_time: inThePast,
+      project_application_end_time: inThePast,
+      project_can_apply_afterwards: false,
+      can_apply_afterwards: false,
+    };
+
+    render(<ApartmentRow apartment={apt} projectOwnershipIsHaso={false} />);
+
+    expect(screen.queryByText('SEARCH:make-reservation')).toBeNull();
+  });
+
+  test('does not show "make-reservation" for HASO apartments (uses after-apply instead)', () => {
+    const apt = {
+      ...mockApartment,
+      apartment_state_of_sale: 'FREE_FOR_RESERVATIONS',
+      application_url: '',
+      project_application_start_time: inThePast,
+      project_application_end_time: inThePast,
+      project_can_apply_afterwards: true,
+      can_apply_afterwards: true,
+    };
+
+    render(<ApartmentRow apartment={apt} projectOwnershipIsHaso={true} />);
+
+    expect(screen.queryByText('SEARCH:make-reservation')).toBeNull();
+  });
+
+  test('does not show "make-reservation" when user already has reserved/sold apartment in project', () => {
+    const apt = {
+      ...mockApartment,
+      apartment_state_of_sale: 'FREE_FOR_RESERVATIONS',
+      application_url: '',
+      project_application_start_time: inThePast,
+      project_application_end_time: inThePast,
+      project_can_apply_afterwards: true,
+      can_apply_afterwards: true,
+    };
+
+    render(
+      <ApartmentRow
+        apartment={apt}
+        projectOwnershipIsHaso={false}
+        userHasReservedOrSoldApartmentInProject={true}
+      />
+    );
+
+    expect(screen.queryByText('SEARCH:make-reservation')).toBeNull();
+  });
+
+  test('still shows "contact us" for free HITAS apartment when can_apply_afterwards is false', () => {
+    const apt = {
+      ...mockApartment,
+      apartment_state_of_sale: 'FREE_FOR_RESERVATIONS',
+      application_url: '',
+      project_application_start_time: inThePast,
+      project_application_end_time: inThePast,
+      project_can_apply_afterwards: false,
+      can_apply_afterwards: false,
+    };
+
+    const { container } = render(<ApartmentRow apartment={apt} projectOwnershipIsHaso={false} />);
+
+    const expectedContactUsLink = `${window.location.origin}/contact/apply_for_free_apartment?apartment=${mockApartment.apartment_number}&project=${mockApartment.project_id}`;
+    const contactUsLink = container.querySelector(`a[href="${expectedContactUsLink}"]`);
+    expect(contactUsLink).toBeInTheDocument();
+  });
+
+  test('"make-reservation" button links to /application/add/hitas/{project_id} with the apartment preselected', () => {
+    const apt = {
+      ...mockApartment,
+      apartment_state_of_sale: 'FREE_FOR_RESERVATIONS',
+      application_url: '',
+      project_application_start_time: inThePast,
+      project_application_end_time: inThePast,
+      project_can_apply_afterwards: true,
+      can_apply_afterwards: true,
+    };
+
+    const { container } = render(<ApartmentRow apartment={apt} projectOwnershipIsHaso={false} />);
+
+    const expectedUrl = `${window.location.origin}/application/add/hitas/${mockApartment.project_id}?apartment=${mockApartment.nid}`;
+    const reservationLink = container.querySelector(`a[href="${expectedUrl}"]`);
+    expect(reservationLink).toBeInTheDocument();
+  });
+
+  test('"make-reservation" button keeps the apartment parameter when an application_url override is used', () => {
+    const apt = {
+      ...mockApartment,
+      apartment_state_of_sale: 'FREE_FOR_RESERVATIONS',
+      application_url: 'https://example.com/fi/application/add/hitas/15',
+      project_application_start_time: inThePast,
+      project_application_end_time: inThePast,
+      project_can_apply_afterwards: true,
+      can_apply_afterwards: true,
+    };
+
+    const { container } = render(<ApartmentRow apartment={apt} projectOwnershipIsHaso={false} />);
+
+    const expectedUrl = `https://example.com/fi/application/add/hitas/15?apartment=${mockApartment.nid}`;
+    expect(container.querySelector(`a[href="${expectedUrl}"]`)).toBeInTheDocument();
+  });
+
+  test('regular "apply" button does not preselect an apartment', () => {
+    const apt = {
+      ...mockApartment,
+      apartment_state_of_sale: 'OPEN_FOR_APPLICATIONS',
+      application_url: '',
+      project_application_start_time: inThePast,
+      project_application_end_time: '2100-01-01T00:00:00.000Z',
+      project_can_apply_afterwards: false,
+      can_apply_afterwards: false,
+    };
+
+    const { container } = render(<ApartmentRow apartment={apt} projectOwnershipIsHaso={false} />);
+
+    const expectedUrl = `${window.location.origin}/application/add/hitas/${mockApartment.project_id}`;
+    expect(container.querySelector(`a[href="${expectedUrl}"]`)).toBeInTheDocument();
+    expect(container.querySelector('a[href*="apartment="]')).not.toBeInTheDocument();
+  });
 });
 
 describe('ApartmentRow customer-facing status outside application period', () => {
