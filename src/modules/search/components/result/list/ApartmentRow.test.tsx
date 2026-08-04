@@ -89,6 +89,7 @@ describe('SEARCH:apply / SEARCH:after-apply buttons', () => {
       project_application_end_time: inThePast,
       can_apply_afterwards: true,
       project_can_apply_afterwards: true,
+      project_ownership_type: 'haso',
     };
 
     render(<ApartmentRow {...defaultProps} apartment={apt} projectOwnershipIsHaso={true} />);
@@ -278,11 +279,13 @@ describe('SEARCH:make-reservation button — HITAS post-period free apartments',
       project_application_end_time: inThePast,
       project_can_apply_afterwards: true,
       can_apply_afterwards: true,
+      project_ownership_type: 'haso',
     };
 
     render(<ApartmentRow {...defaultProps} apartment={apt} projectOwnershipIsHaso={true} />);
 
     expect(screen.queryByText('SEARCH:make-reservation')).toBeNull();
+    expect(screen.getByText('SEARCH:after-apply')).toBeInTheDocument();
   });
 
   test('does not show SEARCH:make-reservation when user already has reserved/sold apartment in project', () => {
