@@ -17,7 +17,7 @@ describe('getApartmentPrice', () => {
       release_payment: 10000000,
       project_ownership_type: 'haso',
     };
-    expect(getApartmentPrice(apartment)).toEqual('100\xa0000 \u20AC');
+    expect(getApartmentPrice(apartment)).toEqual('10\xa0000\xa0000 \u20AC');
   });
 
   it('should return right_of_occupancy_payment if is haso and release_payment exists and is <= 0', () => {
@@ -26,7 +26,7 @@ describe('getApartmentPrice', () => {
       release_payment: 0,
       project_ownership_type: 'haso',
     };
-    expect(getApartmentPrice(apartment)).toEqual('100\xa0000 \u20AC');
+    expect(getApartmentPrice(apartment)).toEqual('10\xa0000\xa0000 \u20AC');
   });
 
   it('should return right_of_occupancy_payment if is haso and release_payment does not exist', () => {
@@ -35,7 +35,7 @@ describe('getApartmentPrice', () => {
       release_payment: null,
       project_ownership_type: 'haso',
     };
-    expect(getApartmentPrice(apartment)).toEqual('100\xa0000 \u20AC');
+    expect(getApartmentPrice(apartment)).toEqual('10\xa0000\xa0000 \u20AC');
   });
 
   it("should return '-' if is hitas and debt_free_sales_price does not exist", () => {
@@ -51,6 +51,6 @@ describe('getApartmentPrice', () => {
       debt_free_sales_price: 10000000,
       project_ownership_type: 'hitas',
     };
-    expect(getApartmentPrice(apartment)).toEqual('100\xa0000 \u20AC');
+    expect(getApartmentPrice(apartment)).toEqual('10\xa0000\xa0000 \u20AC');
   });
 });

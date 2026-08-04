@@ -18,9 +18,15 @@ test('replaces an existing apartment query parameter', () => {
   );
 });
 
-test('returns the url unchanged when the apartment id is missing', () => {
-  expect(withApartmentParam('https://example.com/application/add/hitas/15', undefined)).toEqual(
-    'https://example.com/application/add/hitas/15'
+test('preserves a URL fragment when appending the apartment parameter', () => {
+  expect(withApartmentParam('https://example.com/application/add/hitas/15#form', 84)).toEqual(
+    'https://example.com/application/add/hitas/15?apartment=84#form'
+  );
+});
+
+test('preserves a fragment when the url already has a query string', () => {
+  expect(withApartmentParam('https://example.com/application/add/hitas/15?foo=bar#form', 84)).toEqual(
+    'https://example.com/application/add/hitas/15?foo=bar&apartment=84#form'
   );
 });
 

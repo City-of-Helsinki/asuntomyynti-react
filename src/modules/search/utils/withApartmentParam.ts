@@ -4,14 +4,16 @@
  * Used by the HITAS post-period reservation flow, where the customer picks a
  * single apartment in the search UI and the application form preselects it.
  */
-export const withApartmentParam = (url: string, apartmentId: number | undefined) => {
-  if (!url || apartmentId === undefined) {
+export const withApartmentParam = (url: string, apartmentId: number) => {
+  if (!url) {
     return url;
   }
 
-  const [base, existingQuery] = url.split('?');
+  const [withoutHash, hash] = url.split('#');
+  const [base, existingQuery = ''] = withoutHash.split('?');
   const params = new URLSearchParams(existingQuery);
   params.set('apartment', String(apartmentId));
 
-  return `${base}?${params.toString()}`;
+  const hashSuffix = hash !== undefined ? `#${hash}` : '';
+  return `${base}?${params.toString()}${hashSuffix}`;
 };

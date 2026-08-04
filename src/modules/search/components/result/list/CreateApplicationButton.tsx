@@ -2,34 +2,27 @@ import { useTranslation } from 'react-i18next';
 import { Apartment } from '../../../../../types/common';
 import css from './CreateApplicationButton.module.scss';
 
+export type CreateApplicationButtonVariant = 'apply' | 'after-apply' | 'make-reservation';
+
 type Props = {
   href: string;
   apartment: Apartment;
-  showAfterApplicationLabel: boolean;
-  showMakeReservationLabel?: boolean;
+  variant: CreateApplicationButtonVariant;
 };
 
-const CreateApplicationButton = ({
-  href,
-  apartment,
-  showAfterApplicationLabel,
-  showMakeReservationLabel = false,
-}: Props) => {
+const LABEL_KEYS: Record<CreateApplicationButtonVariant, string> = {
+  apply: 'SEARCH:apply',
+  'after-apply': 'SEARCH:after-apply',
+  'make-reservation': 'SEARCH:make-reservation',
+};
+
+const CreateApplicationButton = ({ href, apartment, variant }: Props) => {
   const { t } = useTranslation();
 
-  const label = showMakeReservationLabel
-    ? t('SEARCH:make-reservation')
-    : showAfterApplicationLabel
-    ? t('SEARCH:after-apply')
-    : t('SEARCH:apply');
-
   return (
-    <a
-      href={href}
-      className={`${css.createApplicationButton} hds-button hds-button--primary hds-button--small`}
-    >
+    <a href={href} className={`${css.createApplicationButton} hds-button hds-button--primary hds-button--small`}>
       <span className="hds-button__label">
-        {label}
+        {t(LABEL_KEYS[variant])}
         <span className="sr-only">
           , {t('SEARCH:apartment')} {apartment.apartment_number}
         </span>
