@@ -66,8 +66,8 @@ const ApartmentRow = ({
     isApartmentFree,
     isApplicationPeriodActive,
     canApplyAfterwards,
-    canCreateApplication,
     canMakeReservation,
+    ctaVariant,
     contactUrl,
     applicationUrl,
   } = computeApplicationFlags(apartment, userHasReservedOrSoldApartmentInProject, projectOwnershipIsHaso);
@@ -97,7 +97,6 @@ const ApartmentRow = ({
   }
 
   const applicationHref = fullURL(withApartmentParam(applicationUrl, nid));
-  const applyVariant = canApplyAfterwards && !isApplicationPeriodActive ? 'after-apply' : 'apply';
 
   const apartmentRowBaseDetails = (
     <>
@@ -188,13 +187,7 @@ const ApartmentRow = ({
         <div className={css.buttons}>
           {url && <GetToKnowButton href={fullURL(url)} apartment={apartment} isDesktopSize={isDesktopSize} />}
 
-          {canCreateApplication && (
-            <CreateApplicationButton href={applicationHref} apartment={apartment} variant={applyVariant} />
-          )}
-
-          {canMakeReservation && (
-            <CreateApplicationButton href={applicationHref} apartment={apartment} variant="make-reservation" />
-          )}
+          {ctaVariant && <CreateApplicationButton href={applicationHref} apartment={apartment} variant={ctaVariant} />}
 
           {isApartmentFree && !canApplyAfterwards && !canMakeReservation && (
             <ContactUsButton href={fullURL(contactUrl)} apartment={apartment} isDesktopSize={isDesktopSize} />

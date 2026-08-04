@@ -61,9 +61,15 @@ describe('SEARCH:make-reservation button', () => {
   });
 
   test('does not show SEARCH:make-reservation for HASO apartments', () => {
-    render(<MapApartmentRow {...defaultProps} apartment={freeAfterPeriod} projectOwnershipIsHaso={true} />);
+    const apt = {
+      ...freeAfterPeriod,
+      project_ownership_type: 'haso',
+    };
+
+    render(<MapApartmentRow {...defaultProps} apartment={apt} projectOwnershipIsHaso={true} />);
 
     expect(screen.queryByText('SEARCH:make-reservation')).toBeNull();
+    expect(screen.getByText('SEARCH:after-apply')).toBeInTheDocument();
   });
 
   test('does not show SEARCH:make-reservation when project_can_apply_afterwards is false', () => {

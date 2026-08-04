@@ -1,16 +1,15 @@
 import { useTranslation } from 'react-i18next';
 import { Apartment } from '../../../../../types/common';
+import type { ApplicationCtaVariant } from '../../../utils/applicationFlags';
 import css from './CreateApplicationButton.module.scss';
-
-export type CreateApplicationButtonVariant = 'apply' | 'after-apply' | 'make-reservation';
 
 type Props = {
   href: string;
   apartment: Apartment;
-  variant: CreateApplicationButtonVariant;
+  variant: ApplicationCtaVariant;
 };
 
-const LABEL_KEYS: Record<CreateApplicationButtonVariant, string> = {
+const LABEL_KEYS: Record<ApplicationCtaVariant, string> = {
   apply: 'SEARCH:apply',
   'after-apply': 'SEARCH:after-apply',
   'make-reservation': 'SEARCH:make-reservation',
@@ -32,3 +31,4 @@ const CreateApplicationButton = ({ href, apartment, variant }: Props) => {
 };
 
 export default CreateApplicationButton;
+export type { ApplicationCtaVariant as CreateApplicationButtonVariant };
