@@ -26,8 +26,6 @@ type Props = {
 type TranslationFn = (key: string) => string;
 
 type ApplicationFlags = {
-  isApartmentFree: boolean;
-  isApplicationPeriodActive: boolean;
   canApplyAfterwards: boolean;
   canCreateApplication: boolean;
   contactUrl: string;
@@ -36,11 +34,13 @@ type ApplicationFlags = {
 type StatusPresentation = {
   reservedOrSoldLabel: string;
   statusForDot: string;
+  isApartmentReservedOrSold: boolean;
 };
 
 const computeApplicationFlags = (
   apartment: Apartment,
-  userHasReservedOrSoldApartmentInProject: boolean
+  userHasReservedOrSoldApartmentInProject: boolean,
+  isApartmentReservedOrSold: boolean
 ): ApplicationFlags => {
   const isApartmentFree =
     apartment.apartment_state_of_sale === ApartmentStateOfSale.FREE_FOR_RESERVATIONS.valueOf();
@@ -63,14 +63,13 @@ const computeApplicationFlags = (
 
   const canCreateApplication =
     !isApartmentFree &&
+    !isApartmentReservedOrSold &&
     (isApplicationPeriodActive || canApplyAfterwards) &&
     !userHasReservedOrSoldApartmentInProject;
 
   const contactUrl = `${window.location.origin}/contact/apply_for_free_apartment?apartment=${apartment.apartment_number}&project=${apartment.project_id}`;
 
   return {
-    isApartmentFree,
-    isApplicationPeriodActive,
     canApplyAfterwards,
     canCreateApplication,
     contactUrl,
@@ -88,11 +87,20 @@ const computeStatusPresentation = (
     apartmentStateOfSale === ApartmentStateOfSale.RESERVED.valueOf() ||
     apartmentStateOfSale === ApartmentStateOfSale.RESERVED_HASO.valueOf();
   const isApartmentSold = apartmentStateOfSale === ApartmentStateOfSale.SOLD.valueOf();
+  const isApartmentReservedByApplicationStatus =
+    applicationStatus === ApplicationStatus.Reserved ||
+    applicationStatus === ApplicationStatus.ReservedHaso;
+  const isApartmentSoldByApplicationStatus = applicationStatus === ApplicationStatus.Sold;
+  const isApartmentReservedOrSold =
+    isApartmentReserved ||
+    isApartmentSold ||
+    isApartmentReservedByApplicationStatus ||
+    isApartmentSoldByApplicationStatus;
 
   let reservedOrSoldLabel = '';
-  if (isApartmentSold) {
+  if (isApartmentSold || isApartmentSoldByApplicationStatus) {
     reservedOrSoldLabel = t('SEARCH:apartment-sold');
-  } else if (isApartmentReserved) {
+  } else if (isApartmentReserved || isApartmentReservedByApplicationStatus) {
     reservedOrSoldLabel = t('SEARCH:apartment-reserved');
   } else if (!isApplicationPeriodActive && isApartmentFree) {
     // Outside application period, show "free" instead of application count.
@@ -108,7 +116,7 @@ const computeStatusPresentation = (
     statusForDot = applicationStatus || ApplicationStatus.Low;
   }
 
-  return { reservedOrSoldLabel, statusForDot };
+  return { reservedOrSoldLabel, statusForDot, isApartmentReservedOrSold };
 };
 
 const MapApartmentRow = ({
@@ -142,21 +150,36 @@ const MapApartmentRow = ({
     }
   };
 
-  const {
-    isApartmentFree,
-    isApplicationPeriodActive,
-    canApplyAfterwards,
-    canCreateApplication,
-    contactUrl,
-  } = computeApplicationFlags(apartment, userHasReservedOrSoldApartmentInProject);
+  const isApartmentFree =
+    apartment_state_of_sale === ApartmentStateOfSale.FREE_FOR_RESERVATIONS.valueOf();
 
-  const { reservedOrSoldLabel, statusForDot } = computeStatusPresentation(
+  const now = new Date().getTime();
+  const applicationStartTime = apartment.project_application_start_time
+    ? new Date(apartment.project_application_start_time).getTime()
+    : undefined;
+  const applicationEndTime = apartment.project_application_end_time
+    ? new Date(apartment.project_application_end_time).getTime()
+    : undefined;
+
+  const isApplicationPeriodActive =
+    applicationStartTime !== undefined &&
+    applicationEndTime !== undefined &&
+    now >= applicationStartTime &&
+    now <= applicationEndTime;
+
+  const { reservedOrSoldLabel, statusForDot, isApartmentReservedOrSold } = computeStatusPresentation(
     apartment_state_of_sale,
     isApartmentFree,
     isApplicationPeriodActive,
     applicationStatus,
     t
   );
+
+  const {
+    canApplyAfterwards,
+    canCreateApplication,
+    contactUrl,
+  } = computeApplicationFlags(apartment, userHasReservedOrSoldApartmentInProject, isApartmentReservedOrSold);
 
   const apartmentRowBaseDetails = (
     <>
@@ -270,7 +293,7 @@ const MapApartmentRow = ({
                 showAfterApplicationLabel={canApplyAfterwards}
               />
             )}
-          {isApartmentFree && !canApplyAfterwards && (
+          {isApartmentFree && !canApplyAfterwards && !isApartmentReservedOrSold && (
             <ContactUsButton
               href={fullURL(contactUrl)}
               apartment={apartment}

@@ -92,24 +92,34 @@ const ApartmentRow = ({
 
   // dont depend on the application_url set in Drupal, but allow using it in case an override is needed
   const applicationUrl = apartment.application_url || `${window.location.origin}/application/add/${ownershipType}/${apartment.project_id}`
+
+  const isApartmentReserved =
+    apartment_state_of_sale === ApartmentStateOfSale.RESERVED.valueOf() ||
+    apartment_state_of_sale === ApartmentStateOfSale.RESERVED_HASO.valueOf();
+  const isApartmentSold = apartment_state_of_sale === ApartmentStateOfSale.SOLD.valueOf();
+  const isApartmentReservedByApplicationStatus =
+    applicationStatus === ApplicationStatus.Reserved ||
+    applicationStatus === ApplicationStatus.ReservedHaso;
+  const isApartmentSoldByApplicationStatus = applicationStatus === ApplicationStatus.Sold;
+  const isApartmentReservedOrSold =
+    isApartmentReserved ||
+    isApartmentSold ||
+    isApartmentReservedByApplicationStatus ||
+    isApartmentSoldByApplicationStatus;
   
   // Apartment allows application when application period is active or after-application is allowed,
   // as long as the user does not already have a reserved or sold apartment in the project,
   // and the apartment is not marked as free_for_reservations (those should use the contact button).
   const canCreateApplication =
     !isApartmentFree &&
+    !isApartmentReservedOrSold &&
     (isApplicationPeriodActive || canApplyAfterwards) &&
     !userHasReservedOrSoldApartmentInProject;
 
-  const isApartmentReserved =
-    apartment_state_of_sale === ApartmentStateOfSale.RESERVED.valueOf() ||
-    apartment_state_of_sale === ApartmentStateOfSale.RESERVED_HASO.valueOf();
-  const isApartmentSold = apartment_state_of_sale === ApartmentStateOfSale.SOLD.valueOf();
-
   let reservedOrSoldLabel = '';
-  if (isApartmentSold) {
+  if (isApartmentSold || isApartmentSoldByApplicationStatus) {
     reservedOrSoldLabel = t('SEARCH:apartment-sold');
-  } else if (isApartmentReserved) {
+  } else if (isApartmentReserved || isApartmentReservedByApplicationStatus) {
     reservedOrSoldLabel = t('SEARCH:apartment-reserved');
   } else if (!isApplicationPeriodActive && isApartmentFree) {
     // Outside application period, show "free" instead of application count.
@@ -224,7 +234,7 @@ const ApartmentRow = ({
             )
           }
 
-          {isApartmentFree && !canApplyAfterwards && (
+          {isApartmentFree && !canApplyAfterwards && !isApartmentReservedOrSold && (
             <ContactUsButton
               href={fullURL(contactUrl)}
               apartment={apartment}
