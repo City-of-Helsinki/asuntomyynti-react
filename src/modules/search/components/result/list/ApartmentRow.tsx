@@ -3,8 +3,10 @@ import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { IconAngleDown, IconAngleUp, IconPenLine, IconSize } from 'hds-react';
 
-import { Apartment, ApartmentStateOfSale, ApplicationStatus, OwnershipType } from '../../../../../types/common';
+import { Apartment, ApartmentStateOfSale, ApplicationStatus } from '../../../../../types/common';
 import { fullURL } from '../../../utils/fullURL';
+import { withApartmentParam } from '../../../utils/withApartmentParam';
+import { computeApplicationFlags } from '../../../utils/applicationFlags';
 import { getApartmentPrice } from '../../../utils/getApartmentPrice';
 import { userHasApplicationForApartment } from '../../../utils/userApplications';
 import RenderAvailabilityInfo from '../ApplicationStatus';
@@ -35,16 +37,8 @@ const ApartmentRow = ({
   userHasReservedOrSoldApartmentInProject,
   projectOwnershipIsHaso,
 }: Props) => {
-  const {
-    apartment_number,
-    apartment_state_of_sale,
-    apartment_structure,
-    floor,
-    floor_max,
-    nid,
-    living_area,
-    url,
-  } = apartment;
+  const { apartment_number, apartment_state_of_sale, apartment_structure, floor, floor_max, nid, living_area, url } =
+    apartment;
 
   const { t } = useTranslation();
   const [width, setWidth] = useState(window.innerWidth);
@@ -68,30 +62,15 @@ const ApartmentRow = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const isApartmentFree =
-    apartment_state_of_sale === ApartmentStateOfSale.FREE_FOR_RESERVATIONS.valueOf();
-
-  const now = new Date().getTime();
-  const applicationStartTime = apartment.project_application_start_time
-    ? new Date(apartment.project_application_start_time).getTime()
-    : undefined;
-  const applicationEndTime = apartment.project_application_end_time
-    ? new Date(apartment.project_application_end_time).getTime()
-    : undefined;
-
-  const isApplicationPeriodActive =
-    applicationStartTime !== undefined &&
-    applicationEndTime !== undefined &&
-    now >= applicationStartTime &&
-    now <= applicationEndTime;
-  // Align with Drupal: can_apply_afterwards comes from backend logic.
-  const canApplyAfterwards = apartment.project_can_apply_afterwards;
-
-  const ownershipType = projectOwnershipIsHaso ? OwnershipType.haso : OwnershipType.hitas;
-  const contactUrl = `${window.location.origin}/contact/apply_for_free_apartment?apartment=${apartment.apartment_number}&project=${apartment.project_id}`
-
-  // dont depend on the application_url set in Drupal, but allow using it in case an override is needed
-  const applicationUrl = apartment.application_url || `${window.location.origin}/application/add/${ownershipType}/${apartment.project_id}`
+  const {
+    isApartmentFree,
+    isApplicationPeriodActive,
+    canApplyAfterwards,
+    canMakeReservation,
+    ctaVariant,
+    contactUrl,
+    applicationUrl,
+  } = computeApplicationFlags(apartment, userHasReservedOrSoldApartmentInProject, projectOwnershipIsHaso);
 
   const isApartmentReserved =
     apartment_state_of_sale === ApartmentStateOfSale.RESERVED.valueOf() ||
@@ -106,15 +85,6 @@ const ApartmentRow = ({
     isApartmentSold ||
     isApartmentReservedByApplicationStatus ||
     isApartmentSoldByApplicationStatus;
-  
-  // Apartment allows application when application period is active or after-application is allowed,
-  // as long as the user does not already have a reserved or sold apartment in the project,
-  // and the apartment is not marked as free_for_reservations (those should use the contact button).
-  const canCreateApplication =
-    !isApartmentFree &&
-    !isApartmentReservedOrSold &&
-    (isApplicationPeriodActive || canApplyAfterwards) &&
-    !userHasReservedOrSoldApartmentInProject;
 
   let reservedOrSoldLabel = '';
   if (isApartmentSold || isApartmentSoldByApplicationStatus) {
@@ -127,13 +97,15 @@ const ApartmentRow = ({
   }
 
   let statusForDot: string;
-  if (isApartmentReserved) {
+  if (isApartmentReserved || isApartmentReservedByApplicationStatus) {
     statusForDot = ApplicationStatus.Reserved;
-  } else if (isApartmentSold) {
+  } else if (isApartmentSold || isApartmentSoldByApplicationStatus) {
     statusForDot = ApplicationStatus.Sold;
   } else {
     statusForDot = applicationStatus || ApplicationStatus.Low;
   }
+
+  const applicationHref = fullURL(withApartmentParam(applicationUrl, nid));
 
   const apartmentRowBaseDetails = (
     <>
@@ -144,7 +116,11 @@ const ApartmentRow = ({
       {isMobileSize ? (
         <>
           <span className={css.apartmentAvailabilityMobile}>
-            <RenderAvailabilityInfo status={statusForDot} dotOnly={true} labelOverride={reservedOrSoldLabel || undefined} />
+            <RenderAvailabilityInfo
+              status={statusForDot}
+              dotOnly={true}
+              labelOverride={reservedOrSoldLabel || undefined}
+            />
           </span>
           <span>
             <span className="sr-only">{t('SEARCH:aria-apartment-structure')}: </span>
@@ -218,28 +194,12 @@ const ApartmentRow = ({
         </div>
       ) : (
         <div className={css.buttons}>
-          {url && (<GetToKnowButton
-            href={fullURL(url)}
-            apartment={apartment}
-            isDesktopSize={isDesktopSize}
-          />)}
+          {url && <GetToKnowButton href={fullURL(url)} apartment={apartment} isDesktopSize={isDesktopSize} />}
 
-          {
-            canCreateApplication && (
-              <CreateApplicationButton
-                href={fullURL(applicationUrl)}
-                apartment={apartment}
-                showAfterApplicationLabel={canApplyAfterwards}
-              />
-            )
-          }
+          {ctaVariant && <CreateApplicationButton href={applicationHref} apartment={apartment} variant={ctaVariant} />}
 
-          {isApartmentFree && !canApplyAfterwards && !isApartmentReservedOrSold && (
-            <ContactUsButton
-              href={fullURL(contactUrl)}
-              apartment={apartment}
-              isDesktopSize={isDesktopSize}
-            />
+          {isApartmentFree && !canApplyAfterwards && !canMakeReservation && !isApartmentReservedOrSold && (
+            <ContactUsButton href={fullURL(contactUrl)} apartment={apartment} isDesktopSize={isDesktopSize} />
           )}
         </div>
       )}
