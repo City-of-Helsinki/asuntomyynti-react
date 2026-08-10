@@ -76,11 +76,20 @@ const ApartmentRow = ({
     apartment_state_of_sale === ApartmentStateOfSale.RESERVED.valueOf() ||
     apartment_state_of_sale === ApartmentStateOfSale.RESERVED_HASO.valueOf();
   const isApartmentSold = apartment_state_of_sale === ApartmentStateOfSale.SOLD.valueOf();
+  const isApartmentReservedByApplicationStatus =
+    applicationStatus === ApplicationStatus.Reserved ||
+    applicationStatus === ApplicationStatus.ReservedHaso;
+  const isApartmentSoldByApplicationStatus = applicationStatus === ApplicationStatus.Sold;
+  const isApartmentReservedOrSold =
+    isApartmentReserved ||
+    isApartmentSold ||
+    isApartmentReservedByApplicationStatus ||
+    isApartmentSoldByApplicationStatus;
 
   let reservedOrSoldLabel = '';
-  if (isApartmentSold) {
+  if (isApartmentSold || isApartmentSoldByApplicationStatus) {
     reservedOrSoldLabel = t('SEARCH:apartment-sold');
-  } else if (isApartmentReserved) {
+  } else if (isApartmentReserved || isApartmentReservedByApplicationStatus) {
     reservedOrSoldLabel = t('SEARCH:apartment-reserved');
   } else if (!isApplicationPeriodActive && isApartmentFree) {
     // Outside application period, show "free" instead of application count.
@@ -88,9 +97,9 @@ const ApartmentRow = ({
   }
 
   let statusForDot: string;
-  if (isApartmentReserved) {
+  if (isApartmentReserved || isApartmentReservedByApplicationStatus) {
     statusForDot = ApplicationStatus.Reserved;
-  } else if (isApartmentSold) {
+  } else if (isApartmentSold || isApartmentSoldByApplicationStatus) {
     statusForDot = ApplicationStatus.Sold;
   } else {
     statusForDot = applicationStatus || ApplicationStatus.Low;
@@ -189,7 +198,7 @@ const ApartmentRow = ({
 
           {ctaVariant && <CreateApplicationButton href={applicationHref} apartment={apartment} variant={ctaVariant} />}
 
-          {isApartmentFree && !canApplyAfterwards && !canMakeReservation && (
+          {isApartmentFree && !canApplyAfterwards && !canMakeReservation && !isApartmentReservedOrSold && (
             <ContactUsButton href={fullURL(contactUrl)} apartment={apartment} isDesktopSize={isDesktopSize} />
           )}
         </div>

@@ -26,10 +26,10 @@ type Props = {
 };
 
 type TranslationFn = (key: string) => string;
-
 type StatusPresentation = {
   reservedOrSoldLabel: string;
   statusForDot: string;
+  isApartmentReservedOrSold: boolean;
 };
 
 const computeStatusPresentation = (
@@ -43,11 +43,20 @@ const computeStatusPresentation = (
     apartmentStateOfSale === ApartmentStateOfSale.RESERVED.valueOf() ||
     apartmentStateOfSale === ApartmentStateOfSale.RESERVED_HASO.valueOf();
   const isApartmentSold = apartmentStateOfSale === ApartmentStateOfSale.SOLD.valueOf();
+  const isApartmentReservedByApplicationStatus =
+    applicationStatus === ApplicationStatus.Reserved ||
+    applicationStatus === ApplicationStatus.ReservedHaso;
+  const isApartmentSoldByApplicationStatus = applicationStatus === ApplicationStatus.Sold;
+  const isApartmentReservedOrSold =
+    isApartmentReserved ||
+    isApartmentSold ||
+    isApartmentReservedByApplicationStatus ||
+    isApartmentSoldByApplicationStatus;
 
   let reservedOrSoldLabel = '';
-  if (isApartmentSold) {
+  if (isApartmentSold || isApartmentSoldByApplicationStatus) {
     reservedOrSoldLabel = t('SEARCH:apartment-sold');
-  } else if (isApartmentReserved) {
+  } else if (isApartmentReserved || isApartmentReservedByApplicationStatus) {
     reservedOrSoldLabel = t('SEARCH:apartment-reserved');
   } else if (!isApplicationPeriodActive && isApartmentFree) {
     // Outside application period, show "free" instead of application count.
@@ -63,7 +72,7 @@ const computeStatusPresentation = (
     statusForDot = applicationStatus || ApplicationStatus.Low;
   }
 
-  return { reservedOrSoldLabel, statusForDot };
+  return { reservedOrSoldLabel, statusForDot, isApartmentReservedOrSold };
 };
 
 const MapApartmentRow = ({
@@ -98,7 +107,7 @@ const MapApartmentRow = ({
     applicationUrl,
   } = computeApplicationFlags(apartment, userHasReservedOrSoldApartmentInProject, projectOwnershipIsHaso);
 
-  const { reservedOrSoldLabel, statusForDot } = computeStatusPresentation(
+  const { reservedOrSoldLabel, statusForDot, isApartmentReservedOrSold } = computeStatusPresentation(
     apartment_state_of_sale,
     isApartmentFree,
     isApplicationPeriodActive,
@@ -210,7 +219,7 @@ const MapApartmentRow = ({
         <>
           {url && <GetToKnowButton href={fullURL(url)} apartment={apartment} isDesktopSize={isDesktopSize} />}
           {ctaVariant && <CreateApplicationButton href={applicationHref} apartment={apartment} variant={ctaVariant} />}
-          {isApartmentFree && !canApplyAfterwards && !canMakeReservation && (
+          {isApartmentFree && !canApplyAfterwards && !canMakeReservation && !isApartmentReservedOrSold && (
             <ContactUsButton href={fullURL(contactUrl)} apartment={apartment} isDesktopSize={isDesktopSize} />
           )}
         </>

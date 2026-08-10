@@ -412,6 +412,59 @@ describe('ApartmentRow customer-facing status outside application period', () =>
     expect(screen.queryByText('SEARCH:apartment-some-applications')).not.toBeInTheDocument();
     expect(screen.queryByText('SEARCH:apartment-lots-of-applications')).not.toBeInTheDocument();
   });
+
+  test('does not show "free" when application status is RESERVED for free_for_reservations apartment', () => {
+    const props = buildPropsFor(
+      101,
+      {
+        apartment_state_of_sale: 'FREE_FOR_RESERVATIONS',
+        project_application_start_time: '2100-01-01T00:00:00+02:00',
+        project_application_end_time: '2100-01-10T00:00:00+02:00',
+      },
+      { applicationStatus: 'RESERVED' }
+    );
+
+    render(<ApartmentRow {...props} />);
+
+    expect(screen.getByText('SEARCH:apartment-reserved')).toBeInTheDocument();
+    expect(screen.queryByText('SEARCH:apartment-free')).not.toBeInTheDocument();
+    expect(screen.queryByText('SEARCH:contact-us')).not.toBeInTheDocument();
+  });
+
+  test('does not show "free" when application status is SOLD for free_for_reservations apartment', () => {
+    const props = buildPropsFor(
+      101,
+      {
+        apartment_state_of_sale: 'FREE_FOR_RESERVATIONS',
+        project_application_start_time: '2100-01-01T00:00:00+02:00',
+        project_application_end_time: '2100-01-10T00:00:00+02:00',
+      },
+      { applicationStatus: 'SOLD' }
+    );
+
+    render(<ApartmentRow {...props} />);
+
+    expect(screen.getByText('SEARCH:apartment-sold')).toBeInTheDocument();
+    expect(screen.queryByText('SEARCH:apartment-free')).not.toBeInTheDocument();
+    expect(screen.queryByText('SEARCH:contact-us')).not.toBeInTheDocument();
+  });
+
+  test('free_for_reservations during active period keeps application-status messaging', () => {
+    const props = buildPropsFor(
+      101,
+      {
+        apartment_state_of_sale: 'FREE_FOR_RESERVATIONS',
+        project_application_start_time: '2000-01-01T00:00:00.000Z',
+        project_application_end_time: '2100-01-01T00:00:00.000Z',
+      },
+      { applicationStatus: 'LOW' }
+    );
+
+    render(<ApartmentRow {...props} />);
+
+    expect(screen.getByText('SEARCH:apartment-few-applications')).toBeInTheDocument();
+    expect(screen.queryByText('SEARCH:apartment-free')).not.toBeInTheDocument();
+  });
 });
 
 describe('ApartmentRow status during application period (few/many applicants)', () => {
