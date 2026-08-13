@@ -23,24 +23,42 @@ export const userHasApplicationForApartment = (applications: number[] | undefine
   return applications.includes(id);
 };
 
-export const userHasReservedOrSoldApartment = (data: DataConfig|undefined, projectId: number): boolean => {
-  if(!data) return false;
-  
-  const user = data.user;
-  if(!data.apartment_application_status) return false
-  if(!user || !user.applications || !user.application_project_pairs) {
-    return false
+/**
+ * Whether the user already has a reserved or sold apartment in the project.
+ *
+ * Used to hide apply / after-apply / make-reservation CTAs for other apartments
+ * in the same project.
+ */
+export const userHasReservedOrSoldApartment = (
+  data: DataConfig | undefined,
+  projectId: number
+): boolean => {
+  if (!data) {
+    return false;
   }
-  const projectApplication = user.application_project_pairs.find(
-    x => x.project_id === projectId
-  );
-  
-  if (!projectApplication) return false
-  const applicationId = projectApplication.application_id;
-  
-  const application_status = data.apartment_application_status[projectId][applicationId];
+
+  const user = data.user;
+  if (!data.apartment_application_status || !user?.applications) {
+    return false;
+  }
+
+  const userApartmentIds = user.applications[projectId];
+  if (!userApartmentIds?.length) {
+    return false;
+  }
+
+  const projectStatuses = data.apartment_application_status[projectId];
+  if (!projectStatuses) {
+    return false;
+  }
+
   const blockingStatuses = [
     ApplicationStatus.Sold.valueOf(),
+    ApplicationStatus.Reserved.valueOf(),
+    ApplicationStatus.ReservedHaso.valueOf(),
   ];
-  return blockingStatuses.indexOf(application_status) !== -1;
-}
+
+  return userApartmentIds.some(
+    (apartmentId) => blockingStatuses.indexOf(projectStatuses[apartmentId]) !== -1
+  );
+};
