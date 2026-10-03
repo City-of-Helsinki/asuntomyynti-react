@@ -87,7 +87,7 @@ export type Apartment = {
   sales_price: number;
   services: string[];
   services_description: string;
-  showing_times: string[];
+  showing_times: string[] | null;
   site_owner: string;
   storage_description: string;
   title: string;
