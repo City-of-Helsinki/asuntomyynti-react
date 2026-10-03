@@ -111,13 +111,32 @@
   margin-right: var(--spacing-s);
 }
 
+.baseDetailsContent {
+  width: 100%;
+}
+
+.baseDetailsMainRow {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.showingTime {
+  display: block;
+  margin-top: var(--spacing-3-xs);
+  line-height: 1.2;
+  color: var(--color-metro-dark);
+  font-size: var(--fontsize-body-m);
+}
+
 .apartmentCellMobile {
   @extend .cellTextStyles;
   border: none;
   background: none;
   padding: var(--spacing-s);
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   font-size: 18px;
   width: 100%;
   cursor: pointer;

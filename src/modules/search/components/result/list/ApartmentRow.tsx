@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { IconAngleDown, IconAngleUp, IconPenLine, IconSize } from 'hds-react';
+import { format } from 'date-fns';
 
 import { Apartment, ApartmentStateOfSale, ApplicationStatus } from '../../../../../types/common';
 import { fullURL } from '../../../utils/fullURL';
@@ -19,6 +20,16 @@ import ContactUsButton from './ContactUsButton';
 import GetToKnowButton from './GetToKnowButton';
 
 const BREAK_POINT = 768;
+
+const getFormattedShowingTime = (showingTime: string) => {
+  const date = new Date(showingTime);
+
+  if (Number.isNaN(date.getTime())) {
+    return showingTime;
+  }
+
+  return format(date, 'dd.MM.yyyy HH:mm');
+};
 
 type Props = {
   apartment: Apartment;
@@ -106,39 +117,47 @@ const ApartmentRow = ({
   }
 
   const applicationHref = fullURL(withApartmentParam(applicationUrl, nid));
+  const rawShowingTime = apartment.showing_times?.find((time) => time?.trim());
+  const showingTimeLabel =
+    projectOwnershipIsHaso && rawShowingTime
+      ? `${t('SEARCH:showing_times')} - ${getFormattedShowingTime(rawShowingTime)}`
+      : null;
 
   const apartmentRowBaseDetails = (
-    <>
-      <strong>
-        <span className="sr-only">{t('SEARCH:apartment')}: </span>
-        {apartment_number}
-      </strong>
-      {isMobileSize ? (
-        <>
-          <span className={css.apartmentAvailabilityMobile}>
-            <RenderAvailabilityInfo
-              status={statusForDot}
-              dotOnly={true}
-              labelOverride={reservedOrSoldLabel || undefined}
-            />
-          </span>
+    <div className={css.baseDetailsContent}>
+      <div className={css.baseDetailsMainRow}>
+        <strong>
+          <span className="sr-only">{t('SEARCH:apartment')}: </span>
+          {apartment_number}
+        </strong>
+        {isMobileSize ? (
+          <>
+            <span className={css.apartmentAvailabilityMobile}>
+              <RenderAvailabilityInfo
+                status={statusForDot}
+                dotOnly={true}
+                labelOverride={reservedOrSoldLabel || undefined}
+              />
+            </span>
+            <span>
+              <span className="sr-only">{t('SEARCH:aria-apartment-structure')}: </span>
+              {apartment_structure}
+            </span>
+            {rowOpen ? (
+              <IconAngleUp style={{ marginLeft: 'auto' }} size={IconSize.Small} aria-hidden="true" />
+            ) : (
+              <IconAngleDown style={{ marginLeft: 'auto' }} size={IconSize.Small} aria-hidden="true" />
+            )}
+          </>
+        ) : (
           <span>
             <span className="sr-only">{t('SEARCH:aria-apartment-structure')}: </span>
             {apartment_structure}
           </span>
-          {rowOpen ? (
-            <IconAngleUp style={{ marginLeft: 'auto' }} size={IconSize.Small} aria-hidden="true" />
-          ) : (
-            <IconAngleDown style={{ marginLeft: 'auto' }} size={IconSize.Small} aria-hidden="true" />
-          )}
-        </>
-      ) : (
-        <span>
-          <span className="sr-only">{t('SEARCH:aria-apartment-structure')}: </span>
-          {apartment_structure}
-        </span>
-      )}
-    </>
+        )}
+      </div>
+      {showingTimeLabel && <div className={css.showingTime}>{showingTimeLabel}</div>}
+    </div>
   );
 
   const apartMentRowOtherDetails = (
