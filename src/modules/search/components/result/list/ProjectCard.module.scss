@@ -92,6 +92,13 @@
   }
 }
 
+.showingTime {
+  margin-bottom: 8px;
+  line-height: 1.2;
+  color: var(--color-metro-dark);
+  font-size: var(--fontsize-body-m);
+}
+
 .controls {
   flex: 1;
   display: flex;

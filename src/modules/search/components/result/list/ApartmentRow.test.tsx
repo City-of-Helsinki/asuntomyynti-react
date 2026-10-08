@@ -60,44 +60,6 @@ test('renders apartment details', () => {
   expect(screen.queryByText('1h+k+s')).not.toBeNull(); // apartment_structure
 });
 
-describe('SEARCH:showing_times in HASO apartment list row', () => {
-  test('renders first non-empty showing time value formatted as dd.MM.yyyy HH:mm', () => {
-    const apt = {
-      ...mockApartment,
-      showing_times: ['', '  ', '2020-10-31T19:21:17'],
-      project_ownership_type: 'haso',
-    };
-
-    render(<ApartmentRow {...defaultProps} apartment={apt} projectOwnershipIsHaso={true} />);
-
-    expect(screen.getByText('SEARCH:showing_times - 31.10.2020 19:21')).toBeInTheDocument();
-  });
-
-  test('does not render showing time when showing_times is null', () => {
-    const apt = {
-      ...mockApartment,
-      showing_times: null,
-      project_ownership_type: 'haso',
-    };
-
-    render(<ApartmentRow {...defaultProps} apartment={apt} projectOwnershipIsHaso={true} />);
-
-    expect(screen.queryByText(/SEARCH:showing_times -/)).toBeNull();
-  });
-
-  test('renders original showing time value when date is invalid', () => {
-    const apt = {
-      ...mockApartment,
-      showing_times: ['not-a-date'],
-      project_ownership_type: 'haso',
-    };
-
-    render(<ApartmentRow {...defaultProps} apartment={apt} projectOwnershipIsHaso={true} />);
-
-    expect(screen.getByText('SEARCH:showing_times - not-a-date')).toBeInTheDocument();
-  });
-});
-
 describe('SEARCH:apply / SEARCH:after-apply buttons', () => {
   const inThePast = '2000-01-01T00:00:00.000Z';
   const inTheFuture = '2100-01-01T00:00:00.000Z';

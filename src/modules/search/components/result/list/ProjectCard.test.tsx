@@ -38,3 +38,57 @@ test('Apartment list toggle button is shown', () => {
 
   expect(screen.queryByText('1 SEARCH:apartments')).not.toBeNull();
 });
+
+describe('ES:showing_times in project card', () => {
+  test('renders once for HASO under address', () => {
+    const hasoProject = {
+      ...project,
+      ownership_type: 'haso',
+      apartments: [
+        {
+          ...project.apartments[0],
+          showing_times: ['', '  ', '2026-10-07T06:30:00+03:00'],
+        },
+      ],
+    };
+
+    render(<ProjectCard {...defaultProps} project={hasoProject} />);
+
+    expect(screen.getByText('ES:showing_times - 07.10.2026 06:30')).toBeInTheDocument();
+    expect(screen.getAllByText(/ES:showing_times -/)).toHaveLength(1);
+  });
+
+  test('does not render when no showing times exist', () => {
+    const hasoProject = {
+      ...project,
+      ownership_type: 'haso',
+      apartments: [
+        {
+          ...project.apartments[0],
+          showing_times: null,
+        },
+      ],
+    };
+
+    render(<ProjectCard {...defaultProps} project={hasoProject} />);
+
+    expect(screen.queryByText(/ES:showing_times -/)).toBeNull();
+  });
+
+  test('renders original value for invalid showing time date', () => {
+    const hasoProject = {
+      ...project,
+      ownership_type: 'haso',
+      apartments: [
+        {
+          ...project.apartments[0],
+          showing_times: ['invalid-date-value'],
+        },
+      ],
+    };
+
+    render(<ProjectCard {...defaultProps} project={hasoProject} />);
+
+    expect(screen.getByText('ES:showing_times - invalid-date-value')).toBeInTheDocument();
+  });
+});
