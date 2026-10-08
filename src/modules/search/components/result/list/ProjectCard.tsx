@@ -1,5 +1,6 @@
 import { Button, ButtonVariant, IconAngleLeft, IconAngleRight, IconArrowDown, IconArrowUp } from 'hds-react';
 import { ButtonBack, ButtonNext, CarouselProvider, Slide, Slider } from 'pure-react-carousel';
+import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -29,6 +30,16 @@ type Props = {
   showUpcomingSalesLink?: boolean;
   currentLang: string;
   hideApartments?: boolean;
+};
+
+const getFormattedShowingTime = (showingTime: string) => {
+  const date = new Date(showingTime);
+
+  if (Number.isNaN(date.getTime())) {
+    return showingTime;
+  }
+
+  return format(date, 'dd.MM.yyyy HH:mm');
 };
 
 const ProjectCard = ({
@@ -76,6 +87,13 @@ const ProjectCard = ({
 
   const filteredApartments = getLanguageFilteredApartments(apartments, currentLang);
   const hasApartments = !!filteredApartments.length;
+  const firstShowingTime = filteredApartments
+    .flatMap((apartment) => apartment.showing_times ?? [])
+    .find((time) => time?.trim());
+  const showingTimeLabel =
+    ownership_type.toLowerCase() === 'haso' && firstShowingTime
+      ? `${t('ES:showing_times')} - ${getFormattedShowingTime(firstShowingTime)}`
+      : null;
   const applicationPair = config?.user?.application_project_pairs?.find((pair) => pair.project_id === id);
   const applicationId = applicationPair ? applicationPair.application_id : undefined;
   const applicationUrl = applicationId ? `/${currentLang}/application/${applicationId}` : undefined;
@@ -156,6 +174,7 @@ const ProjectCard = ({
               <div style={{ marginBottom: 8 }}>
                 <b>{district},</b> {street_address}
               </div>
+              {showingTimeLabel && <div className={css.showingTime}>{showingTimeLabel}</div>}
               <Label type={ownership_type}>
                 <>
                   <span className="sr-only">{t('SEARCH:aria-ownership-type')}</span> {ownership_type}
