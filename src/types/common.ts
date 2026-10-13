@@ -87,6 +87,11 @@ export type Apartment = {
   sales_price: number;
   services: string[];
   services_description: string;
+  showing_time_ranges: {
+    start: string | null;
+    end: string | null;
+    display: string | null;
+  }[] | null;
   showing_times: string[] | null;
   site_owner: string;
   storage_description: string;

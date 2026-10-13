@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { DataConfig, Project } from '../../../../../types/common';
+import { Apartment, DataConfig, Project } from '../../../../../types/common';
 import { fullURL } from '../../../utils/fullURL';
 import { getProjectApplicationStatus } from '../../../utils/getApplicationStatus';
 import { getLanguageFilteredApartments } from '../../../utils/getLanguageFilteredApartments';
@@ -42,6 +42,23 @@ const getFormattedShowingTime = (showingTime: string) => {
   return format(date, 'dd.MM.yyyy HH:mm');
 };
 
+const getShowingTimeLabels = (apartments: Apartment[]) => {
+  const rangeLabels = apartments
+    .flatMap((apartment) => apartment.showing_time_ranges ?? [])
+    .map((showingTimeRange) => showingTimeRange.display?.trim())
+    .filter((display): display is string => Boolean(display));
+
+  if (rangeLabels.length > 0) {
+    return rangeLabels;
+  }
+
+  const firstLegacyShowingTime = apartments
+    .flatMap((apartment) => apartment.showing_times ?? [])
+    .find((time) => time?.trim());
+
+  return firstLegacyShowingTime ? [getFormattedShowingTime(firstLegacyShowingTime)] : [];
+};
+
 const ProjectCard = ({
   config,
   project,
@@ -51,17 +68,8 @@ const ProjectCard = ({
   currentLang,
   hideApartments = false,
 }: Props) => {
-  const {
-    apartments,
-    street_address,
-    district,
-    housing_company,
-    image_urls,
-    main_image_url,
-    id,
-    ownership_type,
-    url,
-  } = project;
+  const { apartments, street_address, district, housing_company, image_urls, main_image_url, id, ownership_type, url } =
+    project;
 
   const { t } = useTranslation();
   const [listOpen, setListOpen] = useSessionStorageState({ defaultValue: false, key: `apartmentRowOpen-${id}` });
@@ -87,13 +95,8 @@ const ProjectCard = ({
 
   const filteredApartments = getLanguageFilteredApartments(apartments, currentLang);
   const hasApartments = !!filteredApartments.length;
-  const firstShowingTime = filteredApartments
-    .flatMap((apartment) => apartment.showing_times ?? [])
-    .find((time) => time?.trim());
-  const showingTimeLabel =
-    ownership_type.toLowerCase() === 'haso' && firstShowingTime
-      ? `${t('ES:showing_times')} - ${getFormattedShowingTime(firstShowingTime)}`
-      : null;
+  const showingTimeLabels = getShowingTimeLabels(filteredApartments);
+  const showingTimeLabel = showingTimeLabels[0] ?? null;
   const applicationPair = config?.user?.application_project_pairs?.find((pair) => pair.project_id === id);
   const applicationId = applicationPair ? applicationPair.application_id : undefined;
   const applicationUrl = applicationId ? `/${currentLang}/application/${applicationId}` : undefined;
@@ -166,6 +169,11 @@ const ProjectCard = ({
       <div className={css.content}>
         <div className={css.imageContainer} style={hideImgOnSmallScreen && isSmallScreen ? { display: 'none' } : {}}>
           {renderImageCarousel()}
+          {showingTimeLabel && (
+            <div className={css.showingTimeOverlay}>
+              {t('ES:showing_times')}: {showingTimeLabel}
+            </div>
+          )}
         </div>
         <div className={css.info}>
           <div className={css.details}>
@@ -174,7 +182,6 @@ const ProjectCard = ({
               <div style={{ marginBottom: 8 }}>
                 <b>{district},</b> {street_address}
               </div>
-              {showingTimeLabel && <div className={css.showingTime}>{showingTimeLabel}</div>}
               <Label type={ownership_type}>
                 <>
                   <span className="sr-only">{t('SEARCH:aria-ownership-type')}</span> {ownership_type}
