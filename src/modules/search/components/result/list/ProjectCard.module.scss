@@ -15,6 +15,7 @@
 .imageContainer {
   display: flex;
   flex: 1;
+  position: relative;
 }
 
 .imageContainer img {
@@ -45,7 +46,7 @@
 
   &:hover,
   &:focus {
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
   }
 
   &:disabled {
@@ -92,11 +93,18 @@
   }
 }
 
-.showingTime {
-  margin-bottom: 8px;
-  line-height: 1.2;
-  color: var(--color-metro-dark);
+.showingTimeOverlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  color: var(--color-white);
+  font-weight: 700;
   font-size: var(--fontsize-body-m);
+  line-height: 1.2;
+  padding: var(--spacing-xs) var(--spacing-s);
+  z-index: 2;
 }
 
 .controls {
