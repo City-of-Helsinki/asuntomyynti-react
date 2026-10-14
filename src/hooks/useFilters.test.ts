@@ -74,4 +74,18 @@ describe('useFilters', () => {
 
     expect(mockedNavigate).toHaveBeenLastCalledWith('?', { replace: true });
   });
+
+  it('clears properties with clearAllFilters', () => {
+    const { result } = renderHook(() => useFilters(), { wrapper });
+
+    act(() => {
+      result.current.setFilter('properties', 'TOP_FLOOR,HAS_BALCONY');
+      result.current.clearAllFilters({
+        properties: {} as any,
+      });
+    });
+
+    expect(mockedNavigate).toHaveBeenNthCalledWith(1, '?properties=TOP_FLOOR%2CHAS_BALCONY', { replace: true });
+    expect(mockedNavigate).toHaveBeenNthCalledWith(2, '?', { replace: true });
+  });
 });

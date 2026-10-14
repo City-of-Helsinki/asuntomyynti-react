@@ -8,6 +8,10 @@ import TagList from './tag/TagList';
 import { useTranslation } from 'react-i18next';
 import useFilters from '../../../../hooks/useFilters';
 
+const FLOOR_PROPERTY_OPTIONS = ['TOP_FLOOR', 'BOTTOM_FLOOR', 'NOT_TOP_FLOOR', 'NOT_BOTTOM_FLOOR'];
+
+const normalizePropertyOption = (value: string) => value.trim().toUpperCase();
+
 type Props = {
   config: DataConfig | undefined;
   isLoading: boolean | undefined;
@@ -22,7 +26,37 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipTyp
   const { clearAllFilters, hasFilters } = useFilters();
   const { t } = useTranslation();
   const { filters } = config || {};
-  const { project_district_hitas, project_district_haso, room_count, living_area, price } = filters || {};
+  const { project_district_hitas, project_district_haso, room_count, living_area, price, properties } = filters || {};
+
+  const propertyItems = (properties?.items || []).filter((item): item is string => typeof item === 'string');
+  const floorOptionSet = new Set(FLOOR_PROPERTY_OPTIONS);
+
+  const floorPropertyItems = propertyItems.filter((item) => floorOptionSet.has(normalizePropertyOption(item)));
+  const additionalPropertyItems = propertyItems.filter((item) => !floorOptionSet.has(normalizePropertyOption(item)));
+
+  const createScopedPropertiesFilter = (label: string, scopedItems: string[]) => {
+    if (!properties || scopedItems.length === 0) {
+      return null;
+    }
+
+    const scopedItemSet = new Set(scopedItems.map(normalizePropertyOption));
+
+    return {
+      ...properties,
+      label,
+      items: scopedItems,
+      getLabel: (values: string[]) => {
+        const scopedValues = values.filter((value) => scopedItemSet.has(normalizePropertyOption(value)));
+        if (scopedValues.length === 0) {
+          return label;
+        }
+        return properties.getLabel(scopedValues);
+      },
+    };
+  };
+
+  const additionalPropertiesFilter = createScopedPropertiesFilter(properties?.label || '', additionalPropertyItems);
+  const floorPropertiesFilter = createScopedPropertiesFilter(t('SEARCH:floor'), floorPropertyItems);
 
   const searchButton = () => (
     <Button className={styles.submitButton} onClick={() => onSubmit()} iconStart={<IconSearch aria-hidden="true" />}>
@@ -68,16 +102,40 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipTyp
               {living_area && <Dropdown name={FilterName.LivingArea} {...living_area} />}
             </div>
           </div>
-          <div className={cx(styles.column, styles.columnNarrow, styles.dropdownColumn, styles.canShimmer)}>
-            <div className={styles.dropdownWrapper}>{price && <Dropdown name={FilterName.Price} {...price} />}</div>
-          </div>
-          <div className={cx(styles.column, styles.columnNarrow, styles.canShimmer, styles.searchButtonDesktop)}>
-            {!isLoading && searchButton()}
-          </div>
           <div className="sr-only">
             <button type="button" onClick={() => focusRef.current?.focus()}>
               {t('SEARCH:aria-jump-to-results')}
             </button>
+          </div>
+        </div>
+        <div className={cx(styles.row, styles.hasBottomPadding)}>
+          <div className={cx(styles.column, styles.columnNarrow, styles.dropdownColumn, styles.canShimmer)}>
+            <div className={styles.dropdownWrapper}>{price && <Dropdown name={FilterName.Price} {...price} />}</div>
+          </div>
+          <div className={cx(styles.column, styles.columnWide, styles.dropdownColumn, styles.canShimmer)}>
+            <div className={styles.dropdownWrapper}>
+              {additionalPropertiesFilter && (
+                <Dropdown
+                  name={FilterName.Properties}
+                  selectionScopeValues={additionalPropertyItems}
+                  {...additionalPropertiesFilter}
+                />
+              )}
+            </div>
+          </div>
+          <div className={cx(styles.column, styles.columnWide, styles.dropdownColumn, styles.canShimmer)}>
+            <div className={styles.dropdownWrapper}>
+              {floorPropertiesFilter && (
+                <Dropdown
+                  name={FilterName.Properties}
+                  selectionScopeValues={floorPropertyItems}
+                  {...floorPropertiesFilter}
+                />
+              )}
+            </div>
+          </div>
+          <div className={cx(styles.column, styles.columnNarrow, styles.canShimmer, styles.searchButtonDesktop)}>
+            {!isLoading && searchButton()}
           </div>
         </div>
         {filters && (

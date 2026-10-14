@@ -9,9 +9,12 @@ import useFilters from '../../../../../hooks/useFilters';
 
 type Props = {
   name: FilterName;
+  selectionScopeValues?: string[];
 } & FilterConfig;
 
-const Dropdown = ({ name, icon, ...rest }: Props) => {
+const normalizePropertyOption = (value: string) => value.trim().toUpperCase();
+
+const Dropdown = ({ name, icon, selectionScopeValues, ...rest }: Props) => {
   const { t } = useTranslation();
   const [active, setActive] = useState(false);
   const [label, setLabel] = useState<string>(name);
@@ -19,8 +22,15 @@ const Dropdown = ({ name, icon, ...rest }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const labelRef = useRef<HTMLButtonElement>(null);
 
-  const { clearFilter, getFilters, getFilter } = useFilters();
-  const hasSelections = !!getFilter(name);
+  const { clearFilter, getFilters, setFilters, getFilter } = useFilters();
+  const selectedValues = getFilters(name);
+  const hasSelections = selectionScopeValues?.length
+    ? selectedValues.some((value) =>
+        selectionScopeValues
+          .map(normalizePropertyOption)
+          .includes(normalizePropertyOption(value))
+      )
+    : !!getFilter(name);
 
   useOutsideClick(ref, () => {
     setActive(false);
@@ -29,7 +39,20 @@ const Dropdown = ({ name, icon, ...rest }: Props) => {
   const handleClearSelection = () => {
     // Focus on button after clearing selection
     labelRef.current?.focus();
-    clearFilter(name);
+
+    if (selectionScopeValues?.length) {
+      const scopeSet = new Set(selectionScopeValues.map(normalizePropertyOption));
+      const remainingValues = selectedValues.filter((value) => !scopeSet.has(normalizePropertyOption(value)));
+
+      if (remainingValues.length === 0) {
+        clearFilter(name);
+      } else {
+        setFilters(name, remainingValues);
+      }
+    } else {
+      clearFilter(name);
+    }
+
     setTimeout(() => {
       // Let the user see selection disappear before closing the dropdown
       setActive(false);
