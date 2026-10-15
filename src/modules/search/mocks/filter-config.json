@@ -56,7 +56,13 @@
         "has_apartment_sauna",
         "has_terrace",
         "has_balcony",
-        "has_yard"
+        "has_yard",
+        "TOP_FLOOR",
+        "BOTTOM_FLOOR",
+        "NOT_TOP_FLOOR",
+        "NOT_BOTTOM_FLOOR",
+        "SINGLE_LEVEL",
+        "HAS_FRENCH_BALCONY"
       ],
       "suffix": null
     },

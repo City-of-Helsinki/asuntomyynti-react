@@ -5,6 +5,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { FilterName, DataConfig } from '../../../../types/common';
 import { defaultConfig } from '../../utils/defaultConfig';
 import styles from './SearchForm.module.scss';
+import { enhanceFilterConfig } from '../../../../utils/enhanceFilterConfig';
+import filterConfig from '../../mocks/filter-config.json';
 
 const mockConfig: DataConfig = {
   filters: {
@@ -102,5 +104,31 @@ test('loading animation is hidden when isLoading is false', () => {
   const elem = screen.getByLabelText('SEARCH:aria-filters-title');
 
   expect(elem.classList.contains(styles.isLoading)).toBe(false);
+});
+
+test('renders Additional selections and floor as separate dropdowns and hides excluded options', () => {
+  const enhancedConfig = {
+    ...mockConfig,
+    filters: enhanceFilterConfig(filterConfig.filters),
+  } as DataConfig;
+
+  render(
+    <BrowserRouter>
+      <SearchForm {...defaultProps} config={enhancedConfig} />
+    </BrowserRouter>
+  );
+
+  expect(screen.getByText('Additional selections')).toBeDefined();
+  expect(screen.getByText('SEARCH:floor')).toBeDefined();
+
+  expect(screen.getByText('ES:has_balcony')).toBeDefined();
+  expect(screen.queryAllByText('ES:TOP_FLOOR')).toHaveLength(1);
+  expect(screen.queryAllByText('ES:BOTTOM_FLOOR')).toHaveLength(1);
+  expect(screen.queryAllByText('ES:NOT_TOP_FLOOR')).toHaveLength(1);
+  expect(screen.queryAllByText('ES:NOT_BOTTOM_FLOOR')).toHaveLength(1);
+
+  expect(screen.queryByText('ES:SINGLE_LEVEL')).toBeNull();
+  expect(screen.queryByText('ES:HAS_FRENCH_BALCONY')).toBeNull();
+  expect(screen.queryByText('ES:project_has_elevator')).toBeNull();
 });
 

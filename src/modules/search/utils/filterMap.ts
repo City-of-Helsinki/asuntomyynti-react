@@ -6,6 +6,27 @@ type FilterMap = {
   [key in FilterName]: (config: DefaultFilterConfig) => FilterConfig;
 };
 
+const REQUIRED_PROPERTY_OPTIONS = [
+  'PROJECT_HAS_SAUNA',
+  'HAS_APARTMENT_SAUNA',
+  'HAS_BALCONY',
+  'HAS_TERRACE',
+  'HAS_YARD',
+  'TOP_FLOOR',
+  'BOTTOM_FLOOR',
+  'NOT_TOP_FLOOR',
+  'NOT_BOTTOM_FLOOR',
+];
+
+const EXCLUDED_PROPERTY_OPTIONS = new Set([
+  'SINGLE_LEVEL',
+  'HAS_FRENCH_BALCONY',
+  'FRENCH_BALCONY',
+  'PROJECT_HAS_ELEVATOR',
+]);
+
+const normalizePropertyOption = (option: string) => option.trim().toUpperCase();
+
 const filterMap: FilterMap = {
   project_district: (config) => ({
     ...config,
@@ -105,10 +126,27 @@ const filterMap: FilterMap = {
     type: FilterType.MultiSelect,
   }),
 
-  properties: (config) => ({
-    ...config,
-    type: FilterType.MultiSelect,
-  }),
+  properties: ({ items, ...rest }) => {
+    const safeItems = Array.isArray(items) ? items : [];
+
+    const filteredItems = safeItems.filter(
+      (item) => item && !EXCLUDED_PROPERTY_OPTIONS.has(normalizePropertyOption(item))
+    );
+
+    const mergedItems = [...filteredItems];
+    REQUIRED_PROPERTY_OPTIONS.forEach((requiredOption) => {
+      const hasOption = mergedItems.some((item) => normalizePropertyOption(item) === requiredOption);
+      if (!hasOption) {
+        mergedItems.push(requiredOption);
+      }
+    });
+
+    return {
+      ...rest,
+      items: mergedItems,
+      type: FilterType.MultiSelect,
+    };
+  },
 
   project_state_of_sale: (config) => ({
     ...config,
