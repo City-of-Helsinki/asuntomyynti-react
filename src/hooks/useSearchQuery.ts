@@ -39,6 +39,27 @@ const useSearchQuery = (projectOwnershipType: string, showUpcomingOnly: string) 
       return { ...allFilters, ...getQuery(values) };
     }, {});
 
+    // Frontend-only floor range filter: serialize URL value "floor=min,max" to backend keys.
+    const [floorMinRaw = '', floorMaxRaw = ''] = getFilters('floor');
+
+    if (floorMinRaw || floorMaxRaw) {
+      queryFilters.floor = [floorMinRaw, floorMaxRaw];
+
+      if (floorMinRaw !== '') {
+        const floorMin = Number(floorMinRaw);
+        if (!Number.isNaN(floorMin)) {
+          queryFilters.floor_min = floorMin;
+        }
+      }
+
+      if (floorMaxRaw !== '') {
+        const floorMax = Number(floorMaxRaw);
+        if (!Number.isNaN(floorMax)) {
+          queryFilters.floor_max = floorMax;
+        }
+      }
+    }
+
     return queryFilters;
   }, [config, getFilters]);
 

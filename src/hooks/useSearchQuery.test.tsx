@@ -10,7 +10,7 @@ describe('useSearchQuery', () => {
   const wrapper = ({ children }: PropsWithChildren) =>
     createElement(
       MemoryRouter,
-      { initialEntries: ['/?properties=TOP_FLOOR,HAS_BALCONY'] },
+      { initialEntries: ['/?properties=TOP_FLOOR,HAS_BALCONY&floor=2,6'] },
       createElement(
         DataContext.Provider,
         {
@@ -33,5 +33,8 @@ describe('useSearchQuery', () => {
 
     expect(result.current.query.project_ownership_type).toBe('hitas');
     expect(result.current.query.properties).toEqual(['TOP_FLOOR', 'HAS_BALCONY']);
+    expect(result.current.query.floor).toEqual(['2', '6']);
+    expect(result.current.query.floor_min).toBe(2);
+    expect(result.current.query.floor_max).toBe(6);
   });
 });

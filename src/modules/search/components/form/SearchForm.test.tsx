@@ -129,5 +129,6 @@ test('renders Additional selections and floor as separate dropdowns and hides ex
 
   expect(screen.queryByText('ES:SINGLE_LEVEL')).toBeNull();
   expect(screen.queryByText('ES:HAS_FRENCH_BALCONY')).toBeNull();
+  expect(screen.queryByText('ES:project_has_elevator')).toBeNull();
 });
 

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './Dropdown.module.scss';
 import IconByName from './IconByName';
@@ -10,27 +10,44 @@ import useFilters from '../../../../../hooks/useFilters';
 type Props = {
   name: FilterName;
   selectionScopeValues?: string[];
+  additionalFilterNames?: string[];
+  customContent?: ReactNode;
 } & FilterConfig;
 
 const normalizePropertyOption = (value: string) => value.trim().toUpperCase();
 
-const Dropdown = ({ name, icon, selectionScopeValues, ...rest }: Props) => {
+const Dropdown = ({ name, icon, selectionScopeValues, additionalFilterNames = [], customContent, ...filterConfig }: Props) => {
   const { t } = useTranslation();
   const [active, setActive] = useState(false);
-  const [label, setLabel] = useState<string>(name);
+  const [label, setLabel] = useState<string>(filterConfig.label);
 
   const ref = useRef<HTMLDivElement>(null);
   const labelRef = useRef<HTMLButtonElement>(null);
 
   const { clearFilter, getFilters, setFilters, getFilter } = useFilters();
   const selectedValues = getFilters(name);
-  const hasSelections = selectionScopeValues?.length
+  const additionalSelectionSignature = additionalFilterNames.map((filterName) => getFilter(filterName) ?? '').join('|');
+  const hasMainSelection = selectionScopeValues?.length
     ? selectedValues.some((value) =>
         selectionScopeValues
           .map(normalizePropertyOption)
           .includes(normalizePropertyOption(value))
       )
     : !!getFilter(name);
+  const hasAdditionalSelection = additionalFilterNames.some((filterName) => !!getFilter(filterName));
+  const hasSelections = hasMainSelection || hasAdditionalSelection;
+
+  const resolveLabel = (values: string[]) => {
+    if (values.length > 0 || hasAdditionalSelection) {
+      return filterConfig.getLabel(values);
+    }
+
+    return filterConfig.label;
+  };
+
+  useEffect(() => {
+    setLabel(resolveLabel(selectedValues));
+  }, [selectedValues, additionalSelectionSignature, hasAdditionalSelection, filterConfig.label, filterConfig.getLabel]);
 
   useOutsideClick(ref, () => {
     setActive(false);
@@ -52,6 +69,10 @@ const Dropdown = ({ name, icon, selectionScopeValues, ...rest }: Props) => {
     } else {
       clearFilter(name);
     }
+
+    additionalFilterNames.forEach((filterName) => {
+      clearFilter(filterName);
+    });
 
     setTimeout(() => {
       // Let the user see selection disappear before closing the dropdown
@@ -76,7 +97,7 @@ const Dropdown = ({ name, icon, selectionScopeValues, ...rest }: Props) => {
         <div className={styles.title}>{label}</div>
       </button>
       <div className={styles.content}>
-        <QueryFilter name={name} onFilter={handleFilter} isWrapped {...rest} />
+        {customContent || <QueryFilter name={name} onFilter={handleFilter} isWrapped {...filterConfig} />}
       </div>
       <div className={styles.footer}>
         <button onClick={handleClearSelection} disabled={!hasSelections} className={styles.clearButton}>

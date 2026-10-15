@@ -12,7 +12,14 @@ describe('enhanceFilterConfig', () => {
     const subject = enhanceFilterConfig({
       properties: {
         label: 'Additional selections',
-        items: ['project_has_sauna', 'has_apartment_sauna', 'has_balcony', 'SINGLE_LEVEL', 'HAS_FRENCH_BALCONY'],
+        items: [
+          'project_has_sauna',
+          'has_apartment_sauna',
+          'has_balcony',
+          'project_has_elevator',
+          'SINGLE_LEVEL',
+          'HAS_FRENCH_BALCONY',
+        ],
         suffix: null,
       },
     });
@@ -27,5 +34,6 @@ describe('enhanceFilterConfig', () => {
 
     expect(subject.properties.items).not.toContain('SINGLE_LEVEL');
     expect(subject.properties.items).not.toContain('HAS_FRENCH_BALCONY');
+    expect(subject.properties.items).not.toContain('project_has_elevator');
   });
 });

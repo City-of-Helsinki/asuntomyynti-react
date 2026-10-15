@@ -163,7 +163,7 @@ export type Project = {
 };
 
 export type QueryParams = {
-  [key in FilterName]?: number | string | boolean | (number | string)[];
+  [key: string]: number | string | boolean | (number | string)[] | undefined;
 };
 
 /** POST body for the Drupal elasticsearch endpoint (filters plus required ownership). */
