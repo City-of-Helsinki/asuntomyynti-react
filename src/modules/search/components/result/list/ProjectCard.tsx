@@ -22,6 +22,24 @@ import ProjectInfo from '../ProjectInfo';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import css from './ProjectCard.module.scss';
 
+const getShowingTimeOverlayClassName = (ownershipType?: string) => {
+  const normalizedOwnershipType = ownershipType?.toLowerCase();
+
+  if (normalizedOwnershipType === 'haso') {
+    return `${css.showingTimeOverlay} ${css.showingTimeOverlayHaso}`;
+  }
+
+  if (normalizedOwnershipType === 'hitas') {
+    return `${css.showingTimeOverlay} ${css.showingTimeOverlayHitas}`;
+  }
+
+  if (normalizedOwnershipType === 'puolihitas') {
+    return `${css.showingTimeOverlay} ${css.showingTimeOverlayPuolihitas}`;
+  }
+
+  return css.showingTimeOverlay;
+};
+
 type Props = {
   config: DataConfig | undefined;
   project: Project;
@@ -42,21 +60,35 @@ const getFormattedShowingTime = (showingTime: string) => {
   return format(date, 'dd.MM.yyyy HH:mm');
 };
 
-const getShowingTimeLabels = (apartments: Apartment[]) => {
+type ShowingLabel = {
+  value: string;
+  isHighlight: boolean;
+};
+
+const getShowingTimeLabels = (apartments: Apartment[]): ShowingLabel[] => {
   const rangeLabels = apartments
     .flatMap((apartment) => apartment.showing_time_ranges ?? [])
     .map((showingTimeRange) => showingTimeRange.display?.trim())
     .filter((display): display is string => Boolean(display));
 
-  if (rangeLabels.length > 0) {
-    return rangeLabels;
-  }
-
   const firstLegacyShowingTime = apartments
     .flatMap((apartment) => apartment.showing_times ?? [])
     .find((time) => time?.trim());
 
-  return firstLegacyShowingTime ? [getFormattedShowingTime(firstLegacyShowingTime)] : [];
+  const highlightText = apartments
+    .map((apartment) => apartment.project_homepage_highlight_text?.trim())
+    .find((text): text is string => Boolean(text));
+
+  // Prefer project highlight when one showing time source is missing.
+  if (highlightText && (rangeLabels.length === 0 || !firstLegacyShowingTime)) {
+    return [{ value: highlightText, isHighlight: true }];
+  }
+
+  if (rangeLabels.length > 0) {
+    return rangeLabels.map((label) => ({ value: label, isHighlight: false }));
+  }
+
+  return firstLegacyShowingTime ? [{ value: getFormattedShowingTime(firstLegacyShowingTime), isHighlight: false }] : [];
 };
 
 const ProjectCard = ({
@@ -170,8 +202,8 @@ const ProjectCard = ({
         <div className={css.imageContainer} style={hideImgOnSmallScreen && isSmallScreen ? { display: 'none' } : {}}>
           {renderImageCarousel()}
           {showingTimeLabel && (
-            <div className={css.showingTimeOverlay}>
-              {t('ES:showing_times')}: {showingTimeLabel}
+            <div className={getShowingTimeOverlayClassName(ownership_type)}>
+              {showingTimeLabel.isHighlight ? showingTimeLabel.value : `${t('ES:showing_times')}: ${showingTimeLabel.value}`}
             </div>
           )}
         </div>

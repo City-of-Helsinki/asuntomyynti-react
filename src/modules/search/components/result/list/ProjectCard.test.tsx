@@ -80,6 +80,46 @@ describe('ES:showing_times in project card', () => {
     expect(screen.getByText('ES:showing_times: 07.10.2026 06:30')).toBeInTheDocument();
   });
 
+  test('shows project_homepage_highlight_text when showing_time_ranges is empty', () => {
+    const hasoProject = {
+      ...project,
+      ownership_type: 'haso',
+      apartments: [
+        {
+          ...project.apartments[0],
+          showing_time_ranges: null,
+          showing_times: ['2026-10-07T06:30:00+03:00'],
+          project_homepage_highlight_text: 'Avoimet ovet ilman ajanvarausta',
+        },
+      ],
+    };
+
+    render(<ProjectCard {...defaultProps} project={hasoProject} />);
+
+    expect(screen.getByText('Avoimet ovet ilman ajanvarausta')).toBeInTheDocument();
+    expect(screen.queryByText(/ES:showing_times:/)).toBeNull();
+  });
+
+  test('shows project_homepage_highlight_text when showing_times is empty', () => {
+    const hasoProject = {
+      ...project,
+      ownership_type: 'haso',
+      apartments: [
+        {
+          ...project.apartments[0],
+          showing_time_ranges: [{ start: '2026-10-14T13:03:00+03:00', end: '2026-10-14T13:58:00+03:00', display: '14.10.2026 13:03 - 13:58' }],
+          showing_times: null,
+          project_homepage_highlight_text: 'Avoimet ovet ilman ajanvarausta',
+        },
+      ],
+    };
+
+    render(<ProjectCard {...defaultProps} project={hasoProject} />);
+
+    expect(screen.getByText('Avoimet ovet ilman ajanvarausta')).toBeInTheDocument();
+    expect(screen.queryByText(/ES:showing_times:/)).toBeNull();
+  });
+
   test('does not render when both sources are empty', () => {
     const hasoProject = {
       ...project,

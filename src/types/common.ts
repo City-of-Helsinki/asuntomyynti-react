@@ -55,6 +55,7 @@ export type Apartment = {
   project_heating_options: string[];
   project_holding_type: string;
   project_housing_company: string;
+  project_homepage_highlight_text?: string | null;
   project_housing_manager: string;
   project_id: number;
   project_image_urls: string[];
