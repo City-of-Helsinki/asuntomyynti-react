@@ -39,6 +39,15 @@ test('Apartment list toggle button is shown', () => {
   expect(screen.queryByText('1 SEARCH:apartments')).not.toBeNull();
 });
 
+test('project title links to the same project page as learn-more button', () => {
+  render(<ProjectCard {...defaultProps} />);
+
+  const learnMoreButton = screen.getByRole('link', { name: /SEARCH:learn-more/i });
+  const projectTitleLink = screen.getByRole('link', { name: 'Asunto Oy Tuleva S' });
+
+  expect(projectTitleLink).toHaveAttribute('href', learnMoreButton.getAttribute('href'));
+});
+
 describe('ES:showing_times in project card', () => {
   test('renders first showing_time_ranges display once under address', () => {
     const hasoProject = {

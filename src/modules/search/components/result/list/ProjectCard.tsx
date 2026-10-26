@@ -124,6 +124,7 @@ const ProjectCard = ({
   };
 
   const { apartment_application_status, user } = config || {};
+  const projectUrl = url ? fullURL(url) : undefined;
 
   const filteredApartments = getLanguageFilteredApartments(apartments, currentLang);
   const hasApartments = !!filteredApartments.length;
@@ -167,13 +168,25 @@ const ProjectCard = ({
         >
           {main_image_url?.length >= 1 && (
             <Slide index={0} tag={'div'}>
-              <img src={fullURL(main_image_url)} alt={`${housing_company}, ${t('SEARCH:aria-project-main-image')}`} />
+              {projectUrl ? (
+                <a href={projectUrl}>
+                  <img src={fullURL(main_image_url)} alt={`${housing_company}, ${t('SEARCH:aria-project-main-image')}`} />
+                </a>
+              ) : (
+                <img src={fullURL(main_image_url)} alt={`${housing_company}, ${t('SEARCH:aria-project-main-image')}`} />
+              )}
             </Slide>
           )}
           {otherImageCount > 0 &&
             image_urls.map((item, idx) => (
               <Slide index={idx + 1} key={idx} tag={'div'}>
-                <img src={fullURL(item)} alt={`${housing_company}, ${t('SEARCH:aria-project-image')} ${idx + 2}`} />
+                {projectUrl ? (
+                  <a href={projectUrl}>
+                    <img src={fullURL(item)} alt={`${housing_company}, ${t('SEARCH:aria-project-image')} ${idx + 2}`} />
+                  </a>
+                ) : (
+                  <img src={fullURL(item)} alt={`${housing_company}, ${t('SEARCH:aria-project-image')} ${idx + 2}`} />
+                )}
               </Slide>
             ))}
         </Slider>
@@ -210,7 +223,15 @@ const ProjectCard = ({
         <div className={css.info}>
           <div className={css.details}>
             <div className={css.titles}>
-              <h3 style={{ marginBottom: 5 }}>{housing_company}</h3>
+              <h3 style={{ marginBottom: 5 }}>
+                {projectUrl ? (
+                  <a href={projectUrl} className={css.projectTitleLink}>
+                    {housing_company}
+                  </a>
+                ) : (
+                  housing_company
+                )}
+              </h3>
               <div style={{ marginBottom: 8 }}>
                 <b>{district},</b> {street_address}
               </div>
@@ -232,9 +253,9 @@ const ProjectCard = ({
             />
           </div>
           <div className={css.controls}>
-            {url && (
+            {projectUrl && (
               <a
-                href={fullURL(url)}
+                href={projectUrl}
                 className={`${css.detailsButton} hds-button hds-button--secondary hds-button--small`}
               >
                 <span className="hds-button__label">{t('SEARCH:learn-more')}</span>
