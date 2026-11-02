@@ -62,14 +62,20 @@ const getFormattedShowingTime = (showingTime: string) => {
 
 const getFormattedShowingRange = (showingRange: string) => {
   const normalizedRange = showingRange.trim();
-  const dateAndTimeMatch = normalizedRange.match(/^(\d{1,2}\.\d{1,2}\.\d{4})\s*(.+)$/);
+  const dateMatch = /^\d{1,2}\.\d{1,2}\.\d{4}/.exec(normalizedRange);
 
-  if (!dateAndTimeMatch) {
+  if (!dateMatch) {
     return normalizedRange;
   }
 
-  const [, datePart, rawTimePart] = dateAndTimeMatch;
-  const normalizedTimePart = rawTimePart.replace(/^\(|\)$/g, '').trim();
+  const datePart = dateMatch[0];
+  const remainingPart = normalizedRange.slice(datePart.length).trim();
+
+  if (!remainingPart) {
+    return normalizedRange;
+  }
+
+  const normalizedTimePart = remainingPart.replace(/[()]/g, '').trim();
 
   return `${datePart}  (${normalizedTimePart})`;
 };
