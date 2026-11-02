@@ -58,7 +58,7 @@ describe('ES:showing_times in project card', () => {
 
     render(<ProjectCard {...defaultProps} project={hasoProject} />);
 
-    expect(screen.getByText('ES:showing_times: 14.10.2026 13:03 - 13:58')).toBeInTheDocument();
+    expect(screen.getByText('ES:showing_times: 14.10.2026  (13:03 - 13:58)')).toBeInTheDocument();
     expect(screen.getAllByText(/ES:showing_times:/)).toHaveLength(1);
   });
 
@@ -77,7 +77,7 @@ describe('ES:showing_times in project card', () => {
 
     render(<ProjectCard {...defaultProps} project={hasoProject} />);
 
-    expect(screen.getByText('ES:showing_times: 07.10.2026 06:30')).toBeInTheDocument();
+    expect(screen.getByText('ES:showing_times: 07.10.2026  (06:30)')).toBeInTheDocument();
   });
 
   test('shows project_homepage_highlight_text when showing_time_ranges is empty', () => {

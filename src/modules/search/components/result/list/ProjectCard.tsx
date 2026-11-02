@@ -57,7 +57,21 @@ const getFormattedShowingTime = (showingTime: string) => {
     return showingTime;
   }
 
-  return format(date, 'dd.MM.yyyy HH:mm');
+  return `${format(date, 'dd.MM.yyyy')}  (${format(date, 'HH:mm')})`;
+};
+
+const getFormattedShowingRange = (showingRange: string) => {
+  const normalizedRange = showingRange.trim();
+  const dateAndTimeMatch = normalizedRange.match(/^(\d{1,2}\.\d{1,2}\.\d{4})\s*(.+)$/);
+
+  if (!dateAndTimeMatch) {
+    return normalizedRange;
+  }
+
+  const [, datePart, rawTimePart] = dateAndTimeMatch;
+  const normalizedTimePart = rawTimePart.replace(/^\(|\)$/g, '').trim();
+
+  return `${datePart}  (${normalizedTimePart})`;
 };
 
 type ShowingLabel = {
@@ -69,7 +83,8 @@ const getShowingTimeLabels = (apartments: Apartment[]): ShowingLabel[] => {
   const rangeLabels = apartments
     .flatMap((apartment) => apartment.showing_time_ranges ?? [])
     .map((showingTimeRange) => showingTimeRange.display?.trim())
-    .filter((display): display is string => Boolean(display));
+    .filter((display): display is string => Boolean(display))
+    .map((display) => getFormattedShowingRange(display));
 
   const firstLegacyShowingTime = apartments
     .flatMap((apartment) => apartment.showing_times ?? [])
