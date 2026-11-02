@@ -13,9 +13,11 @@ const FloorCombinedFilter = ({ floorPropertyItems, floorRangeFrom, floorRangeTo 
   return (
     <>
       <RangeInput name="floor" from={floorRangeFrom} to={floorRangeTo} />
-      <div className={styles.checkListSection}>
-        <CheckList name="properties" label="" isWrapped items={floorPropertyItems} />
-      </div>
+      {floorPropertyItems.length > 0 && (
+        <div className={styles.checkListSection}>
+          <CheckList name="properties" label="" isWrapped items={floorPropertyItems} />
+        </div>
+      )}
     </>
   );
 };

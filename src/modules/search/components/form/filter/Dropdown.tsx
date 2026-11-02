@@ -27,12 +27,10 @@ const Dropdown = ({ name, icon, selectionScopeValues, additionalFilterNames = []
   const { clearFilter, getFilters, setFilters, getFilter } = useFilters();
   const selectedValues = getFilters(name);
   const additionalSelectionSignature = additionalFilterNames.map((filterName) => getFilter(filterName) ?? '').join('|');
-  const hasMainSelection = selectionScopeValues?.length
-    ? selectedValues.some((value) =>
-        selectionScopeValues
-          .map(normalizePropertyOption)
-          .includes(normalizePropertyOption(value))
-      )
+  const hasScope = selectionScopeValues !== undefined;
+  const normalizedScopeValues = (selectionScopeValues || []).map(normalizePropertyOption);
+  const hasMainSelection = hasScope
+    ? selectedValues.some((value) => normalizedScopeValues.includes(normalizePropertyOption(value)))
     : !!getFilter(name);
   const hasAdditionalSelection = additionalFilterNames.some((filterName) => !!getFilter(filterName));
   const hasSelections = hasMainSelection || hasAdditionalSelection;
@@ -57,8 +55,8 @@ const Dropdown = ({ name, icon, selectionScopeValues, additionalFilterNames = []
     // Focus on button after clearing selection
     labelRef.current?.focus();
 
-    if (selectionScopeValues?.length) {
-      const scopeSet = new Set(selectionScopeValues.map(normalizePropertyOption));
+    if (hasScope) {
+      const scopeSet = new Set(normalizedScopeValues);
       const remainingValues = selectedValues.filter((value) => !scopeSet.has(normalizePropertyOption(value)));
 
       if (remainingValues.length === 0) {

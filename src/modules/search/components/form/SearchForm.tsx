@@ -93,7 +93,7 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipTyp
   };
 
   const additionalPropertiesFilter = createScopedPropertiesFilter(properties?.label || '', additionalPropertyItems);
-  const floorPropertiesFilter = createScopedPropertiesFilter(t('SEARCH:floor'), floorPropertyItems);
+  const floorLabel = t('SEARCH:floor');
 
   const getItemLabel = (item: string | FilterItem | undefined): string => {
     if (!item) {
@@ -142,19 +142,11 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipTyp
   const floorRangeValues = getFilters(FLOOR_RANGE_FILTER_NAME);
   const floorRangeLabel = formatFloorRange(floorRangeValues);
 
-  const floorCombinedFilter = floorPropertiesFilter
-    ? {
-        ...floorPropertiesFilter,
-        getLabel: (values: string[]) => {
-          const propertyLabel = floorPropertiesFilter.getLabel(values);
-          if (propertyLabel !== floorPropertiesFilter.label) {
-            return propertyLabel;
-          }
-
-          return floorRangeLabel || floorPropertiesFilter.label;
-        },
-      }
-    : null;
+  const floorCombinedFilter: FilterConfig = {
+    ...floorRangeFilter,
+    label: floorLabel,
+    getLabel: () => floorRangeLabel || floorLabel,
+  };
 
   const filtersWithFloor = {
     ...(filters || {}),
@@ -228,21 +220,19 @@ const SearchForm = ({ config, isLoading, isError, pageTitle, projectOwnershipTyp
           </div>
           <div className={cx(styles.column, styles.columnWide, styles.dropdownColumn, styles.canShimmer)}>
             <div className={styles.dropdownWrapper}>
-              {floorCombinedFilter && (
-                <Dropdown
-                  name={FilterName.Properties}
-                  selectionScopeValues={floorPropertyItems}
-                  additionalFilterNames={[FLOOR_RANGE_FILTER_NAME]}
-                  customContent={
-                    <FloorCombinedFilter
-                      floorPropertyItems={floorPropertyItems}
-                      floorRangeFrom={floorRangeFilter.items[0] as FilterItem}
-                      floorRangeTo={floorRangeFilter.items[1] as FilterItem}
-                    />
-                  }
-                  {...floorCombinedFilter}
-                />
-              )}
+              <Dropdown
+                name={FilterName.Properties}
+                selectionScopeValues={floorPropertyItems}
+                additionalFilterNames={[FLOOR_RANGE_FILTER_NAME]}
+                customContent={
+                  <FloorCombinedFilter
+                    floorPropertyItems={floorPropertyItems}
+                    floorRangeFrom={floorRangeFilter.items[0] as FilterItem}
+                    floorRangeTo={floorRangeFilter.items[1] as FilterItem}
+                  />
+                }
+                {...floorCombinedFilter}
+              />
             </div>
           </div>
           <div className={cx(styles.column, styles.columnNarrow, styles.canShimmer, styles.searchButtonDesktop)}>

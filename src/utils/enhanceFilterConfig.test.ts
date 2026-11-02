@@ -27,13 +27,12 @@ describe('enhanceFilterConfig', () => {
     expect(subject.properties.items).toContain('project_has_sauna');
     expect(subject.properties.items).toContain('has_apartment_sauna');
     expect(subject.properties.items).toContain('has_balcony');
-    expect(subject.properties.items).toContain('TOP_FLOOR');
-    expect(subject.properties.items).toContain('BOTTOM_FLOOR');
-    expect(subject.properties.items).toContain('NOT_TOP_FLOOR');
-    expect(subject.properties.items).toContain('NOT_BOTTOM_FLOOR');
-
     expect(subject.properties.items).not.toContain('SINGLE_LEVEL');
     expect(subject.properties.items).not.toContain('HAS_FRENCH_BALCONY');
     expect(subject.properties.items).not.toContain('project_has_elevator');
+    expect(subject.properties.items).not.toContain('TOP_FLOOR');
+    expect(subject.properties.items).not.toContain('BOTTOM_FLOOR');
+    expect(subject.properties.items).not.toContain('NOT_TOP_FLOOR');
+    expect(subject.properties.items).not.toContain('NOT_BOTTOM_FLOOR');
   });
 });
