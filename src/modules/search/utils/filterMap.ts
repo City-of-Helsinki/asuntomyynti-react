@@ -12,10 +12,6 @@ const REQUIRED_PROPERTY_OPTIONS = [
   'HAS_BALCONY',
   'HAS_TERRACE',
   'HAS_YARD',
-  'TOP_FLOOR',
-  'BOTTOM_FLOOR',
-  'NOT_TOP_FLOOR',
-  'NOT_BOTTOM_FLOOR',
 ];
 
 const EXCLUDED_PROPERTY_OPTIONS = new Set([
@@ -23,6 +19,10 @@ const EXCLUDED_PROPERTY_OPTIONS = new Set([
   'HAS_FRENCH_BALCONY',
   'FRENCH_BALCONY',
   'PROJECT_HAS_ELEVATOR',
+  'TOP_FLOOR',
+  'BOTTOM_FLOOR',
+  'NOT_TOP_FLOOR',
+  'NOT_BOTTOM_FLOOR',
 ]);
 
 const normalizePropertyOption = (option: string) => option.trim().toUpperCase();

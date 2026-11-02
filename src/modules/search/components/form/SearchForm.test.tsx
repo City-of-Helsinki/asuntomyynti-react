@@ -106,7 +106,7 @@ test('loading animation is hidden when isLoading is false', () => {
   expect(elem.classList.contains(styles.isLoading)).toBe(false);
 });
 
-test('renders Additional selections and floor as separate dropdowns and hides excluded options', () => {
+test('renders Additional selections and floor dropdown and hides excluded options', () => {
   const enhancedConfig = {
     ...mockConfig,
     filters: enhanceFilterConfig(filterConfig.filters),
@@ -122,10 +122,10 @@ test('renders Additional selections and floor as separate dropdowns and hides ex
   expect(screen.getByText('SEARCH:floor')).toBeDefined();
 
   expect(screen.getByText('ES:has_balcony')).toBeDefined();
-  expect(screen.queryAllByText('ES:TOP_FLOOR')).toHaveLength(1);
-  expect(screen.queryAllByText('ES:BOTTOM_FLOOR')).toHaveLength(1);
-  expect(screen.queryAllByText('ES:NOT_TOP_FLOOR')).toHaveLength(1);
-  expect(screen.queryAllByText('ES:NOT_BOTTOM_FLOOR')).toHaveLength(1);
+  expect(screen.queryByText('ES:TOP_FLOOR')).toBeNull();
+  expect(screen.queryByText('ES:BOTTOM_FLOOR')).toBeNull();
+  expect(screen.queryByText('ES:NOT_TOP_FLOOR')).toBeNull();
+  expect(screen.queryByText('ES:NOT_BOTTOM_FLOOR')).toBeNull();
 
   expect(screen.queryByText('ES:SINGLE_LEVEL')).toBeNull();
   expect(screen.queryByText('ES:HAS_FRENCH_BALCONY')).toBeNull();
